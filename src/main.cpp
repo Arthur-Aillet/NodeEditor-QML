@@ -1,10 +1,12 @@
 #include <QGuiApplication>
+#include <QDebug>
 #include <QQmlApplicationEngine>
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
+    qDebug() << "Launching Sandbox!";
     QQmlApplicationEngine engine;
     QObject::connect(
         &engine,
