@@ -10,6 +10,8 @@ set(CMAKE_PREFIX_PATH "~/Qt/6.11.0/gcc_64/")
 set(QML_IMPORT_PATH "~/Qt/6.11.0/gcc_64/qml/")
 set(QT_QML_GENERATE_QMLLS_INI ON)
 
+set(CMAKE_CXX_CLANG_TIDY clang-tidy -header-filter=. -config-file=../.clang-tidy)
+
 option(RUN "Launch App" OFF)
 if(RUN)
     add_custom_target(run
@@ -32,7 +34,7 @@ qt_add_executable(${PROJECT_NAME}
 qt_add_qml_module(${PROJECT_NAME}
     URI Sandbox
     QML_FILES
-        src/Main.qml
+    src/Main.qml
 )
 
 target_link_directories(${PROJECT_NAME}
@@ -45,7 +47,7 @@ target_link_directories(${PROJECT_NAME}
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
 set_target_properties(${PROJECT_NAME} PROPERTIES
-#    MACOSX_BUNDLE_GUI_IDENTIFIER com.example.${PROJECT_NAME}
+    #    MACOSX_BUNDLE_GUI_IDENTIFIER com.example.${PROJECT_NAME}
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE
