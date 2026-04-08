@@ -3,6 +3,9 @@
 ## File : Makefile
 ##
 
+SRC_DIR	=	src
+
+
 all:	build
 
 build:
@@ -27,6 +30,13 @@ run_release:
 	make --no-print-directory -C build
 	make --no-print-directory -C build run
 
+format:
+	@for src in $(shell find $(SRC_DIR) -name "*.cpp" -o -name "*.hpp") ; do \
+		echo "Formatting [$$src]..." ;  			\
+		clang-format -i "$$src" -style=file ; 		\
+	done
+	@echo "Done"
+
 clean:
 	rm -rf ./build/
 
@@ -36,4 +46,4 @@ fclean: clean
 
 re: fclean build
 
-.PHONY: all build release run run_release clean fclean re
+.PHONY: all build release run run_release format clean fclean re

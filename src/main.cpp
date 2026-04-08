@@ -1,20 +1,16 @@
-#include <QGuiApplication>
 #include <QDebug>
+#include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
-int main(int argc, char *argv[])
-{
-    QGuiApplication app(argc, argv);
+int main(int argc, char *argv[]) {
+  QGuiApplication app(argc, argv);
 
-    qDebug() << "Launching Sandbox!";
-    QQmlApplicationEngine engine;
-    QObject::connect(
-        &engine,
-        &QQmlApplicationEngine::objectCreationFailed,
-        &app,
-        []() { QCoreApplication::exit(-1); },
-        Qt::QueuedConnection);
-    engine.loadFromModule("Sandbox", "Main");
+  qDebug() << "Launching Sandbox!";
+  QQmlApplicationEngine engine;
+  QObject::connect(
+      &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
+      []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
+  engine.loadFromModule("Sandbox", "Main");
 
-    return QCoreApplication::exec();
+  return QCoreApplication::exec();
 }
