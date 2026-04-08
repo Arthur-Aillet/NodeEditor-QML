@@ -10,6 +10,17 @@ set(CMAKE_PREFIX_PATH "~/Qt/6.11.0/gcc_64/")
 set(QML_IMPORT_PATH "~/Qt/6.11.0/gcc_64/qml/")
 set(QT_QML_GENERATE_QMLLS_INI ON)
 
+option(RUN "Launch App" OFF)
+if(RUN)
+    add_custom_target(run
+        COMMENT "Launching binary"
+        COMMAND ./build/${PROJECT_NAME}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+endif()
+
+option(DEBUG_MODE "Set DEBUG Mode" ON)
+
 find_package(Qt6 REQUIRED COMPONENTS Quick Core)
 
 qt_standard_project_setup(REQUIRES 6.10)
