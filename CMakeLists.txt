@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_PREFIX_PATH "~/Qt/6.11.0/gcc_64/")
 set(QML_IMPORT_PATH "~/Qt/6.11.0/gcc_64/qml/")
 set(QT_QML_GENERATE_QMLLS_INI ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_CXX_CLANG_TIDY clang-tidy -header-filter=. -config-file=../.clang-tidy)
 
