@@ -50,32 +50,8 @@ Window {
                     }
                 }
             }
-            Rectangle {
-                width: 80
-                height: 25
-                radius: 20.0
-                anchors {
-                    verticalCenter: parent.verticalCenter
-                }
-                color: '#eaeaea'
-                border {
-                    width: 3
-                    color: '#4e4e4e'
-                }
-                Text {
-                    text: "0.0"
-                    color: "black"
-                    anchors {
-                        left: parent.left
-                        leftMargin: 10
-                        verticalCenter: parent.verticalCenter
-                    }
-                    font {
-                        pixelSize: 10
-                        bold: true
-                        weight: 10
-                    }
-                }
+            Loader {
+                sourceComponent: textInput
             }
             Rectangle {
                 width: 40
@@ -97,6 +73,37 @@ Window {
                         bold: true
                         weight: 10
                     }
+                }
+            }
+        }
+    }
+
+    Component {
+        id: textInput
+        Rectangle {
+            width: 80
+            height: 25
+            radius: 20.0
+            anchors {
+                verticalCenter: parent.verticalCenter
+            }
+            color: '#eaeaea'
+            border {
+                width: 3
+                color: '#4e4e4e'
+            }
+            Text {
+                text: "0.0"
+                color: "black"
+                anchors {
+                    left: parent.left
+                    leftMargin: 10
+                    verticalCenter: parent.verticalCenter
+                }
+                font {
+                    pixelSize: 10
+                    bold: true
+                    weight: 10
                 }
             }
         }
