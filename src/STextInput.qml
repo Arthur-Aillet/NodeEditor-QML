@@ -2,7 +2,8 @@ import QtQuick
 
 Rectangle {
     id: textInput
-    property string value
+    required property real value
+
     width: 80
     height: 25
     radius: 20.0

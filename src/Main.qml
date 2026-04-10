@@ -34,6 +34,10 @@ Window {
                 height: 20
                 radius: 3.0
                 color: '#787878'
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: input.value -= 1
+                }
                 anchors {
                     verticalCenter: parent.verticalCenter
                 }
@@ -52,7 +56,8 @@ Window {
                 }
             }
             STextInput {
-                value: "1.0"
+                id: input
+                value: 1.0
             }
             Rectangle {
                 width: 40
@@ -61,6 +66,10 @@ Window {
                 color: '#787878'
                 anchors {
                     verticalCenter: parent.verticalCenter
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: input.value += 1
                 }
                 Text {
                     text: "+"
