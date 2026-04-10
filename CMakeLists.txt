@@ -36,6 +36,7 @@ qt_add_qml_module(${PROJECT_NAME}
     URI Sandbox
     QML_FILES
     src/Main.qml
+    src/STextInput.qml
 )
 
 target_link_directories(${PROJECT_NAME}
