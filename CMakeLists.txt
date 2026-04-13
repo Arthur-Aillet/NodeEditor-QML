@@ -1,11 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(PROJECT_NAME "appSandbox" CACHE STRING "Project Name.")
-
-project(${PROJECT_NAME} VERSION 0.1 LANGUAGES CXX)
+project(appSandbox VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_AUTOMOC ON)
 set(CMAKE_PREFIX_PATH "~/Qt/6.11.0/gcc_64/")
 set(QML_IMPORT_PATH "~/Qt/6.11.0/gcc_64/qml/")
 set(QT_QML_GENERATE_QMLLS_INI ON)
@@ -17,7 +16,7 @@ option(RUN "Launch App" OFF)
 if(RUN)
     add_custom_target(run
         COMMENT "Launching binary"
-        COMMAND ./build/${PROJECT_NAME}
+        COMMAND ./build/appSandbox
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
 endif()
@@ -28,43 +27,53 @@ find_package(Qt6 REQUIRED COMPONENTS Quick Core)
 
 qt_standard_project_setup(REQUIRES 6.10)
 
-qt_add_executable(${PROJECT_NAME}
+qt_add_executable(appSandbox
     src/main.cpp
     src/Scene.hpp
+    src/Orchestrator.cpp
     src/Orchestrator.hpp
     src/Observer.hpp
     src/observers/IncrementalObserver.hpp
     src/scenes/ColorScene.hpp
 )
 
-qt_add_qml_module(${PROJECT_NAME}
+qt_add_qml_module(appSandbox
     URI Sandbox
     QML_FILES
     src/Main.qml
 )
 
-target_link_directories(${PROJECT_NAME}
+target_link_directories(appSandbox
     PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/observers
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/scenes
     ${LIB_TARGET_LINK_DIRECTORIES}
+)
+
+target_include_directories(appSandbox
+    PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/observers
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/scenes
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    #    MACOSX_BUNDLE_GUI_IDENTIFIER com.example.${PROJECT_NAME}
+set_target_properties(appSandbox PROPERTIES
+    #    MACOSX_BUNDLE_GUI_IDENTIFIER com.example.appSandbox
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
 
-target_link_libraries(${PROJECT_NAME}
+target_link_libraries(appSandbox
     PRIVATE Qt6::Quick
 )
 
-install(TARGETS ${PROJECT_NAME}
+install(TARGETS appSandbox
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
