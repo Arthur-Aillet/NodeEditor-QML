@@ -2,6 +2,8 @@
 
 #include <QMetaProperty>
 #include <QObject>
+#include <cstddef>
+#include <memory>
 
 #include "Observer.hpp"
 #include "Scene.hpp"
@@ -11,8 +13,9 @@
 class Orchestrator : public QObject {
   Q_OBJECT
   std::vector<std::unique_ptr<Scene>> scenes;
-  std::vector<std::unique_ptr<Observer>> observers;
+  std::vector<std::shared_ptr<Observer>> observers;
   std::unordered_multimap<std::string, QMetaProperty> driver_mapping;
+  std::shared_ptr<Observer> selectedObserver = nullptr;
 
   public slots:
   void getDriverValue(std::string name, QVariant value) {
@@ -27,9 +30,28 @@ class Orchestrator : public QObject {
   }
 
   public:
+  void DeselectObserver() {
+    if (selectedObserver != nullptr) {
+      selectedObserver->exit();
+      selectedObserver->disconnect(SIGNAL(setDriverValue(std::string, QVariant)), this,
+                                   SLOT(getDriverValue(std::string, QVariant)));
+    }
+  }
+
+  void SelectObserver(size_t index) {
+    if (index < observers.size() && observers[index].unique()) {
+      DeselectObserver();
+
+      selectedObserver = observers[index];
+
+      selectedObserver->start();
+      QObject::connect(&*selectedObserver, SIGNAL(setDriverValue(std::string, QVariant)), this,
+                       SLOT(getDriverValue(std::string, QVariant)));
+    }
+  }
+
   Orchestrator(QObject *parent) : QObject(parent) {
-    observers.push_back(std::make_unique<IncrementalObserver>());
-    observers[0]->start();
+    observers.push_back(std::make_shared<IncrementalObserver>());
 
     scenes.push_back(std::make_unique<ColorScene>(this));
 
@@ -40,8 +62,6 @@ class Orchestrator : public QObject {
         driver_mapping.insert(std::pair("intensity", metaObject->property(i)));
       }
     }
-
-    QObject::connect(&*observers[0], SIGNAL(setDriverValue(std::string, QVariant)), this,
-                     SLOT(getDriverValue(std::string, QVariant)));
+    SelectObserver(0);
   }
 };
