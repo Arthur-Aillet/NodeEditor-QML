@@ -32,7 +32,6 @@ class Orchestrator : public QObject {
     observers[0]->start();
 
     scenes.push_back(std::make_unique<ColorScene>(this));
-    scenes[0]->display_value();
 
     for (auto &scene : scenes) {
       const QMetaObject *metaObject = scene->metaObject();
