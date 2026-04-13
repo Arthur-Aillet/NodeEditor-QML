@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "Orchestrator.hpp"
 #include <QDebug>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
 
   qDebug() << "Launching Sandbox!";
   QQmlApplicationEngine engine;
-  SceneManager sceneManager = SceneManager(&engine);
+  Orchestrator sceneManager = Orchestrator(&engine);
   QObject::connect(
       &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
       []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);

@@ -30,7 +30,11 @@ qt_standard_project_setup(REQUIRES 6.10)
 
 qt_add_executable(${PROJECT_NAME}
     src/main.cpp
-    src/main.hpp
+    src/Scene.hpp
+    src/Orchestrator.hpp
+    src/Observer.hpp
+    src/observers/IncrementalObserver.hpp
+    src/scenes/ColorScene.hpp
 )
 
 qt_add_qml_module(${PROJECT_NAME}
