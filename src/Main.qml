@@ -1,4 +1,5 @@
 import QtQuick
+import Sandbox
 
 Window {
     id: root
@@ -6,9 +7,9 @@ Window {
     height: 480
     visible: true
     title: qsTr("Sandbox!")
-    Rectangle {
-        color: '#ff0000'
-        width: root.width
-        height: root.height
-    }
+    ColorScene {}
+    // Item {
+    //     id: wrapper
+    //     anchors.fill: parent
+    // }
 }

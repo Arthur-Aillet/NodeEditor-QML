@@ -29,24 +29,28 @@ qt_standard_project_setup(REQUIRES 6.10)
 
 qt_add_executable(appSandbox
     src/main.cpp
-    src/Scene.hpp
+    src/Receiver.hpp
+    src/Receiver.cpp
     src/observers/IncrementalObserver.cpp
     src/observers/IncrementalObserver.hpp
+    src/receivers/ColorSceneReceiver.hpp
     src/Orchestrator.cpp
     src/Orchestrator.hpp
     src/Observer.hpp
-    src/scenes/ColorScene.hpp
 )
 
 qt_add_qml_module(appSandbox
     URI Sandbox
     QML_FILES
     src/Main.qml
+    src/scenes/ColorScene.qml
+    DEPENDENCIES QtQuick
 )
 
 target_link_directories(appSandbox
     PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/receivers
     ${CMAKE_CURRENT_SOURCE_DIR}/src/observers
     ${CMAKE_CURRENT_SOURCE_DIR}/src/scenes
     ${LIB_TARGET_LINK_DIRECTORIES}
@@ -56,6 +60,7 @@ target_include_directories(appSandbox
     PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/src/observers
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/receivers
     ${CMAKE_CURRENT_SOURCE_DIR}/src/scenes
 )
 

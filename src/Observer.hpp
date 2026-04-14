@@ -9,7 +9,7 @@
 
 #define REGISTER(a) registerProperty(#a, a) // NOLINT
 
-class Observer : public QThread {
+class Observer : public QThread { // NOLINT
   Q_OBJECT
 
   using onChangeFunctor = std::function<void()>;
@@ -27,6 +27,8 @@ class Observer : public QThread {
         onChangeFunctor([this, ptr, name]() { emit setDriverValue(name, ptr->value()); })));
   }
   virtual void init() = 0;
+
+  ~Observer() override { qDebug() << "Destroyed Observer"; }
 
   protected:
   void run() override = 0;
