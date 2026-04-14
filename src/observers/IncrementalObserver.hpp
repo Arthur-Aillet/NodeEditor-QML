@@ -1,19 +1,22 @@
 #pragma once
 
-#include "src/Observer.hpp"
 #include <chrono>
+#include <qproperty.h>
 
-constexpr int wait_duration = 100000000;
+#include "Observer.hpp"
+
+constexpr int wait_duration = 1000000000;
 
 class IncrementalObserver : public Observer {
   public:
-  int intensity = 0;
+  QProperty<int> intensity{0};
+
+  void init() override { REGISTER(intensity); }
 
   protected:
   void run() override {
     while (true) {
-      intensity += 1;
-      UPDATE_VALUE(intensity);
+      intensity.setValue(intensity + 1);
       qDebug() << "IncrementalObserver: " << intensity;
       this->sleep(std::chrono::nanoseconds(wait_duration));
     }

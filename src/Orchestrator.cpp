@@ -4,11 +4,11 @@
 
 Orchestrator::Orchestrator(QObject *parent) : QObject(parent) {
   observers.push_back(std::make_shared<IncrementalObserver>());
-
+  observers[0]->init();
   scenes.push_back(std::make_unique<ColorScene>(this));
 
   for (auto &scene : scenes) {
-    const QMetaObject *metaObject = scene->metaObject();
+    auto metaObject = scene->metaObject();
 
     for (int i = metaObject->propertyOffset(); i < metaObject->propertyCount(); ++i) {
       driver_mapping.insert(std::pair("intensity", metaObject->property(i)));
