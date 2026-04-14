@@ -1,6 +1,5 @@
 #pragma once
 
-#include <chrono>
 #include <qproperty.h>
 
 #include "Observer.hpp"
@@ -11,14 +10,10 @@ class IncrementalObserver : public Observer {
   public:
   QProperty<int> intensity{0};
 
-  void init() override { REGISTER(intensity); }
+  IncrementalObserver() = default;
+
+  void init() override;
 
   protected:
-  void run() override {
-    while (true) {
-      intensity.setValue(intensity + 1);
-      qDebug() << "IncrementalObserver: " << intensity;
-      this->sleep(std::chrono::nanoseconds(wait_duration));
-    }
-  }
+  void run() override;
 };

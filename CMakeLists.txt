@@ -30,10 +30,11 @@ qt_standard_project_setup(REQUIRES 6.10)
 qt_add_executable(appSandbox
     src/main.cpp
     src/Scene.hpp
+    src/observers/IncrementalObserver.cpp
+    src/observers/IncrementalObserver.hpp
     src/Orchestrator.cpp
     src/Orchestrator.hpp
     src/Observer.hpp
-    src/observers/IncrementalObserver.hpp
     src/scenes/ColorScene.hpp
 )
 
