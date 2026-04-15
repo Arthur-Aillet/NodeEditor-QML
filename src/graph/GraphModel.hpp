@@ -23,7 +23,7 @@ using QtNodes::InvalidNodeId;
  * The class implements a bare minimum required to demonstrate a model-based
  * graph.
  */
-class SimpleGraphModel : public QtNodes::AbstractGraphModel { // NOLINT
+class GraphModel : public QtNodes::AbstractGraphModel { // NOLINT
   Q_OBJECT
   public:
   struct NodeGeometryData {
@@ -32,7 +32,7 @@ class SimpleGraphModel : public QtNodes::AbstractGraphModel { // NOLINT
   };
 
   public:
-  SimpleGraphModel();
+  GraphModel();
 
   std::unordered_set<NodeId> allNodeIds() const override;
 
