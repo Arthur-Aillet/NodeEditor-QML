@@ -24,7 +24,7 @@ class Observer : public QThread { // NOLINT
     QProperty<T> *ptr = &property;
 
     handlers.push_back(property.onValueChanged(
-        onChangeFunctor([this, ptr, name]() { emit setDriverValue(name, ptr->value()); })));
+        onChangeFunctor([this, ptr, name]() { emit sendDriverValue(name, ptr->value()); })));
   }
   virtual void init() = 0;
 
@@ -34,5 +34,5 @@ class Observer : public QThread { // NOLINT
   void run() override = 0;
 
   signals:
-  void setDriverValue(std::string name, QVariant value);
+  void sendDriverValue(std::string name, QVariant value);
 };

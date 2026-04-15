@@ -29,6 +29,7 @@ qt_standard_project_setup(REQUIRES 6.10)
 
 qt_add_executable(appSandbox
     src/main.cpp
+    src/EngineAccess.hpp
     src/Receiver.hpp
     src/Receiver.cpp
     src/observers/IncrementalObserver.cpp

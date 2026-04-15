@@ -8,9 +8,10 @@
 
 class Receiver : public QObject { // NOLINT
   Q_OBJECT
+  QML_ELEMENT
 
   public:
-  std::unordered_multimap<std::string, QMetaProperty> driver_mapping;
+  std::unordered_multimap<std::string, int> driver_mapping;
 
   Receiver(QObject *parent = nullptr);
   ~Receiver() override;

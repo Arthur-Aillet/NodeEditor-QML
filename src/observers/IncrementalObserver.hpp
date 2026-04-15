@@ -1,10 +1,11 @@
 #pragma once
 
 #include <qproperty.h>
+#include <qtmetamacros.h>
 
 #include "Observer.hpp"
 
-constexpr int wait_duration = 1000000000;
+constexpr int wait_duration = 10000000;
 
 class IncrementalObserver : public Observer {
   public:

@@ -1,3 +1,4 @@
+#include "EngineAccess.hpp"
 #include <QDebug>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
@@ -7,13 +8,13 @@
 int main(int argc, char *argv[]) {
   QGuiApplication app(argc, argv);
 
-  qDebug() << "Launching Sandbox!";
-  QQmlApplicationEngine engine;
+  EngineAccess access;
+  qDebug() << "Launching Sandbox!" << access.engine->baseUrl();
 
   QObject::connect(
-      &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
+      &*access.engine, &QQmlApplicationEngine::objectCreationFailed, &app,
       []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
-  engine.loadFromModule("Sandbox", "Main");
+  access.engine->loadFromModule("Sandbox", "Main");
 
   return QCoreApplication::exec();
 }

@@ -20,7 +20,7 @@ class ColorSceneReceiver : public Receiver {
     auto metaObject = ColorSceneReceiver::staticMetaObject;
 
     for (int i = metaObject.propertyOffset(); i < metaObject.propertyCount(); ++i) {
-      driver_mapping.insert(std::pair("intensity", metaObject.property(i)));
+      driver_mapping.insert(std::pair("intensity", i));
     }
   }
 

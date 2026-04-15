@@ -18,10 +18,10 @@ class Orchestrator : public QObject {
   private:
   std::vector<std::shared_ptr<Observer>> observers;
   std::vector<Receiver *> active_receivers;
-  std::shared_ptr<Observer> selectedObserver = nullptr;
+  std::shared_ptr<Observer> selected_observer = nullptr;
 
   public slots:
-  void getDriverValue(std::string name, QVariant value);
+  void applyDriverValue(std::string name, QVariant value);
 
   public:
   void registerReceiver(Receiver *receiver);
