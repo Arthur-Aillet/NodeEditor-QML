@@ -10,7 +10,7 @@ set(QML_IMPORT_PATH "~/Qt/6.11.0/gcc_64/qml/")
 set(QT_QML_GENERATE_QMLLS_INI ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_CXX_CLANG_TIDY clang-tidy -header-filter=. -config-file=../.clang-tidy)
+set(CMAKE_CXX_CLANG_TIDY clang-tidy -config-file=../.clang-tidy)
 
 option(RUN "Launch App" OFF)
 if(RUN)
@@ -27,6 +27,8 @@ find_package(Qt6 REQUIRED COMPONENTS Quick Core)
 
 qt_standard_project_setup(REQUIRES 6.10)
 
+add_subdirectory(external/nodeeditor)
+
 qt_add_executable(appSandbox
     src/main.cpp
     src/EngineAccess.hpp
@@ -34,6 +36,9 @@ qt_add_executable(appSandbox
     src/Receiver.cpp
     src/observers/IncrementalObserver.cpp
     src/observers/IncrementalObserver.hpp
+    src/Node.hpp
+    src/SimpleGraphModel.cpp
+    src/SimpleGraphModel.hpp
     src/receivers/ColorSceneReceiver.hpp
     src/Orchestrator.cpp
     src/Orchestrator.hpp
@@ -77,7 +82,7 @@ set_target_properties(appSandbox PROPERTIES
 )
 
 target_link_libraries(appSandbox
-    PRIVATE Qt6::Quick
+    PRIVATE Qt6::Quick QtNodes::QtNodes
 )
 
 install(TARGETS appSandbox

@@ -1,20 +1,22 @@
-#include "EngineAccess.hpp"
-#include <QDebug>
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
-#include <qqmlcomponent.h>
-#include <qurl.h>
+#include "SimpleGraphModel.hpp"
+#include <QApplication>
+#include <QtNodes/BasicGraphicsScene>
+#include <QtNodes/GraphicsView>
 
 int main(int argc, char *argv[]) {
-  QGuiApplication app(argc, argv);
+  QApplication app(argc, argv);
 
-  EngineAccess access;
-  qDebug() << "Launching Sandbox!" << access.engine->baseUrl();
+  // 1. Create the graph model
+  SimpleGraphModel model;
 
-  QObject::connect(
-      &*access.engine, &QQmlApplicationEngine::objectCreationFailed, &app,
-      []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
-  access.engine->loadFromModule("Sandbox", "Main");
+  // 2. Create a scene that visualizes the model
+  auto *scene = new QtNodes::BasicGraphicsScene(model); // NOLINT
 
-  return QCoreApplication::exec();
+  // 3. Create a view to display the scene
+  QtNodes::GraphicsView view(scene);
+  view.setWindowTitle("My First Node Graph");
+  view.resize(800, 600); // NOLINT
+  view.show();
+
+  return app.exec();
 }

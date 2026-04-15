@@ -5,9 +5,9 @@
 #include <qqml.h>
 #include <qtmetamacros.h>
 
-#include "Receiver.hpp"
+#include "Node.hpp"
 
-class ColorSceneReceiver : public Receiver {
+class ColorSceneReceiver : public QObject {
   Q_OBJECT
   QML_ELEMENT
 
@@ -16,13 +16,7 @@ class ColorSceneReceiver : public Receiver {
   public:
   int m_value = 0;
 
-  ColorSceneReceiver(QObject *parent = nullptr) : Receiver(parent) {
-    auto metaObject = ColorSceneReceiver::staticMetaObject;
-
-    for (int i = metaObject.propertyOffset(); i < metaObject.propertyCount(); ++i) {
-      driver_mapping.insert(std::pair("intensity", i));
-    }
-  }
+  ColorSceneReceiver(QObject *parent = nullptr) : QObject(parent) {}
 
   signals:
   void valueChanged();

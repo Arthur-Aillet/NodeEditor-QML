@@ -1,7 +1,7 @@
 ---
 Checks: "clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*,-modernize-use-trailing-return-type"
 WarningsAsErrors: "clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*,-modernize-use-trailing-return-type"
-HeaderFilterRegex: ""
+HeaderFilterRegex: "*/src/*"
 FormatStyle: google
 CheckOptions:
   - key: cert-dcl16-c.NewSuffixes
