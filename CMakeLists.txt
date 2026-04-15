@@ -3,10 +3,15 @@ cmake_minimum_required(VERSION 3.16)
 project(CutieDesigner VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_PREFIX_PATH "~/Qt/6.11.0/gcc_64/")
-set(QML_IMPORT_PATH "~/Qt/6.11.0/gcc_64/qml/")
+set(QT_QML_GENERATE_QMLLS_INI ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+find_package(Qt6 REQUIRED COMPONENTS Quick Core)
+
+qt_standard_project_setup()
+
 set(QT_QML_GENERATE_QMLLS_INI ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -14,10 +19,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 option(DEBUG_MODE "Set DEBUG Mode" ON)
 option(RUN "Launch App" OFF)
-
-find_package(Qt6 REQUIRED COMPONENTS Quick Core)
-
-qt_standard_project_setup(REQUIRES 6.10)
 
 add_subdirectory(external/nodeeditor)
 

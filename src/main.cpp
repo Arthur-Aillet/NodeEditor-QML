@@ -1,10 +1,18 @@
 #include "GraphModel.hpp"
 #include <QApplication>
+#include <QQmlApplicationEngine>
 #include <QtNodes/BasicGraphicsScene>
 #include <QtNodes/GraphicsView>
 
 int main(int argc, char *argv[]) {
-  QApplication app(argc, argv);
+  QGuiApplication app(argc, argv);
+  QQmlApplicationEngine engine;
+  QObject::connect(
+      &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
+      []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
+  engine.loadFromModule("CutieDesignerModule", "Main");
+
+  return QCoreApplication::exec();
 
   GraphModel model;
 

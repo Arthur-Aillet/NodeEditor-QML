@@ -1,4 +1,5 @@
 import QtQuick
+import GraphModule
 
 Window {
     id: root
@@ -6,8 +7,5 @@ Window {
     height: 480
     visible: true
     title: qsTr("CutieDesigner!")
-    // Item {
-    //     id: wrapper
-    //     anchors.fill: parent
-    // }
+    GraphView {}
 }

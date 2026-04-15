@@ -1,29 +1,25 @@
-add_subdirectory(graph)
+add_subdirectory(GraphModule)
 
 qt_add_executable(CutieDesigner
     main.cpp
 )
 
 qt_add_qml_module(CutieDesigner
-    URI Sandbox
+    URI CutieDesignerModule
     QML_FILES
     Main.qml
     DEPENDENCIES QtQuick
 )
 
-
-
 target_link_directories(CutieDesigner
     PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/graph
     ${LIB_TARGET_LINK_DIRECTORIES}
 )
 
 target_include_directories(CutieDesigner
     PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/
-    ${CMAKE_CURRENT_SOURCE_DIR}/graph
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -37,12 +33,15 @@ set_target_properties(CutieDesigner PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
+target_compile_definitions(CutieDesigner
+    PRIVATE $<$<CONFIG:Debug>:QT_QML_DEBUG>)
+
 target_link_libraries(CutieDesigner
-    PRIVATE Qt6::Quick QtNodes::QtNodes graph
+    PRIVATE Qt6::Quick QtNodes::QtNodes GraphModule
 )
 
 install(TARGETS CutieDesigner
-    BUNDLE DESTINATION ${PROJECT_SOURCE_DIR}
+    BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
