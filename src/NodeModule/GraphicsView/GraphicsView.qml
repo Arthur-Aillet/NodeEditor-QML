@@ -8,9 +8,4 @@ Item {
         width: root.width
         height: root.height
     }
-    // NodeEditor {
-    //     id: qmlwrap
-    //     width: root.width
-    //     height: root.height
-    // }
 }

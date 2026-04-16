@@ -1,13 +1,31 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 import NodeModule
 
-Window {
+ApplicationWindow {
     id: root
     width: 800
     height: 800
     visible: true
     title: qsTr("CutieDesigner!")
+    footer: ToolBar {
+        RowLayout {
+            anchors.fill: parent
+            ToolButton {
+                text: qsTr("Swap")
+                onClicked: {
+                    if (nodeEditor.visible) {
+                        nodeEditor.visible = false;
+                        graphicsView.visible = true;
+                    } else {
+                        nodeEditor.visible = true;
+                        graphicsView.visible = false;
+                    }
+                }
+            }
+        }
+    }
     SplitView {
         anchors.fill: parent
         orientation: Qt.Vertical
@@ -27,6 +45,14 @@ Window {
                 color: "green"
             }
             GraphicsView {
+                id: graphicsView
+                visible: true
+                SplitView.preferredWidth: editView.width * 4 / 6
+                SplitView.preferredHeight: editView.height
+            }
+            NodeEditor {
+                id: nodeEditor
+                visible: false
                 SplitView.preferredWidth: editView.width * 4 / 6
                 SplitView.preferredHeight: editView.height
             }
