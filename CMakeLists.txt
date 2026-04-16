@@ -26,9 +26,9 @@ add_subdirectory(external/nodeeditor)
 add_subdirectory(src)
 
 if(RUN)
-    add_custom_target(run
-        COMMENT "Launching binary"
-        COMMAND CutieDesigner
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    )
+  add_custom_target(run
+    COMMENT "Launching binary"
+    COMMAND CutieDesigner
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  )
 endif()

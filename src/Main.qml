@@ -1,5 +1,4 @@
 import QtQuick
-import QtQuick.Layouts
 import QtQuick.Controls
 import GraphModule
 
@@ -17,10 +16,25 @@ Window {
             SplitView.preferredHeight: root.height / 2
             color: "blue"
         }
-        Item {
+        SplitView {
+            id: editView
             SplitView.preferredWidth: root.width
             SplitView.preferredHeight: root.height / 2
-            GraphView {}
+            orientation: Qt.Horizontal
+            Rectangle {
+                SplitView.preferredWidth: editView.width / 6
+                SplitView.preferredHeight: editView.height
+                color: "green"
+            }
+            GraphView {
+                SplitView.preferredWidth: editView.width * 4 / 6
+                SplitView.preferredHeight: editView.height
+            }
+            Rectangle {
+                SplitView.preferredWidth: editView.width / 6
+                SplitView.preferredHeight: editView.height
+                color: "purple"
+            }
         }
     }
 }
