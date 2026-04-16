@@ -8,7 +8,7 @@ qt_add_qml_module(CutieDesigner
     URI CutieDesignerModule
     QML_FILES
     Main.qml
-    DEPENDENCIES QtQuick
+    DEPENDENCIES QtQuick QtQuick.Layout
 )
 
 target_link_directories(CutieDesigner
@@ -37,7 +37,7 @@ target_compile_definitions(CutieDesigner
     PRIVATE $<$<CONFIG:Debug>:QT_QML_DEBUG>)
 
 target_link_libraries(CutieDesigner
-    PRIVATE Qt6::Quick QtNodes::QtNodes GraphModule
+    PRIVATE Qt6::Core Qt6::Gui Qt6::Quick Qt6::QuickWidgets Qt6::Qml QtNodes::QtNodes GraphModule
 )
 
 install(TARGETS CutieDesigner

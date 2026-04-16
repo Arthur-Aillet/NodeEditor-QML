@@ -5,10 +5,11 @@ project(CutieDesigner VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_PREFIX_PATH "~/Qt/6.11.0/gcc_64/")
+set(LD_LIBRARY_PATH "~/Qt/6.11.0/gcc_64/lib")
 set(QT_QML_GENERATE_QMLLS_INI ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick Core)
+find_package(Qt6 REQUIRED COMPONENTS Quick Core Gui QuickWidgets Qml)
 
 qt_standard_project_setup()
 

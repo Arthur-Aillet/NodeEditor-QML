@@ -1,8 +1,12 @@
 import QtQuick
 
-Rectangle {
-    width: 640
-    height: 480
+Item {
+    id: root
+    anchors.fill: parent
     visible: true
-    color: "red"
+    NodeEditor {
+        id: qmlwrap
+        width: root.width
+        height: root.height
+    }
 }

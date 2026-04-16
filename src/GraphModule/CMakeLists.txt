@@ -6,8 +6,8 @@ qt_add_qml_module(GraphModule
     SOURCES
     GraphModel.cpp
     GraphModel.hpp
-    MyNodeEditor.hpp
-    MyNodeEditor.cpp
+    NodeEditor.hpp
+    NodeEditor.cpp
 )
 
 target_include_directories(GraphModule PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
