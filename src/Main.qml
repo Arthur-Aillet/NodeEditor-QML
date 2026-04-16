@@ -3,9 +3,13 @@ import GraphModule
 
 Window {
     id: root
-    width: 640
-    height: 480
+    width: 800
+    height: 800
     visible: true
     title: qsTr("CutieDesigner!")
-    GraphView {}
+    MyNodeEditor {
+        id: qmlwrap
+        width: 800
+        height: 800
+    }
 }
