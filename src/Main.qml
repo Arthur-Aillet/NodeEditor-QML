@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Controls
-import GraphModule
+import NodeModule
 
 Window {
     id: root
@@ -26,7 +26,7 @@ Window {
                 SplitView.preferredHeight: editView.height
                 color: "green"
             }
-            GraphView {
+            GraphicsView {
                 SplitView.preferredWidth: editView.width * 4 / 6
                 SplitView.preferredHeight: editView.height
             }

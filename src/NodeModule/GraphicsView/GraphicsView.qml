@@ -1,4 +1,5 @@
 import QtQuick
+import NodeModule
 
 Item {
     id: root
