@@ -1,41 +1,58 @@
-#include "GraphModel.hpp"
-#include <QApplication>
-#include <QQmlApplicationEngine>
 #include <QtNodes/BasicGraphicsScene>
+#include <QtNodes/ConnectionStyle>
 #include <QtNodes/GraphicsView>
+#include <QtNodes/StyleCollection>
+
+#include <QAction>
+#include <QScreen>
+#include <QtWidgets/QApplication>
+
+#include "GraphModel.hpp"
+
+using QtNodes::BasicGraphicsScene;
+using QtNodes::ConnectionStyle;
+using QtNodes::GraphicsView;
+using QtNodes::NodeRole;
+using QtNodes::StyleCollection;
 
 int main(int argc, char *argv[]) {
-  QGuiApplication app(argc, argv);
-  QQmlApplicationEngine engine;
-  QObject::connect(
-      &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
-      []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
-  engine.loadFromModule("CutieDesignerModule", "Main");
+  QApplication app(argc, argv);
 
-  return QCoreApplication::exec();
+  GraphModel graphModel;
 
-  GraphModel model;
+  // Initialize and connect two nodes.
+  {
+    NodeId id1 = graphModel.addNode();
+    graphModel.setNodeData(id1, NodeRole::Position, QPointF(0, 0));
 
-  auto *scene = new QtNodes::BasicGraphicsScene(model); // NOLINT
+    NodeId id2 = graphModel.addNode();
+    graphModel.setNodeData(id2, NodeRole::Position, QPointF(300, 300));
 
-  QtNodes::GraphicsView view(scene);
-  view.setWindowTitle("My First Node Graph");
-  view.resize(800, 600); // NOLINT
-  view.show();
+    graphModel.addConnection(ConnectionId{id1, 0, id2, 0});
+  }
 
+  auto scene = new BasicGraphicsScene(graphModel);
+
+  GraphicsView view(scene);
+
+  // Setup context menu for creating new nodes.
   view.setContextMenuPolicy(Qt::ActionsContextMenu);
+  QAction createNodeAction(QStringLiteral("Create Node"), &view);
+  QObject::connect(&createNodeAction, &QAction::triggered, [&]() {
+    // Mouse position in scene coordinates.
+    QPointF posView = view.mapToScene(view.mapFromGlobal(QCursor::pos()));
 
-  auto *createAction = new QAction("Create Node", &view);
-  QObject::connect(createAction, &QAction::triggered, [&]() {
-    // Get mouse position in scene coordinates
-    QPointF pos = view.mapToScene(view.mapFromGlobal(QCursor::pos()));
-
-    // Add node to model
-    auto nodeId = model.addNode();
-    model.setNodeData(nodeId, QtNodes::NodeRole::Position, pos);
+    NodeId const newId = graphModel.addNode();
+    graphModel.setNodeData(newId, NodeRole::Position, posView);
   });
+  view.insertAction(view.actions().front(), &createNodeAction);
 
-  view.addAction(createAction);
+  view.setWindowTitle("Simple Node Graph");
+  view.resize(800, 600);
+
+  // Center window.
+  view.move(QApplication::primaryScreen()->availableGeometry().center() - view.rect().center());
+  view.showNormal();
 
   return app.exec();
 }
