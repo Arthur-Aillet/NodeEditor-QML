@@ -2,6 +2,7 @@ qt_add_qml_module(NodeModule
   URI NodeModule
   QML_FILES
   ./GraphicsView/GraphicsView.qml
+  ./GraphicsView/NavigableArea.qml
   DEPENDENCIES QtQuick
   SOURCES
   NodeEditor.hpp

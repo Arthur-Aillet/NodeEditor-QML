@@ -9,6 +9,11 @@ ApplicationWindow {
     height: 800
     visible: true
     title: qsTr("CutieDesigner!")
+    // NodeEditor {
+    //     id: nodeEditor
+    //     width: 800
+    //     height: 800
+    // }
     footer: ToolBar {
         RowLayout {
             anchors.fill: parent
@@ -41,24 +46,20 @@ ApplicationWindow {
             orientation: Qt.Horizontal
             Rectangle {
                 SplitView.preferredWidth: editView.width / 6
-                SplitView.preferredHeight: editView.height
                 color: "green"
             }
             GraphicsView {
                 id: graphicsView
                 visible: true
-                SplitView.preferredWidth: editView.width * 4 / 6
-                SplitView.preferredHeight: editView.height
+                SplitView.fillWidth: true
             }
             NodeEditor {
                 id: nodeEditor
                 visible: false
-                SplitView.preferredWidth: editView.width * 4 / 6
-                SplitView.preferredHeight: editView.height
+                SplitView.fillWidth: true
             }
             Rectangle {
                 SplitView.preferredWidth: editView.width / 6
-                SplitView.preferredHeight: editView.height
                 color: "purple"
             }
         }

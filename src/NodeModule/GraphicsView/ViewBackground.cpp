@@ -5,7 +5,11 @@
 using QtNodes::StyleCollection;
 
 ViewBackground::ViewBackground(QQuickItem *parent) : QQuickPaintedItem(parent) {
-  this->setFillColor(QColor(53, 53, 53, 255));
+  auto const &flowViewStyle = StyleCollection::flowViewStyle();
+
+  setAntialiasing(false);
+  setSmooth(false);
+  this->setFillColor(flowViewStyle.BackgroundColor);
 }
 
 void ViewBackground::paint(QPainter *painter) {

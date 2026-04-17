@@ -4,7 +4,8 @@ import NodeModule
 Item {
     id: root
     visible: true
-    ViewBackground {
+    //ViewBackground {
+    NavigableArea {
         width: root.width
         height: root.height
     }
