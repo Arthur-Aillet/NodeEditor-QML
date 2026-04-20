@@ -6,15 +6,14 @@ Item {
     clip: true
     anchors.fill: parent
 
-    default property alias subdata: area.data
+    default property alias subdata: inner.data
 
     ViewBackground {
-        id: view
-        property real realScale: 150
-        property real zoom: area.mat.m11
+        id: background
+        property real zoom: inner.mat.m11
         property real zoomedScale: (150 * zoom)
-        property real offsetX: area.mat.m14 + area.x
-        property real offsetY: area.mat.m24 + area.y
+        property real offsetX: inner.mat.m14 + inner.x
+        property real offsetY: inner.mat.m24 + inner.y
         property real realtiveX: offsetX % zoomedScale - (offsetX > 0) * zoomedScale
         property real realtiveY: offsetY % zoomedScale - (offsetY > 0) * zoomedScale
 
@@ -26,14 +25,14 @@ Item {
         height: (parent.height - realtiveY) / zoom + 1
         transform: [
             Scale {
-                xScale: view.zoom
-                yScale: view.zoom
+                xScale: background.zoom
+                yScale: background.zoom
             }
         ]
     }
 
     Item {
-        id: area
+        id: inner
         width: parent.width
         height: parent.height
         property matrix4x4 mat: Qt.matrix4x4()
@@ -41,7 +40,7 @@ Item {
         transform: [
             Matrix4x4 {
                 id: scaler
-                matrix: area.mat
+                matrix: inner.mat
             }
         ]
     }
@@ -50,26 +49,26 @@ Item {
         id: dragArea
         hoverEnabled: true
         anchors.fill: parent
-        drag.target: area
+        drag.target: inner
 
         property real zoomMax: 2
         property real zoomStep: 0.03
         property real zoomMin: 0.3
 
         onWheel: wheel => {
-            const mapped = dragArea.mapToItem(area, mouseX, mouseY);
+            const mapped = dragArea.mapToItem(inner, mouseX, mouseY);
 
-            var currentZoom = area.mat.m11;
+            var currentZoom = inner.mat.m11;
             if (wheel.angleDelta.y > 0) {
                 currentZoom += zoomStep;
             } else {
                 currentZoom -= zoomStep;
             }
             currentZoom = Math.max(Math.min(currentZoom, zoomMax), zoomMin);
-            area.mat.translate(Qt.vector2d(mapped.x, mapped.y));
-            area.mat.m11 = currentZoom;
-            area.mat.m22 = currentZoom;
-            area.mat.translate(Qt.vector2d(-mapped.x, -mapped.y));
+            inner.mat.translate(Qt.vector2d(mapped.x, mapped.y));
+            inner.mat.m11 = currentZoom;
+            inner.mat.m22 = currentZoom;
+            inner.mat.translate(Qt.vector2d(-mapped.x, -mapped.y));
         }
     }
 }
