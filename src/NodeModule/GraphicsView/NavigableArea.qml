@@ -6,6 +6,8 @@ Item {
     clip: true
     anchors.fill: parent
 
+    default property alias subdata: area.data
+
     ViewBackground {
         id: view
         property real realScale: 150
@@ -42,14 +44,6 @@ Item {
                 matrix: area.mat
             }
         ]
-
-        Rectangle {
-            color: "blue"
-            width: 100
-            height: 100
-            x: 30
-            y: 50
-        }
     }
 
     MouseArea {
