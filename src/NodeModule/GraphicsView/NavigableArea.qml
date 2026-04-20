@@ -1,16 +1,36 @@
 import QtQuick
 import NodeModule
 
-Rectangle {
+Item {
     id: root
     clip: true
     anchors.fill: parent
-    color: "red"
 
     ViewBackground {
+        id: view
+        property real realScale: 150
+        property real zoom: area.mat.m11
+        property real zoomedScale: (150 * zoom)
+        property real offsetX: area.mat.m14 % zoomedScale - (area.mat.m14 > 0) * zoomedScale
+        property real offsetY: area.mat.m24 % zoomedScale - (area.mat.m24 > 0) * zoomedScale
+
+        x: offsetX
+        y: offsetY
+        width: (parent.width - offsetX) / zoom + 1
+        height: (parent.height - offsetY) / zoom + 1
+        antialiasing: false
+        transform: [
+            Scale {
+                xScale: view.zoom
+                yScale: view.zoom
+            }
+        ]
+    }
+
+    Item {
         id: area
         anchors.fill: parent
-        property matrix4x4 mat: Qt.matrix4x4
+        property matrix4x4 mat: Qt.matrix4x4()
 
         transform: [
             Matrix4x4 {
@@ -37,17 +57,18 @@ Rectangle {
         anchors.fill: parent
         drag.target: area
 
-        property real zoomMax: 3
-        property real zoomMin: 0.5
+        property real zoomMax: 6
+        property real zoomStep: 0.03
+        property real zoomMin: 0.1
 
-        onWheel: {
+        onWheel: wheel => {
             const mapped = dragArea.mapToItem(area, mouseX, mouseY);
 
             var currentZoom = area.mat.m11;
             if (wheel.angleDelta.y > 0) {
-                currentZoom += 0.03;
+                currentZoom += zoomStep;
             } else {
-                currentZoom -= 0.03;
+                currentZoom -= zoomStep;
             }
             currentZoom = Math.max(Math.min(currentZoom, zoomMax), zoomMin);
             area.mat.translate(Qt.vector2d(mapped.x, mapped.y));

@@ -61,6 +61,7 @@ ApplicationWindow {
             Rectangle {
                 SplitView.preferredWidth: editView.width / 6
                 color: "purple"
+                opacity: 0
             }
         }
     }
