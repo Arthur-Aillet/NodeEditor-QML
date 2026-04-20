@@ -1,3 +1,4 @@
+#include <QPainter>
 #include <QtNodes/StyleCollection>
 
 #include "ViewBackground.hpp"
@@ -7,12 +8,13 @@ using QtNodes::StyleCollection;
 ViewBackground::ViewBackground(QQuickItem *parent) : QQuickPaintedItem(parent) {
   auto const &flowViewStyle = StyleCollection::flowViewStyle();
 
-  setAntialiasing(false);
-  setSmooth(false);
   this->setFillColor(flowViewStyle.BackgroundColor);
 }
 
 void ViewBackground::paint(QPainter *painter) {
+  painter->setRenderHint(QPainter::RenderHint::SmoothPixmapTransform, this->smooth());
+  painter->setRenderHint(QPainter::RenderHint::Antialiasing, this->antialiasing());
+
   auto drawGrid = [&](double gridStep) {
     QRectF windowRect = clipRect();
     QPointF tl = windowRect.topLeft();

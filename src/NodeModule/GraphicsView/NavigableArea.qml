@@ -18,6 +18,8 @@ Item {
 
         x: realtiveX
         y: realtiveY
+        antialiasing: zoom < 1
+        smooth: zoom < 1
         width: (parent.width - realtiveX) / zoom + 1
         height: (parent.height - realtiveY) / zoom + 1
         transform: [
