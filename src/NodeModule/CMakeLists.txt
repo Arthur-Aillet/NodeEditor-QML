@@ -16,8 +16,8 @@ qt_add_qml_module(NodeModule
   ./nodes/ValueNodeModel.cpp
   ./GraphicsView/ViewBackground.cpp
   ./GraphicsView/ViewBackground.hpp
-  ./GraphicsView/GraphicsSceneContainer.cpp
-  ./GraphicsView/GraphicsSceneContainer.hpp
+  ./GraphicsView/ModelInterface.cpp
+  ./GraphicsView/ModelInterface.hpp
   ./Style/QmlNodeStyle.hpp
 )
 

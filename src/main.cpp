@@ -1,4 +1,4 @@
-#include "GraphicsSceneContainer.hpp"
+#include "ModelInterface.hpp"
 #include "NodeData.hpp"
 #include "NodeModel.hpp"
 #include "QtNodes/internal/BasicGraphicsScene.hpp"

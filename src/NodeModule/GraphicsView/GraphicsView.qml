@@ -6,7 +6,7 @@ Frame {
     id: root
     visible: true
     clip: true
-    padding: ModelInterface.p
+    padding: 1
 
     NavigableArea {
         width: root.width
@@ -17,7 +17,7 @@ Frame {
     ContextMenu.menu: Menu {
         popupType: Popup.Window
         MenuItem {
-            text: ModelInterface.p
+            text: qsTr("A")
         }
         MenuItem {
             text: qsTr("B")
