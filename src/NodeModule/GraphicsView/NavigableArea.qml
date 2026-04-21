@@ -21,7 +21,7 @@ Item {
         y: realtiveY
         antialiasing: zoom < 1
         smooth: zoom < 1
-        width: (parent.width - realtiveX) / zoom + 1
+        width: (parent.width - realtiveX) / zoom + 1 // + 1 to hide any rounding error
         height: (parent.height - realtiveY) / zoom + 1
         transform: [
             Scale {
@@ -31,25 +31,12 @@ Item {
         ]
     }
 
-    Item {
-        id: inner
-        width: parent.width
-        height: parent.height
-        property matrix4x4 mat: Qt.matrix4x4()
-
-        transform: [
-            Matrix4x4 {
-                id: scaler
-                matrix: inner.mat
-            }
-        ]
-    }
-
     MouseArea {
         id: dragArea
         hoverEnabled: true
         anchors.fill: parent
         drag.target: inner
+        drag.filterChildren: true
 
         property real zoomMax: 2
         property real zoomStep: 0.03
@@ -69,6 +56,19 @@ Item {
             inner.mat.m11 = currentZoom;
             inner.mat.m22 = currentZoom;
             inner.mat.translate(Qt.vector2d(-mapped.x, -mapped.y));
+        }
+        Item {
+            id: inner
+            width: parent.width
+            height: parent.height
+            property matrix4x4 mat: Qt.matrix4x4()
+
+            transform: [
+                Matrix4x4 {
+                    id: scaler
+                    matrix: inner.mat
+                }
+            ]
         }
     }
 }
