@@ -1,3 +1,10 @@
+#include "GraphicsSceneContainer.hpp"
+#include "NodeData.hpp"
+#include "NodeModel.hpp"
+#include "QtNodes/internal/BasicGraphicsScene.hpp"
+#include "QtNodes/internal/DataFlowGraphModel.hpp"
+#include "QtNodes/internal/DataFlowGraphicsScene.hpp"
+#include "ValueNodeModel.hpp"
 #include <QtNodes/BasicGraphicsScene>
 #include <QtNodes/ConnectionStyle>
 #include <QtNodes/GraphicsView>
@@ -6,6 +13,7 @@
 #include <QAction>
 #include <QScreen>
 #include <QtWidgets/QApplication>
+#include <memory>
 #include <qqmlapplicationengine.h>
 
 using QtNodes::BasicGraphicsScene;
@@ -22,7 +30,21 @@ int main(int argc, char *argv[]) {
   QObject::connect(
       &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
       []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
+  auto ret = std::make_shared<QtNodes::NodeDelegateModelRegistry>();
+
+  ret->registerModel<ValueNodeModel>("Input");
+  ret->registerModel<AdditionNode>("Process");
+
+  auto model = QtNodes::DataFlowGraphModel(ret);
+  ModelInterface::init(model);
+
   engine.loadFromModule("CutieDesignerModule", "Main");
 
+  {
+    auto source = model.addNode(ValueNodeModel().name());
+    model.setNodeData(source, NodeRole::Position, QPointF(0, 0));
+    model.setNodeData(source, NodeRole::Type, ValueNodeModel().name());
+  }
+  auto interface = engine.singletonInstance<ModelInterface *>("NodeModule", "SceneInterface");
   return app.exec();
 }

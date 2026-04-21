@@ -1,6 +1,8 @@
 qt_add_qml_module(NodeModule
   URI NodeModule
   QML_FILES
+  ./Node/DefaultNode.qml
+  ./Node/NodeObject.qml
   ./GraphicsView/GraphicsView.qml
   ./GraphicsView/NavigableArea.qml
   DEPENDENCIES QtQuick
@@ -14,12 +16,16 @@ qt_add_qml_module(NodeModule
   ./nodes/ValueNodeModel.cpp
   ./GraphicsView/ViewBackground.cpp
   ./GraphicsView/ViewBackground.hpp
+  ./GraphicsView/GraphicsSceneContainer.cpp
+  ./GraphicsView/GraphicsSceneContainer.hpp
+  ./Style/QmlNodeStyle.hpp
 )
 
 target_include_directories(NodeModule PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
   ./nodes
   ./GraphicsView
+  ./Style
 )
 
 target_link_libraries(NodeModule
