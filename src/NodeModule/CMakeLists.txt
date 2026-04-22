@@ -19,6 +19,7 @@ qt_add_qml_module(NodeModule
   ./GraphicsView/ModelInterface.cpp
   ./GraphicsView/ModelInterface.hpp
   ./Style/QmlNodeStyle.hpp
+  ./Node/RoleEnum.hpp
 )
 
 target_include_directories(NodeModule PUBLIC
@@ -26,6 +27,7 @@ target_include_directories(NodeModule PUBLIC
   ./nodes
   ./GraphicsView
   ./Style
+  ./Node
 )
 
 target_link_libraries(NodeModule

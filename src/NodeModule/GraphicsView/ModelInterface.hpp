@@ -1,5 +1,6 @@
 #pragma once
 
+#include "QtNodes/internal/Definitions.hpp"
 #include <QObject>
 #include <QtNodes/AbstractGraphModel>
 #include <QtNodes/BasicGraphicsScene>
@@ -10,6 +11,7 @@
 #include <qobject.h>
 #include <qqmlintegration.h>
 #include <qtmetamacros.h>
+#include <qvariant.h>
 
 using QtNodes::ConnectionId;
 using QtNodes::NodeId;
@@ -31,6 +33,10 @@ class ModelInterface : public QObject {
   ModelInterface(QtNodes::AbstractGraphModel &_graphModel);
 
   public:
+  Q_INVOKABLE QVariant nodeData(NodeId nodeId, QtNodes::NodeRole role) {
+    return graphModel.nodeData(nodeId, role);
+  };
+
   Q_SIGNALS:
   void connectionCreated(ConnectionId const connectionId);
   void connectionDeleted(ConnectionId const connectionId);

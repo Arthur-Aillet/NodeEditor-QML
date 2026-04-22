@@ -11,7 +11,15 @@ Frame {
     NavigableArea {
         width: root.width
         height: root.height
-        NodeObject {}
+        Repeater {
+            delegate: NodeObject {
+                required property real newId
+                nodeId: newId
+            }
+            model: ListModel {
+                id: model
+            }
+        }
     }
 
     ContextMenu.menu: Menu {
@@ -30,6 +38,9 @@ Frame {
     Connections {
         target: ModelInterface
         function onNodeCreated(id: real) {
+            model.append({
+                "newId": id
+            });
             console.log("newNode!!! " + id);
         }
     }

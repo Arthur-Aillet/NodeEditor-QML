@@ -57,6 +57,7 @@ Item {
             inner.mat.m22 = currentZoom;
             inner.mat.translate(Qt.vector2d(-mapped.x, -mapped.y));
         }
+
         Item {
             id: inner
             width: parent.width

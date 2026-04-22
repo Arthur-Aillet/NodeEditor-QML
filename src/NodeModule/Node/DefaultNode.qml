@@ -7,12 +7,27 @@ Shape {
     width: 100
     height: 50
 
+    required property real nodeId
     required property nodeStyle style
     required property bool selected
+    required property bool hovered
+
+    function boundaryColor(): color {
+        // if (invalid) {
+        //     return errorColor;
+        // } else if (warning) {
+        //     return warningColor;
+        // } else
+        if (selected) {
+            return style.selectedBoundaryColor;
+        } else {
+            return style.normalBoundaryColor;
+        }
+    }
 
     ShapePath {
-        strokeWidth: root.penWidth
-        strokeColor: root.boundaryColor
+        strokeWidth: root.hovered ? root.style.hoveredPenWidth : root.style.penWidth
+        strokeColor: root.boundaryColor()
         fillGradient: LinearGradient {
             x1: 0.0
             y1: 0.0
@@ -21,19 +36,19 @@ Shape {
             stops: [
                 GradientStop {
                     position: 0.0
-                    color: root.gradientColor0
+                    color: root.style.gradientColor0
                 },
                 GradientStop {
                     position: 0.10
-                    color: root.style.normalBoundaryColor
+                    color: root.style.gradientColor1
                 },
                 GradientStop {
                     position: 0.9
-                    color: root.gradientColor2
+                    color: root.style.gradientColor2
                 },
                 GradientStop {
                     position: 1.0
-                    color: root.gradientColor3
+                    color: root.style.gradientColor3
                 }
             ]
         }
@@ -56,40 +71,6 @@ Shape {
         PathLine {
             x: 0
             y: 0
-        }
-    }
-
-    property bool invalid: false
-    property bool warning: false //TODO CONVERT TO ENUM
-    property color normalBoundaryColor: "blue"
-    property color selectedBoundaryColor: "red"
-    property color errorColor: "green"
-    property color warningColor: "yellow"
-
-    property real hoveredPenWidth: 4
-    property real penWidth: 3
-
-    property color gradientColor0: "yellow"
-    property color gradientColor1: "green"
-    property color gradientColor2: "red"
-    property color gradientColor3: "blue"
-
-    // property color gradientColor0: "gray"
-    // property color gradientColor1: [80, 80, 80]
-    // property color gradientColor2: [64, 64, 64]
-    // property color gradientColor3: [58, 58, 58]
-
-    property color boundaryColor: getBoundaryColor()
-
-    function getBoundaryColor(): color {
-        if (invalid) {
-            return errorColor;
-        } else if (warning) {
-            return warningColor;
-        } else if (selected) {
-            return selectedBoundaryColor;
-        } else {
-            return normalBoundaryColor;
         }
     }
 }
