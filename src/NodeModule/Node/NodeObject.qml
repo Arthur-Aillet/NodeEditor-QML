@@ -1,23 +1,23 @@
 import QtQuick
 import NodeModule
 
-Item {
+FocusScope {
     id: root
-    opacity: selected ? 1 : style.opacity
+    opacity: focus ? 1 : style.opacity
+    focus: false
 
     width: painter.width
     height: painter.height
 
     required property real nodeId
     property nodeStyle style
-    property bool selected: false
     property bool hovered: hover.hovered
 
     DefaultNode {
         id: painter
         nodeId: root.nodeId
         style: root.style
-        selected: root.selected
+        selected: root.focus
         hovered: root.hovered
     }
 
@@ -26,11 +26,17 @@ Item {
         style.loadJson(json);
     }
 
+    Keys.onPressed: event => {
+        if (event.key == Qt.Key_Delete || event.key == Qt.Key_Back) {
+            event.accepted = ModelInterface.deleteNode(nodeId);
+        }
+    }
+
     MouseArea {
         propagateComposedEvents: true
         anchors.fill: painter
         onClicked: {
-            parent.selected = !parent.selected;
+            parent.focus = !parent.focus;
         }
 
         HoverHandler {

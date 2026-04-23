@@ -37,6 +37,12 @@ class ModelInterface : public QObject {
     return graphModel.nodeData(nodeId, role);
   };
 
+  Q_INVOKABLE NodeId addNode(QString const nodeType = QString()) {
+    return graphModel.addNode(nodeType);
+  }
+
+  Q_INVOKABLE bool deleteNode(const NodeId nodeId) { return graphModel.deleteNode(nodeId); }
+
   Q_SIGNALS:
   void connectionCreated(ConnectionId const connectionId);
   void connectionDeleted(ConnectionId const connectionId);

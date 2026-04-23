@@ -7,6 +7,7 @@ Frame {
     visible: true
     clip: true
     padding: 1
+    focus: true
 
     NavigableArea {
         width: root.width
@@ -41,7 +42,12 @@ Frame {
             model.append({
                 "newId": id
             });
-            console.log("newNode!!! " + id);
+        }
+        function onNodeDeleted(id: real) {
+            for (let i = 0; i < model.count; ++i) {
+                if (model.get(i).newId == id)
+                    model.remove(i);
+            }
         }
     }
 }
