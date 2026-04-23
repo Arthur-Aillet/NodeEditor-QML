@@ -23,17 +23,7 @@ Frame {
         }
     }
 
-    ContextMenu.menu: Menu {
-        popupType: Popup.Window
-        ListView {
-            height: 200
-            model: DataFlowModelInterface.dataModelRegistry().categories()
-            delegate: MenuItem {
-                required property string modelData
-                text: modelData
-            }
-        }
-    }
+    ContextMenu.menu: SceneMenu {}
 
     Connections {
         target: ModelInterface

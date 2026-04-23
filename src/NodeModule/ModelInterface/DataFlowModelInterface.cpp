@@ -15,4 +15,5 @@ DataFlowModelInterface *DataFlowModelInterface::init(QtNodes::DataFlowGraphModel
 };
 
 DataFlowModelInterface::DataFlowModelInterface(QtNodes::DataFlowGraphModel &_graphModel)
-    : ModelInterface(_graphModel), graphModel(_graphModel) {}
+    : ModelInterface(_graphModel), graphModel(_graphModel),
+      registeryAccess(graphModel.dataModelRegistry()) {}

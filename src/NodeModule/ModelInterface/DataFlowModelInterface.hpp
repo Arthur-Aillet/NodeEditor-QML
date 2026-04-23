@@ -6,11 +6,13 @@
 #include <QtNodes/AbstractGraphModel>
 #include <QtNodes/BasicGraphicsScene>
 #include <QtNodes/DataFlowGraphicsScene>
+#include <memory>
 #include <qdebug.h>
 #include <qjsengine.h>
 #include <qloggingcategory.h>
 #include <qobject.h>
 #include <qqmlintegration.h>
+#include <qstringlistmodel.h>
 #include <qtmetamacros.h>
 #include <qvariant.h>
 
@@ -21,15 +23,27 @@ class RegisteryAccess {
   Q_GADGET
   QML_VALUE_TYPE(registeryAccess)
 
-  std::shared_ptr<QtNodes::NodeDelegateModelRegistry> reg;
+  std::shared_ptr<QtNodes::NodeDelegateModelRegistry> reg = nullptr;
 
   public:
-  Q_INVOKABLE QtNodes::NodeDelegateModelRegistry::CategoriesSet categories() {
+  Q_PROPERTY(const QSet<QString> &categories READ getCategories)
+  Q_PROPERTY(QStringListModel *categoryModel READ getModel)
+
+  const QtNodes::NodeDelegateModelRegistry::CategoriesSet &getCategories() {
     return reg->categories();
   }
 
-  RegisteryAccess(std::shared_ptr<QtNodes::NodeDelegateModelRegistry> _reg = nullptr)
-      : reg(_reg) {};
+  QStringListModel *getModel() {
+    qDebug() << model->stringList();
+    return model;
+  }
+  QStringListModel *model = nullptr;
+
+  RegisteryAccess() {}
+  RegisteryAccess(std::shared_ptr<QtNodes::NodeDelegateModelRegistry> _reg)
+      : reg(_reg), model(new QStringListModel(_reg->categories().values())) {}
+
+  bool operator==(const RegisteryAccess &other) { return reg == other.reg; }
 };
 
 class DataFlowModelInterface : public ModelInterface {
@@ -39,13 +53,15 @@ class DataFlowModelInterface : public ModelInterface {
 
   public:
   QtNodes::DataFlowGraphModel &graphModel;
+  RegisteryAccess registeryAccess;
+
+  Q_PROPERTY(RegisteryAccess registery MEMBER registeryAccess NOTIFY registeryChanged)
 
   static DataFlowModelInterface *create(QQmlEngine *, QJSEngine *engine);
   static DataFlowModelInterface *init(QtNodes::DataFlowGraphModel &_graphModel);
 
-  Q_INVOKABLE RegisteryAccess dataModelRegistry() {
-    return RegisteryAccess(graphModel.dataModelRegistry());
-  };
+  signals:
+  void registeryChanged();
 
   protected:
   DataFlowModelInterface(QtNodes::DataFlowGraphModel &_graphModel);
