@@ -25,14 +25,13 @@ Frame {
 
     ContextMenu.menu: Menu {
         popupType: Popup.Window
-        MenuItem {
-            text: qsTr("A")
-        }
-        MenuItem {
-            text: qsTr("B")
-        }
-        MenuItem {
-            text: qsTr("C")
+        ListView {
+            height: 200
+            model: DataFlowModelInterface.dataModelRegistry().categories()
+            delegate: MenuItem {
+                required property string modelData
+                text: modelData
+            }
         }
     }
 

@@ -17,6 +17,21 @@
 using QtNodes::ConnectionId;
 using QtNodes::NodeId;
 
+class RegisteryAccess {
+  Q_GADGET
+  QML_VALUE_TYPE(registeryAccess)
+
+  std::shared_ptr<QtNodes::NodeDelegateModelRegistry> reg;
+
+  public:
+  Q_INVOKABLE QtNodes::NodeDelegateModelRegistry::CategoriesSet categories() {
+    return reg->categories();
+  }
+
+  RegisteryAccess(std::shared_ptr<QtNodes::NodeDelegateModelRegistry> _reg = nullptr)
+      : reg(_reg) {};
+};
+
 class DataFlowModelInterface : public ModelInterface {
   Q_OBJECT
   QML_SINGLETON
@@ -27,6 +42,10 @@ class DataFlowModelInterface : public ModelInterface {
 
   static DataFlowModelInterface *create(QQmlEngine *, QJSEngine *engine);
   static DataFlowModelInterface *init(QtNodes::DataFlowGraphModel &_graphModel);
+
+  Q_INVOKABLE RegisteryAccess dataModelRegistry() {
+    return RegisteryAccess(graphModel.dataModelRegistry());
+  };
 
   protected:
   DataFlowModelInterface(QtNodes::DataFlowGraphModel &_graphModel);
