@@ -14,8 +14,8 @@ Frame {
         height: root.height
         Repeater {
             delegate: NodeObject {
-                required property real newId
-                nodeId: newId
+                required property real givenId
+                nodeId: givenId
             }
             model: ListModel {
                 id: model
@@ -40,12 +40,13 @@ Frame {
         target: ModelInterface
         function onNodeCreated(id: real) {
             model.append({
-                "newId": id
+                "givenId": id
             });
         }
         function onNodeDeleted(id: real) {
+            console.log("test?:" + DataFlowModelInterface.test());
             for (let i = 0; i < model.count; ++i) {
-                if (model.get(i).newId == id)
+                if (model.get(i).givenId == id)
                     model.remove(i);
             }
         }

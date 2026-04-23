@@ -33,10 +33,15 @@ int main(int argc, char *argv[]) {
   auto ret = std::make_shared<QtNodes::NodeDelegateModelRegistry>();
 
   ret->registerModel<ValueNodeModel>("Input");
+  ret->registerModel<ValueNodeModel1>("Input2");
+  ret->registerModel<ValueNodeModel2>("Input3");
+  ret->registerModel<ValueNodeModel3>("Input4");
+  ret->registerModel<ValueNodeModel5>("Input5");
+  ret->registerModel<ValueNodeModel4>("Input6");
   ret->registerModel<AdditionNode>("Process");
 
   auto model = QtNodes::DataFlowGraphModel(ret);
-  ModelInterface::init(model);
+  DataFlowModelInterface::init(model);
 
   engine.loadFromModule("CutieDesignerModule", "Main");
 

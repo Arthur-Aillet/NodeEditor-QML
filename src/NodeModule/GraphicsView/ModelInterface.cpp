@@ -2,7 +2,6 @@
 
 ModelInterface::ModelInterface(QtNodes::AbstractGraphModel &_graphModel)
     : QObject(nullptr), graphModel(_graphModel) {
-
   connect(&graphModel, SIGNAL(connectionCreated(ConnectionId)), this,
           SIGNAL(connectionCreated(ConnectionId)));
   connect(&graphModel, SIGNAL(connectionDeleted(ConnectionId)), this,
