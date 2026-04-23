@@ -1,4 +1,4 @@
-#include "ModelInterface.hpp"
+#include "DataFlowModelInterface.hpp"
 #include "NodeData.hpp"
 #include "NodeModel.hpp"
 #include "QtNodes/internal/BasicGraphicsScene.hpp"
@@ -50,6 +50,5 @@ int main(int argc, char *argv[]) {
     model.setNodeData(source, NodeRole::Position, QPointF(0, 0));
     model.setNodeData(source, NodeRole::Type, ValueNodeModel().name());
   }
-  auto interface = engine.singletonInstance<ModelInterface *>("NodeModule", "SceneInterface");
   return app.exec();
 }

@@ -16,8 +16,10 @@ qt_add_qml_module(NodeModule
   ./nodes/ValueNodeModel.cpp
   ./GraphicsView/ViewBackground.cpp
   ./GraphicsView/ViewBackground.hpp
-  ./GraphicsView/ModelInterface.cpp
-  ./GraphicsView/ModelInterface.hpp
+  ./ModelInterface/ModelInterface.cpp
+  ./ModelInterface/ModelInterface.hpp
+  ./ModelInterface/DataFlowModelInterface.cpp
+  ./ModelInterface/DataFlowModelInterface.hpp
   ./Style/QmlNodeStyle.hpp
   ./Node/RoleEnum.hpp
 )
@@ -26,6 +28,7 @@ target_include_directories(NodeModule PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
   ./nodes
   ./GraphicsView
+  ./ModelInterface
   ./Style
   ./Node
 )

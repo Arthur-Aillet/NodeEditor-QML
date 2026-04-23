@@ -44,7 +44,6 @@ Frame {
             });
         }
         function onNodeDeleted(id: real) {
-            console.log("test?:" + DataFlowModelInterface.test());
             for (let i = 0; i < model.count; ++i) {
                 if (model.get(i).givenId == id)
                     model.remove(i);
