@@ -7,7 +7,7 @@ Menu {
     id: root
     popupType: Popup.Window
     focus: true
-    property var categories: DataFlowModelInterface.registery.nodeMapModel
+    property var nodeMap: DataFlowModelInterface.registery.nodeMapModel
 
     TextField {
         id: searchField
@@ -16,27 +16,14 @@ Menu {
             searchField.forceActiveFocus(Qt.PopupFocusReason);
         }
         onTextChanged: () => {
-            filterModel.invalidate();
+            DataFlowModelInterface.registery.filterNodeMapModel(text);
             view.expandRecursively();
         }
     }
 
-    SortFilterProxyModel {
-        id: filterModel
-        model: root.categories
-        recursiveFiltering: true
-        filters: [
-            FunctionFilter {
-                function filter(data: NodeItem): bool {
-                    return data.display.toLowerCase().includes(searchField.text.toLowerCase());
-                }
-            }
-        ]
-    }
-
     component NodeItem: QtObject {
         property string display
-        property real row
+        property var idx
     }
 
     TreeView {
@@ -53,7 +40,7 @@ Menu {
         boundsBehavior: Flickable.StopAtBounds
         editTriggers: TableView.NoEditTriggers
 
-        model: filterModel
+        model: root.nodeMap
         keyNavigationEnabled: true
         selectionModel: ItemSelectionModel {}
         delegate: TreeViewDelegate {
@@ -66,7 +53,7 @@ Menu {
                 width: parent.width - padding - x
                 clip: true
                 color: (!delegate.hasChildren && delegate.row === view.currentRow) ? "white" : "black"
-                text: delegate.model.display
+                text: root.underlineSearch(delegate.model.display)
             }
 
             background: Rectangle {
@@ -95,7 +82,7 @@ Menu {
                     if (delegate.expanded) {
                         let modelIndex = treeView.modelIndex(Qt.point(0, delegate.row));
 
-                        let nextModelIndex = filterModel.sibling(modelIndex.row + 1, 0, modelIndex);
+                        let nextModelIndex = root.nodeMap.sibling(modelIndex.row + 1, 0, modelIndex);
                         let nextViewRow = treeView.rowAtIndex(nextModelIndex);
                         if (nextViewRow == -1) {
                             view.contentY = view.contentHeight;
@@ -112,29 +99,10 @@ Menu {
         }
         Component.onCompleted: expandRecursively()
     }
-    // ListView {
-    //     height: 200
-    //     model: filterModel
-
-    //     delegate: Item {
-    //         id: categoryItem
-    //         height: 40
-    //         required property string edit
-    //         Text {
-    //             text: root.underlineSearch(categoryItem.edit)
-    //         }
-    //         ListView {
-    //             height: 20
-    //             model: root.model
-    //             delegate: MenuItem {
-    //                 text: categoryItem.edit
-    //             }
-    //         }
-    //     }
-    // }
 
     function underlineSearch(text: string): string {
-        const re = new RegExp(searchField.text, 'gi'); // global, insensitive
+        const escaped = searchField.text.replace(/[\\\.\+\*\?\^\$\[\]\(\)\{\}\/\'\#\:\!\=\|]/ig, "\\$&");
+        const re = new RegExp(escaped, 'gi'); // global, insensitive
         return text.replace(re, `<u>$&</u>`);
     }
 

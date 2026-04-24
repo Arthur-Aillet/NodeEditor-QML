@@ -12,6 +12,7 @@
 #include <qqmlintegration.h>
 #include <qtmetamacros.h>
 #include <qvariant.h>
+#include <qqmlengine.h>
 
 using QtNodes::ConnectionId;
 using QtNodes::NodeId;

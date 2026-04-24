@@ -1,4 +1,5 @@
 #include "ModelInterface.hpp"
+#include <qqmlengine.h>
 
 ModelInterface::ModelInterface(QtNodes::AbstractGraphModel &_graphModel)
     : QObject(nullptr), graphModel(_graphModel) {

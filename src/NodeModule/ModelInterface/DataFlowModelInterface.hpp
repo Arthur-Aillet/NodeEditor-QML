@@ -8,10 +8,13 @@
 #include <QtNodes/DataFlowGraphicsScene>
 #include <memory>
 #include <qabstractitemmodel.h>
+#include <qcontainerfwd.h>
 #include <qdebug.h>
 #include <qforeach.h>
 #include <qjsengine.h>
+#include <qlist.h>
 #include <qloggingcategory.h>
+#include <qnamespace.h>
 #include <qobject.h>
 #include <qqmlintegration.h>
 #include <qstandarditemmodel.h>
@@ -28,31 +31,51 @@ class RegisteryAccess {
   std::shared_ptr<QtNodes::NodeDelegateModelRegistry> registry = nullptr;
 
   public:
-  Q_PROPERTY(QStandardItemModel *nodeMapModel READ getNodeMapModel)
+  Q_PROPERTY(QStandardItemModel *nodeMapModel MEMBER m_nodeMapModel NOTIFY nodeMapModelChanged)
 
-  QStandardItemModel *getNodeMapModel() {
-    QStandardItem *root = model->invisibleRootItem();
+  Q_INVOKABLE QStandardItemModel *filterNodeMapModel(QString filter) {
+    m_nodeMapModel->clear();
+    QStandardItem *root = m_nodeMapModel->invisibleRootItem();
 
-    for (const auto &category : registry->categories()) {
-      QStandardItem *item = new QStandardItem(category);
-
+    auto categoryList = QStringList(registry->categories().begin(), registry->categories().end());
+    categoryList.sort(Qt::CaseInsensitive);
+    for (const auto &category : categoryList) {
       const auto &map = registry->registeredModelsCategoryAssociation();
-      for (auto it = map.begin(); it != map.end(); ++it)
-        if (it->second == category)
-          item->appendRow(new QStandardItem(it->first));
-      root->appendRow(item);
+      QStringList row;
+
+      for (auto it = map.begin(); it != map.end(); ++it) {
+        if (it->second == category && it->first.contains(filter, Qt::CaseInsensitive)) {
+          row.push_back(it->first);
+        }
+      }
+      row.sort(Qt::CaseInsensitive);
+
+      if (!row.empty()) {
+        QStandardItem *categoryItem = new QStandardItem(category);
+
+        for (auto val : row) {
+          categoryItem->appendRow(new QStandardItem(val));
+        }
+        root->appendRow(categoryItem);
+      }
     }
 
-    return model;
+    emit nodeMapModelChanged();
+    return m_nodeMapModel;
   }
 
-  QStandardItemModel *model = nullptr;
+  QStandardItemModel *m_nodeMapModel = nullptr;
 
   RegisteryAccess() {}
   RegisteryAccess(std::shared_ptr<QtNodes::NodeDelegateModelRegistry> _reg)
-      : registry(_reg), model(new QStandardItemModel()) {}
+      : registry(_reg), m_nodeMapModel(new QStandardItemModel()) {
+    filterNodeMapModel("");
+  }
 
   bool operator==(const RegisteryAccess &other) { return registry == other.registry; }
+
+  signals:
+  void nodeMapModelChanged();
 };
 
 class DataFlowModelInterface : public ModelInterface {

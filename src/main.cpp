@@ -34,9 +34,9 @@ int main(int argc, char *argv[]) {
 
   ret->registerModel<ValueNodeModel>("Input");
   ret->registerModel<ValueNodeModel1>("Input2");
-  ret->registerModel<ValueNodeModel2>("Input3");
-  ret->registerModel<ValueNodeModel3>("Input4");
-  ret->registerModel<ValueNodeModel5>("Input5");
+  ret->registerModel<ValueNodeModel2>("Process");
+  ret->registerModel<ValueNodeModel3>("Process");
+  ret->registerModel<ValueNodeModel5>("Process");
   ret->registerModel<ValueNodeModel4>("Input6");
   ret->registerModel<AdditionNode>("Process");
 
