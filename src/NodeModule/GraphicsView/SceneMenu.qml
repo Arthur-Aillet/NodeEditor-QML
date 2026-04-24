@@ -8,6 +8,7 @@ Menu {
     popupType: Popup.Window
     focus: true
     property var nodeMap: DataFlowModelInterface.registery.nodeMapModel
+    property var replaceRegex: RegExp(searchField.text.replace(/[\\\.\+\*\?\^\$\[\]\(\)\{\}\/\'\#\:\!\=\|]/ig, "\\$&"), 'gi')
 
     TextField {
         id: searchField
@@ -53,7 +54,7 @@ Menu {
                 width: parent.width - padding - x
                 clip: true
                 color: (!delegate.hasChildren && delegate.row === view.currentRow) ? "white" : "black"
-                text: root.underlineSearch(delegate.model.display)
+                text: delegate.hasChildren ? delegate.model.display : delegate.model.display.replace(root.replaceRegex, `<u>$&</u>`)
             }
 
             background: Rectangle {
@@ -98,12 +99,6 @@ Menu {
             Keys.onEnterPressed: activate()
         }
         Component.onCompleted: expandRecursively()
-    }
-
-    function underlineSearch(text: string): string {
-        const escaped = searchField.text.replace(/[\\\.\+\*\?\^\$\[\]\(\)\{\}\/\'\#\:\!\=\|]/ig, "\\$&");
-        const re = new RegExp(escaped, 'gi'); // global, insensitive
-        return text.replace(re, `<u>$&</u>`);
     }
 
     onClosed: {
