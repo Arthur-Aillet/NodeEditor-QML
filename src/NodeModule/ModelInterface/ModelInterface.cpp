@@ -1,7 +1,7 @@
 #include "ModelInterface.hpp"
 
-ModelInterface::ModelInterface(QtNodes::AbstractGraphModel &_graphModel)
-    : QObject(nullptr), graphModel(_graphModel) {
+ModelInterface::ModelInterface(QtNodes::AbstractGraphModel &_graphModel) : QObject(nullptr), graphModel(_graphModel), undoStack(QUndoStack(this))
+ {
   connect(&graphModel, SIGNAL(connectionCreated(ConnectionId)), this,
           SIGNAL(connectionCreated(ConnectionId)));
   connect(&graphModel, SIGNAL(connectionDeleted(ConnectionId)), this,

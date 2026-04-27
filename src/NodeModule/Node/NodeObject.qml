@@ -34,7 +34,7 @@ FocusScope {
 
     MouseArea {
         propagateComposedEvents: true
-        anchors.fill: painter
+        anchors.fill: root
         onClicked: {
             parent.focus = !parent.focus;
         }

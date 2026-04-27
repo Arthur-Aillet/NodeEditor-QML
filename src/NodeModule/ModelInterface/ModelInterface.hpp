@@ -1,6 +1,7 @@
 #pragma once
 
 #include "QtNodes/internal/Definitions.hpp"
+#include "QmlUndoCommands.hpp"
 #include <QObject>
 #include <QtNodes/AbstractGraphModel>
 #include <QtNodes/BasicGraphicsScene>
@@ -25,21 +26,21 @@ class ModelInterface : public QObject {
   public:
   QtNodes::AbstractGraphModel &graphModel;
 
-  inline static ModelInterface *instance = nullptr;
-
   static ModelInterface *create(QQmlEngine *, QJSEngine *engine);
   static ModelInterface *init(QtNodes::AbstractGraphModel &_graphModel);
-
+  
   protected:
+  inline static ModelInterface *instance = nullptr;
   ModelInterface(QtNodes::AbstractGraphModel &_graphModel);
+  QUndoStack undoStack;
 
   public:
   Q_INVOKABLE QVariant nodeData(NodeId nodeId, QtNodes::NodeRole role) {
     return graphModel.nodeData(nodeId, role);
   };
 
-  Q_INVOKABLE NodeId addNode(QString const nodeType = QString()) {
-    return graphModel.addNode(nodeType);
+  Q_INVOKABLE void createNode(QString const nodeType, QPoint const &scenePos) {
+    undoStack.push(new CreateCommand(this, nodeType, scenePos));
   }
 
   Q_INVOKABLE bool deleteNode(const NodeId nodeId) { return graphModel.deleteNode(nodeId); }

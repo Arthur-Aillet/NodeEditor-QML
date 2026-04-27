@@ -90,7 +90,8 @@ Menu {
                 if (hasChildren) {
                     view.toggleExpanded(row);
                 } else {
-                    //ModelInterface.addNode(delegate.model.display);
+                    console.log("delegate.model.display: " + delegate.model.display);
+                    ModelInterface.createNode(delegate.model.display, Qt.point(0, 200));
                 }
             }
             onClicked: activate()

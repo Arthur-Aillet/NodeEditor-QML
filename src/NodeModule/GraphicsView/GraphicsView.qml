@@ -14,8 +14,12 @@ Frame {
         height: root.height
         Repeater {
             delegate: NodeObject {
-                required property real givenId
-                nodeId: givenId
+                required property real inputId
+                required property real inputX
+                required property real inputY
+                nodeId: inputId
+                x: inputX
+                y: inputY
             }
             model: ListModel {
                 id: model
@@ -29,13 +33,26 @@ Frame {
         target: ModelInterface
         function onNodeCreated(id: real) {
             model.append({
-                "givenId": id
+                "inputId": id,
+                "inputX": 0,
+                "inputY": 0,
             });
         }
         function onNodeDeleted(id: real) {
             for (let i = 0; i < model.count; ++i) {
-                if (model.get(i).givenId == id)
+                if (model.get(i).inputId == id)
                     model.remove(i);
+            }
+        }
+        function onNodePositionUpdated(id: real) {
+            const position = ModelInterface.nodeData(id, NodeRole.Position);
+
+            for (let i = 0; i < model.count; i++) {
+                const current = model.get(i);
+                if (current.inputId == id) {
+                    current.inputX = position.x;
+                    current.inputY = position.y;
+                }
             }
         }
     }

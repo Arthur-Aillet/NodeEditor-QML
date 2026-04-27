@@ -16,11 +16,7 @@
 #include <memory>
 #include <qqmlapplicationengine.h>
 
-using QtNodes::BasicGraphicsScene;
-using QtNodes::ConnectionStyle;
-using QtNodes::GraphicsView;
 using QtNodes::NodeRole;
-using QtNodes::StyleCollection;
 
 int main(int argc, char *argv[]) {
   qputenv("QT_QUICK_BACKEND", "software");
@@ -33,11 +29,6 @@ int main(int argc, char *argv[]) {
   auto ret = std::make_shared<QtNodes::NodeDelegateModelRegistry>();
 
   ret->registerModel<ValueNodeModel>("Input");
-  ret->registerModel<ValueNodeModel1>("Input2");
-  ret->registerModel<ValueNodeModel2>("Process");
-  ret->registerModel<ValueNodeModel3>("Process");
-  ret->registerModel<ValueNodeModel5>("Process");
-  ret->registerModel<ValueNodeModel4>("Input6");
   ret->registerModel<AdditionNode>("Process");
 
   auto model = QtNodes::DataFlowGraphModel(ret);

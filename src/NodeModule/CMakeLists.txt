@@ -23,6 +23,8 @@ qt_add_qml_module(NodeModule
   ./ModelInterface/DataFlowModelInterface.hpp
   ./ModelInterface/RegisteryAccess.cpp
   ./ModelInterface/RegisteryAccess.hpp
+  ./ModelInterface/QmlUndoCommands.cpp
+  ./ModelInterface/QmlUndoCommands.hpp
   ./Style/QmlNodeStyle.hpp
   ./Node/RoleEnum.hpp
 )
