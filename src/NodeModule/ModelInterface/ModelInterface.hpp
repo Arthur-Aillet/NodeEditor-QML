@@ -38,6 +38,10 @@ class ModelInterface : public QObject {
   Q_INVOKABLE QVariant nodeData(NodeId nodeId, QtNodes::NodeRole role) {
     return graphModel.nodeData(nodeId, role);
   };
+  
+  Q_INVOKABLE bool setNodeData(NodeId nodeId, QtNodes::NodeRole role, QVariant value) {
+    return graphModel.setNodeData(nodeId, role, value);
+  }
 
   Q_INVOKABLE void createNode(QString const nodeType, QPoint const &scenePos) {
     undoStack.push(new CreateCommand(this, nodeType, scenePos));

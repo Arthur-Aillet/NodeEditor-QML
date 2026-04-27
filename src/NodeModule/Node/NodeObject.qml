@@ -33,11 +33,24 @@ FocusScope {
     }
 
     MouseArea {
+        drag {
+            target: parent.focus ? parent : undefined
+            onActiveChanged: {
+                if (drag.active) {
+                    parent.focus = true;
+                }
+
+                if (!drag.active) {
+                    ModelInterface.setNodeData(root.nodeId, NodeRole.Position, Qt.point(parent.x, parent.y))
+                }
+            }
+        }
         propagateComposedEvents: true
         anchors.fill: root
         onClicked: {
             parent.focus = !parent.focus;
         }
+
 
         HoverHandler {
             id: hover

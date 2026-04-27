@@ -38,12 +38,14 @@ Frame {
                 "inputY": 0,
             });
         }
+
         function onNodeDeleted(id: real) {
             for (let i = 0; i < model.count; ++i) {
                 if (model.get(i).inputId == id)
                     model.remove(i);
             }
         }
+
         function onNodePositionUpdated(id: real) {
             const position = ModelInterface.nodeData(id, NodeRole.Position);
 

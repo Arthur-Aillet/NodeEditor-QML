@@ -38,6 +38,8 @@ Item {
         drag.target: inner
         drag.filterChildren: true
 
+        onClicked: focus = true
+
         property real zoomMax: 2
         property real zoomStep: 0.03
         property real zoomMin: 0.3
