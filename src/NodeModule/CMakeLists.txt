@@ -21,6 +21,8 @@ qt_add_qml_module(NodeModule
   ./ModelInterface/ModelInterface.hpp
   ./ModelInterface/DataFlowModelInterface.cpp
   ./ModelInterface/DataFlowModelInterface.hpp
+  ./ModelInterface/RegisteryAccess.cpp
+  ./ModelInterface/RegisteryAccess.hpp
   ./Style/QmlNodeStyle.hpp
   ./Node/RoleEnum.hpp
 )
