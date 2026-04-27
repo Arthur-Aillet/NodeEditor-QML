@@ -7,6 +7,7 @@ Item {
     anchors.fill: parent
 
     default property alias subdata: inner.data
+    property alias inner: inner
 
     ViewBackground {
         id: background

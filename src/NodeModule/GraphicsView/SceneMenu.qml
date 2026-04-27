@@ -7,6 +7,9 @@ Menu {
     id: root
     popupType: Popup.Window
     focus: true
+
+    signal createNode(string name)
+
     property var nodeMap: DataFlowModelInterface.registery.nodeMapModel
     property var replaceRegex: RegExp(searchField.text.replace(/[\\\.\+\*\?\^\$\[\]\(\)\{\}\/\'\#\:\!\=\|]/ig, "\\$&"), 'gi')
 
@@ -90,14 +93,15 @@ Menu {
                 if (hasChildren) {
                     view.toggleExpanded(row);
                 } else {
-                    console.log("delegate.model.display: " + delegate.model.display);
-                    ModelInterface.createNode(delegate.model.display, Qt.point(0, 200));
+                    root.createNode(delegate.model.display);
+                    root.close();
                 }
             }
             onClicked: activate()
             Keys.onEnterPressed: activate()
         }
         Component.onCompleted: expandRecursively()
+
         onExpanded: (row, col) => {
             if (row < 0)
                 return

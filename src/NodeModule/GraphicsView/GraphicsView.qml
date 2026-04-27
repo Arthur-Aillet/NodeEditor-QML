@@ -10,6 +10,7 @@ Frame {
     focus: true
 
     NavigableArea {
+        id: area
         width: root.width
         height: root.height
         Repeater {
@@ -27,8 +28,17 @@ Frame {
         }
     }
 
-    ContextMenu.menu: SceneMenu {}
+    ContextMenu.menu: SceneMenu { 
+        id: menu 
+    }
 
+    Connections {
+        target: menu
+        function onCreateNode(name: string) {
+            ModelInterface.createNode(name, area.inner.mapFromItem(root, Qt.point(menu.x, menu.y)))
+        }
+    }
+    
     Connections {
         target: ModelInterface
         function onNodeCreated(id: real) {
