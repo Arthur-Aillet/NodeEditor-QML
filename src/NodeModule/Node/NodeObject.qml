@@ -1,7 +1,7 @@
 import QtQuick
 import NodeModule
 
-FocusScope {
+Item {
     id: root
     opacity: focus ? 1 : style.opacity
     focus: false
@@ -13,16 +13,8 @@ FocusScope {
     property nodeStyle style
     property bool hovered: hover.hovered
 
-    DefaultNode {
-        id: painter
-        nodeId: root.nodeId
-        style: root.style
-        selected: root.focus
-        hovered: root.hovered
-    }
-
     Component.onCompleted: () => {
-        var json = ModelInterface.nodeData(nodeId, NodeRole.Style);
+        const json = ModelInterface.nodeData(nodeId, NodeRole.Style);
         style.loadJson(json);
     }
 
@@ -34,6 +26,7 @@ FocusScope {
 
     MouseArea {
         drag {
+            filterChildren: true
             target: parent.focus ? parent : undefined
             onActiveChanged: {
                 if (drag.active) {
@@ -51,11 +44,16 @@ FocusScope {
             parent.focus = !parent.focus;
         }
 
+        DefaultNode {
+            id: painter
+            nodeId: root.nodeId
+            style: root.style
+            selected: root.focus
+            hovered: root.hovered
+        }
 
         HoverHandler {
             id: hover
-            grabPermissions: PointerHandler.CanTakeOverFromAnything
-            acceptedDevices: PointerDevice.AllPointerTypes
             cursorShape: Qt.CrossCursor
         }
     }
