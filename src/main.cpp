@@ -4,6 +4,7 @@
 #include "QtNodes/internal/BasicGraphicsScene.hpp"
 #include "QtNodes/internal/DataFlowGraphModel.hpp"
 #include "QtNodes/internal/DataFlowGraphicsScene.hpp"
+#include "QtNodes/internal/QmlWrapper.hpp"
 #include "ValueNodeModel.hpp"
 #include <QtNodes/BasicGraphicsScene>
 #include <QtNodes/ConnectionStyle>
@@ -14,6 +15,7 @@
 #include <QScreen>
 #include <QtWidgets/QApplication>
 #include <memory>
+#include <qboxlayout.h>
 #include <qqmlapplicationengine.h>
 
 using QtNodes::NodeRole;
@@ -41,5 +43,27 @@ int main(int argc, char *argv[]) {
     model.setNodeData(source, NodeRole::Position, QPointF(0, 0));
     model.setNodeData(source, NodeRole::Type, ValueNodeModel().name());
   }
+
+  QWidget mainWidget;
+  QVBoxLayout *l = new QVBoxLayout(&mainWidget);
+  auto scene = new DataFlowGraphicsScene(model, &mainWidget);
+
+  auto view = new GraphicsView(scene);
+  l->addWidget(view);
+  l->setContentsMargins(0, 0, 0, 0);
+  l->setSpacing(0);
+
+  QObject::connect(scene, &DataFlowGraphicsScene::sceneLoaded, view, &GraphicsView::centerScene);
+
+  QObject::connect(scene, &DataFlowGraphicsScene::modified, &mainWidget, [&mainWidget]() {
+      mainWidget.setWindowModified(true);
+  });
+  mainWidget.setWindowTitle("[*]CutieOriginal");
+  mainWidget.resize(800, 600);
+  // Center window.
+  mainWidget.move(QApplication::primaryScreen()->availableGeometry().center()
+                  - mainWidget.rect().center());
+  mainWidget.showNormal();
+
   return app.exec();
 }
