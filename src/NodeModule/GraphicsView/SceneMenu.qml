@@ -54,7 +54,16 @@ Menu {
                 width: parent.width - padding - x
                 clip: true
                 color: (!delegate.hasChildren && delegate.row === view.currentRow) ? "white" : "black"
-                text: delegate.hasChildren ? delegate.model.display : delegate.model.display.replace(root.replaceRegex, `<u>$&</u>`)
+                text: delegate.computeText()
+            }
+
+            function computeText(): string {
+                if (delegate.model.display == undefined)
+                    return undefined;
+                if (delegate.hasChildren) {
+                    return model.display;
+                } 
+                return model.display.replace(root.replaceRegex, `<u>$&</u>`);
             }
 
             background: Rectangle {
@@ -75,30 +84,36 @@ Menu {
                 }
             }
 
-            focus: delegate.row === view.currentRow
+            focus: row === view.currentRow
 
             function activate() {
-                if (delegate.hasChildren) {
-                    view.toggleExpanded(delegate.row);
-                    if (delegate.expanded) {
-                        let modelIndex = treeView.modelIndex(Qt.point(0, delegate.row));
-
-                        let nextModelIndex = root.nodeMap.sibling(modelIndex.row + 1, 0, modelIndex);
-                        let nextViewRow = treeView.rowAtIndex(nextModelIndex);
-                        if (nextViewRow == -1) {
-                            view.contentY = view.contentHeight;
-                        } else {
-                            view.positionViewAtRow(nextViewRow - 1, TreeView.Contain);
-                        }
-                    }
+                if (hasChildren) {
+                    view.toggleExpanded(row);
                 } else {
-                    console.log("Create + " + delegate.model.display);
+                    //ModelInterface.addNode(delegate.model.display);
                 }
             }
             onClicked: activate()
             Keys.onEnterPressed: activate()
         }
         Component.onCompleted: expandRecursively()
+        onExpanded: (row, col) => {
+            if (row < 0)
+                return
+
+            let modelIndex = view.modelIndex(Qt.point(0, row));
+
+            if (modelIndex.parent.valid)
+                return
+
+            let nextModelIndex = root.nodeMap.sibling(modelIndex.row + 1, 0, modelIndex);
+            let nextViewRow = view.rowAtIndex(nextModelIndex);
+            if (nextViewRow == -1) {
+                view.contentY = view.contentHeight;
+            } else {
+                view.positionViewAtRow(nextViewRow - 1, TreeView.Contain);
+            }
+        }
     }
 
     onClosed: {
