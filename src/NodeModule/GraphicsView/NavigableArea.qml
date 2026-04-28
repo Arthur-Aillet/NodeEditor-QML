@@ -38,8 +38,8 @@ Item {
         anchors.fill: parent
         drag.target: inner
         drag.filterChildren: true
-
-        onClicked: focus = true
+        propagateComposedEvents: true
+        focusPolicy: Qt.WheelFocus
 
         property real zoomMax: 2
         property real zoomStep: 0.03

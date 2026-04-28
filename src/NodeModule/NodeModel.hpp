@@ -2,6 +2,7 @@
 
 #include "NodeData.hpp"
 #include <QtNodes/NodeDelegateModel>
+#include <qdebug.h>
 
 using QtNodes::NodeData;
 using QtNodes::NodeDataType;

@@ -1,10 +1,10 @@
 import QtQuick
 import NodeModule
 
-Item {
+MouseArea {
     id: root
     opacity: focus ? 1 : style.opacity
-    focus: false
+    focusPolicy: Qt.StrongFocus
 
     width: painter.width
     height: painter.height
@@ -24,37 +24,32 @@ Item {
         }
     }
 
-    MouseArea {
-        drag {
-            filterChildren: true
-            target: parent.focus ? parent : undefined
-            onActiveChanged: {
-                if (drag.active) {
-                    parent.focus = true;
-                }
+    drag {
+        filterChildren: true
+        target: root.focus ? root : undefined
+        onActiveChanged: {
+            if (drag.active) {
+                focus = true;
+            }
 
-                if (!drag.active) {
-                    ModelInterface.setNodeData(root.nodeId, NodeRole.Position, Qt.point(parent.x, parent.y))
-                }
+            if (!drag.active) {
+                ModelInterface.setNodeData(nodeId, NodeRole.Position, Qt.point(x, y))
             }
         }
-        propagateComposedEvents: true
-        anchors.fill: root
-        onClicked: {
-            parent.focus = !parent.focus;
-        }
+    }
+    propagateComposedEvents: true
+    anchors.fill: root
 
-        DefaultNode {
-            id: painter
-            nodeId: root.nodeId
-            style: root.style
-            selected: root.focus
-            hovered: root.hovered
-        }
+    DefaultNode {
+        id: painter
+        nodeId: root.nodeId
+        style: root.style
+        selected: root.focus
+        hovered: root.hovered
+    }
 
-        HoverHandler {
-            id: hover
-            cursorShape: Qt.CrossCursor
-        }
+    HoverHandler {
+        id: hover
+        cursorShape: Qt.CrossCursor
     }
 }

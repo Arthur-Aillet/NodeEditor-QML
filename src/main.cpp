@@ -17,35 +17,13 @@
 #include <memory>
 #include <qboxlayout.h>
 #include <qqmlapplicationengine.h>
+#include <qwidget.h>
 
 using QtNodes::NodeRole;
 
-int main(int argc, char *argv[]) {
-  qputenv("QT_QUICK_BACKEND", "software");
-  QApplication app(argc, argv);
-
-  QQmlApplicationEngine engine;
-  QObject::connect(
-      &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
-      []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
-  auto ret = std::make_shared<QtNodes::NodeDelegateModelRegistry>();
-
-  ret->registerModel<ValueNodeModel>("Input");
-  ret->registerModel<AdditionNode>("Process");
-
-  auto model = QtNodes::DataFlowGraphModel(ret);
-  DataFlowModelInterface::init(model);
-
-  engine.loadFromModule("CutieDesignerModule", "Main");
-
-  {
-    auto source = model.addNode(ValueNodeModel().name());
-    model.setNodeData(source, NodeRole::Position, QPointF(0, 0));
-    model.setNodeData(source, NodeRole::Type, ValueNodeModel().name());
-  }
-
-  QWidget mainWidget;
+static QtNodes::DataFlowGraphicsScene *startOriginalNodeEditor(QtNodes::DataFlowGraphModel &model, QWidget &mainWidget) {
   QVBoxLayout *l = new QVBoxLayout(&mainWidget);
+ 
   auto scene = new DataFlowGraphicsScene(model, &mainWidget);
 
   auto view = new GraphicsView(scene);
@@ -64,6 +42,36 @@ int main(int argc, char *argv[]) {
   mainWidget.move(QApplication::primaryScreen()->availableGeometry().center()
                   - mainWidget.rect().center());
   mainWidget.showNormal();
+  return scene;
+}
+
+int main(int argc, char *argv[]) {
+  qputenv("QT_QUICK_BACKEND", "software");
+  QApplication app(argc, argv);
+
+  auto ret = std::make_shared<QtNodes::NodeDelegateModelRegistry>();
+
+  ret->registerModel<ValueNodeModel>("Input");
+  ret->registerModel<AdditionNode>("Process");
+
+  auto model = QtNodes::DataFlowGraphModel(ret);
+
+  // QWidget mainWidget;
+  // auto scene = startOriginalNodeEditor(model, mainWidget);
+
+  QQmlApplicationEngine engine;
+  QObject::connect(
+      &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
+      []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
+  DataFlowModelInterface::init(model);
+
+  engine.loadFromModule("CutieDesignerModule", "Main");
+
+  {
+    auto source = model.addNode(ValueNodeModel().name());
+    model.setNodeData(source, NodeRole::Position, QPointF(0, 0));
+    model.setNodeData(source, NodeRole::Type, ValueNodeModel().name());
+  }
 
   return app.exec();
 }

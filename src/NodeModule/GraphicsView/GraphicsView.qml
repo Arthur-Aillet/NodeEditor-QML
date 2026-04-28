@@ -7,7 +7,6 @@ Frame {
     visible: true
     clip: true
     padding: 1
-    focus: true
 
     NavigableArea {
         id: area

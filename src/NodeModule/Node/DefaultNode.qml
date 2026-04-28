@@ -105,7 +105,6 @@ Item {
 
                 x: port.inPort ? 0 : root.width
                 y: connection.index * 20 + 30
-                height: root.style.connectionPointDiameter
 
                 Text {
                     anchors.verticalCenter: parent.verticalCenter 
