@@ -6,6 +6,7 @@ qt_add_qml_module(NodeModule
   ./GraphicsView/GraphicsView.qml
   ./GraphicsView/NavigableArea.qml
   ./GraphicsView/SceneMenu.qml
+  ./Connection/DefaultConnection.qml
   DEPENDENCIES QtQuick
   SOURCES
   NodeEditor.hpp

@@ -6,6 +6,8 @@ Item {
     clip: true
     anchors.fill: parent
 
+    property point mousePosition
+
     default property alias subdata: inner.data
     property alias inner: inner
 
@@ -38,8 +40,9 @@ Item {
         anchors.fill: parent
         drag.target: inner
         drag.filterChildren: true
-        propagateComposedEvents: true
         focusPolicy: Qt.WheelFocus
+
+        onPositionChanged: root.mousePosition = mapToItem(inner, mouseX, mouseY)
 
         property real zoomMax: 2
         property real zoomStep: 0.03

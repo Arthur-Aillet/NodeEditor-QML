@@ -22,6 +22,8 @@ Item {
     
     property real ports: 3
 
+    property real strokeWidth: root.hovered ? root.style.hoveredPenWidth : root.style.penWidth
+
     function boundaryColor(): color {
         // if (invalid) {
         //     return errorColor;
@@ -37,7 +39,7 @@ Item {
 
     Shape {
         ShapePath {
-            strokeWidth: root.hovered ? root.style.hoveredPenWidth : root.style.penWidth
+            strokeWidth: root.strokeWidth
             strokeColor: root.boundaryColor()
             fillGradient: LinearGradient {
                 x1: 0.0
@@ -122,7 +124,7 @@ Item {
                     containsMode: Shape.BoundingRectContains
                     ShapePath {
                         fillColor: root.style.connectionPointColor
-                        strokeWidth: hoverHandler.hovered ? root.style.hoveredPenWidth : root.style.penWidth
+                        strokeWidth: root.strokeWidth
                         strokeColor: root.boundaryColor()
                         PathAngleArc {
                             radiusX: root.style.connectionPointDiameter / 2
@@ -131,11 +133,20 @@ Item {
                             sweepAngle: 360
                         }
                     }
-                    HoverHandler {
-                        id: hoverHandler
-                    }
-                    TapHandler {
-                        onTapped: print("Connection clicked")
+
+                    DragHandler {
+                        target: null
+                        grabPermissions: PointerHandler.CanTakeOverFromAnything | PointerHandler.ApprovesTakeOverByHandlersOfSameType
+                        cursorShape: Qt.CrossCursor
+                        onCentroidChanged: () => {
+                            console.log("moved: ")
+                        }
+                        onCanceled: {
+                            console.log("ended")
+                        }
+                        onGrabChanged: (e) => {
+                            console.log("grabchagned " + e)
+                        }
                     }
                 }
             }

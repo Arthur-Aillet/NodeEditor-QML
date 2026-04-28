@@ -25,6 +25,10 @@ Frame {
                 id: model
             }
         }
+        DefaultConnection { 
+            outPoint: Qt.point(150, 30)
+            inPoint: area.mousePosition
+        }
     }
 
     ContextMenu.menu: SceneMenu { 
@@ -61,8 +65,10 @@ Frame {
             for (let i = 0; i < model.count; i++) {
                 const current = model.get(i);
                 if (current.inputId == id) {
-                    current.inputX = position.x;
-                    current.inputY = position.y;
+                    if (current.inputX != position.x)
+                        current.inputX = position.x;
+                    if (current.inputY != position.y)
+                        current.inputY = position.y;
                 }
             }
         }

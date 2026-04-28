@@ -11,7 +11,7 @@ MouseArea {
 
     required property real nodeId
     property nodeStyle style
-    property bool hovered: hover.hovered
+    property bool hovered: root.hovered
 
     Component.onCompleted: () => {
         const json = ModelInterface.nodeData(nodeId, NodeRole.Style);
@@ -39,6 +39,7 @@ MouseArea {
     }
     propagateComposedEvents: true
     anchors.fill: root
+    cursorShape: Qt.DragMoveCursor
 
     DefaultNode {
         id: painter
@@ -46,10 +47,5 @@ MouseArea {
         style: root.style
         selected: root.focus
         hovered: root.hovered
-    }
-
-    HoverHandler {
-        id: hover
-        cursorShape: Qt.CrossCursor
     }
 }

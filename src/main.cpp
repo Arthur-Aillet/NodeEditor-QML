@@ -56,8 +56,8 @@ int main(int argc, char *argv[]) {
 
   auto model = QtNodes::DataFlowGraphModel(ret);
 
-  // QWidget mainWidget;
-  // auto scene = startOriginalNodeEditor(model, mainWidget);
+  QWidget mainWidget;
+  auto scene = startOriginalNodeEditor(model, mainWidget);
 
   QQmlApplicationEngine engine;
   QObject::connect(
