@@ -34,15 +34,15 @@ void ValueNodeModel::load(QJsonObject const &p) {
   }
 }
 
-unsigned int ValueNodeModel::nPorts(PortType portType) const {
+unsigned int ValueNodeModel::nPorts(QtNodes::PortType portType) const {
   unsigned int result = 1;
 
   switch (portType) {
-  case PortType::In:
+  case QtNodes::PortType::In:
     result = 0;
     break;
 
-  case PortType::Out:
+  case QtNodes::PortType::Out:
     result = 1;
 
   default:
@@ -67,7 +67,7 @@ void ValueNodeModel::onTextEdited(QString const &str) {
   }
 }
 
-NodeDataType ValueNodeModel::dataType(PortType, PortIndex) const { return NumberData().type(); }
+NodeDataType ValueNodeModel::dataType(QtNodes::PortType, PortIndex) const { return NumberData().type(); }
 
 std::shared_ptr<NodeData> ValueNodeModel::outData(PortIndex) { return _number; }
 

@@ -26,7 +26,7 @@ qt_add_qml_module(NodeModule
   ./ModelInterface/QmlUndoCommands.cpp
   ./ModelInterface/QmlUndoCommands.hpp
   ./Style/QmlNodeStyle.hpp
-  ./Node/RoleEnum.hpp
+  ./Node/QmlDefinition.hpp
 )
 
 target_include_directories(NodeModule PUBLIC

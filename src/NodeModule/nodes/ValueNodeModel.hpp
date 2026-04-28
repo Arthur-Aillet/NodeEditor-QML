@@ -10,7 +10,6 @@ using QtNodes::NodeData;
 using QtNodes::NodeDataType;
 using QtNodes::NodeDelegateModel;
 using QtNodes::PortIndex;
-using QtNodes::PortType;
 
 class QLineEdit;
 
@@ -37,9 +36,9 @@ class ValueNodeModel : public NodeDelegateModel {
   void load(QJsonObject const &p) override;
 
   public:
-  unsigned int nPorts(PortType portType) const override;
+  unsigned int nPorts(QtNodes::PortType portType) const override;
 
-  NodeDataType dataType(PortType portType, PortIndex portIndex) const override;
+  NodeDataType dataType(QtNodes::PortType portType, PortIndex portIndex) const override;
 
   std::shared_ptr<NodeData> outData(PortIndex port) override;
 

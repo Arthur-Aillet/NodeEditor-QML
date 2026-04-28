@@ -6,7 +6,6 @@
 using QtNodes::NodeData;
 using QtNodes::NodeDataType;
 using QtNodes::PortIndex;
-using QtNodes::PortType;
 
 class AdditionNode : public QtNodes::NodeDelegateModel {
   Q_OBJECT
@@ -16,9 +15,9 @@ class AdditionNode : public QtNodes::NodeDelegateModel {
   QString name() const override { return "Addition"; }
 
   // Ports
-  unsigned int nPorts(PortType type) const override { return type == PortType::In ? 2 : 1; }
+  unsigned int nPorts(QtNodes::PortType type) const override { return type == QtNodes::PortType::In ? 2 : 1; }
 
-  NodeDataType dataType(PortType, PortIndex) const override { return NumberData{}.type(); }
+  NodeDataType dataType(QtNodes::PortType, PortIndex) const override { return NumberData{}.type(); }
 
   // Data handling
   void setInData(std::shared_ptr<NodeData> data, PortIndex port) override {

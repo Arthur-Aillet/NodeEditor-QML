@@ -38,6 +38,10 @@ class ModelInterface : public QObject {
   Q_INVOKABLE QVariant nodeData(NodeId nodeId, QtNodes::NodeRole role) {
     return graphModel.nodeData(nodeId, role);
   };
+
+  Q_INVOKABLE QVariant portData(NodeId nodeId, QtNodes::PortType portType, QtNodes::PortIndex index, QtNodes::PortRole role) {
+    return graphModel.portData(nodeId, portType, index, role);
+  };
   
   Q_INVOKABLE bool setNodeData(NodeId nodeId, QtNodes::NodeRole role, QVariant value) {
     return graphModel.setNodeData(nodeId, role, value);
