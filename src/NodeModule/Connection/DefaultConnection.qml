@@ -18,13 +18,12 @@ Shape {
     x: outPoint.x
     y: outPoint.y
 
-    onInPointChanged: pointsC1C2Horizontal()
-    onOutPointChanged: pointsC1C2Horizontal()
+    onInPointChanged: horizontal ? pointsC1C2Horizontal() : pointsC1C2Vertical()
+    onOutPointChanged: horizontal ? pointsC1C2Horizontal() : pointsC1C2Vertical()
 
     function pointsC1C2Horizontal() {
         const xDistance = inPoint.x - outPoint.x;
         let horizontalOffset = Math.min(defaultOffset, Math.abs(xDistance));
-        
         let verticalOffset = 0;
         let ratioX = 0.5;
         if (xDistance <= 0) {
@@ -34,6 +33,22 @@ Shape {
             ratioX = 1.0;
         }
         horizontalOffset *= ratioX;
+        c1 = Qt.point(outPoint.x + horizontalOffset, outPoint.y + verticalOffset);
+        c2 = Qt.point(inPoint.x - horizontalOffset, inPoint.y - verticalOffset);
+    }
+
+    function pointsC1C2Vertical() {
+        const yDistance = inPoint.y - outPoint.y;
+        let verticalOffset = Math.min(defaultOffset, Math.abs(yDistance));
+        let horizontalOffset = 0;
+        let ratioY = 0.5;
+        if (yDistance <= 0) {
+            let xDistance = inPoint.x - outPoint.x + 20;
+            let vector = xDistance < 0 ? -1.0 : 1.0;
+            horizontalOffset = Math.min(defaultOffset, Math.abs(xDistance)) * vector;
+            ratioY = 1.0;
+        }
+        verticalOffset *= ratioY;
         c1 = Qt.point(outPoint.x + horizontalOffset, outPoint.y + verticalOffset);
         c2 = Qt.point(inPoint.x - horizontalOffset, inPoint.y - verticalOffset);
     }
