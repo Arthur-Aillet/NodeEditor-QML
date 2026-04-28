@@ -1,7 +1,9 @@
 #include "ModelInterface.hpp"
+#include "QtNodes/internal/DefaultHorizontalNodeGeometry.hpp"
 
-ModelInterface::ModelInterface(QtNodes::AbstractGraphModel &_graphModel) : QObject(nullptr), graphModel(_graphModel), undoStack(QUndoStack(this))
- {
+ModelInterface::ModelInterface(QtNodes::AbstractGraphModel &_graphModel)
+    : QObject(nullptr), graphModel(_graphModel), undoStack(QUndoStack(this)),
+      _nodeGeometry(std::make_unique<QtNodes::DefaultHorizontalNodeGeometry>(graphModel)) {
   connect(&graphModel, SIGNAL(connectionCreated(ConnectionId)), this,
           SIGNAL(connectionCreated(ConnectionId)));
   connect(&graphModel, SIGNAL(connectionDeleted(ConnectionId)), this,

@@ -26,6 +26,8 @@ qt_add_qml_module(NodeModule
   ./ModelInterface/RegisteryAccess.hpp
   ./ModelInterface/QmlUndoCommands.cpp
   ./ModelInterface/QmlUndoCommands.hpp
+  ./ModelInterface/NodeGeometryInterface.cpp
+  ./ModelInterface/NodeGeometryInterface.hpp
   ./Style/QmlNodeStyle.hpp
   ./Node/QmlDefinition.hpp
 )

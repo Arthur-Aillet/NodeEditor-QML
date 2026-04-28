@@ -5,12 +5,15 @@ import NodeModule
 
 Item {
     id: root
-    width: 140
-    height: 80
 
     required property real nodeId
     required property nodeStyle style
-    
+
+    property size size: ModelInterface.nodeGeometry.size(nodeId)
+
+    width: size.width
+    height: size.height
+
     required property bool selected
     required property bool hovered
 
@@ -18,8 +21,8 @@ Item {
     property bool labelVisible: ModelInterface.nodeData(nodeId, NodeRole.LabelVisible)
     property bool labelEditable: ModelInterface.nodeData(nodeId, NodeRole.LabelEditable)
     property string caption: ModelInterface.nodeData(nodeId, NodeRole.Caption)
-    property bool captionVisible:ModelInterface.nodeData(nodeId, NodeRole.CaptionVisible)
-    
+    property bool captionVisible: ModelInterface.nodeData(nodeId, NodeRole.CaptionVisible)
+
     property real ports: 3
 
     property real strokeWidth: root.hovered ? root.style.hoveredPenWidth : root.style.penWidth
@@ -104,12 +107,13 @@ Item {
                 property string caption: ModelInterface.portData(root.nodeId, port.type, connection.index, PortRole.Caption)
                 property bool captionVisible: ModelInterface.portData(root.nodeId, port.type, connection.index, PortRole.CaptionVisible)
                 property var dataType: ModelInterface.portData(root.nodeId, port.type, connection.index, PortRole.DataType)
+                property point pos: ModelInterface.nodeGeometry.portPosition(root.nodeId, port.type, connection.index)
 
-                x: port.inPort ? 0 : root.width
-                y: connection.index * 20 + 30
+                x: pos.x
+                y: pos.y
 
                 Text {
-                    anchors.verticalCenter: parent.verticalCenter 
+                    anchors.verticalCenter: parent.verticalCenter
                     anchors.left: port.inPort ? parent.right : undefined
                     anchors.right: port.inPort ? undefined : parent.left
                     topPadding: -5
@@ -139,13 +143,13 @@ Item {
                         grabPermissions: PointerHandler.CanTakeOverFromAnything | PointerHandler.ApprovesTakeOverByHandlersOfSameType
                         cursorShape: Qt.CrossCursor
                         onCentroidChanged: () => {
-                            console.log("moved: ")
+                            console.log("moved: ");
                         }
                         onCanceled: {
-                            console.log("ended")
+                            console.log("ended");
                         }
-                        onGrabChanged: (e) => {
-                            console.log("grabchagned " + e)
+                        onGrabChanged: e => {
+                            console.log("grabchagned " + e);
                         }
                     }
                 }
@@ -162,6 +166,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         topPadding: 3
     }
+
     Text {
         text: root.label
         color: root.style.fontColor

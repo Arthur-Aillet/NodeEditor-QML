@@ -7,6 +7,7 @@ Shape {
 
     required property point inPoint;
     required property point outPoint;
+    required property real connectionId;
 
     property point c1
     property point c2

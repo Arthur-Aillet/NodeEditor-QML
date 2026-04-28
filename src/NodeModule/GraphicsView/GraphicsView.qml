@@ -1,3 +1,4 @@
+pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
 import NodeModule
@@ -12,6 +13,19 @@ Frame {
         id: area
         width: root.width
         height: root.height
+
+        Repeater {
+            delegate: DefaultConnection { 
+                outPoint: Qt.point(150, 30)
+                inPoint: area.mousePosition
+                required property real inputId
+                connectionId: inputId
+            }
+
+            model: ListModel {
+                id: connectionModel
+            }
+        }
         Repeater {
             delegate: NodeObject {
                 required property real inputId
@@ -22,12 +36,8 @@ Frame {
                 y: inputY
             }
             model: ListModel {
-                id: model
+                id: nodeModel
             }
-        }
-        DefaultConnection { 
-            outPoint: Qt.point(150, 30)
-            inPoint: area.mousePosition
         }
     }
 
@@ -44,8 +54,15 @@ Frame {
     
     Connections {
         target: ModelInterface
+
+        function onConnectionCreated(id: real) {
+            connectionModel.append({
+                "inputId": id,
+            });
+        }
+
         function onNodeCreated(id: real) {
-            model.append({
+            nodeModel.append({
                 "inputId": id,
                 "inputX": 0,
                 "inputY": 0,
@@ -53,17 +70,17 @@ Frame {
         }
 
         function onNodeDeleted(id: real) {
-            for (let i = 0; i < model.count; ++i) {
-                if (model.get(i).inputId == id)
-                    model.remove(i);
+            for (let i = 0; i < nodeModel.count; ++i) {
+                if (nodeModel.get(i).inputId == id)
+                    nodeModel.remove(i);
             }
         }
 
         function onNodePositionUpdated(id: real) {
             const position = ModelInterface.nodeData(id, NodeRole.Position);
 
-            for (let i = 0; i < model.count; i++) {
-                const current = model.get(i);
+            for (let i = 0; i < nodeModel.count; i++) {
+                const current = nodeModel.get(i);
                 if (current.inputId == id) {
                     if (current.inputX != position.x)
                         current.inputX = position.x;
