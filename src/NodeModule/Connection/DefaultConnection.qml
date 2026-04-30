@@ -5,15 +5,15 @@ import NodeModule
 Shape {
     id: root
 
-    required property point inPoint;
-    required property point outPoint;
-    required property real connectionId;
+    required property point inPoint
+    required property point outPoint
+    required property real connectionId
 
     property point c1
     property point c2
 
-    property bool editing: true;
-    property bool horizontal: true;
+    property bool editing: true
+    property bool horizontal: true
     readonly property real defaultOffset: 200
 
     x: outPoint.x
@@ -55,14 +55,16 @@ Shape {
     }
 
     ShapePath {
-        fillColor: "transparent" 
+        fillColor: "transparent"
         strokeWidth: 3
         strokeColor: "red"
         PathCubic {
             x: root.inPoint.x - root.outPoint.x
             y: root.inPoint.y - root.outPoint.y
-            control1X: root.c1.x - root.outPoint.x; control1Y: root.c1.y - root.outPoint.y
-            control2X: root.c2.x - root.outPoint.x; control2Y: root.c2.y - root.outPoint.y
+            control1X: root.c1.x - root.outPoint.x
+            control1Y: root.c1.y - root.outPoint.y
+            control2X: root.c2.x - root.outPoint.x
+            control2Y: root.c2.y - root.outPoint.y
         }
     }
 }

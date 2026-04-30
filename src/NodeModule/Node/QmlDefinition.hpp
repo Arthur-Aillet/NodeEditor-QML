@@ -39,9 +39,9 @@ QML_ELEMENT
  * Specific flags regulating node features and appeaarence.
  */
 enum QmlNodeFlag {
-    NoFlags = 0x0,   ///< Default NodeFlag
-    Resizable = 0x1, ///< Lets the node be resizable
-    Locked = 0x2
+  NoFlags = 0x0,   ///< Default NodeFlag
+  Resizable = 0x1, ///< Lets the node be resizable
+  Locked = 0x2
 };
 
 Q_DECLARE_FLAGS(NodeFlags, QmlNodeFlag)
@@ -58,16 +58,15 @@ QML_ELEMENT
  * Constants for fetching port-related information from the GraphModel.
  */
 enum class QmlPortRole {
-    Data = 0,                 ///< `std::shared_ptr<NodeData>`.
-    DataType = 1,             ///< `QString` describing the port data type.
-    ConnectionPolicyRole = 2, ///< `enum` ConnectionPolicyRole
-    CaptionVisible = 3,       ///< `bool` for caption visibility.
-    Caption = 4,              ///< `QString` for port caption.
+  Data = 0,                 ///< `std::shared_ptr<NodeData>`.
+  DataType = 1,             ///< `QString` describing the port data type.
+  ConnectionPolicyRole = 2, ///< `enum` ConnectionPolicyRole
+  CaptionVisible = 3,       ///< `bool` for caption visibility.
+  Caption = 4,              ///< `QString` for port caption.
 };
 Q_ENUM_NS(QmlPortRole)
 
 } // namespace PortRole
-
 
 namespace ConnectionPolicy {
 Q_NAMESPACE
@@ -78,12 +77,12 @@ QML_ELEMENT
  * values are fetched using PortRole::ConnectionPolicy.
  */
 enum class QmlConnectionPolicy {
-    One,  ///< Just one connection for each port.
-    Many, ///< Any number of connections possible for the port.
+  One,  ///< Just one connection for each port.
+  Many, ///< Any number of connections possible for the port.
 };
 Q_ENUM_NS(QmlConnectionPolicy)
 
-} // namespace QmlConnectionPolicy
+} // namespace ConnectionPolicy
 
 namespace PortType {
 Q_NAMESPACE
@@ -93,12 +92,11 @@ QML_ELEMENT
  * Used for distinguishing input and output node ports.
  */
 enum class QmlPortType {
-    In = 0,  ///< Input node port (from the left).
-    Out = 1, ///< Output node port (from the right).
-    None = 2
+  In = 0,  ///< Input node port (from the left).
+  Out = 1, ///< Output node port (from the right).
+  None = 2
 };
 
 Q_ENUM_NS(QmlPortType)
 
 } // namespace PortType
-

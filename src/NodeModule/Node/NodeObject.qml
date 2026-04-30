@@ -9,6 +9,8 @@ MouseArea {
     width: painter.width
     height: painter.height
 
+    signal portPicked(portId: real, portType: real)
+
     required property real nodeId
     property nodeStyle style
     property bool hovered: root.hovered
@@ -33,7 +35,7 @@ MouseArea {
             }
 
             if (!drag.active) {
-                ModelInterface.setNodeData(nodeId, NodeRole.Position, Qt.point(x, y))
+                ModelInterface.setNodeData(nodeId, NodeRole.Position, Qt.point(x, y));
             }
         }
     }
@@ -47,5 +49,10 @@ MouseArea {
         style: root.style
         selected: root.focus
         hovered: root.hovered
+        Connections {
+            function onPortPicked(portId: real, portType: real) {
+                root.portPicked(portId, portType);
+            }
+        }
     }
 }

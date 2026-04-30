@@ -11,6 +11,8 @@ Item {
 
     property size size: ModelInterface.nodeGeometry.size(nodeId)
 
+    signal portPicked(portId: real, portType: real)
+
     width: size.width
     height: size.height
 
@@ -81,12 +83,13 @@ Item {
                 id: connection
                 required property int index
                 property bool connected: false
-                property string caption: ModelInterface.portData(root.nodeId, port.type, connection.index, PortRole.Caption)
-                property bool captionVisible: ModelInterface.portData(root.nodeId, port.type, connection.index, PortRole.CaptionVisible)
                 property var dataType: ModelInterface.portData(root.nodeId, port.type, connection.index, PortRole.DataType)
 
                 Text {
                     id: portLabel
+                    property bool captionVisible: ModelInterface.portData(root.nodeId, port.type, connection.index, PortRole.CaptionVisible)
+                    property string caption: ModelInterface.portData(root.nodeId, port.type, connection.index, PortRole.Caption)
+
                     property point pos: ModelInterface.nodeGeometry.portTextPosition(root.nodeId, port.type, connection.index)
 
                     FontMetrics {
@@ -98,41 +101,38 @@ Item {
 
                     x: pos.x
                     y: pos.y - portLabelMetrics.ascent
-                    text: connection.dataType.name
+                    text: captionVisible ? caption : connection.dataType.name
                     color: connection.connected ? root.style.fontColor : root.style.fontColorFaded
                 }
 
                 Shape {
+                    id: connectionPoint
                     property point pos: ModelInterface.nodeGeometry.portPosition(root.nodeId, port.type, connection.index)
+                    property real radius: root.style.connectionPointDiameter * 0.6 // Diameter is used a the radius in the original
 
                     x: pos.x
                     y: pos.y
 
                     containsMode: Shape.BoundingRectContains
+
+                    MouseArea {
+                        x: -connectionPoint.radius * 1.5
+                        y: -connectionPoint.radius * 1.5
+                        width: connectionPoint.radius * 2 * 1.5
+                        height: connectionPoint.radius * 2 * 1.5
+
+                        onPressed: root.portPicked(connection.index, port.type)
+                    }
+
                     ShapePath {
                         fillColor: root.style.connectionPointColor
                         strokeWidth: root.strokeWidth
                         strokeColor: root.boundaryColor()
                         PathAngleArc {
-                            radiusX: root.style.connectionPointDiameter / 2
-                            radiusY: root.style.connectionPointDiameter / 2
+                            radiusX: connectionPoint.radius
+                            radiusY: connectionPoint.radius
                             startAngle: 0
                             sweepAngle: 360
-                        }
-                    }
-
-                    DragHandler {
-                        target: null
-                        grabPermissions: PointerHandler.CanTakeOverFromAnything | PointerHandler.ApprovesTakeOverByHandlersOfSameType
-                        cursorShape: Qt.CrossCursor
-                        onCentroidChanged: () => {
-                            console.log("moved: ");
-                        }
-                        onCanceled: {
-                            console.log("ended");
-                        }
-                        onGrabChanged: e => {
-                            console.log("grabchagned " + e);
                         }
                     }
                 }
@@ -149,13 +149,13 @@ Item {
 
     FontMetrics {
         id: fontMetrics
-        font.family: caption.font.family
-        font.bold: caption.font.bold
-        font.italic: caption.font.italic
+        font.family: captionText.font.family
+        font.bold: captionText.font.bold
+        font.italic: captionText.font.italic
     }
 
     Text {
-        id: caption
+        id: captionText
         text: root.caption
         color: root.style.fontColor
         font.bold: root.label == ""
