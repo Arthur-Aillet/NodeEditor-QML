@@ -54,34 +54,23 @@ MouseArea {
 
     Repeater {
         id: inOutRepeater
-        model: 2
-        delegate: Repeater {
-            id: side
+        property int inPortCount: ModelInterface.nodeData(root.nodeId, NodeRole.InPortCount)
+        model: inPortCount + ModelInterface.nodeData(root.nodeId, NodeRole.OutPortCount)
+        delegate: MouseArea {
             required property int index
+            property int portId: index % inOutRepeater.inPortCount
+            property var side: (index < inOutRepeater.inPortCount) ? PortType.In : PortType.Out
 
-            property var type: (side.index == 0) ? PortType.In : PortType.Out
-            model: ModelInterface.nodeData(root.nodeId, (side.index == 0) ? NodeRole.InPortCount : NodeRole.OutPortCount)
-            delegate: Item {
-                id: port
-                required property int index
+            property point pos: ModelInterface.nodeGeometry.portPosition(root.nodeId, side, portId)
+            property real radius: root.style.connectionPointDiameter * 0.6 // Diameter is used a the radius in the original
 
-                property point pos: ModelInterface.nodeGeometry.portPosition(root.nodeId, side.type, port.index)
-                property real radius: root.style.connectionPointDiameter * 0.6 // Diameter is used a the radius in the original
+            x: pos.x - radius * 1.5
+            y: pos.y - radius * 1.5
 
-                x: pos.x
-                y: pos.y
+            width: radius * 2 * 1.5
+            height: radius * 2 * 1.5
 
-                MouseArea {
-                    property real radius: root.style.connectionPointDiameter * 0.6 // Diameter is used a the radius in the original
-
-                    x: -radius * 1.5
-                    y: -radius * 1.5
-                    width: radius * 2 * 1.5
-                    height: radius * 2 * 1.5
-
-                    onPressed: root.portPicked(port.index, side.type)
-                }
-            }
+            onPressed: root.portPicked(portId, side)
         }
     }
 }
