@@ -21,9 +21,10 @@
 
 using QtNodes::NodeRole;
 
-static QtNodes::DataFlowGraphicsScene *startOriginalNodeEditor(QtNodes::DataFlowGraphModel &model, QWidget &mainWidget) {
+static QtNodes::DataFlowGraphicsScene *startOriginalNodeEditor(QtNodes::DataFlowGraphModel &model,
+                                                               QWidget &mainWidget) {
   QVBoxLayout *l = new QVBoxLayout(&mainWidget);
- 
+
   auto scene = new DataFlowGraphicsScene(model, &mainWidget);
 
   auto view = new GraphicsView(scene);
@@ -33,14 +34,13 @@ static QtNodes::DataFlowGraphicsScene *startOriginalNodeEditor(QtNodes::DataFlow
 
   QObject::connect(scene, &DataFlowGraphicsScene::sceneLoaded, view, &GraphicsView::centerScene);
 
-  QObject::connect(scene, &DataFlowGraphicsScene::modified, &mainWidget, [&mainWidget]() {
-      mainWidget.setWindowModified(true);
-  });
+  QObject::connect(scene, &DataFlowGraphicsScene::modified, &mainWidget,
+                   [&mainWidget]() { mainWidget.setWindowModified(true); });
   mainWidget.setWindowTitle("[*]CutieOriginal");
   mainWidget.resize(800, 600);
   // Center window.
-  mainWidget.move(QApplication::primaryScreen()->availableGeometry().center()
-                  - mainWidget.rect().center());
+  mainWidget.move(QApplication::primaryScreen()->availableGeometry().center() -
+                  mainWidget.rect().center());
   mainWidget.showNormal();
   return scene;
 }

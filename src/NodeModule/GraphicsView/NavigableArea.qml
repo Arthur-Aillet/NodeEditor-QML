@@ -17,15 +17,13 @@ Item {
         property real zoomedScale: (150 * zoom)
         property real offsetX: inner.mat.m14 + inner.x
         property real offsetY: inner.mat.m24 + inner.y
-        property real realtiveX: offsetX % zoomedScale - (offsetX > 0) * zoomedScale
-        property real realtiveY: offsetY % zoomedScale - (offsetY > 0) * zoomedScale
 
-        x: realtiveX
-        y: realtiveY
+        x: offsetX % zoomedScale - (offsetX > 0) * zoomedScale
+        y: offsetY % zoomedScale - (offsetY > 0) * zoomedScale
         antialiasing: zoom < 1
         smooth: zoom < 1
-        width: (parent.width - realtiveX) / zoom + 1 // + 1 to hide any rounding error
-        height: (parent.height - realtiveY) / zoom + 1
+        width: (parent.width - x) / zoom + 1 // + 1 to hide any rounding error
+        height: (parent.height - y) / zoom + 1
         transform: [
             Scale {
                 xScale: background.zoom

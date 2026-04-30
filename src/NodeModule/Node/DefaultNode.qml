@@ -17,14 +17,6 @@ Item {
     required property bool selected
     required property bool hovered
 
-    property string label: ModelInterface.nodeData(nodeId, NodeRole.Label)
-    property bool labelVisible: ModelInterface.nodeData(nodeId, NodeRole.LabelVisible)
-    property bool labelEditable: ModelInterface.nodeData(nodeId, NodeRole.LabelEditable)
-    property string caption: ModelInterface.nodeData(nodeId, NodeRole.Caption)
-    property bool captionVisible: ModelInterface.nodeData(nodeId, NodeRole.CaptionVisible)
-
-    property real ports: 3
-
     property real strokeWidth: root.hovered ? root.style.hoveredPenWidth : root.style.penWidth
 
     function boundaryColor(): color {
@@ -68,25 +60,10 @@ Item {
                     }
                 ]
             }
-            PathLine {
-                x: 0
-                y: 0
-            }
-            PathLine {
-                x: root.width
-                y: 0
-            }
-            PathLine {
-                x: root.width
-                y: root.height
-            }
-            PathLine {
-                x: 0
-                y: root.height
-            }
-            PathLine {
-                x: 0
-                y: 0
+            PathRectangle {
+                width: root.width
+                height: root.height
+                radius: 3.0
             }
         }
     }
@@ -107,24 +84,30 @@ Item {
                 property string caption: ModelInterface.portData(root.nodeId, port.type, connection.index, PortRole.Caption)
                 property bool captionVisible: ModelInterface.portData(root.nodeId, port.type, connection.index, PortRole.CaptionVisible)
                 property var dataType: ModelInterface.portData(root.nodeId, port.type, connection.index, PortRole.DataType)
-                property point pos: ModelInterface.nodeGeometry.portPosition(root.nodeId, port.type, connection.index)
-
-                x: pos.x
-                y: pos.y
 
                 Text {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: port.inPort ? parent.right : undefined
-                    anchors.right: port.inPort ? undefined : parent.left
-                    topPadding: -5
-                    leftPadding: 8
-                    rightPadding: 8
+                    id: portLabel
+                    property point pos: ModelInterface.nodeGeometry.portTextPosition(root.nodeId, port.type, connection.index)
+
+                    FontMetrics {
+                        id: portLabelMetrics
+                        font.family: portLabel.font.family
+                        font.bold: portLabel.font.bold
+                        font.italic: portLabel.font.italic
+                    }
+
+                    x: pos.x
+                    y: pos.y - portLabelMetrics.ascent
                     text: connection.dataType.name
-                    horizontalAlignment: port.inPort ? Text.AlignLeft : Text.AlignRight
                     color: connection.connected ? root.style.fontColor : root.style.fontColorFaded
                 }
 
                 Shape {
+                    property point pos: ModelInterface.nodeGeometry.portPosition(root.nodeId, port.type, connection.index)
+
+                    x: pos.x
+                    y: pos.y
+
                     containsMode: Shape.BoundingRectContains
                     ShapePath {
                         fillColor: root.style.connectionPointColor
@@ -157,21 +140,39 @@ Item {
         }
     }
 
+    property string label: ModelInterface.nodeData(nodeId, NodeRole.Label)
+    property bool labelEditable: ModelInterface.nodeData(nodeId, NodeRole.LabelEditable)
+    property string caption: ModelInterface.nodeData(nodeId, NodeRole.Caption)
+
+    property var capPos: ModelInterface.nodeGeometry.captionPosition(root.nodeId)
+    property var capRect: ModelInterface.nodeGeometry.captionRect(root.nodeId)
+
+    FontMetrics {
+        id: fontMetrics
+        font.family: caption.font.family
+        font.bold: caption.font.bold
+        font.italic: caption.font.italic
+    }
+
     Text {
+        id: caption
         text: root.caption
         color: root.style.fontColor
         font.bold: root.label == ""
         font.italic: root.label != ""
-        visible: root.captionVisible
-        anchors.horizontalCenter: parent.horizontalCenter
-        topPadding: 3
+        visible: ModelInterface.nodeData(root.nodeId, NodeRole.CaptionVisible)
+
+        x: parent.capPos.x + parent.capRect.width / 2.0 - fontMetrics.boundingRect(root.caption).width / 2.0
+        y: parent.capPos.y - fontMetrics.ascent
     }
 
     Text {
         text: root.label
         color: root.style.fontColor
-        visible: root.labelVisible
+        visible: ModelInterface.nodeData(root.nodeId, NodeRole.LabelVisible)
         anchors.horizontalCenter: parent.horizontalCenter
-        topPadding: 3
+
+        x: parent.capPos.x + parent.capRect.width / 2.0
+        y: parent.capPos.y - fontMetrics.height - 2.0 - fontMetrics.ascent
     }
 }

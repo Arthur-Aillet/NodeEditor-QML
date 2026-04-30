@@ -15,7 +15,7 @@ Frame {
         height: root.height
 
         Repeater {
-            delegate: DefaultConnection { 
+            delegate: DefaultConnection {
                 outPoint: Qt.point(150, 30)
                 inPoint: area.mousePosition
                 required property real inputId
@@ -41,23 +41,23 @@ Frame {
         }
     }
 
-    ContextMenu.menu: SceneMenu { 
-        id: menu 
+    ContextMenu.menu: SceneMenu {
+        id: menu
     }
 
     Connections {
         target: menu
         function onCreateNode(name: string) {
-            ModelInterface.createNode(name, area.inner.mapFromItem(root, Qt.point(menu.x, menu.y)))
+            ModelInterface.createNode(name, area.inner.mapFromItem(root, Qt.point(menu.x, menu.y)));
         }
     }
-    
+
     Connections {
         target: ModelInterface
 
         function onConnectionCreated(id: real) {
             connectionModel.append({
-                "inputId": id,
+                "inputId": id
             });
         }
 
@@ -65,7 +65,7 @@ Frame {
             nodeModel.append({
                 "inputId": id,
                 "inputX": 0,
-                "inputY": 0,
+                "inputY": 0
             });
         }
 
