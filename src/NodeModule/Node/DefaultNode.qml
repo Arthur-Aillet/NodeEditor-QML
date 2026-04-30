@@ -3,15 +3,13 @@ import QtQuick
 import QtQuick.Shapes 1.11
 import NodeModule
 
-Item {
+Shape {
     id: root
 
     required property real nodeId
     required property nodeStyle style
 
     property size size: ModelInterface.nodeGeometry.size(nodeId)
-
-    signal portPicked(portId: real, portType: real)
 
     width: size.width
     height: size.height
@@ -34,39 +32,37 @@ Item {
         }
     }
 
-    Shape {
-        ShapePath {
-            strokeWidth: root.strokeWidth
-            strokeColor: root.boundaryColor()
-            fillGradient: LinearGradient {
-                x1: 0.0
-                y1: 0.0
-                x2: 2.0
-                y2: root.height
-                stops: [
-                    GradientStop {
-                        position: 0.0
-                        color: root.style.gradientColor0
-                    },
-                    GradientStop {
-                        position: 0.10
-                        color: root.style.gradientColor1
-                    },
-                    GradientStop {
-                        position: 0.9
-                        color: root.style.gradientColor2
-                    },
-                    GradientStop {
-                        position: 1.0
-                        color: root.style.gradientColor3
-                    }
-                ]
-            }
-            PathRectangle {
-                width: root.width
-                height: root.height
-                radius: 3.0
-            }
+    ShapePath {
+        strokeWidth: root.strokeWidth
+        strokeColor: root.boundaryColor()
+        fillGradient: LinearGradient {
+            x1: 0.0
+            y1: 0.0
+            x2: 2.0
+            y2: root.height
+            stops: [
+                GradientStop {
+                    position: 0.0
+                    color: root.style.gradientColor0
+                },
+                GradientStop {
+                    position: 0.10
+                    color: root.style.gradientColor1
+                },
+                GradientStop {
+                    position: 0.9
+                    color: root.style.gradientColor2
+                },
+                GradientStop {
+                    position: 1.0
+                    color: root.style.gradientColor3
+                }
+            ]
+        }
+        PathRectangle {
+            width: root.width
+            height: root.height
+            radius: 3.0
         }
     }
 
@@ -74,23 +70,23 @@ Item {
         id: inOutRepeater
         model: 2
         delegate: Repeater {
-            id: port
-            property bool inPort: (port.index == 0)
-            property var type: port.inPort ? PortType.In : PortType.Out
-            model: ModelInterface.nodeData(root.nodeId, inPort ? NodeRole.InPortCount : NodeRole.OutPortCount)
+            id: side
             required property int index
+
+            property var type: (side.index == 0) ? PortType.In : PortType.Out
+            model: ModelInterface.nodeData(root.nodeId, (side.index == 0) ? NodeRole.InPortCount : NodeRole.OutPortCount)
             delegate: Item {
-                id: connection
+                id: port
                 required property int index
                 property bool connected: false
-                property var dataType: ModelInterface.portData(root.nodeId, port.type, connection.index, PortRole.DataType)
+                property var dataType: ModelInterface.portData(root.nodeId, side.type, port.index, PortRole.DataType)
 
                 Text {
                     id: portLabel
-                    property bool captionVisible: ModelInterface.portData(root.nodeId, port.type, connection.index, PortRole.CaptionVisible)
-                    property string caption: ModelInterface.portData(root.nodeId, port.type, connection.index, PortRole.Caption)
+                    property bool captionVisible: ModelInterface.portData(root.nodeId, side.type, port.index, PortRole.CaptionVisible)
+                    property string caption: ModelInterface.portData(root.nodeId, side.type, port.index, PortRole.Caption)
 
-                    property point pos: ModelInterface.nodeGeometry.portTextPosition(root.nodeId, port.type, connection.index)
+                    property point pos: ModelInterface.nodeGeometry.portTextPosition(root.nodeId, side.type, port.index)
 
                     FontMetrics {
                         id: portLabelMetrics
@@ -101,36 +97,26 @@ Item {
 
                     x: pos.x
                     y: pos.y - portLabelMetrics.ascent
-                    text: captionVisible ? caption : connection.dataType.name
-                    color: connection.connected ? root.style.fontColor : root.style.fontColorFaded
+                    text: captionVisible ? caption : port.dataType.name
+                    color: port.connected ? root.style.fontColor : root.style.fontColorFaded
                 }
 
                 Shape {
                     id: connectionPoint
-                    property point pos: ModelInterface.nodeGeometry.portPosition(root.nodeId, port.type, connection.index)
-                    property real radius: root.style.connectionPointDiameter * 0.6 // Diameter is used a the radius in the original
+                    property point pos: ModelInterface.nodeGeometry.portPosition(root.nodeId, side.type, port.index)
 
                     x: pos.x
                     y: pos.y
-
-                    containsMode: Shape.BoundingRectContains
-
-                    MouseArea {
-                        x: -connectionPoint.radius * 1.5
-                        y: -connectionPoint.radius * 1.5
-                        width: connectionPoint.radius * 2 * 1.5
-                        height: connectionPoint.radius * 2 * 1.5
-
-                        onPressed: root.portPicked(connection.index, port.type)
-                    }
 
                     ShapePath {
                         fillColor: root.style.connectionPointColor
                         strokeWidth: root.strokeWidth
                         strokeColor: root.boundaryColor()
                         PathAngleArc {
-                            radiusX: connectionPoint.radius
-                            radiusY: connectionPoint.radius
+                            property real radius: root.style.connectionPointDiameter * 0.6 // Diameter is used a the radius in the original
+
+                            radiusX: radius
+                            radiusY: radius
                             startAngle: 0
                             sweepAngle: 360
                         }

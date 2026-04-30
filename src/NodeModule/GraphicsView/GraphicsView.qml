@@ -55,15 +55,12 @@ Frame {
                 x: inputX
                 y: inputY
 
-                Connections {
-                    function onPortPicked(portId: real, portType: real) {
-                        console.log("picked!");
-                        root.selectedPort = {
-                            "portId": portId,
-                            "nodeId": node.nodeId,
-                            "portType": portType
-                        };
-                    }
+                onPortPicked: (portId, portType) => {
+                    root.selectedPort = {
+                        "portId": portId,
+                        "nodeId": node.nodeId,
+                        "portType": portType
+                    };
                 }
             }
             model: ListModel {

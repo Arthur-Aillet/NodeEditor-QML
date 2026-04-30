@@ -1,3 +1,4 @@
+pragma ComponentBehavior: Bound
 import QtQuick
 import NodeModule
 
@@ -49,9 +50,37 @@ MouseArea {
         style: root.style
         selected: root.focus
         hovered: root.hovered
-        Connections {
-            function onPortPicked(portId: real, portType: real) {
-                root.portPicked(portId, portType);
+    }
+
+    Repeater {
+        id: inOutRepeater
+        model: 2
+        delegate: Repeater {
+            id: side
+            required property int index
+
+            property var type: (side.index == 0) ? PortType.In : PortType.Out
+            model: ModelInterface.nodeData(root.nodeId, (side.index == 0) ? NodeRole.InPortCount : NodeRole.OutPortCount)
+            delegate: Item {
+                id: port
+                required property int index
+
+                property point pos: ModelInterface.nodeGeometry.portPosition(root.nodeId, side.type, port.index)
+                property real radius: root.style.connectionPointDiameter * 0.6 // Diameter is used a the radius in the original
+
+                x: pos.x
+                y: pos.y
+
+                MouseArea {
+                    property real radius: root.style.connectionPointDiameter * 0.6 // Diameter is used a the radius in the original
+
+                    x: -radius * 1.5
+                    y: -radius * 1.5
+                    width: radius * 2 * 1.5
+                    height: radius * 2 * 1.5
+
+                    onPressed: root.portPicked(port.index, side.type)
+                }
             }
         }
     }
