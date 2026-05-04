@@ -2,10 +2,11 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import NodeModule
+import StatsModule
 
 ApplicationWindow {
     id: root
-    width: 800
+    width: 1000
     height: 800
     visible: true
     title: qsTr("CutieDesigner!")
@@ -36,10 +37,8 @@ ApplicationWindow {
                 visible: true
                 SplitView.fillWidth: true
             }
-            Rectangle {
+            StatsView {
                 SplitView.preferredWidth: editView.width / 6
-                color: "purple"
-                opacity: 0
             }
         }
     }

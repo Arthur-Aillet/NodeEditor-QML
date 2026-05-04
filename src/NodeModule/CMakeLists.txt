@@ -29,6 +29,9 @@ qt_add_qml_module(NodeModule
   ./ModelInterface/NodeGeometryInterface.cpp
   ./ModelInterface/NodeGeometryInterface.hpp
   ./Style/QmlNodeStyle.hpp
+  ./Style/QmlConnectionStyle.hpp
+  ./Style/QmlGraphicsViewStyle.hpp
+  ./Style/StyleCollection.hpp
   ./Node/QmlDefinition.hpp
 )
 

@@ -1,4 +1,5 @@
 add_subdirectory(NodeModule)
+add_subdirectory(StatsModule)
 
 qt_add_executable(CutieDesigner
   main.cpp
@@ -8,7 +9,7 @@ qt_add_qml_module(CutieDesigner
   URI CutieDesignerModule
   QML_FILES
   Main.qml
-  DEPENDENCIES QtQuick QtQuick.Layout
+  DEPENDENCIES QtQuick QtQuick.Layout StatsModule NodeModule
 )
 
 target_link_directories(CutieDesigner
@@ -37,7 +38,7 @@ target_compile_definitions(CutieDesigner
   PRIVATE $<$<CONFIG:Debug>:QT_QML_DEBUG>)
 
 target_link_libraries(CutieDesigner
-  PRIVATE Qt6::Core Qt6::Gui Qt6::Quick Qt6::QuickWidgets Qt6::Qml QtNodes::QtNodes NodeModule
+  PRIVATE Qt6::Core Qt6::Gui Qt6::Quick Qt6::QuickWidgets Qt6::Qml QtNodes::QtNodes NodeModule StatsModule
 )
 
 install(TARGETS CutieDesigner

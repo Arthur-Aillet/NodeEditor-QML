@@ -46,7 +46,7 @@ static QtNodes::DataFlowGraphicsScene *startOriginalNodeEditor(QtNodes::DataFlow
 }
 
 int main(int argc, char *argv[]) {
-  qputenv("QT_QUICK_BACKEND", "software");
+  // qputenv("QT_QUICK_BACKEND", "software");
   QApplication app(argc, argv);
 
   auto ret = std::make_shared<QtNodes::NodeDelegateModelRegistry>();
