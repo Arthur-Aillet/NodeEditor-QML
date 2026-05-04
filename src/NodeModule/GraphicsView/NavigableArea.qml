@@ -6,7 +6,9 @@ Item {
     clip: true
     anchors.fill: parent
 
-    property var selectedPort: null
+    signal droppedItem
+
+    required property bool holdingItem
     property point mousePosition
 
     default property alias subdata: inner.data
@@ -37,16 +39,15 @@ Item {
         id: dragArea
         hoverEnabled: true
         anchors.fill: parent
-        drag.target: root.selectedPort == null ? inner : undefined
+        drag.target: root.holdingItem ? undefined : inner
         drag.filterChildren: true
         focusPolicy: Qt.WheelFocus
 
         onPositionChanged: root.mousePosition = mapToItem(inner, mouseX, mouseY)
 
         onReleased: {
-            if (root.selectedPort !== null) {
-                root.selectedPort = null;
-            }
+            if (root.holdingItem)
+                root.droppedItem();
         }
 
         property real zoomMax: 2

@@ -1,9 +1,8 @@
 #include "DataFlowModelInterface.hpp"
-#include "NodeData.hpp"
 #include "NodeModel.hpp"
-#include "QtNodes/internal/BasicGraphicsScene.hpp"
 #include "QtNodes/internal/DataFlowGraphModel.hpp"
 #include "QtNodes/internal/DataFlowGraphicsScene.hpp"
+#include "QtNodes/internal/Definitions.hpp"
 #include "QtNodes/internal/QmlWrapper.hpp"
 #include "ValueNodeModel.hpp"
 #include <QtNodes/BasicGraphicsScene>
@@ -16,6 +15,7 @@
 #include <QtWidgets/QApplication>
 #include <memory>
 #include <qboxlayout.h>
+#include <qqml.h>
 #include <qqmlapplicationengine.h>
 #include <qwidget.h>
 

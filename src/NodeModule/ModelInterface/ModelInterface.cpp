@@ -5,9 +5,9 @@ ModelInterface::ModelInterface(QtNodes::AbstractGraphModel &_graphModel)
     : QObject(nullptr), graphModel(_graphModel), undoStack(QUndoStack(this)),
       _nodeGeometry(std::make_unique<QtNodes::DefaultHorizontalNodeGeometry>(graphModel)) {
   connect(&graphModel, SIGNAL(connectionCreated(ConnectionId)), this,
-          SIGNAL(connectionCreated(ConnectionId)));
+          SLOT(forwardConnectionCreated(ConnectionId)));
   connect(&graphModel, SIGNAL(connectionDeleted(ConnectionId)), this,
-          SIGNAL(connectionDeleted(ConnectionId)));
+          SLOT(forwardConnectionDeleted(ConnectionId)));
   connect(&graphModel, SIGNAL(nodeCreated(NodeId)), this, SIGNAL(nodeCreated(NodeId)));
   connect(&graphModel, SIGNAL(nodeDeleted(NodeId)), this, SIGNAL(nodeDeleted(NodeId)));
   connect(&graphModel, SIGNAL(nodeUpdated(NodeId)), this, SIGNAL(nodeUpdated(NodeId)));

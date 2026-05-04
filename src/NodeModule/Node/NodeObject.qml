@@ -13,6 +13,9 @@ MouseArea {
     signal portPicked(portId: real, portType: real)
 
     required property real nodeId
+    required property var selectedPort
+    required property point mousePosition
+
     property nodeStyle style
     property bool hovered: root.hovered
 
@@ -50,6 +53,8 @@ MouseArea {
         style: root.style
         selected: root.focus
         hovered: root.hovered
+        selectedPort: root.selectedPort
+        mousePosition: root.mousePosition
     }
 
     Repeater {

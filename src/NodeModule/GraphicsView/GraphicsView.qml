@@ -8,19 +8,31 @@ Frame {
     visible: true
     clip: true
     padding: 1
-    property alias selectedPort: area.selectedPort
+
+    property var selectedPort: null
 
     NavigableArea {
         id: area
         width: root.width
         height: root.height
+        holdingItem: root.selectedPort !== null
+
+        onDroppedItem: {
+            root.selectedPort = null;
+        }
 
         Repeater {
             delegate: DefaultConnection {
-                outPoint: Qt.point(150, 30)
-                inPoint: area.mousePosition
-                required property real inputId
-                connectionId: inputId
+                required property real inputInNodeId
+                required property real inputInPortIndex
+                required property real inputOutNodeId
+                required property real inputOutPortIndex
+                inNodeId: inputInNodeId
+                inPortIndex: inputInPortIndex
+                outNodeId: inputOutNodeId
+                outPortIndex: inputOutPortIndex
+
+                mousePosition: area.mousePosition
             }
 
             model: ListModel {
@@ -32,16 +44,12 @@ Frame {
             id: temporaryConnection
             active: root.selectedPort !== null
             sourceComponent: DefaultConnection {
-                property var type: root.selectedPort["portType"]
-                outPoint: type == PortType.In ? area.mousePosition : getPosition()
-                inPoint: type == PortType.In ? getPosition() : area.mousePosition
-                connectionId: 0
+                mousePosition: area.mousePosition
 
-                function getPosition() {
-                    const portPos = ModelInterface.nodeGeometry.portPosition(root.selectedPort["nodeId"], type, root.selectedPort["portId"]);
-                    const nodePos = ModelInterface.nodeData(root.selectedPort["nodeId"], NodeRole.Position);
-                    return Qt.point(portPos.x + nodePos.x, portPos.y + nodePos.y);
-                }
+                inNodeId: root.selectedPort["portType"] == PortType.In ? root.selectedPort["nodeId"] : undefined
+                inPortIndex: root.selectedPort["portType"] == PortType.In ? root.selectedPort["portId"] : undefined
+                outNodeId: root.selectedPort["portType"] == PortType.In ? undefined : root.selectedPort["nodeId"]
+                outPortIndex: root.selectedPort["portType"] == PortType.In ? undefined : root.selectedPort["portId"]
             }
         }
 
@@ -54,6 +62,8 @@ Frame {
                 nodeId: inputId
                 x: inputX
                 y: inputY
+                selectedPort: root.selectedPort
+                mousePosition: area.mousePosition
 
                 onPortPicked: (portId, portType) => {
                     root.selectedPort = {
@@ -71,21 +81,20 @@ Frame {
 
     ContextMenu.menu: SceneMenu {
         id: menu
-    }
-
-    Connections {
-        target: menu
-        function onCreateNode(name: string) {
-            ModelInterface.createNode(name, area.inner.mapFromItem(root, Qt.point(menu.x, menu.y)));
+        onCreateNode: name => {
+            ModelInterface.createNode(name, area.inner.mapFromItem(root, Qt.point(x, y)));
         }
     }
 
     Connections {
         target: ModelInterface
 
-        function onConnectionCreated(id: real) {
+        function onConnectionCreated(inNodeId, inPortIndex, outNodeId, outPortIndex) {
             connectionModel.append({
-                "inputId": id
+                "inputInNodeId": inNodeId,
+                "inputInPortIndex": inPortIndex,
+                "inputOutNodeId": outNodeId,
+                "inputOutPortIndex": outPortIndex
             });
         }
 

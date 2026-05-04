@@ -8,6 +8,8 @@ Shape {
 
     required property real nodeId
     required property nodeStyle style
+    required property var selectedPort
+    required property point mousePosition
 
     property size size: ModelInterface.nodeGeometry.size(nodeId)
 
@@ -104,7 +106,7 @@ Shape {
                 y: pos.y
 
                 ShapePath {
-                    fillColor: root.style.connectionPointColor
+                    fillColor: root.selectedPort === null ? root.style.connectionPointColor : "red"
                     strokeWidth: root.strokeWidth
                     strokeColor: root.boundaryColor()
                     PathAngleArc {

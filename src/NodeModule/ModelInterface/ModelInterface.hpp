@@ -70,10 +70,23 @@ class ModelInterface : public QObject {
 
   Q_INVOKABLE bool deleteNode(const NodeId nodeId) { return graphModel.deleteNode(nodeId); }
 
+  public slots:
+  void forwardConnectionCreated(ConnectionId const connectionId) {
+    emit connectionCreated(connectionId.inNodeId, connectionId.inPortIndex, connectionId.outNodeId,
+                           connectionId.outPortIndex);
+  }
+
+  void forwardConnectionDeleted(ConnectionId const connectionId) {
+    emit connectionDeleted(connectionId.inNodeId, connectionId.inPortIndex, connectionId.outNodeId,
+                           connectionId.outPortIndex);
+  }
+
   Q_SIGNALS:
   void nodeGeometryInterfaceChanged();
-  void connectionCreated(ConnectionId const connectionId);
-  void connectionDeleted(ConnectionId const connectionId);
+  void connectionCreated(NodeId const inNodeId, QtNodes::PortIndex const inPortIndex,
+                         NodeId const outNodeId, QtNodes::PortIndex const outPortIndex);
+  void connectionDeleted(NodeId const inNodeId, QtNodes::PortIndex const inPortIndex,
+                         NodeId const outNodeId, QtNodes::PortIndex const outPortIndex);
   void nodeCreated(NodeId const nodeId);
   void nodeDeleted(NodeId const nodeId);
   void nodeUpdated(NodeId const nodeId);

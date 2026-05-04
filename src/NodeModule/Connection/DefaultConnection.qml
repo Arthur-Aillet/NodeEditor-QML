@@ -5,9 +5,33 @@ import NodeModule
 Shape {
     id: root
 
-    required property point inPoint
-    required property point outPoint
-    required property real connectionId
+    property point mousePosition
+
+    onMousePositionChanged: refresh()
+
+    function refresh() {
+        inPoint = getPosition(inNodeId, inPortIndex, PortType.In);
+        outPoint = getPosition(outNodeId, outPortIndex, PortType.Out);
+    }
+
+    function getPosition(node: var, port: var, type): point {
+        if (node == null || port == null) {
+            return mousePosition;
+        }
+
+        const portPos = ModelInterface.nodeGeometry.portPosition(node, type, port);
+        const nodePos = ModelInterface.nodeData(node, NodeRole.Position);
+        return Qt.point(portPos.x + nodePos.x, portPos.y + nodePos.y);
+    }
+
+    //undefined or int
+    required property var inNodeId
+    required property var inPortIndex
+    required property var outNodeId
+    required property var outPortIndex
+
+    property point inPoint: getPosition(inNodeId, inPortIndex, PortType.In)
+    property point outPoint: getPosition(outNodeId, outPortIndex, PortType.Out)
 
     property point c1
     property point c2
@@ -55,9 +79,12 @@ Shape {
     }
 
     ShapePath {
+        id: path
         fillColor: "transparent"
-        strokeWidth: 3
-        strokeColor: "red"
+        strokeWidth: 2
+        strokeColor: "grey"
+        strokeStyle: ShapePath.DashLine
+        dashPattern: [6, 2]
         PathCubic {
             x: root.inPoint.x - root.outPoint.x
             y: root.inPoint.y - root.outPoint.y
