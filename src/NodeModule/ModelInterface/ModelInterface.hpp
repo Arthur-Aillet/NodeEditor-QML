@@ -59,6 +59,11 @@ class ModelInterface : public QObject {
     return graphModel.setNodeData(nodeId, role, value);
   }
 
+  Q_INVOKABLE void createConnection(NodeId inNode, QtNodes::PortIndex inPort, NodeId outNode,
+                                    QtNodes::PortIndex outPort) {
+    undoStack.push(new ConnectCommand(this, ConnectionId{outNode, outPort, inNode, inPort}));
+  }
+
   Q_INVOKABLE void createNode(QString const nodeType, QPoint const &scenePos) {
     undoStack.push(new CreateCommand(this, nodeType, scenePos));
   }

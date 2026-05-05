@@ -18,6 +18,39 @@ Frame {
         holdingItem: root.selectedPort !== null
 
         onDroppedItem: {
+            const selected = root.selectedPort;
+            if (selected) {
+                const oppositeCount = selected.portType == PortType.In ? NodeRole.OutPortCount : NodeRole.InPortCount;
+                const oppositeSide = selected.portType == PortType.In ? PortType.Out : PortType.In;
+
+                for (let i = 0; i < nodes.count; ++i) {
+                    const node = nodes.itemAt(i) as NodeObject;
+                    if (node.nodeId != selected.nodeId) {
+                        const ports = ModelInterface.nodeData(node.nodeId, oppositeCount);
+                        if (ports < 1)
+                            continue;
+                        for (let j = 0; j < ports; j++) {
+                            const relativePortPos = ModelInterface.nodeGeometry.portPosition(node.nodeId, oppositeSide, j);
+
+                            const pos = Qt.point(relativePortPos.x + node.x, relativePortPos.y + node.y);
+                            const diff = Qt.vector2d(pos.x - mousePosition.x, pos.y - mousePosition.y);
+                            const dist = Math.sqrt(diff.dotProduct(diff));
+
+                            const style = node.style;
+                            const tolerance = style.connectionPointDiameter * 2.0;
+
+                            if (dist < tolerance) {
+                                if (selected.portType == PortType.In)
+                                    ModelInterface.createConnection(selected.nodeId, selected.portId, node.nodeId, j);
+                                else
+                                    ModelInterface.createConnection(node.nodeId, j, selected.nodeId, selected.portId);
+                                root.selectedPort = null;
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
             root.selectedPort = null;
         }
 
@@ -56,6 +89,7 @@ Frame {
         }
 
         Repeater {
+            id: nodes
             delegate: NodeObject {
                 id: node
                 required property real modelId

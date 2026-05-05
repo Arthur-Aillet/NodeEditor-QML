@@ -10,89 +10,81 @@
 #include <QtWidgets/QGraphicsObject>
 #include <qdebug.h>
 
+static void insertSerializedItems(QJsonObject const &json, ModelInterface *interface) {
+  QtNodes::AbstractGraphModel &graphModel = interface->graphModel;
 
-static void insertSerializedItems(QJsonObject const &json, ModelInterface *interface)
-{
-    QtNodes::AbstractGraphModel &graphModel = interface->graphModel;
+  QJsonArray const &nodesJsonArray = json["nodes"].toArray();
 
-    QJsonArray const &nodesJsonArray = json["nodes"].toArray();
+  for (QJsonValue node : nodesJsonArray) {
+    QJsonObject obj = node.toObject();
 
-    for (QJsonValue node : nodesJsonArray) {
-        QJsonObject obj = node.toObject();
+    graphModel.loadNode(obj);
 
-        graphModel.loadNode(obj);
+    auto id = obj["id"].toInt();
+    // interface->nodeGraphicsObject(id)->setZValue(1.0);
+    // interface->nodeGraphicsObject(id)->setSelected(true);
+  }
 
-        auto id = obj["id"].toInt();
-        //interface->nodeGraphicsObject(id)->setZValue(1.0);
-        //interface->nodeGraphicsObject(id)->setSelected(true);
-    }
+  QJsonArray const &connJsonArray = json["connections"].toArray();
 
-    QJsonArray const &connJsonArray = json["connections"].toArray();
+  for (QJsonValue connection : connJsonArray) {
+    QJsonObject connJson = connection.toObject();
 
-    for (QJsonValue connection : connJsonArray) {
-        QJsonObject connJson = connection.toObject();
+    ConnectionId connId = QtNodes::fromJson(connJson);
 
-        ConnectionId connId = QtNodes::fromJson(connJson);
+    // Restore the connection
+    graphModel.addConnection(connId);
 
-        // Restore the connection
-        graphModel.addConnection(connId);
+    // interface->connectionGraphicsObject(connId)->setSelected(true);
+  }
 
-        //interface->connectionGraphicsObject(connId)->setSelected(true);
-    }
+  // if (json.contains("groups")) {
+  //     QJsonArray groupsJsonArray = json["groups"].toArray();
 
-    // if (json.contains("groups")) {
-    //     QJsonArray groupsJsonArray = json["groups"].toArray();
+  //     for (const QJsonValue &groupValue : groupsJsonArray) {
+  //         QJsonObject groupJson = groupValue.toObject();
 
-    //     for (const QJsonValue &groupValue : groupsJsonArray) {
-    //         QJsonObject groupJson = groupValue.toObject();
+  //         QString name = QString("Group %1").arg(QtNodes::NodeGroup::groupCount());
+  //         QJsonArray nodeIdsJson = groupJson["nodes"].toArray();
 
-    //         QString name = QString("Group %1").arg(QtNodes::NodeGroup::groupCount());
-    //         QJsonArray nodeIdsJson = groupJson["nodes"].toArray();
+  //         std::vector<NodeGraphicsObject *> groupNodes;
 
-    //         std::vector<NodeGraphicsObject *> groupNodes;
+  //         for (const QJsonValue &idVal : nodeIdsJson) {
+  //             NodeId nodeId = static_cast<NodeId>(idVal.toInt());
+  //             if (auto *ngo = scene->nodeGraphicsObject(nodeId)) {
+  //                 groupNodes.push_back(ngo);
+  //             }
+  //         }
 
-    //         for (const QJsonValue &idVal : nodeIdsJson) {
-    //             NodeId nodeId = static_cast<NodeId>(idVal.toInt());
-    //             if (auto *ngo = scene->nodeGraphicsObject(nodeId)) {
-    //                 groupNodes.push_back(ngo);
-    //             }
-    //         }
-
-    //         scene->createGroup(groupNodes, name);
-    //     }
-    // }
+  //         scene->createGroup(groupNodes, name);
+  //     }
+  // }
 }
 
-CreateCommand::CreateCommand(ModelInterface *interface,
-                             QString const name,
-                             QPointF const &mousePos)
-    : _interface(interface)
-    , _sceneJson(QJsonObject())
-{
-    _nodeId = _interface->graphModel.addNode(name);
-    if (_nodeId != QtNodes::InvalidNodeId) {
-        _interface->graphModel.setNodeData(_nodeId, QtNodes::NodeRole::Position, mousePos);
-    } else {
-        setObsolete(true);
-    }
+CreateCommand::CreateCommand(ModelInterface *interface, QString const name, QPointF const &mousePos)
+    : _interface(interface), _sceneJson(QJsonObject()) {
+  _nodeId = _interface->graphModel.addNode(name);
+  if (_nodeId != QtNodes::InvalidNodeId) {
+    _interface->graphModel.setNodeData(_nodeId, QtNodes::NodeRole::Position, mousePos);
+  } else {
+    setObsolete(true);
+  }
 }
 
-void CreateCommand::undo()
-{
-    qDebug() << "undo";
-    QJsonArray nodesJsonArray;
-    nodesJsonArray.append(_interface->graphModel.saveNode(_nodeId));
-    _sceneJson["nodes"] = nodesJsonArray;
+void CreateCommand::undo() {
+  qDebug() << "undo";
+  QJsonArray nodesJsonArray;
+  nodesJsonArray.append(_interface->graphModel.saveNode(_nodeId));
+  _sceneJson["nodes"] = nodesJsonArray;
 
-    _interface->graphModel.deleteNode(_nodeId);
+  _interface->graphModel.deleteNode(_nodeId);
 }
 
-void CreateCommand::redo()
-{
-    if (_sceneJson.empty() || _sceneJson["nodes"].toArray().empty())
-        return;
+void CreateCommand::redo() {
+  if (_sceneJson.empty() || _sceneJson["nodes"].toArray().empty())
+    return;
 
-    insertSerializedItems(_sceneJson, _interface);
+  insertSerializedItems(_sceneJson, _interface);
 }
 
 //-------------------------------------
@@ -394,24 +386,17 @@ void DisconnectCommand::redo()
 }
 
 //------
-
-ConnectCommand::ConnectCommand(BasicGraphicsScene *scene, ConnectionId const connId)
-    : _scene(scene)
-    , _connId(connId)
-{
-    //
+*/
+ConnectCommand::ConnectCommand(ModelInterface *scene, ConnectionId const connId)
+    : _scene(scene), _connId(connId) {
+  //
 }
 
-void ConnectCommand::undo()
-{
-    _scene->graphModel().deleteConnection(_connId);
-}
+void ConnectCommand::undo() { _scene->graphModel.deleteConnection(_connId); }
 
-void ConnectCommand::redo()
-{
-    _scene->graphModel().addConnection(_connId);
-}
+void ConnectCommand::redo() { _scene->graphModel.addConnection(_connId); }
 
+/*
 //------
 
 MoveNodeCommand::MoveNodeCommand(BasicGraphicsScene *scene, QPointF const &diff)

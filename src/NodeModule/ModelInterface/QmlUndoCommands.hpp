@@ -10,23 +10,36 @@ using QtNodes::NodeId;
 
 class ModelInterface;
 
-class CreateCommand : public QUndoCommand
-{
-public:
-    CreateCommand(ModelInterface *interface, QString const name, QPointF const &mouseScenePos);
+class CreateCommand : public QUndoCommand {
+  public:
+  CreateCommand(ModelInterface *interface, QString const name, QPointF const &mouseScenePos);
 
-    void undo() override;
-    void redo() override;
+  void undo() override;
+  void redo() override;
 
-private:
-    ModelInterface *_interface;
-    NodeId _nodeId;
-    QJsonObject _sceneJson;
+  private:
+  ModelInterface *_interface;
+  NodeId _nodeId;
+  QJsonObject _sceneJson;
 };
+
+class ConnectCommand : public QUndoCommand {
+  public:
+  ConnectCommand(ModelInterface *scene, ConnectionId const);
+
+  void undo() override;
+  void redo() override;
+
+  private:
+  ModelInterface *_scene;
+
+  ConnectionId _connId;
+};
+
 /**
-* Selected scene objects are serialized and then removed from the scene.
-* The deleted elements could be restored in `undo`.
-*/
+ * Selected scene objects are serialized and then removed from the scene.
+ * The deleted elements could be restored in `undo`.
+ */
 /*
 class NODE_EDITOR_PUBLIC DeleteCommand : public QUndoCommand
 {
@@ -79,20 +92,6 @@ private:
     ConnectionId _connId;
 };
 
-class NODE_EDITOR_PUBLIC ConnectCommand : public QUndoCommand
-{
-public:
-    ConnectCommand(ModelInterface *scene, ConnectionId const);
-
-    void undo() override;
-    void redo() override;
-
-private:
-    ModelInterface *_scene;
-
-    ConnectionId _connId;
-};
-
 class NODE_EDITOR_PUBLIC MoveNodeCommand : public QUndoCommand
 {
 public:
@@ -102,15 +101,15 @@ public:
     void redo() override;
 */
 
-    /**
-   * A command ID is used in command compression. It must be an integer unique to
-   * this command's class, or -1 if the command doesn't support compression.
-   */
-    //int id() const override;
+/**
+ * A command ID is used in command compression. It must be an integer unique to
+ * this command's class, or -1 if the command doesn't support compression.
+ */
+// int id() const override;
 
-    /**
-   * Several sequential movements could be merged into one command.
-   *//*
+/**
+ * Several sequential movements could be merged into one command.
+ *//*
     bool mergeWith(QUndoCommand const *c) override;
 
 private:
