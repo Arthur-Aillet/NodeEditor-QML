@@ -3,6 +3,7 @@ qt_add_qml_module(StatsModule
   QML_FILES
   StatsView.qml
   SimpleFpsCounter.qml
+  PaneBackground.qml
   DEPENDENCIES QtQuick
   SOURCES
   ./FrequencyMonitor/FrequencyMonitor.cpp

@@ -28,9 +28,8 @@ ApplicationWindow {
             SplitView.preferredWidth: root.width
             SplitView.preferredHeight: root.height / 2
             orientation: Qt.Horizontal
-            Rectangle {
+            PaneBackground {
                 SplitView.preferredWidth: editView.width / 6
-                color: "green"
             }
             GraphicsView {
                 id: graphicsView
