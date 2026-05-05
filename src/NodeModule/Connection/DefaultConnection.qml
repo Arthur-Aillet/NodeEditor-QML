@@ -30,8 +30,8 @@ Shape {
     property var outNodePos: outNodeId !== undefined ? ModelInterface.nodeData(outNodeId, NodeRole.Position) : undefined
     property var outPortPos: outNodeId !== undefined ? ModelInterface.nodeGeometry.portPosition(outNodeId, PortType.Out, outPortIndex) : undefined
 
-    property point inPoint: inNodeId === undefined ? root.mousePosition : Qt.point(inPortPos.x + inNodePos.x, inPortPos.y + inNodePos.y)
-    property point outPoint: outNodeId === undefined ? root.mousePosition : Qt.point(outPortPos.x + outNodePos.x, outPortPos.y + outNodePos.y)
+    property point inPoint: inNodeId === undefined ? mousePosition : Qt.point(inPortPos.x + inNodePos.x, inPortPos.y + inNodePos.y)
+    property point outPoint: outNodeId === undefined ? mousePosition : Qt.point(outPortPos.x + outNodePos.x, outPortPos.y + outNodePos.y)
 
     property point c1
     property point c2
@@ -73,19 +73,56 @@ Shape {
         c1 = Qt.point(inPoint.x - horizontalOffset, inPoint.y - verticalOffset);
         c2 = Qt.point(outPoint.x + horizontalOffset, outPoint.y + verticalOffset);
     }
-    antialiasing: true
-    smooth: true
     preferredRendererType: Shape.CurveRenderer
+
+    property bool fullyConnected: root.inNodeId !== undefined && root.outNodeId !== undefined
+    property bool hovered: false
+
+    onMousePositionChanged: {
+        const steps = 40;
+        for (let i = 0; i != steps; i++) {
+            const pointAlong = path.pointAtPercent(1 / steps * i);
+            const diff = Qt.vector2d(pointAlong.x - mousePosition.x, pointAlong.y - mousePosition.y);
+            const dist = Math.sqrt(diff.dotProduct(diff));
+            if (dist < 8) { // Incoporate Connection Style
+                hovered = true;
+                return;
+            } else {
+                hovered = false;
+            }
+        }
+    }
+
+    ShapePath {
+        id: outline
+
+        startX: root.inPoint.x
+        startY: root.inPoint.y
+        fillColor: "transparent"
+        strokeWidth: 4
+        strokeColor: root.fullyConnected && root.hovered ? "white" : "transparent"
+        strokeStyle: ShapePath.SolidLine
+        dashPattern: [6, 2]
+        PathCubic {
+            x: root.outPoint.x
+            y: root.outPoint.y
+            control1X: root.c1.x
+            control1Y: root.c1.y
+            control2X: root.c2.x
+            control2Y: root.c2.y
+        }
+    }
 
     ShapePath {
         id: path
         property bool swapped: root.inNodeId === undefined
+
         startX: swapped ? root.outPoint.x : root.inPoint.x
         startY: swapped ? root.outPoint.y : root.inPoint.y
         fillColor: "transparent"
         strokeWidth: 2
-        strokeColor: "grey"
-        strokeStyle: ShapePath.DashLine
+        strokeColor: root.fullyConnected ? "teal" : "grey"
+        strokeStyle: root.fullyConnected ? ShapePath.SolidLine : ShapePath.DashLine
         dashPattern: [6, 2]
         PathCubic {
             x: path.swapped ? root.inPoint.x : root.outPoint.x
