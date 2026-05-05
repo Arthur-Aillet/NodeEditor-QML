@@ -4,55 +4,21 @@ import NodeModule
 
 Shape {
     id: root
-
+    focus: true
     property point mousePosition
-
-    function getPosition(node: var, port: var, type): point {
-        if (node == null || port == null) {
-            return mousePosition;
-        }
-
-        const portPos = ModelInterface.nodeGeometry.portPosition(node, type, port);
-        const nodePos = ModelInterface.nodeData(node, NodeRole.Position);
-        return Qt.point(portPos.x + nodePos.x, portPos.y + nodePos.y);
-    }
-
-    enum MouseConnectedTo {
-        In,
-        Out,
-        None
-    }
-
-    Binding on inPoint {
-        when: root.mouseState == DefaultConnection.MouseConnectedTo.In
-        value: root.mousePosition
-    }
-
-    Binding on inPoint {
-        when: root.mouseState != DefaultConnection.MouseConnectedTo.In
-        value: root.getPosition(root.inNodeId, root.inPortIndex, PortType.In)
-    }
-
-    Binding on outPoint {
-        when: root.mouseState == DefaultConnection.MouseConnectedTo.Out
-        value: root.mousePosition
-    }
-
-    Binding on outPoint {
-        when: root.mouseState != DefaultConnection.MouseConnectedTo.Out
-        value: root.getPosition(root.outNodeId, root.outPortIndex, PortType.Out)
-    }
-
-    property int mouseState: inNodeId == null ? DefaultConnection.MouseConnectedTo.In : (outNodeId == null ? DefaultConnection.MouseConnectedTo.Out : DefaultConnection.MouseConnectedTo.None)
 
     //undefined or int
     required property var inNodeId
     required property var inPortIndex
+    required property var inNodePos
+    property var inPortPos: inNodeId !== undefined ? ModelInterface.nodeGeometry.portPosition(inNodeId, PortType.In, inPortIndex) : undefined
     required property var outNodeId
     required property var outPortIndex
+    required property var outNodePos
+    property var outPortPos: outNodeId !== undefined ? ModelInterface.nodeGeometry.portPosition(outNodeId, PortType.Out, outPortIndex) : undefined
 
-    property point inPoint
-    property point outPoint
+    property point inPoint: inNodeId === undefined ? root.mousePosition : Qt.point(inPortPos.x + inNodePos.x, inPortPos.y + inNodePos.y)
+    property point outPoint: outNodeId === undefined ? root.mousePosition : Qt.point(outPortPos.x + outNodePos.x, outPortPos.y + outNodePos.y)
 
     property point c1
     property point c2
@@ -60,9 +26,9 @@ Shape {
     x: Math.min(inPoint.x, outPoint.x, c1.x, c2.x)
     y: Math.min(inPoint.y, outPoint.y, c1.y, c2.y)
 
-    property bool horizontal: true
     readonly property real defaultOffset: 200
 
+    property bool horizontal: true
     onInPointChanged: horizontal ? pointsC1C2Horizontal() : pointsC1C2Vertical()
     onOutPointChanged: horizontal ? pointsC1C2Horizontal() : pointsC1C2Vertical()
 
@@ -78,8 +44,8 @@ Shape {
             ratioX = 1.0;
         }
         horizontalOffset *= ratioX;
-        c1 = Qt.point(outPoint.x + horizontalOffset, outPoint.y + verticalOffset);
-        c2 = Qt.point(inPoint.x - horizontalOffset, inPoint.y - verticalOffset);
+        c1 = Qt.point(inPoint.x - horizontalOffset, inPoint.y - verticalOffset);
+        c2 = Qt.point(outPoint.x + horizontalOffset, outPoint.y + verticalOffset);
     }
 
     function pointsC1C2Vertical() {
@@ -94,28 +60,29 @@ Shape {
             ratioY = 1.0;
         }
         verticalOffset *= ratioY;
-        c1 = Qt.point(outPoint.x + horizontalOffset, outPoint.y + verticalOffset);
-        c2 = Qt.point(inPoint.x - horizontalOffset, inPoint.y - verticalOffset);
+        c1 = Qt.point(inPoint.x - horizontalOffset, inPoint.y - verticalOffset);
+        c2 = Qt.point(outPoint.x + horizontalOffset, outPoint.y + verticalOffset);
     }
     antialiasing: true
     smooth: true
 
     ShapePath {
         id: path
-        startX: root.outPoint.x - root.x
-        startY: root.outPoint.y - root.y
+        property bool swapped: root.inNodeId === undefined
+        startX: (swapped ? root.outPoint.x : root.inPoint.x) - root.x
+        startY: (swapped ? root.outPoint.y : root.inPoint.y) - root.y
         fillColor: "transparent"
         strokeWidth: 2
         strokeColor: "grey"
         strokeStyle: ShapePath.DashLine
         dashPattern: [6, 2]
         PathCubic {
-            x: root.inPoint.x - root.x
-            y: root.inPoint.y - root.y
-            control1X: root.c1.x - root.x
-            control1Y: root.c1.y - root.y
-            control2X: root.c2.x - root.x
-            control2Y: root.c2.y - root.y
+            x: (path.swapped ? root.inPoint.x : root.outPoint.x) - root.x
+            y: (path.swapped ? root.inPoint.y : root.outPoint.y) - root.y
+            control1X: (path.swapped ? root.c2.x : root.c1.x) - root.x
+            control1Y: (path.swapped ? root.c2.y : root.c1.y) - root.y
+            control2X: (path.swapped ? root.c1.x : root.c2.x) - root.x
+            control2Y: (path.swapped ? root.c1.y : root.c2.y) - root.y
         }
     }
 }

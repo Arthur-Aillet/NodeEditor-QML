@@ -16,10 +16,19 @@ MouseArea {
     required property var selectedPort
     required property point mousePosition
 
+    onSelectedPortChanged: {
+        if (selectedPort == null) {
+            focusPolicy = Qt.StrongFocus;
+        } else {
+            focus = false;
+            focusPolicy = Qt.NoFocus;
+        }
+    }
+
     property nodeStyle style
     property bool hovered: root.hovered
 
-    Component.onCompleted: () => {
+    Component.onCompleted: {
         const json = ModelInterface.nodeData(nodeId, NodeRole.Style);
         style.loadJson(json);
     }
@@ -36,10 +45,6 @@ MouseArea {
         onActiveChanged: {
             if (drag.active) {
                 focus = true;
-            }
-
-            if (!drag.active) {
-                ModelInterface.setNodeData(nodeId, NodeRole.Position, Qt.point(x, y));
             }
         }
     }
