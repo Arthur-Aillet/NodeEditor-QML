@@ -67,6 +67,7 @@ MouseArea {
         hovered: root.hovered
         selectedPort: root.selectedPort
         mousePosition: root.mousePosition
+        nodePosition: Qt.point(root.x, root.y)
     }
 
     Repeater {

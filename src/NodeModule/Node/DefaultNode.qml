@@ -10,6 +10,7 @@ Shape {
     required property nodeStyle style
     required property var selectedPort
     required property point mousePosition
+    required property point nodePosition
 
     property size size: ModelInterface.nodeGeometry.size(nodeId)
 
@@ -100,18 +101,39 @@ Shape {
             }
 
             Shape {
+                id: connectionPoint
                 property point pos: ModelInterface.nodeGeometry.portPosition(root.nodeId, port.side, port.portId)
 
                 x: pos.x
                 y: pos.y
 
                 ShapePath {
-                    fillColor: root.selectedPort === null ? root.style.connectionPointColor : "red"
+                    fillColor: root.style.connectionPointColor
                     strokeWidth: root.strokeWidth
                     strokeColor: root.boundaryColor()
                     PathAngleArc {
                         property real radius: root.style.connectionPointDiameter * 0.6 // Diameter is used a the radius in the original
 
+                        Binding on radius {
+                            when: root.selectedPort !== null
+                            value: {
+                                if (root.selectedPort === null || root.selectedPort.portType == port.side)
+                                    return root.style.connectionPointDiameter * 0.6;
+                                const pos = Qt.point(root.nodePosition.x + connectionPoint.pos.x, root.nodePosition.y + connectionPoint.pos.y);
+                                const diff = Qt.vector2d(root.mousePosition.x - pos.x, root.mousePosition.y - pos.y);
+                                const dist = Math.sqrt(diff.dotProduct(diff));
+
+                                let r;
+                                if (root.selectedPort.nodeId != root.nodeId) {
+                                    const thres = 40.0;
+                                    r = (dist < thres) ? (2.0 - dist / thres) : 1.0;
+                                } else {
+                                    const thres = 80.0;
+                                    r = (dist < thres) ? (dist / thres) : 1.0;
+                                }
+                                return root.style.connectionPointDiameter * 0.6 * r;
+                            }
+                        }
                         radiusX: radius
                         radiusY: radius
                         startAngle: 0

@@ -46,12 +46,12 @@ Frame {
             sourceComponent: DefaultConnection {
                 mousePosition: area.mousePosition
 
-                property bool isPortInput: root.selectedPort["portType"] == PortType.In
+                property bool isPortInput: root.selectedPort.portType == PortType.In
 
-                inNodeId: isPortInput ? root.selectedPort["nodeId"] : undefined
-                inPortIndex: isPortInput ? root.selectedPort["portId"] : undefined
-                outNodeId: isPortInput ? undefined : root.selectedPort["nodeId"]
-                outPortIndex: isPortInput ? undefined : root.selectedPort["portId"]
+                inNodeId: isPortInput ? root.selectedPort.nodeId : undefined
+                inPortIndex: isPortInput ? root.selectedPort.portId : undefined
+                outNodeId: isPortInput ? undefined : root.selectedPort.nodeId
+                outPortIndex: isPortInput ? undefined : root.selectedPort.portId
             }
         }
 
