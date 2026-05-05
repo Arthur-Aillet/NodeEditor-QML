@@ -2,7 +2,6 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
 import NodeModule
-import Qt.labs.synchronizer
 
 Frame {
     id: root
@@ -47,22 +46,12 @@ Frame {
             sourceComponent: DefaultConnection {
                 mousePosition: area.mousePosition
 
-                function getNodePosition(nodeId: real): point {
-                    for (let i = 0; i < nodeModel.count; ++i) {
-                        if (nodeModel.get(i).modelId == nodeId) {
-                            return Qt.point(nodeModel.get(i).posX, nodeModel.get(i).posY);
-                        }
-                    }
-                }
-
                 property bool isPortInput: root.selectedPort["portType"] == PortType.In
 
                 inNodeId: isPortInput ? root.selectedPort["nodeId"] : undefined
                 inPortIndex: isPortInput ? root.selectedPort["portId"] : undefined
-                inNodePos: isPortInput ? getNodePosition(inNodeId) : undefined
                 outNodeId: isPortInput ? undefined : root.selectedPort["nodeId"]
                 outPortIndex: isPortInput ? undefined : root.selectedPort["portId"]
-                outNodePos: isPortInput ? undefined : getNodePosition(outNodeId)
             }
         }
 
@@ -73,19 +62,9 @@ Frame {
                 required property real posX
                 required property real posY
                 nodeId: modelId
+                x: posX
+                y: posY
 
-                Synchronizer on x {
-                    targetObject: nodeModel.get(node.modelId)
-                    targetProperty: "posX"
-
-                    property alias source: node.posX
-                }
-                Synchronizer on y {
-                    targetObject: nodeModel.get(node.modelId)
-                    targetProperty: "posY"
-
-                    property alias source: node.posY
-                }
                 selectedPort: root.selectedPort
                 mousePosition: area.mousePosition
 

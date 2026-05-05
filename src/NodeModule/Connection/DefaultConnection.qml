@@ -7,14 +7,27 @@ Shape {
     focus: true
     property point mousePosition
 
+    Connections {
+        target: ModelInterface
+
+        function onNodePositionUpdated(id: real) {
+            if (id == root.inNodeId) {
+                root.inNodePos = ModelInterface.nodeData(id, NodeRole.Position);
+            }
+            if (id == root.outNodeId) {
+                root.outNodePos = ModelInterface.nodeData(id, NodeRole.Position);
+            }
+        }
+    }
+
     //undefined or int
     required property var inNodeId
     required property var inPortIndex
-    required property var inNodePos
+    property var inNodePos: inNodeId !== undefined ? ModelInterface.nodeData(inNodeId, NodeRole.Position) : undefined
     property var inPortPos: inNodeId !== undefined ? ModelInterface.nodeGeometry.portPosition(inNodeId, PortType.In, inPortIndex) : undefined
     required property var outNodeId
     required property var outPortIndex
-    required property var outNodePos
+    property var outNodePos: outNodeId !== undefined ? ModelInterface.nodeData(outNodeId, NodeRole.Position) : undefined
     property var outPortPos: outNodeId !== undefined ? ModelInterface.nodeGeometry.portPosition(outNodeId, PortType.Out, outPortIndex) : undefined
 
     property point inPoint: inNodeId === undefined ? root.mousePosition : Qt.point(inPortPos.x + inNodePos.x, inPortPos.y + inNodePos.y)

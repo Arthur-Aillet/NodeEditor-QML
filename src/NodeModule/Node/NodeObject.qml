@@ -39,6 +39,13 @@ MouseArea {
         }
     }
 
+    onXChanged: {
+        ModelInterface.setNodeData(nodeId, NodeRole.Position, Qt.point(x, y));
+    }
+    onYChanged: {
+        ModelInterface.setNodeData(nodeId, NodeRole.Position, Qt.point(x, y));
+    }
+
     drag {
         filterChildren: true
         target: root.focus ? root : undefined
