@@ -1,18 +1,11 @@
 import QtQuick
-import QtQuick.Shapes 1.11
+import QtQuick.Shapes
 import NodeModule
 
 Shape {
     id: root
 
     property point mousePosition
-
-    onMousePositionChanged: refresh()
-
-    function refresh() {
-        inPoint = getPosition(inNodeId, inPortIndex, PortType.In);
-        outPoint = getPosition(outNodeId, outPortIndex, PortType.Out);
-    }
 
     function getPosition(node: var, port: var, type): point {
         if (node == null || port == null) {
@@ -24,24 +17,51 @@ Shape {
         return Qt.point(portPos.x + nodePos.x, portPos.y + nodePos.y);
     }
 
+    enum MouseConnectedTo {
+        In,
+        Out,
+        None
+    }
+
+    Binding on inPoint {
+        when: root.mouseState == DefaultConnection.MouseConnectedTo.In
+        value: root.mousePosition
+    }
+
+    Binding on inPoint {
+        when: root.mouseState != DefaultConnection.MouseConnectedTo.In
+        value: root.getPosition(root.inNodeId, root.inPortIndex, PortType.In)
+    }
+
+    Binding on outPoint {
+        when: root.mouseState == DefaultConnection.MouseConnectedTo.Out
+        value: root.mousePosition
+    }
+
+    Binding on outPoint {
+        when: root.mouseState != DefaultConnection.MouseConnectedTo.Out
+        value: root.getPosition(root.outNodeId, root.outPortIndex, PortType.Out)
+    }
+
+    property int mouseState: inNodeId == null ? DefaultConnection.MouseConnectedTo.In : (outNodeId == null ? DefaultConnection.MouseConnectedTo.Out : DefaultConnection.MouseConnectedTo.None)
+
     //undefined or int
     required property var inNodeId
     required property var inPortIndex
     required property var outNodeId
     required property var outPortIndex
 
-    property point inPoint: getPosition(inNodeId, inPortIndex, PortType.In)
-    property point outPoint: getPosition(outNodeId, outPortIndex, PortType.Out)
+    property point inPoint
+    property point outPoint
 
     property point c1
     property point c2
 
-    property bool editing: true
+    x: Math.min(inPoint.x, outPoint.x, c1.x, c2.x)
+    y: Math.min(inPoint.y, outPoint.y, c1.y, c2.y)
+
     property bool horizontal: true
     readonly property real defaultOffset: 200
-
-    x: outPoint.x
-    y: outPoint.y
 
     onInPointChanged: horizontal ? pointsC1C2Horizontal() : pointsC1C2Vertical()
     onOutPointChanged: horizontal ? pointsC1C2Horizontal() : pointsC1C2Vertical()
@@ -77,21 +97,25 @@ Shape {
         c1 = Qt.point(outPoint.x + horizontalOffset, outPoint.y + verticalOffset);
         c2 = Qt.point(inPoint.x - horizontalOffset, inPoint.y - verticalOffset);
     }
+    antialiasing: true
+    smooth: true
 
     ShapePath {
         id: path
+        startX: root.outPoint.x - root.x
+        startY: root.outPoint.y - root.y
         fillColor: "transparent"
         strokeWidth: 2
         strokeColor: "grey"
         strokeStyle: ShapePath.DashLine
         dashPattern: [6, 2]
         PathCubic {
-            x: root.inPoint.x - root.outPoint.x
-            y: root.inPoint.y - root.outPoint.y
-            control1X: root.c1.x - root.outPoint.x
-            control1Y: root.c1.y - root.outPoint.y
-            control2X: root.c2.x - root.outPoint.x
-            control2Y: root.c2.y - root.outPoint.y
+            x: root.inPoint.x - root.x
+            y: root.inPoint.y - root.y
+            control1X: root.c1.x - root.x
+            control1Y: root.c1.y - root.y
+            control2X: root.c2.x - root.x
+            control2Y: root.c2.y - root.y
         }
     }
 }

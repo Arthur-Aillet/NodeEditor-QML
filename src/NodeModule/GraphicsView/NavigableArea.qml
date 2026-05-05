@@ -3,7 +3,6 @@ import NodeModule
 
 Item {
     id: root
-    clip: true
     anchors.fill: parent
 
     signal droppedItem
