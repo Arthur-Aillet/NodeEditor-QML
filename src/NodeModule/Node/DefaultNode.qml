@@ -1,6 +1,6 @@
 pragma ComponentBehavior: Bound
 import QtQuick
-import QtQuick.Shapes 1.11
+import QtQuick.Shapes
 import NodeModule
 
 Shape {
@@ -34,6 +34,8 @@ Shape {
             return style.normalBoundaryColor;
         }
     }
+
+    preferredRendererType: Shape.CurveRenderer
 
     ShapePath {
         strokeWidth: root.strokeWidth
@@ -106,6 +108,8 @@ Shape {
 
                 x: pos.x
                 y: pos.y
+
+                preferredRendererType: Shape.CurveRenderer
 
                 ShapePath {
                     fillColor: root.style.connectionPointColor

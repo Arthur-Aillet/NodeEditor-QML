@@ -5,7 +5,6 @@ import NodeModule
 
 Frame {
     id: root
-    visible: true
     clip: true
     padding: 1
 

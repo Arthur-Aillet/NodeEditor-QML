@@ -36,9 +36,6 @@ Shape {
     property point c1
     property point c2
 
-    x: Math.min(inPoint.x, outPoint.x, c1.x, c2.x)
-    y: Math.min(inPoint.y, outPoint.y, c1.y, c2.y)
-
     readonly property real defaultOffset: 200
 
     property bool horizontal: true
@@ -78,24 +75,25 @@ Shape {
     }
     antialiasing: true
     smooth: true
+    preferredRendererType: Shape.CurveRenderer
 
     ShapePath {
         id: path
         property bool swapped: root.inNodeId === undefined
-        startX: (swapped ? root.outPoint.x : root.inPoint.x) - root.x
-        startY: (swapped ? root.outPoint.y : root.inPoint.y) - root.y
+        startX: swapped ? root.outPoint.x : root.inPoint.x
+        startY: swapped ? root.outPoint.y : root.inPoint.y
         fillColor: "transparent"
         strokeWidth: 2
         strokeColor: "grey"
         strokeStyle: ShapePath.DashLine
         dashPattern: [6, 2]
         PathCubic {
-            x: (path.swapped ? root.inPoint.x : root.outPoint.x) - root.x
-            y: (path.swapped ? root.inPoint.y : root.outPoint.y) - root.y
-            control1X: (path.swapped ? root.c2.x : root.c1.x) - root.x
-            control1Y: (path.swapped ? root.c2.y : root.c1.y) - root.y
-            control2X: (path.swapped ? root.c1.x : root.c2.x) - root.x
-            control2Y: (path.swapped ? root.c1.y : root.c2.y) - root.y
+            x: path.swapped ? root.inPoint.x : root.outPoint.x
+            y: path.swapped ? root.inPoint.y : root.outPoint.y
+            control1X: path.swapped ? root.c2.x : root.c1.x
+            control1Y: path.swapped ? root.c2.y : root.c1.y
+            control2X: path.swapped ? root.c1.x : root.c2.x
+            control2Y: path.swapped ? root.c1.y : root.c2.y
         }
     }
 }
