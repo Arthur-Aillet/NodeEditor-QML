@@ -5,13 +5,13 @@ Item {
     id: root
     anchors.fill: parent
 
-    signal droppedItem
-
+    // Disable drag when holding an Item (Like a draft connection)
     required property bool holdingItem
     property point mousePosition
 
     default property alias subdata: inner.data
     property alias inner: inner
+    property alias dragArea: dragArea
 
     ViewBackground {
         id: background
@@ -43,11 +43,6 @@ Item {
         focusPolicy: Qt.WheelFocus
 
         onPositionChanged: root.mousePosition = mapToItem(inner, mouseX, mouseY)
-
-        onReleased: {
-            if (root.holdingItem)
-                root.droppedItem();
-        }
 
         property real zoomMax: 2
         property real zoomStep: 0.03

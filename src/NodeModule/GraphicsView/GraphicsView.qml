@@ -8,167 +8,33 @@ Frame {
     clip: true
     padding: 1
 
-    property var selectedPort: null
-
     NavigableArea {
-        id: area
+        id: areaId
         width: root.width
         height: root.height
-        holdingItem: root.selectedPort !== null
+        holdingItem: draftConnectionId.selectedPort !== null
 
-        onDroppedItem: {
-            const selected = root.selectedPort;
-            if (selected) {
-                const oppositeCount = selected.portType == PortType.In ? NodeRole.OutPortCount : NodeRole.InPortCount;
-                const oppositeSide = selected.portType == PortType.In ? PortType.Out : PortType.In;
-
-                for (let i = 0; i < nodes.count; ++i) {
-                    const node = nodes.itemAt(i) as NodeObject;
-                    if (node.nodeId != selected.nodeId) {
-                        const ports = ModelInterface.nodeData(node.nodeId, oppositeCount);
-                        if (ports < 1)
-                            continue;
-                        for (let j = 0; j < ports; j++) {
-                            const relativePortPos = ModelInterface.nodeGeometry.portPosition(node.nodeId, oppositeSide, j);
-
-                            const pos = Qt.point(relativePortPos.x + node.x, relativePortPos.y + node.y);
-                            const diff = Qt.vector2d(pos.x - mousePosition.x, pos.y - mousePosition.y);
-                            const dist = Math.sqrt(diff.dotProduct(diff));
-
-                            const style = node.style;
-                            const tolerance = style.connectionPointDiameter * 2.0;
-
-                            if (dist < tolerance) {
-                                if (selected.portType == PortType.In)
-                                    ModelInterface.createConnection(selected.nodeId, selected.portId, node.nodeId, j);
-                                else
-                                    ModelInterface.createConnection(node.nodeId, j, selected.nodeId, selected.portId);
-                                root.selectedPort = null;
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-            root.selectedPort = null;
+        ConnectionList {
+            area: areaId
         }
 
-        Repeater {
-            delegate: DefaultConnection {
-                required property real inputInNodeId
-                required property real inputInPortIndex
-                required property real inputOutNodeId
-                required property real inputOutPortIndex
-                inNodeId: inputInNodeId
-                inPortIndex: inputInPortIndex
-                outNodeId: inputOutNodeId
-                outPortIndex: inputOutPortIndex
-
-                mousePos: area.mousePosition
-            }
-
-            model: ListModel {
-                id: connectionModel
-            }
+        DraftConnection {
+            id: draftConnectionId
+            nodes: nodesId
+            area: areaId
         }
 
-        Loader {
-            id: temporaryConnection
-            active: root.selectedPort !== null
-            sourceComponent: DefaultConnection {
-                mousePos: area.mousePosition
-
-                property bool isPortInput: root.selectedPort.portType == PortType.In
-
-                inNodeId: isPortInput ? root.selectedPort.nodeId : undefined
-                inPortIndex: isPortInput ? root.selectedPort.portId : undefined
-                outNodeId: isPortInput ? undefined : root.selectedPort.nodeId
-                outPortIndex: isPortInput ? undefined : root.selectedPort.portId
-            }
-        }
-
-        Repeater {
-            id: nodes
-            delegate: NodeObject {
-                id: node
-                required property real modelId
-                required property real posX
-                required property real posY
-                nodeId: modelId
-                x: posX
-                y: posY
-
-                selectedPort: root.selectedPort
-                mousePosition: area.mousePosition
-
-                onPortPicked: (portId, portType) => {
-                    root.selectedPort = {
-                        "portId": portId,
-                        "nodeId": node.nodeId,
-                        "portType": portType
-                    };
-                }
-            }
-            model: ListModel {
-                id: nodeModel
-            }
+        NodeList {
+            id: nodesId
+            area: areaId
+            draftConnection: draftConnectionId
         }
     }
 
     ContextMenu.menu: SceneMenu {
         id: menu
         onCreateNode: name => {
-            ModelInterface.createNode(name, area.inner.mapFromItem(root, Qt.point(x, y)));
-        }
-    }
-
-    Connections {
-        target: ModelInterface
-
-        function onConnectionDeleted(inNodeId, inPortIndex, outNodeId, outPortIndex) {
-            for (let i = 0; i < connectionModel.count; ++i) {
-                const connection = connectionModel.get(i);
-                if (connection.inputInNodeId == inNodeId && connection.inputInPortIndex == inPortIndex && connection.inputOutNodeId == outNodeId && connection.inputOutPortIndex == outPortIndex)
-                    connectionModel.remove(i);
-            }
-        }
-
-        function onConnectionCreated(inNodeId, inPortIndex, outNodeId, outPortIndex) {
-            connectionModel.append({
-                "inputInNodeId": inNodeId,
-                "inputInPortIndex": inPortIndex,
-                "inputOutNodeId": outNodeId,
-                "inputOutPortIndex": outPortIndex
-            });
-        }
-
-        function onNodeCreated(id: real) {
-            nodeModel.append({
-                "modelId": id,
-                "posX": 0,
-                "posY": 0
-            });
-        }
-
-        function onNodeDeleted(id: real) {
-            for (let i = 0; i < nodeModel.count; ++i) {
-                if (nodeModel.get(i).modelId == id)
-                    nodeModel.remove(i);
-            }
-        }
-
-        function onNodePositionUpdated(id: real) {
-            const position = ModelInterface.nodeData(id, NodeRole.Position);
-
-            for (let i = 0; i < nodeModel.count; i++) {
-                const current = nodeModel.get(i);
-                if (current.modelId == id) {
-                    if (current.posX != position.x)
-                        current.posX = position.x;
-                    if (current.posY != position.y)
-                        current.posY = position.y;
-                }
-            }
+            ModelInterface.createNode(name, areaId.inner.mapFromItem(root, Qt.point(x, y)));
         }
     }
 }

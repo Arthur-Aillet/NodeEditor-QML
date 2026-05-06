@@ -7,21 +7,24 @@ MouseArea {
     opacity: focus ? 1 : style.opacity
     focusPolicy: Qt.StrongFocus
 
+    required property DraftConnection draftConnection
+    required property NavigableArea area
+    required property real nodeId
+
     width: painter.width
     height: painter.height
 
     signal portPicked(portId: real, portType: real)
 
-    required property real nodeId
-    required property var selectedPort
-    required property point mousePosition
-
-    onSelectedPortChanged: {
-        if (selectedPort == null) {
-            focusPolicy = Qt.StrongFocus;
-        } else {
-            focus = false;
-            focusPolicy = Qt.NoFocus;
+    Connections {
+        target: root.draftConnection
+        function onSelectedPortChanged() {
+            if (root.draftConnection.selectedPort == null) {
+                root.focusPolicy = Qt.StrongFocus;
+            } else {
+                root.focus = false;
+                root.focusPolicy = Qt.NoFocus;
+            }
         }
     }
 
@@ -65,8 +68,8 @@ MouseArea {
         style: root.style
         selected: root.focus
         hovered: root.hovered
-        selectedPort: root.selectedPort
-        mousePosition: root.mousePosition
+        selectedPort: root.draftConnection.selectedPort
+        mousePosition: root.area.mousePosition
         nodePosition: Qt.point(root.x, root.y)
     }
 

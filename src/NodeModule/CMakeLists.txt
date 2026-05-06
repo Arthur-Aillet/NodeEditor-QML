@@ -3,10 +3,13 @@ qt_add_qml_module(NodeModule
   QML_FILES
   ./Node/DefaultNode.qml
   ./Node/NodeObject.qml
+  ./Node/NodeList.qml
   ./GraphicsView/GraphicsView.qml
   ./GraphicsView/NavigableArea.qml
   ./GraphicsView/SceneMenu.qml
   ./Connection/DefaultConnection.qml
+  ./Connection/DraftConnection.qml
+  ./Connection/ConnectionList.qml
   DEPENDENCIES QtQuick
   SOURCES
   NodeEditor.hpp
