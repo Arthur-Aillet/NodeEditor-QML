@@ -79,16 +79,21 @@ Shape {
     property bool hovered: false
 
     onMousePositionChanged: {
-        const steps = 40;
+        hovered = false;
+        const rect = root.boundingRect;
+        if (mousePosition.x < rect.x || mousePosition.y < rect.y || mousePosition.x > rect.x + rect.width || mousePosition.y > rect.y + rect.height) {
+            return;
+        }
+        const strokeWidth = 10;
+        const overlapAndCurveFactor = 1.2;
+        const steps = Math.round(Math.sqrt(rect.height * rect.height + rect.width * rect.width) / strokeWidth * overlapAndCurveFactor);
         for (let i = 0; i != steps; i++) {
             const pointAlong = path.pointAtPercent(1 / steps * i);
             const diff = Qt.vector2d(pointAlong.x - mousePosition.x, pointAlong.y - mousePosition.y);
             const dist = Math.sqrt(diff.dotProduct(diff));
-            if (dist < 8) { // Incoporate Connection Style
+            if (dist < strokeWidth) {
                 hovered = true;
                 return;
-            } else {
-                hovered = false;
             }
         }
     }

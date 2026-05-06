@@ -11,7 +11,9 @@ Menu {
     signal createNode(string name)
 
     property var nodeMap: DataFlowModelInterface.registery.nodeMapModel
-    property var replaceRegex: RegExp(searchField.text.replace(/[\\\.\+\*\?\^\$\[\]\(\)\{\}\/\'\#\:\!\=\|]/ig, "\\$&"), 'gi')
+
+    // Replace special characters by escaped characters to prevent them to disturb when we use a regex to insert underline tags
+    readonly property var replaceRegex: RegExp(searchField.text.replace(/[\\\.\+\*\?\^\$\[\]\(\)\{\}\/\'\#\:\!\=\|]/ig, "\\$&"), 'gi')
 
     TextField {
         id: searchField
@@ -65,7 +67,7 @@ Menu {
                     return undefined;
                 if (delegate.hasChildren) {
                     return model.display;
-                } 
+                }
                 return model.display.replace(root.replaceRegex, `<u>$&</u>`);
             }
 
@@ -102,15 +104,15 @@ Menu {
         }
         Component.onCompleted: expandRecursively()
 
+        // Move view to include newly opened rows
+        // TODO: Logic not perfect yet this sometimes
         onExpanded: (row, col) => {
             if (row < 0)
-                return
-
+                return;
             let modelIndex = view.modelIndex(Qt.point(0, row));
 
             if (modelIndex.parent.valid)
-                return
-
+                return;
             let nextModelIndex = root.nodeMap.sibling(modelIndex.row + 1, 0, modelIndex);
             let nextViewRow = view.rowAtIndex(nextModelIndex);
             if (nextViewRow == -1) {
