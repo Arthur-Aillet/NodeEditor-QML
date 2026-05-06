@@ -36,6 +36,19 @@ class ConnectCommand : public QUndoCommand {
   ConnectionId _connId;
 };
 
+class NODE_EDITOR_PUBLIC DisconnectCommand : public QUndoCommand {
+  public:
+  DisconnectCommand(ModelInterface *scene, ConnectionId const);
+
+  void undo() override;
+  void redo() override;
+
+  private:
+  ModelInterface *_scene;
+
+  ConnectionId _connId;
+};
+
 /**
  * Selected scene objects are serialized and then removed from the scene.
  * The deleted elements could be restored in `undo`.
@@ -76,20 +89,6 @@ private:
     ModelInterface *_scene;
     QPointF const &_mouseScenePos;
     QJsonObject _newSceneJson;
-};
-
-class NODE_EDITOR_PUBLIC DisconnectCommand : public QUndoCommand
-{
-public:
-    DisconnectCommand(ModelInterface *scene, ConnectionId const);
-
-    void undo() override;
-    void redo() override;
-
-private:
-    ModelInterface *_scene;
-
-    ConnectionId _connId;
 };
 
 class NODE_EDITOR_PUBLIC MoveNodeCommand : public QUndoCommand

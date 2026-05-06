@@ -367,26 +367,18 @@ QJsonObject PasteCommand::makeNewNodeIdsInScene(QJsonObject const &sceneJson)
 }
 
 //-------------------------------------
+*/
 
-DisconnectCommand::DisconnectCommand(BasicGraphicsScene *scene, ConnectionId const connId)
-    : _scene(scene)
-    , _connId(connId)
-{
-    //
+DisconnectCommand::DisconnectCommand(ModelInterface *scene, ConnectionId const connId)
+    : _scene(scene), _connId(connId) {
+  //
 }
 
-void DisconnectCommand::undo()
-{
-    _scene->graphModel().addConnection(_connId);
-}
+void DisconnectCommand::undo() { _scene->graphModel.addConnection(_connId); }
 
-void DisconnectCommand::redo()
-{
-    _scene->graphModel().deleteConnection(_connId);
-}
+void DisconnectCommand::redo() { _scene->graphModel.deleteConnection(_connId); }
 
 //------
-*/
 ConnectCommand::ConnectCommand(ModelInterface *scene, ConnectionId const connId)
     : _scene(scene), _connId(connId) {
   //

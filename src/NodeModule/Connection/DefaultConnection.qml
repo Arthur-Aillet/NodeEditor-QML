@@ -4,8 +4,7 @@ import NodeModule
 
 Shape {
     id: root
-    focus: true
-    property point mousePosition
+    property point mousePos
 
     Connections {
         target: ModelInterface
@@ -30,8 +29,8 @@ Shape {
     property var outNodePos: outNodeId !== undefined ? ModelInterface.nodeData(outNodeId, NodeRole.Position) : undefined
     property var outPortPos: outNodeId !== undefined ? ModelInterface.nodeGeometry.portPosition(outNodeId, PortType.Out, outPortIndex) : undefined
 
-    property point inPoint: inNodeId === undefined ? mousePosition : Qt.point(inPortPos.x + inNodePos.x, inPortPos.y + inNodePos.y)
-    property point outPoint: outNodeId === undefined ? mousePosition : Qt.point(outPortPos.x + outNodePos.x, outPortPos.y + outNodePos.y)
+    property point inPoint: inNodeId === undefined ? mousePos : Qt.point(inPortPos.x + inNodePos.x, inPortPos.y + inNodePos.y)
+    property point outPoint: outNodeId === undefined ? mousePos : Qt.point(outPortPos.x + outNodePos.x, outPortPos.y + outNodePos.y)
 
     property point c1
     property point c2
@@ -78,10 +77,10 @@ Shape {
     property bool fullyConnected: root.inNodeId !== undefined && root.outNodeId !== undefined
     property bool hovered: false
 
-    onMousePositionChanged: {
+    onMousePosChanged: {
         hovered = false;
         const rect = root.boundingRect;
-        if (mousePosition.x < rect.x || mousePosition.y < rect.y || mousePosition.x > rect.x + rect.width || mousePosition.y > rect.y + rect.height) {
+        if (mousePos.x < rect.x || mousePos.y < rect.y || mousePos.x > rect.x + rect.width || mousePos.y > rect.y + rect.height) {
             return;
         }
         const strokeWidth = 10;
@@ -89,12 +88,29 @@ Shape {
         const steps = Math.round(Math.sqrt(rect.height * rect.height + rect.width * rect.width) / strokeWidth * overlapAndCurveFactor);
         for (let i = 0; i != steps; i++) {
             const pointAlong = path.pointAtPercent(1 / steps * i);
-            const diff = Qt.vector2d(pointAlong.x - mousePosition.x, pointAlong.y - mousePosition.y);
+            const diff = Qt.vector2d(pointAlong.x - mousePos.x, pointAlong.y - mousePos.y);
             const dist = Math.sqrt(diff.dotProduct(diff));
             if (dist < strokeWidth) {
                 hovered = true;
                 return;
             }
+        }
+    }
+
+    TapHandler {
+        onTapped: {
+            if (root.hovered) {
+                root.focus = true;
+            }
+        }
+    }
+
+    Keys.onPressed: event => {
+        if (!fullyConnected)
+            return;
+
+        if (event.key == Qt.Key_Delete || event.key == Qt.Key_Back) {
+            ModelInterface.deleteConnection(inNodeId, inPortIndex, outNodeId, outPortIndex);
         }
     }
 
@@ -105,9 +121,8 @@ Shape {
         startY: root.inPoint.y
         fillColor: "transparent"
         strokeWidth: 4
-        strokeColor: root.fullyConnected && root.hovered ? "white" : "transparent"
+        strokeColor: root.focus ? "orange" : (root.fullyConnected && root.hovered ? "white" : "transparent")
         strokeStyle: ShapePath.SolidLine
-        dashPattern: [6, 2]
         PathCubic {
             x: root.outPoint.x
             y: root.outPoint.y

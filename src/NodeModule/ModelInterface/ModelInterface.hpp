@@ -20,6 +20,7 @@
 
 using QtNodes::ConnectionId;
 using QtNodes::NodeId;
+using QtNodes::PortIndex;
 
 class ModelInterface : public QObject {
   Q_OBJECT
@@ -50,7 +51,7 @@ class ModelInterface : public QObject {
     return graphModel.nodeData(nodeId, role);
   };
 
-  Q_INVOKABLE QVariant portData(NodeId nodeId, QtNodes::PortType portType, QtNodes::PortIndex index,
+  Q_INVOKABLE QVariant portData(NodeId nodeId, QtNodes::PortType portType, PortIndex index,
                                 QtNodes::PortRole role) {
     return graphModel.portData(nodeId, portType, index, role);
   };
@@ -59,9 +60,14 @@ class ModelInterface : public QObject {
     return graphModel.setNodeData(nodeId, role, value);
   }
 
-  Q_INVOKABLE void createConnection(NodeId inNode, QtNodes::PortIndex inPort, NodeId outNode,
-                                    QtNodes::PortIndex outPort) {
+  Q_INVOKABLE void createConnection(NodeId inNode, PortIndex inPort, NodeId outNode,
+                                    PortIndex outPort) {
     undoStack.push(new ConnectCommand(this, ConnectionId{outNode, outPort, inNode, inPort}));
+  }
+
+  Q_INVOKABLE void deleteConnection(NodeId inNode, PortIndex inPort, NodeId outNode,
+                                    PortIndex outPort) {
+    undoStack.push(new DisconnectCommand(this, ConnectionId{outNode, outPort, inNode, inPort}));
   }
 
   Q_INVOKABLE void createNode(QString const nodeType, QPoint const &scenePos) {
@@ -73,7 +79,10 @@ class ModelInterface : public QObject {
     emit nodeGeometryInterfaceChanged();
   }
 
-  Q_INVOKABLE bool deleteNode(const NodeId nodeId) { return graphModel.deleteNode(nodeId); }
+  Q_INVOKABLE bool deleteNode(const NodeId nodeId) {
+    // TODO: restore DeleteNodeCommand
+    return graphModel.deleteNode(nodeId);
+  }
 
   public slots:
   void forwardConnectionCreated(ConnectionId const connectionId) {
@@ -88,10 +97,10 @@ class ModelInterface : public QObject {
 
   Q_SIGNALS:
   void nodeGeometryInterfaceChanged();
-  void connectionCreated(NodeId const inNodeId, QtNodes::PortIndex const inPortIndex,
-                         NodeId const outNodeId, QtNodes::PortIndex const outPortIndex);
-  void connectionDeleted(NodeId const inNodeId, QtNodes::PortIndex const inPortIndex,
-                         NodeId const outNodeId, QtNodes::PortIndex const outPortIndex);
+  void connectionCreated(NodeId const inNodeId, PortIndex const inPortIndex, NodeId const outNodeId,
+                         PortIndex const outPortIndex);
+  void connectionDeleted(NodeId const inNodeId, PortIndex const inPortIndex, NodeId const outNodeId,
+                         PortIndex const outPortIndex);
   void nodeCreated(NodeId const nodeId);
   void nodeDeleted(NodeId const nodeId);
   void nodeUpdated(NodeId const nodeId);

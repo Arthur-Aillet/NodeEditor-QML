@@ -64,7 +64,7 @@ Frame {
                 outNodeId: inputOutNodeId
                 outPortIndex: inputOutPortIndex
 
-                mousePosition: area.mousePosition
+                mousePos: area.mousePosition
             }
 
             model: ListModel {
@@ -76,7 +76,7 @@ Frame {
             id: temporaryConnection
             active: root.selectedPort !== null
             sourceComponent: DefaultConnection {
-                mousePosition: area.mousePosition
+                mousePos: area.mousePosition
 
                 property bool isPortInput: root.selectedPort.portType == PortType.In
 
@@ -124,6 +124,14 @@ Frame {
 
     Connections {
         target: ModelInterface
+
+        function onConnectionDeleted(inNodeId, inPortIndex, outNodeId, outPortIndex) {
+            for (let i = 0; i < connectionModel.count; ++i) {
+                const connection = connectionModel.get(i);
+                if (connection.inputInNodeId == inNodeId && connection.inputInPortIndex == inPortIndex && connection.inputOutNodeId == outNodeId && connection.inputOutPortIndex == outPortIndex)
+                    connectionModel.remove(i);
+            }
+        }
 
         function onConnectionCreated(inNodeId, inPortIndex, outNodeId, outPortIndex) {
             connectionModel.append({
