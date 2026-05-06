@@ -4,6 +4,7 @@ qt_add_qml_module(NodeModule
   ./Node/DefaultNode.qml
   ./Node/NodeObject.qml
   ./Node/NodeList.qml
+  ./Node/QSet.qml
   ./GraphicsView/GraphicsView.qml
   ./GraphicsView/NavigableArea.qml
   ./GraphicsView/SceneMenu.qml

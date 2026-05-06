@@ -4,20 +4,65 @@ import NodeModule
 
 MouseArea {
     id: root
-    opacity: focus ? 1 : style.opacity
+    opacity: selected ? 1 : style.opacity
     focusPolicy: Qt.StrongFocus
 
     required property DraftConnection draftConnection
     required property NavigableArea area
-    required property real nodeId
+    required property NodeList nodes
+    required property int nodeId
+    property bool selected: false
+
+    Connections {
+        target: root.nodes.selectedNodes
+        function onChanged() {
+            root.selected = root.nodes.selectedNodes.has(root.nodeId);
+        }
+    }
 
     width: painter.width
     height: painter.height
 
-    signal portPicked(portId: real, portType: real)
+    onFocusChanged: {
+        if (!focus) {
+            nodes.loseFocus();
+        }
+    }
+
+    onClicked: mouse => {
+        if (mouse.modifiers & Qt.ShiftModifier) {
+            if (selected && !waitForClick) {
+                nodes.selectedNodes.remove(nodeId);
+            }
+        }
+        waitForClick = false;
+    }
+
+    property bool waitForClick: false
+
+    onPressed: mouse => {
+        if (mouse.modifiers & Qt.ShiftModifier) {
+            if (!selected) {
+                nodes.selectedNodes.add(nodeId);
+                waitForClick = true;
+            }
+        } else {
+            nodes.selectedNodes.clear();
+            nodes.selectedNodes.add(nodeId);
+        }
+    }
+
+    Keys.onPressed: event => {
+        if (event.key == Qt.Key_Delete || event.key == Qt.Key_Back) {
+            for (let id of nodes.selectedNodes.inner) {
+                event.accepted = ModelInterface.deleteNode(id);
+            }
+        }
+    }
 
     Connections {
         target: root.draftConnection
+
         function onSelectedPortChanged() {
             if (root.draftConnection.selectedPort == null) {
                 root.focusPolicy = Qt.StrongFocus;
@@ -36,22 +81,30 @@ MouseArea {
         style.loadJson(json);
     }
 
-    Keys.onPressed: event => {
-        if (event.key == Qt.Key_Delete || event.key == Qt.Key_Back) {
-            event.accepted = ModelInterface.deleteNode(nodeId);
-        }
-    }
+    property real xPrev
+    property real yPrev
 
     onXChanged: {
-        ModelInterface.setNodeData(nodeId, NodeRole.Position, Qt.point(x, y));
+        if (!drag.active)
+            xPrev = x;
     }
+
     onYChanged: {
-        ModelInterface.setNodeData(nodeId, NodeRole.Position, Qt.point(x, y));
+        if (!drag.active)
+            yPrev = y;
+    }
+
+    onPositionChanged: mouse => {
+        if (drag.active) {
+            nodes.moveOtherSelectedNodes(x - xPrev, y - yPrev, nodeId);
+            xPrev = x;
+            yPrev = y;
+        }
     }
 
     drag {
         filterChildren: true
-        target: root.focus ? root : undefined
+        target: root.selected ? root : undefined
         onActiveChanged: {
             if (drag.active) {
                 focus = true;
@@ -66,7 +119,7 @@ MouseArea {
         id: painter
         nodeId: root.nodeId
         style: root.style
-        selected: root.focus
+        selected: root.selected
         hovered: root.hovered
         selectedPort: root.draftConnection.selectedPort
         mousePosition: root.area.mousePosition
@@ -91,7 +144,13 @@ MouseArea {
             width: radius * 2 * 1.5
             height: radius * 2 * 1.5
 
-            onPressed: root.portPicked(portId, side)
+            onPressed: {
+                root.draftConnection.selectedPort = {
+                    "portId": portId,
+                    "nodeId": root.nodeId,
+                    "portType": side
+                };
+            }
         }
     }
 }

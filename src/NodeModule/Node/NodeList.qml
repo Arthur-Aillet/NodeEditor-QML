@@ -7,7 +7,33 @@ Item {
     required property DraftConnection draftConnection
     required property NavigableArea area
 
+    property alias selectedNodes: selectedNodes
+
+    QSet {
+        id: selectedNodes
+    }
+
     property alias nodes: nodes
+
+    function loseFocus() {
+        for (let i = 0; i != nodes.count; i++) {
+            const node = nodes.itemAt(i) as NodeObject;
+            if (node.focus == true) {
+                return;
+            }
+        }
+        selectedNodes.clear();
+    }
+
+    function moveOtherSelectedNodes(xOffset, yOffset, originId) {
+        for (let i = 0; i != nodes.count; i++) {
+            const node = nodes.itemAt(i) as NodeObject;
+            if (node.selected == true && node.nodeId != originId) {
+                node.x += xOffset;
+                node.y += yOffset;
+            }
+        }
+    }
 
     Repeater {
         id: nodes
@@ -17,19 +43,12 @@ Item {
             required property real posX
             required property real posY
             nodeId: modelId
+            nodes: root as NodeList
             x: posX
             y: posY
 
             draftConnection: root.draftConnection
             area: root.area
-
-            onPortPicked: (portId, portType) => {
-                root.draftConnection.selectedPort = {
-                    "portId": portId,
-                    "nodeId": node.nodeId,
-                    "portType": portType
-                };
-            }
         }
         model: ListModel {
             id: nodeModel
