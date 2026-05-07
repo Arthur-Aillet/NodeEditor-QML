@@ -87,7 +87,7 @@ int main(int argc, char *argv[]) {
 
   auto source = model.addNode(NumberDisplayDataModel().name());
   model.setNodeData(source, NodeRole::Position, QPointF(400, 0));
-  model.setNodeData(source, NodeRole::Type, ValueNodeModel().name());
+  model.setNodeData(source, NodeRole::Type, NumberDisplayDataModel().name());
   auto display = model.delegateModel<NumberDisplayDataModel>(source);
   QObject::connect(display, SIGNAL(valueUpdated(double)), item, SIGNAL(newDisplayValue(double)));
 
