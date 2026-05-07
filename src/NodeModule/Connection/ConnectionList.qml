@@ -6,6 +6,7 @@ Item {
     id: root
 
     required property NavigableArea area
+    required property NodeList nodes
 
     Connections {
         target: ModelInterface
@@ -39,6 +40,7 @@ Item {
             outNodeId: inputOutNodeId
             outPortIndex: inputOutPortIndex
 
+            nodes: root.nodes
             mousePos: root.area.mousePosition
         }
 

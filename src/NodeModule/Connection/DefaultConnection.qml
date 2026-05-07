@@ -6,6 +6,8 @@ Shape {
     id: root
     property point mousePos
 
+    required property NodeList nodes
+
     Connections {
         target: ModelInterface
 
@@ -22,11 +24,34 @@ Shape {
     //undefined or int
     required property var inNodeId
     required property var inPortIndex
-    property var inNodePos: inNodeId !== undefined ? ModelInterface.nodeData(inNodeId, NodeRole.Position) : undefined
+    property var inNodePos: undefined
+
+    function getNodePosition(id: int): var {
+        for (let i = 0; i != nodes.nodes.count; i++) {
+            const node = nodes.nodes.itemAt(i) as NodeObject;
+            if (node.nodeId == id) {
+                return Qt.point(node.x, node.y);
+            }
+        }
+    }
+
+    Binding on inNodePos {
+        when: root.inNodeId !== undefined
+        value: if (root.inNodeId !== undefined)
+            root.getNodePosition(root.inNodeId)
+    }
+
     property var inPortPos: inNodeId !== undefined ? ModelInterface.nodeGeometry.portPosition(inNodeId, PortType.In, inPortIndex) : undefined
     required property var outNodeId
     required property var outPortIndex
-    property var outNodePos: outNodeId !== undefined ? ModelInterface.nodeData(outNodeId, NodeRole.Position) : undefined
+    property var outNodePos: undefined
+
+    Binding on outNodePos {
+        when: root.outNodeId !== undefined
+        value: if (root.outNodeId !== undefined)
+            root.getNodePosition(root.outNodeId)
+    }
+
     property var outPortPos: outNodeId !== undefined ? ModelInterface.nodeGeometry.portPosition(outNodeId, PortType.Out, outPortIndex) : undefined
 
     property point inPoint: inNodeId === undefined ? mousePos : Qt.point(inPortPos.x + inNodePos.x, inPortPos.y + inNodePos.y)

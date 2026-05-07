@@ -52,6 +52,7 @@ Loader {
         property var selectedPort: root.selectedPort
 
         mousePos: root.area.mousePosition
+        nodes: root.nodes
 
         inNodeId: selectedPort.portType === PortType.In ? selectedPort.nodeId : undefined
         inPortIndex: selectedPort.portType === PortType.In ? selectedPort.portId : undefined

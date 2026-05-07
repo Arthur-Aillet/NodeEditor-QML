@@ -67,6 +67,7 @@ MouseArea {
             if (root.draftConnection.selectedPort == null) {
                 root.focusPolicy = Qt.StrongFocus;
             } else {
+                root.nodes.selectedNodes.clear();
                 root.focus = false;
                 root.focusPolicy = Qt.NoFocus;
             }
@@ -81,6 +82,7 @@ MouseArea {
         style.loadJson(json);
     }
 
+    // Store movement offset for each frame to apply it to the other selected nodes
     property real xPrev
     property real yPrev
 

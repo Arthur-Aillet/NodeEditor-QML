@@ -16,6 +16,7 @@ Frame {
 
         ConnectionList {
             area: areaId
+            nodes: nodesId
         }
 
         DraftConnection {
