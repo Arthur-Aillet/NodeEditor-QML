@@ -99,27 +99,22 @@ Shape {
     }
     preferredRendererType: Shape.CurveRenderer
 
-    property bool fullyConnected: root.inNodeId !== undefined && root.outNodeId !== undefined
+    property bool fullyConnected: inNodeId !== undefined && outNodeId !== undefined
     property bool hovered: false
 
-    onMousePosChanged: {
-        hovered = false;
+    function distanceToCurve(point: point): real {
         const rect = root.boundingRect;
-        if (mousePos.x < rect.x || mousePos.y < rect.y || mousePos.x > rect.x + rect.width || mousePos.y > rect.y + rect.height) {
-            return;
-        }
-        const strokeWidth = 10;
         const overlapAndCurveFactor = 1.2;
-        const steps = Math.round(Math.sqrt(rect.height * rect.height + rect.width * rect.width) / strokeWidth * overlapAndCurveFactor);
+        const steps = Math.round(Math.sqrt(rect.height * rect.height + rect.width * rect.width) / 10 * overlapAndCurveFactor);
+        let shortestDistance = Infinity;
         for (let i = 0; i != steps; i++) {
             const pointAlong = path.pointAtPercent(1 / steps * i);
-            const diff = Qt.vector2d(pointAlong.x - mousePos.x, pointAlong.y - mousePos.y);
+            const diff = Qt.vector2d(pointAlong.x - point.x, pointAlong.y - point.y);
             const dist = Math.sqrt(diff.dotProduct(diff));
-            if (dist < strokeWidth) {
-                hovered = true;
-                return;
-            }
+            if (dist < shortestDistance)
+                shortestDistance = dist;
         }
+        return shortestDistance;
     }
 
     TapHandler {
@@ -146,7 +141,7 @@ Shape {
         startY: root.inPoint.y
         fillColor: "transparent"
         strokeWidth: 4
-        strokeColor: root.focus ? "orange" : (root.fullyConnected && root.hovered ? "white" : "transparent")
+        strokeColor: root.focus ? "orange" : (root.hovered ? "white" : "transparent")
         strokeStyle: ShapePath.SolidLine
         PathCubic {
             x: root.outPoint.x

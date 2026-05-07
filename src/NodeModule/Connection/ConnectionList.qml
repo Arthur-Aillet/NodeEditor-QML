@@ -9,6 +9,27 @@ Item {
     required property NodeList nodes
 
     Connections {
+        target: root.area
+        function onMousePositionChanged() {
+            let closestIndex = undefined;
+            let closestDistance = Infinity;
+
+            for (let i = 0; i < connections.count; i++) {
+                const connection = connections.itemAt(i) as DefaultConnection;
+                const dist = connection.distanceToCurve(root.area.mousePosition);
+                if (dist < closestDistance) {
+                    closestDistance = dist;
+                    closestIndex = i;
+                }
+                connection.hovered = false;
+            }
+            if (closestDistance < 10) {
+                connections.itemAt(closestIndex).hovered = true;
+            }
+        }
+    }
+
+    Connections {
         target: ModelInterface
 
         function onConnectionDeleted(inNodeId, inPortIndex, outNodeId, outPortIndex) {
@@ -30,6 +51,7 @@ Item {
     }
 
     Repeater {
+        id: connections
         delegate: DefaultConnection {
             required property real inputInNodeId
             required property real inputInPortIndex
