@@ -47,53 +47,25 @@ class ModelInterface : public QObject {
   QUndoStack undoStack;
 
   public:
-  Q_INVOKABLE QVariant nodeData(NodeId nodeId, QtNodes::NodeRole role) {
-    return graphModel.nodeData(nodeId, role);
-  };
-
+  Q_INVOKABLE QVariant nodeData(NodeId nodeId, QtNodes::NodeRole role);
   Q_INVOKABLE QVariant portData(NodeId nodeId, QtNodes::PortType portType, PortIndex index,
-                                QtNodes::PortRole role) {
-    return graphModel.portData(nodeId, portType, index, role);
-  };
-
-  Q_INVOKABLE bool setNodeData(NodeId nodeId, QtNodes::NodeRole role, QVariant value) {
-    return graphModel.setNodeData(nodeId, role, value);
-  }
-
+                                QtNodes::PortRole role);
+  Q_INVOKABLE bool setNodeData(NodeId nodeId, QtNodes::NodeRole role, QVariant value);
   Q_INVOKABLE void createConnection(NodeId inNode, PortIndex inPort, NodeId outNode,
-                                    PortIndex outPort) {
-    undoStack.push(new ConnectCommand(this, ConnectionId{outNode, outPort, inNode, inPort}));
-  }
-
+                                    PortIndex outPort);
   Q_INVOKABLE void deleteConnection(NodeId inNode, PortIndex inPort, NodeId outNode,
-                                    PortIndex outPort) {
-    undoStack.push(new DisconnectCommand(this, ConnectionId{outNode, outPort, inNode, inPort}));
-  }
-
-  Q_INVOKABLE void createNode(QString const nodeType, QPoint const &scenePos) {
-    undoStack.push(new CreateCommand(this, nodeType, scenePos));
-  }
+                                    PortIndex outPort);
+  Q_INVOKABLE void createNode(QString const nodeType, QPoint const &scenePos);
+  Q_INVOKABLE bool deleteNode(const NodeId nodeId);
 
   void setNodeGeometry(std::unique_ptr<QtNodes::AbstractNodeGeometry> newGeom) {
     _nodeGeometry = std::move(newGeom);
     emit nodeGeometryInterfaceChanged();
   }
 
-  Q_INVOKABLE bool deleteNode(const NodeId nodeId) {
-    // TODO: restore DeleteNodeCommand
-    return graphModel.deleteNode(nodeId);
-  }
-
   public slots:
-  void forwardConnectionCreated(ConnectionId const connectionId) {
-    emit connectionCreated(connectionId.inNodeId, connectionId.inPortIndex, connectionId.outNodeId,
-                           connectionId.outPortIndex);
-  }
-
-  void forwardConnectionDeleted(ConnectionId const connectionId) {
-    emit connectionDeleted(connectionId.inNodeId, connectionId.inPortIndex, connectionId.outNodeId,
-                           connectionId.outPortIndex);
-  }
+  void forwardConnectionCreated(ConnectionId const connectionId);
+  void forwardConnectionDeleted(ConnectionId const connectionId);
 
   Q_SIGNALS:
   void nodeGeometryInterfaceChanged();

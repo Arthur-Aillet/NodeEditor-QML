@@ -30,3 +30,45 @@ ModelInterface *ModelInterface::init(QtNodes::AbstractGraphModel &_graphModel) {
   instance = new ModelInterface(_graphModel);
   return instance;
 };
+
+QVariant ModelInterface::nodeData(NodeId nodeId, QtNodes::NodeRole role) {
+  return graphModel.nodeData(nodeId, role);
+};
+
+QVariant ModelInterface::portData(NodeId nodeId, QtNodes::PortType portType, PortIndex index,
+                                  QtNodes::PortRole role) {
+  return graphModel.portData(nodeId, portType, index, role);
+};
+
+bool ModelInterface::setNodeData(NodeId nodeId, QtNodes::NodeRole role, QVariant value) {
+  return graphModel.setNodeData(nodeId, role, value);
+}
+
+void ModelInterface::createConnection(NodeId inNode, PortIndex inPort, NodeId outNode,
+                                      PortIndex outPort) {
+  undoStack.push(new ConnectCommand(this, ConnectionId{outNode, outPort, inNode, inPort}));
+}
+
+void ModelInterface::deleteConnection(NodeId inNode, PortIndex inPort, NodeId outNode,
+                                      PortIndex outPort) {
+  undoStack.push(new DisconnectCommand(this, ConnectionId{outNode, outPort, inNode, inPort}));
+}
+
+void ModelInterface::createNode(QString const nodeType, QPoint const &scenePos) {
+  undoStack.push(new CreateCommand(this, nodeType, scenePos));
+}
+
+bool ModelInterface::deleteNode(const NodeId nodeId) {
+  // TODO: restore DeleteNodeCommand
+  return graphModel.deleteNode(nodeId);
+}
+
+void ModelInterface::forwardConnectionCreated(ConnectionId const connectionId) {
+  emit connectionCreated(connectionId.inNodeId, connectionId.inPortIndex, connectionId.outNodeId,
+                         connectionId.outPortIndex);
+}
+
+void ModelInterface::forwardConnectionDeleted(ConnectionId const connectionId) {
+  emit connectionDeleted(connectionId.inNodeId, connectionId.inPortIndex, connectionId.outNodeId,
+                         connectionId.outPortIndex);
+}
