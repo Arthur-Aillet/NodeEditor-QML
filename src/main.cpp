@@ -1,10 +1,10 @@
 #include "DataFlowModelInterface.hpp"
-#include "NodeModel.hpp"
 #include "QtNodes/internal/DataFlowGraphModel.hpp"
 #include "QtNodes/internal/DataFlowGraphicsScene.hpp"
 #include "QtNodes/internal/Definitions.hpp"
 #include "QtNodes/internal/QmlWrapper.hpp"
-#include "ValueNodeModel.hpp"
+#include "nodes/AdditionModel.hpp"
+#include "nodes/ValueNodeModel.hpp"
 #include <QtNodes/BasicGraphicsScene>
 #include <QtNodes/ConnectionStyle>
 #include <QtNodes/GraphicsView>
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
   auto ret = std::make_shared<QtNodes::NodeDelegateModelRegistry>();
 
   ret->registerModel<ValueNodeModel>("Input");
-  ret->registerModel<AdditionNode>("Process");
+  ret->registerModel<AdditionModel>("Process");
 
   auto model = QtNodes::DataFlowGraphModel(ret);
 

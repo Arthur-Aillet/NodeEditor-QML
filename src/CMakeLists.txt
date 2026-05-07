@@ -9,6 +9,18 @@ qt_add_qml_module(CutieDesigner
   URI CutieDesignerModule
   QML_FILES
   Main.qml
+  SOURCES
+
+  nodes/AdditionModel.hpp
+  nodes/DivisionModel.hpp
+  nodes/MathOperationDataModel.hpp
+  nodes/SubtractionModel.hpp
+  nodes/ValueNodeModel.hpp
+  nodes/DecimalData.hpp
+  nodes/MathOperationDataModel.cpp
+  nodes/MultiplicationModel.hpp
+  nodes/ValueNodeModel.cpp
+
   DEPENDENCIES QtQuick QtQuick.Layout StatsModule NodeModule
 )
 

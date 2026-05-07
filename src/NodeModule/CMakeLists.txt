@@ -1,44 +1,44 @@
 qt_add_qml_module(NodeModule
   URI NodeModule
   QML_FILES
-  ./Node/DefaultNodePainter.qml
-  ./Node/NodeGraphicalObject.qml
-  ./Node/AbstractNodePainter.qml
-  ./Node/DefaultPortPainter.qml
-  ./Node/NodeList.qml
-  ./Node/QSet.qml
-  ./GraphicsView/GraphicsView.qml
-  ./GraphicsView/NavigableArea.qml
-  ./GraphicsView/SceneMenu.qml
-  ./Connection/DefaultConnection.qml
-  ./Connection/DraftConnection.qml
-  ./Connection/ConnectionList.qml
+  Node/DefaultNodePainter.qml
+  Node/NodeGraphicalObject.qml
+  Node/AbstractNodePainter.qml
+  Node/DefaultPortPainter.qml
+  Node/NodeList.qml
+  Node/QSet.qml
+
+  GraphicsView/GraphicsView.qml
+  GraphicsView/NavigableArea.qml
+  GraphicsView/SceneMenu.qml
+
+  Connection/DefaultConnection.qml
+  Connection/DraftConnection.qml
+  Connection/ConnectionList.qml
+
   DEPENDENCIES QtQuick
+
   SOURCES
-  NodeEditor.hpp
-  NodeEditor.cpp
-  NodeModel.cpp
-  NodeModel.hpp
-  NodeData.hpp
-  ./nodes/ValueNodeModel.hpp
-  ./nodes/ValueNodeModel.cpp
-  ./GraphicsView/ViewBackground.cpp
-  ./GraphicsView/ViewBackground.hpp
-  ./ModelInterface/ModelInterface.cpp
-  ./ModelInterface/ModelInterface.hpp
-  ./ModelInterface/DataFlowModelInterface.cpp
-  ./ModelInterface/DataFlowModelInterface.hpp
-  ./ModelInterface/RegisteryAccess.cpp
-  ./ModelInterface/RegisteryAccess.hpp
-  ./ModelInterface/QmlUndoCommands.cpp
-  ./ModelInterface/QmlUndoCommands.hpp
-  ./ModelInterface/NodeGeometryInterface.cpp
-  ./ModelInterface/NodeGeometryInterface.hpp
-  ./Style/QmlNodeStyle.hpp
-  ./Style/QmlConnectionStyle.hpp
-  ./Style/QmlGraphicsViewStyle.hpp
-  ./Style/StyleCollection.hpp
-  ./Node/QmlDefinition.hpp
+  GraphicsView/ViewBackground.cpp
+  GraphicsView/ViewBackground.hpp
+
+  ModelInterface/ModelInterface.cpp
+  ModelInterface/ModelInterface.hpp
+  ModelInterface/DataFlowModelInterface.cpp
+  ModelInterface/DataFlowModelInterface.hpp
+  ModelInterface/RegisteryAccess.cpp
+  ModelInterface/RegisteryAccess.hpp
+  ModelInterface/QmlUndoCommands.cpp
+  ModelInterface/QmlUndoCommands.hpp
+  ModelInterface/NodeGeometryInterface.cpp
+  ModelInterface/NodeGeometryInterface.hpp
+
+  Style/QmlNodeStyle.hpp
+  Style/QmlConnectionStyle.hpp
+  Style/QmlGraphicsViewStyle.hpp
+  Style/StyleCollection.hpp
+
+  Node/QmlDefinition.hpp
 )
 
 target_include_directories(NodeModule PUBLIC

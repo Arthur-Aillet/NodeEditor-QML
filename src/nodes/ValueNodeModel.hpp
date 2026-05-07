@@ -1,5 +1,6 @@
 #pragma once
 
+#include "nodes/DecimalData.hpp"
 #include <QtNodes/NodeDelegateModel>
 
 #include <QtCore/QObject>
@@ -54,7 +55,7 @@ class ValueNodeModel : public NodeDelegateModel {
   void onTextEdited(QString const &string);
 
   private:
-  std::shared_ptr<NumberData> _number;
+  std::shared_ptr<DecimalData> _number;
 
   QLineEdit *_lineEdit;
 };
