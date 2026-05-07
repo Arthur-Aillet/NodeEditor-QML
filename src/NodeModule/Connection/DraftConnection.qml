@@ -17,7 +17,7 @@ Loader {
         const oppositeSide = selectedPort.portType === PortType.In ? PortType.Out : PortType.In;
 
         for (let i = 0; i < nodes.nodes.count; ++i) {
-            const node = nodes.nodes.itemAt(i) as NodeObject;
+            const node = nodes.nodes.itemAt(i) as NodeGraphicalObject;
             if (node.nodeId != selectedPort.nodeId) {
                 const ports = ModelInterface.nodeData(node.nodeId, oppositeCount);
                 if (ports < 1)

@@ -1,8 +1,8 @@
 qt_add_qml_module(NodeModule
   URI NodeModule
   QML_FILES
-  ./Node/DefaultNode.qml
-  ./Node/NodeObject.qml
+  ./Node/DefaultNodePainter.qml
+  ./Node/NodeGraphicalObject.qml
   ./Node/NodeList.qml
   ./Node/QSet.qml
   ./GraphicsView/GraphicsView.qml

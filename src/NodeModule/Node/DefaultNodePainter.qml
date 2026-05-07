@@ -6,21 +6,16 @@ import NodeModule
 Shape {
     id: root
 
-    required property real nodeId
-    required property nodeStyle style
-    required property var selectedPort
-    required property point mousePosition
-    required property point nodePosition
+    required property NodeGraphicalObject nodeObject
+    required property NavigableArea area
+    required property DraftConnection draftConnection
 
-    property size size: ModelInterface.nodeGeometry.size(nodeId)
+    property size size: ModelInterface.nodeGeometry.size(nodeObject.nodeId)
 
     width: size.width
     height: size.height
 
-    required property bool selected
-    required property bool hovered
-
-    property real strokeWidth: root.hovered ? root.style.hoveredPenWidth : root.style.penWidth
+    property real strokeWidth: nodeObject.hovered ? nodeObject.style.hoveredPenWidth : nodeObject.style.penWidth
 
     function boundaryColor(): color {
         // if (invalid) {
@@ -28,10 +23,10 @@ Shape {
         // } else if (warning) {
         //     return warningColor;
         // } else
-        if (selected) {
-            return style.selectedBoundaryColor;
+        if (nodeObject.selected) {
+            return nodeObject.style.selectedBoundaryColor;
         } else {
-            return style.normalBoundaryColor;
+            return nodeObject.style.normalBoundaryColor;
         }
     }
 
@@ -48,19 +43,19 @@ Shape {
             stops: [
                 GradientStop {
                     position: 0.0
-                    color: root.style.gradientColor0
+                    color: root.nodeObject.style.gradientColor0
                 },
                 GradientStop {
                     position: 0.10
-                    color: root.style.gradientColor1
+                    color: root.nodeObject.style.gradientColor1
                 },
                 GradientStop {
                     position: 0.9
-                    color: root.style.gradientColor2
+                    color: root.nodeObject.style.gradientColor2
                 },
                 GradientStop {
                     position: 1.0
-                    color: root.style.gradientColor3
+                    color: root.nodeObject.style.gradientColor3
                 }
             ]
         }
@@ -73,8 +68,8 @@ Shape {
 
     Repeater {
         id: inOutRepeater
-        property int inPortCount: ModelInterface.nodeData(root.nodeId, NodeRole.InPortCount)
-        model: inPortCount + ModelInterface.nodeData(root.nodeId, NodeRole.OutPortCount)
+        property int inPortCount: ModelInterface.nodeData(root.nodeObject.nodeId, NodeRole.InPortCount)
+        model: inPortCount + ModelInterface.nodeData(root.nodeObject.nodeId, NodeRole.OutPortCount)
         delegate: Item {
             id: port
             required property int index
@@ -82,14 +77,14 @@ Shape {
             property var side: (index < inOutRepeater.inPortCount) ? PortType.In : PortType.Out
 
             property bool connected: false
-            property var dataType: ModelInterface.portData(root.nodeId, side, port.portId, PortRole.DataType)
+            property var dataType: ModelInterface.portData(root.nodeObject.nodeId, side, port.portId, PortRole.DataType)
 
             Text {
                 id: portLabel
-                property bool captionVisible: ModelInterface.portData(root.nodeId, port.side, port.portId, PortRole.CaptionVisible)
-                property string caption: ModelInterface.portData(root.nodeId, port.side, port.portId, PortRole.Caption)
+                property bool captionVisible: ModelInterface.portData(root.nodeObject.nodeId, port.side, port.portId, PortRole.CaptionVisible)
+                property string caption: ModelInterface.portData(root.nodeObject.nodeId, port.side, port.portId, PortRole.Caption)
 
-                property point pos: ModelInterface.nodeGeometry.portTextPosition(root.nodeId, port.side, port.portId)
+                property point pos: ModelInterface.nodeGeometry.portTextPosition(root.nodeObject.nodeId, port.side, port.portId)
 
                 FontMetrics {
                     id: portLabelMetrics
@@ -99,12 +94,12 @@ Shape {
                 x: pos.x
                 y: pos.y - portLabelMetrics.ascent
                 text: captionVisible ? caption : port.dataType.name
-                color: port.connected ? root.style.fontColor : root.style.fontColorFaded
+                color: port.connected ? root.nodeObject.style.fontColor : root.nodeObject.style.fontColorFaded
             }
 
             Shape {
                 id: connectionPoint
-                property point pos: ModelInterface.nodeGeometry.portPosition(root.nodeId, port.side, port.portId)
+                property point pos: ModelInterface.nodeGeometry.portPosition(root.nodeObject.nodeId, port.side, port.portId)
 
                 x: pos.x
                 y: pos.y
@@ -112,30 +107,31 @@ Shape {
                 preferredRendererType: Shape.CurveRenderer
 
                 ShapePath {
-                    fillColor: root.style.connectionPointColor
+                    fillColor: root.nodeObject.style.connectionPointColor
                     strokeWidth: root.strokeWidth
                     strokeColor: root.boundaryColor()
+
                     PathAngleArc {
-                        property real radius: root.style.connectionPointDiameter * 0.6 // Diameter is used a the radius in the original
+                        property real radius: root.nodeObject.style.connectionPointDiameter * 0.6 // Diameter is used a the radius in the original
 
                         Binding on radius {
-                            when: root.selectedPort !== null
+                            when: root.draftConnection.selectedPort !== null
                             value: {
-                                if (root.selectedPort === null || root.selectedPort.portType == port.side)
-                                    return root.style.connectionPointDiameter * 0.6;
-                                const pos = Qt.point(root.nodePosition.x + connectionPoint.pos.x, root.nodePosition.y + connectionPoint.pos.y);
-                                const diff = Qt.vector2d(root.mousePosition.x - pos.x, root.mousePosition.y - pos.y);
+                                if (root.draftConnection.selectedPort === null || root.draftConnection.selectedPort.portType == port.side)
+                                    return root.nodeObject.style.connectionPointDiameter * 0.6;
+                                const pos = Qt.point(root.nodeObject.x + connectionPoint.pos.x, root.nodeObject.y + connectionPoint.pos.y);
+                                const diff = Qt.vector2d(root.area.mousePosition.x - pos.x, root.area.mousePosition.y - pos.y);
                                 const dist = Math.sqrt(diff.dotProduct(diff));
 
                                 let r;
-                                if (root.selectedPort.nodeId != root.nodeId) {
+                                if (root.draftConnection.selectedPort.nodeId != root.nodeObject.nodeId) {
                                     const thres = 40.0;
                                     r = (dist < thres) ? (2.0 - dist / thres) : 1.0;
                                 } else {
                                     const thres = 80.0;
                                     r = (dist < thres) ? (dist / thres) : 1.0;
                                 }
-                                return root.style.connectionPointDiameter * 0.6 * r;
+                                return root.nodeObject.style.connectionPointDiameter * 0.6 * r;
                             }
                         }
                         radiusX: radius
@@ -148,12 +144,12 @@ Shape {
         }
     }
 
-    property string label: ModelInterface.nodeData(nodeId, NodeRole.Label)
-    property bool labelEditable: ModelInterface.nodeData(nodeId, NodeRole.LabelEditable)
-    property string caption: ModelInterface.nodeData(nodeId, NodeRole.Caption)
+    property string label: ModelInterface.nodeData(nodeObject.nodeId, NodeRole.Label)
+    property bool labelEditable: ModelInterface.nodeData(nodeObject.nodeId, NodeRole.LabelEditable)
+    property string caption: ModelInterface.nodeData(nodeObject.nodeId, NodeRole.Caption)
 
-    property var capPos: ModelInterface.nodeGeometry.captionPosition(root.nodeId)
-    property var capRect: ModelInterface.nodeGeometry.captionRect(root.nodeId)
+    property var capPos: ModelInterface.nodeGeometry.captionPosition(nodeObject.nodeId)
+    property var capRect: ModelInterface.nodeGeometry.captionRect(nodeObject.nodeId)
 
     FontMetrics {
         id: fontMetrics
@@ -165,10 +161,10 @@ Shape {
     Text {
         id: captionText
         text: root.caption
-        color: root.style.fontColor
+        color: root.nodeObject.style.fontColor
         font.bold: root.label == ""
         font.italic: root.label != ""
-        visible: ModelInterface.nodeData(root.nodeId, NodeRole.CaptionVisible)
+        visible: ModelInterface.nodeData(root.nodeObject.nodeId, NodeRole.CaptionVisible)
 
         x: parent.capPos.x + parent.capRect.width / 2.0 - fontMetrics.boundingRect(root.caption).width / 2.0
         y: parent.capPos.y - fontMetrics.ascent
@@ -176,8 +172,8 @@ Shape {
 
     Text {
         text: root.label
-        color: root.style.fontColor
-        visible: ModelInterface.nodeData(root.nodeId, NodeRole.LabelVisible)
+        color: root.nodeObject.style.fontColor
+        visible: ModelInterface.nodeData(root.nodeObject.nodeId, NodeRole.LabelVisible)
         anchors.horizontalCenter: parent.horizontalCenter
 
         x: parent.capPos.x + parent.capRect.width / 2.0

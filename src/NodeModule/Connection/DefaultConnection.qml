@@ -28,7 +28,7 @@ Shape {
 
     function getNodePosition(id: int): var {
         for (let i = 0; i != nodes.nodes.count; i++) {
-            const node = nodes.nodes.itemAt(i) as NodeObject;
+            const node = nodes.nodes.itemAt(i) as NodeGraphicalObject;
             if (node.nodeId == id) {
                 return Qt.point(node.x, node.y);
             }
@@ -118,10 +118,9 @@ Shape {
     }
 
     TapHandler {
+        enabled: root.hovered
         onTapped: {
-            if (root.hovered) {
-                root.focus = true;
-            }
+            root.focus = true;
         }
     }
 

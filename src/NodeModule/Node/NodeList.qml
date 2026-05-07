@@ -17,7 +17,7 @@ Item {
 
     function loseFocus() {
         for (let i = 0; i != nodes.count; i++) {
-            const node = nodes.itemAt(i) as NodeObject;
+            const node = nodes.itemAt(i) as NodeGraphicalObject;
             if (node.focus == true) {
                 return;
             }
@@ -27,7 +27,7 @@ Item {
 
     function moveOtherSelectedNodes(xOffset, yOffset, originId) {
         for (let i = 0; i != nodes.count; i++) {
-            const node = nodes.itemAt(i) as NodeObject;
+            const node = nodes.itemAt(i) as NodeGraphicalObject;
             if (node.selected == true && node.nodeId != originId) {
                 node.x += xOffset;
                 node.y += yOffset;
@@ -37,7 +37,7 @@ Item {
 
     Repeater {
         id: nodes
-        delegate: NodeObject {
+        delegate: NodeGraphicalObject {
             id: node
             required property real modelId
             required property real posX

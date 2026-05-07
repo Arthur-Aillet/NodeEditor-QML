@@ -11,6 +11,17 @@ MouseArea {
     required property NavigableArea area
     required property NodeList nodes
     required property int nodeId
+
+    property int inPortCount: ModelInterface.nodeData(root.nodeId, NodeRole.InPortCount)
+    property int outPortCount: ModelInterface.nodeData(root.nodeId, NodeRole.OutPortCount)
+
+    property nodeStyle style
+
+    Component.onCompleted: {
+        const json = ModelInterface.nodeData(nodeId, NodeRole.Style);
+        style.loadJson(json);
+    }
+
     property bool selected: false
 
     Connections {
@@ -19,9 +30,6 @@ MouseArea {
             root.selected = root.nodes.selectedNodes.has(root.nodeId);
         }
     }
-
-    width: painter.width
-    height: painter.height
 
     onFocusChanged: {
         if (!focus) {
@@ -74,13 +82,7 @@ MouseArea {
         }
     }
 
-    property nodeStyle style
     property bool hovered: root.hovered
-
-    Component.onCompleted: {
-        const json = ModelInterface.nodeData(nodeId, NodeRole.Style);
-        style.loadJson(json);
-    }
 
     // Store movement offset for each frame to apply it to the other selected nodes
     property real xPrev
@@ -117,25 +119,23 @@ MouseArea {
     anchors.fill: root
     cursorShape: Qt.DragMoveCursor
 
-    DefaultNode {
+    width: painter.width
+    height: painter.height
+
+    DefaultNodePainter {
         id: painter
-        nodeId: root.nodeId
-        style: root.style
-        selected: root.selected
-        hovered: root.hovered
-        selectedPort: root.draftConnection.selectedPort
-        mousePosition: root.area.mousePosition
-        nodePosition: Qt.point(root.x, root.y)
+        nodeObject: root
+        area: root.area
+        draftConnection: root.draftConnection
     }
 
+    // Port Interaction points
     Repeater {
-        id: inOutRepeater
-        property int inPortCount: ModelInterface.nodeData(root.nodeId, NodeRole.InPortCount)
-        model: inPortCount + ModelInterface.nodeData(root.nodeId, NodeRole.OutPortCount)
+        model: root.inPortCount + root.outPortCount
         delegate: MouseArea {
             required property int index
-            property int portId: index % inOutRepeater.inPortCount
-            property var side: (index < inOutRepeater.inPortCount) ? PortType.In : PortType.Out
+            property int portId: index % root.inPortCount
+            property var side: (index < root.inPortCount) ? PortType.In : PortType.Out
 
             property point pos: ModelInterface.nodeGeometry.portPosition(root.nodeId, side, portId)
             property real radius: root.style.connectionPointDiameter * 0.6 // Diameter is used a the radius in the original
