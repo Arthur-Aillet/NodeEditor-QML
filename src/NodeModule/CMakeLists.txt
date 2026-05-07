@@ -33,12 +33,40 @@ qt_add_qml_module(NodeModule
   interface/NodeGeometryInterface.cpp
   interface/NodeGeometryInterface.hpp
 
-  style/QmlNodeStyle.hpp
+  style/ConnectionStyle.cpp
+  style/ConnectionStyle.hpp
+  style/NodeStyle.cpp
+  style/NodeStyle.hpp
   style/QmlConnectionStyle.hpp
   style/QmlGraphicsViewStyle.hpp
+  style/QmlNodeStyle.hpp
+  style/Style.hpp
   style/StyleCollection.hpp
+  style/GraphicsViewStyle.cpp
+  style/GraphicsViewStyle.hpp
 
-  nodes/QmlDefinition.hpp
+  #nodes/QmlDefinition.hpp
+
+  data/AbstractGraphModel.cpp
+  data/AbstractGraphModel.hpp
+  data/AbstractNodeGeometry.cpp
+  data/AbstractNodeGeometry.hpp
+  data/ConnectionIdHash.hpp
+  data/ConnectionIdUtils.hpp
+  data/DataFlowGraphModel.cpp
+  data/DataFlowGraphModel.hpp
+  data/DefaultHorizontalNodeGeometry.cpp
+  data/DefaultHorizontalNodeGeometry.hpp
+  data/Definitions.hpp
+  data/NodeData.hpp
+  data/NodeDelegateModel.cpp
+  data/NodeDelegateModel.hpp
+  data/NodeDelegateModelRegistry.cpp
+  data/NodeDelegateModelRegistry.hpp
+  data/QStringStdHash.hpp
+  data/Serializable.hpp
+  RESOURCES
+  resources/resources.qrc
 )
 
 target_include_directories(NodeModule PUBLIC
@@ -47,8 +75,9 @@ target_include_directories(NodeModule PUBLIC
   view
   interface
   style
+  data
 )
 
 target_link_libraries(NodeModule
-  PUBLIC Qt6::Quick QtNodes::QtNodes
+  PUBLIC Qt6::Quick Qt6::Core
 )

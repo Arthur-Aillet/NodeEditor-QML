@@ -13,7 +13,7 @@ Loader {
     active: selectedPort !== null
 
     function tryCreation() {
-        const oppositeCount = selectedPort.portType === PortType.In ? NodeRole.OutPortCount : NodeRole.InPortCount;
+        const oppositeCount = selectedPort.portType === PortType.In ? NodeEditor.NodeRole.OutPortCount : NodeEditor.NodeRole.InPortCount;
         const oppositeSide = selectedPort.portType === PortType.In ? PortType.Out : PortType.In;
 
         for (let i = 0; i < nodes.nodes.count; ++i) {

@@ -4,6 +4,7 @@ project(CutieDesigner VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 set(CMAKE_PREFIX_PATH "~/Qt/6.11.0/gcc_64/")
 set(LD_LIBRARY_PATH "~/Qt/6.11.0/gcc_64/lib")
 set(QT_QML_GENERATE_QMLLS_INI ON)
@@ -20,7 +21,7 @@ qt_policy(SET QTP0004 NEW)
 option(DEBUG_MODE "Set DEBUG Mode" ON)
 option(RUN "Launch App" OFF)
 
-add_subdirectory(external/nodeeditor)
+#add_subdirectory(external/nodeeditor)
 
 add_subdirectory(src)
 

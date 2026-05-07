@@ -10,21 +10,18 @@ void NodeGeometryInterface::recomputeSize(NodeId const nodeId) const {
   return nodeGeometry->recomputeSize(nodeId);
 }
 
-QPointF NodeGeometryInterface::portPosition(NodeId const nodeId, QtNodes::PortType const portType,
-                                            QtNodes::PortIndex const index) const {
+QPointF NodeGeometryInterface::portPosition(NodeId const nodeId, PortType const portType,
+                                            PortIndex const index) const {
   return nodeGeometry->portPosition(nodeId, portType, index);
 }
 
-QPointF NodeGeometryInterface::portScenePosition(NodeId const nodeId,
-                                                 QtNodes::PortType const portType,
-                                                 QtNodes::PortIndex const index,
-                                                 QTransform const &t) const {
+QPointF NodeGeometryInterface::portScenePosition(NodeId const nodeId, PortType const portType,
+                                                 PortIndex const index, QTransform const &t) const {
   return nodeGeometry->portScenePosition(nodeId, portType, index, t);
 }
 
-QPointF NodeGeometryInterface::portTextPosition(NodeId const nodeId,
-                                                QtNodes::PortType const portType,
-                                                QtNodes::PortIndex const portIndex) const {
+QPointF NodeGeometryInterface::portTextPosition(NodeId const nodeId, PortType const portType,
+                                                PortIndex const portIndex) const {
   return nodeGeometry->portTextPosition(nodeId, portType, portIndex);
 }
 
@@ -48,9 +45,8 @@ QPointF NodeGeometryInterface::widgetPosition(NodeId const nodeId) const {
   return nodeGeometry->widgetPosition(nodeId);
 }
 
-QtNodes::PortIndex NodeGeometryInterface::checkPortHit(NodeId const nodeId,
-                                                       QtNodes::PortType const portType,
-                                                       QPointF const nodePoint) const {
+PortIndex NodeGeometryInterface::checkPortHit(NodeId const nodeId, PortType const portType,
+                                              QPointF const nodePoint) const {
   return nodeGeometry->checkPortHit(nodeId, portType, nodePoint);
 }
 
@@ -60,7 +56,7 @@ QRect NodeGeometryInterface::resizeHandleRect(NodeId const nodeId) const {
 
 int NodeGeometryInterface::getPortSpacing() { return nodeGeometry->getPortSpacing(); }
 
-NodeGeometryInterface::NodeGeometryInterface(QtNodes::AbstractNodeGeometry *_nodeGeometry)
+NodeGeometryInterface::NodeGeometryInterface(AbstractNodeGeometry *_nodeGeometry)
     : nodeGeometry(_nodeGeometry) {}
 
 bool NodeGeometryInterface::operator==(const NodeGeometryInterface &other) {

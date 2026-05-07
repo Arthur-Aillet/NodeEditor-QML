@@ -1,6 +1,5 @@
 #include "ValueNodeModel.hpp"
-
-#include "nodes/DecimalData.hpp"
+#include "DecimalData.hpp"
 
 #include <QtCore/QJsonValue>
 #include <QtGui/QDoubleValidator>
@@ -35,15 +34,15 @@ void ValueNodeModel::load(QJsonObject const &p) {
   }
 }
 
-unsigned int ValueNodeModel::nPorts(QtNodes::PortType portType) const {
+unsigned int ValueNodeModel::nPorts(PortType portType) const {
   unsigned int result = 1;
 
   switch (portType) {
-  case QtNodes::PortType::In:
+  case PortType::In:
     result = 0;
     break;
 
-  case QtNodes::PortType::Out:
+  case PortType::Out:
     result = 1;
 
   default:
@@ -68,9 +67,7 @@ void ValueNodeModel::onTextEdited(QString const &str) {
   }
 }
 
-NodeDataType ValueNodeModel::dataType(QtNodes::PortType, PortIndex) const {
-  return DecimalData().type();
-}
+NodeDataType ValueNodeModel::dataType(PortType, PortIndex) const { return DecimalData().type(); }
 
 std::shared_ptr<NodeData> ValueNodeModel::outData(PortIndex) { return _number; }
 

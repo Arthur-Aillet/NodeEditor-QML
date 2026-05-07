@@ -74,7 +74,7 @@ Item {
         }
 
         function onNodePositionUpdated(id: real) {
-            const position = ModelInterface.nodeData(id, NodeRole.Position);
+            const position = ModelInterface.nodeData(id, Cutie.NodeEditor.NodeRole.Position);
 
             for (let i = 0; i < nodeModel.count; i++) {
                 const current = nodeModel.get(i);

@@ -70,9 +70,9 @@ AbstractNodePainter {
         }
     }
 
-    property string label: ModelInterface.nodeData(nodeObject.nodeId, NodeRole.Label)
-    property bool labelEditable: ModelInterface.nodeData(nodeObject.nodeId, NodeRole.LabelEditable)
-    property string caption: ModelInterface.nodeData(nodeObject.nodeId, NodeRole.Caption)
+    property string label: ModelInterface.nodeData(nodeObject.nodeId, NodeEditor.NodeRole.Label)
+    property bool labelEditable: ModelInterface.nodeData(nodeObject.nodeId, NodeEditor.NodeRole.LabelEditable)
+    property string caption: ModelInterface.nodeData(nodeObject.nodeId, NodeEditor.NodeRole.Caption)
 
     property var capPos: ModelInterface.nodeGeometry.captionPosition(nodeObject.nodeId)
     property var capRect: ModelInterface.nodeGeometry.captionRect(nodeObject.nodeId)
@@ -90,7 +90,7 @@ AbstractNodePainter {
         color: root.nodeObject.style.fontColor
         font.bold: root.label == ""
         font.italic: root.label != ""
-        visible: ModelInterface.nodeData(root.nodeObject.nodeId, NodeRole.CaptionVisible)
+        visible: ModelInterface.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.CaptionVisible)
 
         x: parent.capPos.x + parent.capRect.width / 2.0 - fontMetrics.boundingRect(root.caption).width / 2.0
         y: parent.capPos.y - fontMetrics.ascent
@@ -99,7 +99,7 @@ AbstractNodePainter {
     Text {
         text: root.label
         color: root.nodeObject.style.fontColor
-        visible: ModelInterface.nodeData(root.nodeObject.nodeId, NodeRole.LabelVisible)
+        visible: ModelInterface.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.LabelVisible)
         anchors.horizontalCenter: parent.horizontalCenter
 
         x: parent.capPos.x + parent.capRect.width / 2.0

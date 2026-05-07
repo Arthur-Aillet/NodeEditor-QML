@@ -1,12 +1,10 @@
 #pragma once
 
-#include <QtNodes/ConnectionStyle>
+#include "ConnectionStyle.hpp"
 #include <qqmlintegration.h>
 #include <qtmetamacros.h>
 
-using QtNodes::ConnectionStyle;
-
-class NODE_EDITOR_PUBLIC QmlConnectionStyle : public ConnectionStyle {
+class QmlConnectionStyle : public ConnectionStyle {
   public:
   Q_GADGET
   QML_VALUE_TYPE(connectionStyle)

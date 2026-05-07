@@ -9,12 +9,12 @@ DataFlowModelInterface *DataFlowModelInterface::create(QQmlEngine *, QJSEngine *
   return dynamic_cast<DataFlowModelInterface *>(instance);
 }
 
-DataFlowModelInterface *DataFlowModelInterface::init(QtNodes::DataFlowGraphModel &_graphModel) {
+DataFlowModelInterface *DataFlowModelInterface::init(DataFlowGraphModel &_graphModel) {
   instance = new DataFlowModelInterface(_graphModel);
   return dynamic_cast<DataFlowModelInterface *>(instance);
 };
 
-DataFlowModelInterface::DataFlowModelInterface(QtNodes::DataFlowGraphModel &_graphModel)
+DataFlowModelInterface::DataFlowModelInterface(DataFlowGraphModel &_graphModel)
     : ModelInterface(_graphModel), graphModel(_graphModel),
       registeryAccess(graphModel.dataModelRegistry()) {}
 

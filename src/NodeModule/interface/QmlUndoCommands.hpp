@@ -1,12 +1,9 @@
 #pragma once
 
-#include "QtNodes/internal/Definitions.hpp"
+#include "Definitions.hpp"
 #include <QUndoCommand>
 #include <QtCore/QJsonObject>
 #include <QtCore/QPointF>
-
-using QtNodes::ConnectionId;
-using QtNodes::NodeId;
 
 class ModelInterface;
 
@@ -36,7 +33,7 @@ class ConnectCommand : public QUndoCommand {
   ConnectionId _connId;
 };
 
-class NODE_EDITOR_PUBLIC DisconnectCommand : public QUndoCommand {
+class DisconnectCommand : public QUndoCommand {
   public:
   DisconnectCommand(ModelInterface *scene, ConnectionId const);
 
@@ -54,7 +51,7 @@ class NODE_EDITOR_PUBLIC DisconnectCommand : public QUndoCommand {
  * The deleted elements could be restored in `undo`.
  */
 /*
-class NODE_EDITOR_PUBLIC DeleteCommand : public QUndoCommand
+class DeleteCommand : public QUndoCommand
 {
 public:
     DeleteCommand(ModelInterface *scene);
@@ -67,13 +64,13 @@ private:
     QJsonObject _sceneJson;
 };
 
-class NODE_EDITOR_PUBLIC CopyCommand : public QUndoCommand
+class CopyCommand : public QUndoCommand
 {
 public:
     CopyCommand(ModelInterface *scene);
 };
 
-class NODE_EDITOR_PUBLIC PasteCommand : public QUndoCommand
+class PasteCommand : public QUndoCommand
 {
 public:
     PasteCommand(ModelInterface *scene, QPointF const &mouseScenePos);
@@ -91,7 +88,7 @@ private:
     QJsonObject _newSceneJson;
 };
 
-class NODE_EDITOR_PUBLIC MoveNodeCommand : public QUndoCommand
+class MoveNodeCommand : public QUndoCommand
 {
 public:
     MoveNodeCommand(ModelInterface *scene, QPointF const &diff);

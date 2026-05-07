@@ -1,12 +1,10 @@
 #pragma once
 
-#include <QtNodes/GraphicsViewStyle>
+#include "GraphicsViewStyle.hpp"
 #include <qqmlintegration.h>
 #include <qtmetamacros.h>
 
-using QtNodes::GraphicsViewStyle;
-
-class NODE_EDITOR_PUBLIC QmlGraphicsViewStyle : public GraphicsViewStyle {
+class QmlGraphicsViewStyle : public GraphicsViewStyle {
   public:
   Q_GADGET
   QML_VALUE_TYPE(graphicsViewStyle)

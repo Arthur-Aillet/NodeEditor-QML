@@ -1,13 +1,11 @@
 #pragma once
 
+#include "AbstractGraphModel.hpp"
+#include "AbstractNodeGeometry.hpp"
+#include "Definitions.hpp"
 #include "NodeGeometryInterface.hpp"
 #include "QmlUndoCommands.hpp"
-#include "QtNodes/internal/AbstractNodeGeometry.hpp"
-#include "QtNodes/internal/Definitions.hpp"
 #include <QObject>
-#include <QtNodes/AbstractGraphModel>
-#include <QtNodes/BasicGraphicsScene>
-#include <QtNodes/DataFlowGraphicsScene>
 #include <memory>
 #include <qdebug.h>
 #include <qjsengine.h>
@@ -18,20 +16,16 @@
 #include <qtmetamacros.h>
 #include <qvariant.h>
 
-using QtNodes::ConnectionId;
-using QtNodes::NodeId;
-using QtNodes::PortIndex;
-
 class ModelInterface : public QObject {
   Q_OBJECT
   QML_SINGLETON
   QML_ELEMENT
 
   public:
-  QtNodes::AbstractGraphModel &graphModel;
+  AbstractGraphModel &graphModel;
 
   static ModelInterface *create(QQmlEngine *, QJSEngine *engine);
-  static ModelInterface *init(QtNodes::AbstractGraphModel &_graphModel);
+  static ModelInterface *init(AbstractGraphModel &_graphModel);
 
   Q_PROPERTY(NodeGeometryInterface nodeGeometry READ getNodeGeometryInterface NOTIFY
                  nodeGeometryInterfaceChanged);
@@ -40,17 +34,16 @@ class ModelInterface : public QObject {
   NodeGeometryInterface getNodeGeometryInterface() {
     return NodeGeometryInterface(_nodeGeometry.get());
   }
-  std::unique_ptr<QtNodes::AbstractNodeGeometry> _nodeGeometry;
+  std::unique_ptr<AbstractNodeGeometry> _nodeGeometry;
 
   inline static ModelInterface *instance = nullptr;
-  ModelInterface(QtNodes::AbstractGraphModel &_graphModel);
+  ModelInterface(AbstractGraphModel &_graphModel);
   QUndoStack undoStack;
 
   public:
-  Q_INVOKABLE QVariant nodeData(NodeId nodeId, QtNodes::NodeRole role);
-  Q_INVOKABLE QVariant portData(NodeId nodeId, QtNodes::PortType portType, PortIndex index,
-                                QtNodes::PortRole role);
-  Q_INVOKABLE bool setNodeData(NodeId nodeId, QtNodes::NodeRole role, QVariant value);
+  Q_INVOKABLE QVariant nodeData(NodeId nodeId, NodeRole role);
+  Q_INVOKABLE QVariant portData(NodeId nodeId, PortType portType, PortIndex index, PortRole role);
+  Q_INVOKABLE bool setNodeData(NodeId nodeId, NodeRole role, QVariant value);
   Q_INVOKABLE void createConnection(NodeId inNode, PortIndex inPort, NodeId outNode,
                                     PortIndex outPort);
   Q_INVOKABLE void deleteConnection(NodeId inNode, PortIndex inPort, NodeId outNode,
@@ -58,7 +51,7 @@ class ModelInterface : public QObject {
   Q_INVOKABLE void createNode(QString const nodeType, QPoint const &scenePos);
   Q_INVOKABLE bool deleteNode(const NodeId nodeId);
 
-  void setNodeGeometry(std::unique_ptr<QtNodes::AbstractNodeGeometry> newGeom) {
+  void setNodeGeometry(std::unique_ptr<AbstractNodeGeometry> newGeom) {
     _nodeGeometry = std::move(newGeom);
     emit nodeGeometryInterfaceChanged();
   }

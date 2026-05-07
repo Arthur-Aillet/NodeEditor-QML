@@ -1,18 +1,12 @@
 #pragma once
 
-#include <QtNodes/NodeDelegateModel>
+#include "NodeDelegateModel.hpp"
 
 #include <QtCore/QObject>
 #include <qdebug.h>
 #include <qtmetamacros.h>
 
 #include "DecimalData.hpp"
-
-using QtNodes::NodeData;
-using QtNodes::NodeDataType;
-using QtNodes::NodeDelegateModel;
-using QtNodes::PortIndex;
-using QtNodes::PortType;
 
 class QLabel;
 

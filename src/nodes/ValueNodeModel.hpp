@@ -1,16 +1,11 @@
 #pragma once
 
+#include "NodeDelegateModel.hpp"
 #include "nodes/DecimalData.hpp"
-#include <QtNodes/NodeDelegateModel>
 
 #include <QtCore/QObject>
 
 class NumberData;
-
-using QtNodes::NodeData;
-using QtNodes::NodeDataType;
-using QtNodes::NodeDelegateModel;
-using QtNodes::PortIndex;
 
 class QLineEdit;
 
@@ -37,9 +32,9 @@ class ValueNodeModel : public NodeDelegateModel {
   void load(QJsonObject const &p) override;
 
   public:
-  unsigned int nPorts(QtNodes::PortType portType) const override;
+  unsigned int nPorts(PortType portType) const override;
 
-  NodeDataType dataType(QtNodes::PortType portType, PortIndex portIndex) const override;
+  NodeDataType dataType(PortType portType, PortIndex portIndex) const override;
 
   std::shared_ptr<NodeData> outData(PortIndex port) override;
 

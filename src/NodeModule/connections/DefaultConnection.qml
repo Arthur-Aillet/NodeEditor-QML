@@ -13,10 +13,10 @@ Shape {
 
         function onNodePositionUpdated(id: real) {
             if (id == root.inNodeId) {
-                root.inNodePos = ModelInterface.nodeData(id, NodeRole.Position);
+                root.inNodePos = ModelInterface.nodeData(id, NodeEditor.NodeRole.Position);
             }
             if (id == root.outNodeId) {
-                root.outNodePos = ModelInterface.nodeData(id, NodeRole.Position);
+                root.outNodePos = ModelInterface.nodeData(id, NodeEditor.NodeRole.Position);
             }
         }
     }

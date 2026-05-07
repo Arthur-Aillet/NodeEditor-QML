@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtNodes/NodeDelegateModel>
+#include "NodeDelegateModel.hpp"
 
 #include <QtCore/QObject>
 #include <QtWidgets/QLabel>

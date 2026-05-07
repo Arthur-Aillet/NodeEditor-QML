@@ -1,5 +1,6 @@
 #include "QmlUndoCommands.hpp"
 
+#include "ConnectionIdUtils.hpp"
 #include "ModelInterface.hpp"
 
 #include <QtCore/QJsonArray>
@@ -11,7 +12,7 @@
 #include <qdebug.h>
 
 static void insertSerializedItems(QJsonObject const &json, ModelInterface *interface) {
-  QtNodes::AbstractGraphModel &graphModel = interface->graphModel;
+  AbstractGraphModel &graphModel = interface->graphModel;
 
   QJsonArray const &nodesJsonArray = json["nodes"].toArray();
 
@@ -30,7 +31,7 @@ static void insertSerializedItems(QJsonObject const &json, ModelInterface *inter
   for (QJsonValue connection : connJsonArray) {
     QJsonObject connJson = connection.toObject();
 
-    ConnectionId connId = QtNodes::fromJson(connJson);
+    ConnectionId connId = fromJson(connJson);
 
     // Restore the connection
     graphModel.addConnection(connId);
@@ -44,7 +45,7 @@ static void insertSerializedItems(QJsonObject const &json, ModelInterface *inter
   //     for (const QJsonValue &groupValue : groupsJsonArray) {
   //         QJsonObject groupJson = groupValue.toObject();
 
-  //         QString name = QString("Group %1").arg(QtNodes::NodeGroup::groupCount());
+  //         QString name = QString("Group %1").arg(NodeGroup::groupCount());
   //         QJsonArray nodeIdsJson = groupJson["nodes"].toArray();
 
   //         std::vector<NodeGraphicsObject *> groupNodes;
@@ -64,8 +65,8 @@ static void insertSerializedItems(QJsonObject const &json, ModelInterface *inter
 CreateCommand::CreateCommand(ModelInterface *interface, QString const name, QPointF const &mousePos)
     : _interface(interface), _sceneJson(QJsonObject()) {
   _nodeId = _interface->graphModel.addNode(name);
-  if (_nodeId != QtNodes::InvalidNodeId) {
-    _interface->graphModel.setNodeData(_nodeId, QtNodes::NodeRole::Position, mousePos);
+  if (_nodeId != InvalidNodeId) {
+    _interface->graphModel.setNodeData(_nodeId, NodeRole::Position, mousePos);
   } else {
     setObsolete(true);
   }

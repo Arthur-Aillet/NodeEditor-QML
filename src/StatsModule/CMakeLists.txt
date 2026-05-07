@@ -25,5 +25,5 @@ target_include_directories(StatsModule PUBLIC
 )
 
 target_link_libraries(StatsModule
-  PUBLIC Qt::Core Qt::Gui Qt::Qml Qt::Quick Qt::QuickControls2 QtNodes::QtNodes NodeModule
+  PUBLIC Qt::Core Qt::Gui Qt::Qml Qt::Quick Qt::QuickControls2 NodeModule
 )

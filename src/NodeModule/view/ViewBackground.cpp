@@ -1,14 +1,12 @@
+#include "StyleCollection.hpp"
 #include <QPainter>
-#include <QtNodes/StyleCollection>
 
 #include "ViewBackground.hpp"
 
-using QtNodes::StyleCollection;
-
 ViewBackground::ViewBackground(QQuickItem *parent) : QQuickPaintedItem(parent) {
-  auto const &flowViewStyle = StyleCollection::flowViewStyle();
+  // auto const &flowViewStyle = StyleCollection::flowViewStyle();
 
-  this->setFillColor(flowViewStyle.BackgroundColor);
+  // this->setFillColor(flowViewStyle.BackgroundColor);
 }
 
 void ViewBackground::paint(QPainter *painter) {
@@ -39,15 +37,15 @@ void ViewBackground::paint(QPainter *painter) {
     }
   };
 
-  auto const &flowViewStyle = StyleCollection::flowViewStyle();
+  // auto const &flowViewStyle = StyleCollection::flowViewStyle();
 
-  QPen pfine(flowViewStyle.FineGridColor, 1.0);
+  // QPen pfine(flowViewStyle.FineGridColor, 1.0);
 
-  painter->setPen(pfine);
+  // painter->setPen(pfine);
   drawGrid(15);
 
-  QPen p(flowViewStyle.CoarseGridColor, 1.0);
+  // QPen p(flowViewStyle.CoarseGridColor, 1.0);
 
-  painter->setPen(p);
+  // painter->setPen(p);
   drawGrid(150);
 };

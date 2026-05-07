@@ -3,7 +3,7 @@
 #include "DecimalData.hpp"
 #include "MathOperationDataModel.hpp"
 
-#include <QtNodes/NodeDelegateModel>
+#include "NodeDelegateModel.hpp"
 
 #include <QtCore/QObject>
 #include <QtWidgets/QLabel>

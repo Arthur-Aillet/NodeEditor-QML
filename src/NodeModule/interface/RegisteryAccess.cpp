@@ -2,7 +2,7 @@
 
 RegisteryAccess::RegisteryAccess() {}
 
-RegisteryAccess::RegisteryAccess(std::shared_ptr<QtNodes::NodeDelegateModelRegistry> _reg)
+RegisteryAccess::RegisteryAccess(std::shared_ptr<NodeDelegateModelRegistry> _reg)
     : registry(_reg), m_nodeMapModel(new QStandardItemModel()) {
   filterNodeMapModel("");
 }

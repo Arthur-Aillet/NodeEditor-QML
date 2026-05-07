@@ -1,9 +1,9 @@
 #include "ModelInterface.hpp"
-#include "QtNodes/internal/DefaultHorizontalNodeGeometry.hpp"
+#include "DefaultHorizontalNodeGeometry.hpp"
 
-ModelInterface::ModelInterface(QtNodes::AbstractGraphModel &_graphModel)
+ModelInterface::ModelInterface(AbstractGraphModel &_graphModel)
     : QObject(nullptr), graphModel(_graphModel), undoStack(QUndoStack(this)),
-      _nodeGeometry(std::make_unique<QtNodes::DefaultHorizontalNodeGeometry>(graphModel)) {
+      _nodeGeometry(std::make_unique<DefaultHorizontalNodeGeometry>(graphModel)) {
   connect(&graphModel, SIGNAL(connectionCreated(ConnectionId)), this,
           SLOT(forwardConnectionCreated(ConnectionId)));
   connect(&graphModel, SIGNAL(connectionDeleted(ConnectionId)), this,
@@ -26,21 +26,21 @@ ModelInterface *ModelInterface::create(QQmlEngine *, QJSEngine *engine) {
   return instance;
 }
 
-ModelInterface *ModelInterface::init(QtNodes::AbstractGraphModel &_graphModel) {
+ModelInterface *ModelInterface::init(AbstractGraphModel &_graphModel) {
   instance = new ModelInterface(_graphModel);
   return instance;
 };
 
-QVariant ModelInterface::nodeData(NodeId nodeId, QtNodes::NodeRole role) {
+QVariant ModelInterface::nodeData(NodeId nodeId, NodeRole role) {
   return graphModel.nodeData(nodeId, role);
 };
 
-QVariant ModelInterface::portData(NodeId nodeId, QtNodes::PortType portType, PortIndex index,
-                                  QtNodes::PortRole role) {
+QVariant ModelInterface::portData(NodeId nodeId, PortType portType, PortIndex index,
+                                  PortRole role) {
   return graphModel.portData(nodeId, portType, index, role);
 };
 
-bool ModelInterface::setNodeData(NodeId nodeId, QtNodes::NodeRole role, QVariant value) {
+bool ModelInterface::setNodeData(NodeId nodeId, NodeRole role, QVariant value) {
   return graphModel.setNodeData(nodeId, role, value);
 }
 

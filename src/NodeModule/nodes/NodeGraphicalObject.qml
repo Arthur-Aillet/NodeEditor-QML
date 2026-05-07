@@ -12,13 +12,13 @@ MouseArea {
     required property NodeList nodes
     required property int nodeId
 
-    property int inPortCount: ModelInterface.nodeData(root.nodeId, NodeRole.InPortCount)
-    property int outPortCount: ModelInterface.nodeData(root.nodeId, NodeRole.OutPortCount)
+    property int inPortCount: ModelInterface.nodeData(root.nodeId, NodeEditor.NodeRole.InPortCount)
+    property int outPortCount: ModelInterface.nodeData(root.nodeId, NodeEditor.NodeRole.OutPortCount)
 
     property nodeStyle style
 
     Component.onCompleted: {
-        const json = ModelInterface.nodeData(nodeId, NodeRole.Style);
+        const json = ModelInterface.nodeData(nodeId, NodeEditor.NodeRole.Style);
         style.loadJson(json);
     }
 

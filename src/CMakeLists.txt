@@ -36,6 +36,7 @@ target_link_directories(CutieDesigner
 target_include_directories(CutieDesigner
   PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
+  nodes
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -53,7 +54,7 @@ target_compile_definitions(CutieDesigner
   PRIVATE $<$<CONFIG:Debug>:QT_QML_DEBUG>)
 
 target_link_libraries(CutieDesigner
-  PRIVATE Qt6::Core Qt6::Gui Qt6::Quick Qt6::QuickWidgets Qt6::Qml QtNodes::QtNodes NodeModule StatsModule
+  PRIVATE Qt6::Core Qt6::Gui Qt6::Quick Qt6::QuickWidgets Qt6::Qml NodeModule StatsModule
 )
 
 install(TARGETS CutieDesigner

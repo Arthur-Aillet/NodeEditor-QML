@@ -3,8 +3,6 @@
 #include "DecimalData.hpp"
 #include "MathOperationDataModel.hpp"
 
-#include <QtNodes/NodeDelegateModel>
-
 #include <QtCore/QObject>
 #include <QtWidgets/QLabel>
 
@@ -51,14 +49,14 @@ class DivisionModel : public MathOperationDataModel {
     auto n1 = _number1.lock();
     auto n2 = _number2.lock();
 
-    QtNodes::NodeValidationState state;
+    NodeValidationState state;
     if (n2 && (n2->number() == 0.0)) {
-      state._state = QtNodes::NodeValidationState::State::Error;
+      state._state = NodeValidationState::State::Error;
       state._stateMessage = QStringLiteral("Division by zero error");
       setValidationState(state);
       _result.reset();
     } else if (n2 && (n2->number() < 1e-5)) {
-      state._state = QtNodes::NodeValidationState::State::Warning;
+      state._state = NodeValidationState::State::Warning;
       state._stateMessage = QStringLiteral("Very small divident. Result might overflow");
       setValidationState(state);
       if (n1) {
@@ -70,7 +68,7 @@ class DivisionModel : public MathOperationDataModel {
       setValidationState(state);
       _result = std::make_shared<DecimalData>(n1->number() / n2->number());
     } else {
-      QtNodes::NodeValidationState state;
+      NodeValidationState state;
       setValidationState(state);
       _result.reset();
     }

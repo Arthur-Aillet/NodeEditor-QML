@@ -1,12 +1,10 @@
 #pragma once
 
+#include "NodeStyle.hpp"
 #include <QObject>
-#include <QtNodes/NodeStyle>
 #include <qobject.h>
 #include <qqmlintegration.h>
 #include <qtmetamacros.h>
-
-using QtNodes::NodeStyle;
 
 class QmlNodeStyle : public NodeStyle {
   Q_GADGET
