@@ -4,6 +4,10 @@
 #include "QtNodes/internal/Definitions.hpp"
 #include "QtNodes/internal/QmlWrapper.hpp"
 #include "nodes/AdditionModel.hpp"
+#include "nodes/DivisionModel.hpp"
+#include "nodes/MultiplicationModel.hpp"
+#include "nodes/NumberDisplayDataModel.hpp"
+#include "nodes/SubtractionModel.hpp"
 #include "nodes/ValueNodeModel.hpp"
 #include <QtNodes/BasicGraphicsScene>
 #include <QtNodes/ConnectionStyle>
@@ -15,8 +19,10 @@
 #include <QtWidgets/QApplication>
 #include <memory>
 #include <qboxlayout.h>
+#include <qobjectdefs.h>
 #include <qqml.h>
 #include <qqmlapplicationengine.h>
+#include <qqmlcontext.h>
 #include <qwidget.h>
 
 using QtNodes::NodeRole;
@@ -53,6 +59,10 @@ int main(int argc, char *argv[]) {
 
   ret->registerModel<ValueNodeModel>("Input");
   ret->registerModel<AdditionModel>("Process");
+  ret->registerModel<DivisionModel>("Process");
+  ret->registerModel<MultiplicationModel>("Process");
+  ret->registerModel<SubtractionModel>("Process");
+  ret->registerModel<NumberDisplayDataModel>("Display");
 
   auto model = QtNodes::DataFlowGraphModel(ret);
 
@@ -72,6 +82,14 @@ int main(int argc, char *argv[]) {
     model.setNodeData(source, NodeRole::Position, QPointF(0, 0));
     model.setNodeData(source, NodeRole::Type, ValueNodeModel().name());
   }
+
+  QObject *item = engine.rootObjects().first();
+
+  auto source = model.addNode(NumberDisplayDataModel().name());
+  model.setNodeData(source, NodeRole::Position, QPointF(400, 0));
+  model.setNodeData(source, NodeRole::Type, ValueNodeModel().name());
+  auto display = model.delegateModel<NumberDisplayDataModel>(source);
+  QObject::connect(display, SIGNAL(valueUpdated(double)), item, SIGNAL(newDisplayValue(double)));
 
   return app.exec();
 }

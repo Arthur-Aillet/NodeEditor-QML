@@ -10,6 +10,14 @@ ApplicationWindow {
     height: 800
     visible: true
     title: qsTr("CutieDesigner!")
+
+    signal newDisplayValue(newValue: double)
+
+    onNewDisplayValue: newValue => {
+        display.text = newValue;
+        console.log(newValue);
+    }
+
     footer: ToolBar {
         RowLayout {
             anchors.fill: parent
@@ -22,6 +30,10 @@ ApplicationWindow {
             SplitView.preferredWidth: root.width
             SplitView.preferredHeight: root.height / 2
             color: "blue"
+            TextDisplay {
+                id: display
+                anchors.centerIn: parent
+            }
         }
         SplitView {
             id: editView
