@@ -3,6 +3,8 @@ qt_add_qml_module(NodeModule
   QML_FILES
   ./Node/DefaultNodePainter.qml
   ./Node/NodeGraphicalObject.qml
+  ./Node/AbstractNodePainter.qml
+  ./Node/DefaultPortPainter.qml
   ./Node/NodeList.qml
   ./Node/QSet.qml
   ./GraphicsView/GraphicsView.qml

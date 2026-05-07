@@ -122,11 +122,22 @@ MouseArea {
     width: painter.width
     height: painter.height
 
-    DefaultNodePainter {
+    Loader {
         id: painter
-        nodeObject: root
-        area: root.area
-        draftConnection: root.draftConnection
+
+        property url nodePainterUrl
+
+        onNodePainterUrlChanged: {
+            const initialProperties = {
+                nodeObject: root,
+                area: root.area,
+                draftConnection: root.draftConnection
+            };
+            setSource(nodePainterUrl, initialProperties);
+        }
+        Component.onCompleted: {
+            nodePainterUrl = "DefaultNodePainter.qml";
+        }
     }
 
     // Port Interaction points
