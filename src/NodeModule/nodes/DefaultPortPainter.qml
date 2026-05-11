@@ -13,10 +13,6 @@ Item {
     property bool connected: false
     property var dataType: ModelInterface.portData(nodePainter.nodeObject.nodeId, side, port.portId, NodeEditor.PortRole.DataType)
 
-    Component.onCompleted: {
-        console.log("Default Port Painter");
-    }
-
     Text {
         id: portLabel
         property bool captionVisible: ModelInterface.portData(port.nodePainter.nodeObject.nodeId, port.side, port.portId, NodeEditor.PortRole.CaptionVisible)

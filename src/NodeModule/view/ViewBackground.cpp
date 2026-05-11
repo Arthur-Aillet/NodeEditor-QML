@@ -6,7 +6,7 @@
 ViewBackground::ViewBackground(QQuickItem *parent) : QQuickPaintedItem(parent) {
   auto const &style = StyleCollection::getGraphicsViewStyle();
 
-  this->setFillColor(style.BackgroundColor);
+  this->setFillColor(style.backgroundColor());
 }
 
 void ViewBackground::paint(QPainter *painter) {
@@ -39,12 +39,12 @@ void ViewBackground::paint(QPainter *painter) {
 
   auto const &style = StyleCollection::getGraphicsViewStyle();
 
-  QPen pfine(style.FineGridColor, 1.0);
+  QPen pfine(style.fineGridColor(), 1.0);
 
   painter->setPen(pfine);
   drawGrid(15);
 
-  QPen p(style.CoarseGridColor, 1.0);
+  QPen p(style.coarseGridColor(), 1.0);
 
   painter->setPen(p);
   drawGrid(150);

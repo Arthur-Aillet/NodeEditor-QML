@@ -19,13 +19,8 @@ MouseArea {
 
     Component.onCompleted: {
         const json = ModelInterface.nodeData(nodeId, NodeEditor.NodeRole.Style);
-        console.log("trigger?" + json);
         style.loadJson(json);
-        console.log("trigger?" + style.penWidth);
         style = style;
-    }
-    onStyleChanged: {
-        console.log("Changed!" + style.penWidth);
     }
 
     property bool selected: false

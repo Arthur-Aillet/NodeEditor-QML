@@ -22,13 +22,18 @@ class GraphicsViewStyle : public Style {
   Q_INVOKABLE void loadJson(QJsonObject const &json) override;
   Q_INVOKABLE QJsonObject toJson() const override;
 
+  Q_PROPERTY(QColor backgroundColor READ backgroundColor)
+  Q_PROPERTY(QColor fineGridColor READ fineGridColor)
+  Q_PROPERTY(QColor coarseGridColor READ coarseGridColor)
+
+  QColor backgroundColor() const;
+  QColor fineGridColor() const;
+  QColor coarseGridColor() const;
+
+  bool operator==(const GraphicsViewStyle &other);
+
+  protected:
   QColor BackgroundColor;
   QColor FineGridColor;
   QColor CoarseGridColor;
-
-  Q_PROPERTY(QColor backgroundColor MEMBER BackgroundColor)
-  Q_PROPERTY(QColor fineGridColor MEMBER FineGridColor)
-  Q_PROPERTY(QColor coarseGridColor MEMBER CoarseGridColor)
-
-  bool operator==(const GraphicsViewStyle &other);
 };

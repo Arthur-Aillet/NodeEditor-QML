@@ -51,41 +51,76 @@ class NodeStyle : public Style {
   /// Current uniform background color.
   QColor backgroundColor() const;
 
-  Q_PROPERTY(QColor normalBoundaryColor MEMBER NormalBoundaryColor)
-  Q_PROPERTY(QColor selectedBoundaryColor MEMBER SelectedBoundaryColor)
-  Q_PROPERTY(QColor gradientColor0 MEMBER GradientColor0)
-  Q_PROPERTY(QColor gradientColor1 MEMBER GradientColor1)
-  Q_PROPERTY(QColor gradientColor2 MEMBER GradientColor2)
-  Q_PROPERTY(QColor gradientColor3 MEMBER GradientColor3)
-  Q_PROPERTY(QColor shadowColor MEMBER ShadowColor)
+  Q_PROPERTY(QColor normalBoundaryColor READ normalBoundaryColor)
+  Q_PROPERTY(QColor selectedBoundaryColor READ selectedBoundaryColor)
+  Q_PROPERTY(QColor gradientColor0 READ gradientColor0)
+  Q_PROPERTY(QColor gradientColor1 READ gradientColor1)
+  Q_PROPERTY(QColor gradientColor2 READ gradientColor2)
+  Q_PROPERTY(QColor gradientColor3 READ gradientColor3)
+  Q_PROPERTY(QColor shadowColor READ shadowColor)
 
-  Q_PROPERTY(bool shadowEnabled MEMBER ShadowEnabled)
+  Q_PROPERTY(bool shadowEnabled READ shadowEnabled)
 
-  Q_PROPERTY(QColor fontColor MEMBER FontColor)
-  Q_PROPERTY(QColor fontColorFaded MEMBER FontColorFaded)
+  Q_PROPERTY(QColor fontColor READ fontColor)
+  Q_PROPERTY(QColor fontColorFaded READ fontColorFaded)
 
-  Q_PROPERTY(QColor connectionPointColor MEMBER ConnectionPointColor)
-  Q_PROPERTY(QColor filledConnectionPointColor MEMBER FilledConnectionPointColor)
+  Q_PROPERTY(QColor connectionPointColor READ connectionPointColor)
+  Q_PROPERTY(QColor filledConnectionPointColor READ filledConnectionPointColor)
 
-  Q_PROPERTY(QColor warningColor MEMBER WarningColor)
-  Q_PROPERTY(QColor errorColor MEMBER ErrorColor)
-  Q_PROPERTY(QColor toolTipIconColor MEMBER ToolTipIconColor)
+  Q_PROPERTY(QColor warningColor READ warningColor)
+  Q_PROPERTY(QColor errorColor READ errorColor)
+  Q_PROPERTY(QColor toolTipIconColor READ toolTipIconColor)
 
-  Q_PROPERTY(float penWidth MEMBER PenWidth)
-  Q_PROPERTY(float hoveredPenWidth MEMBER HoveredPenWidth)
+  Q_PROPERTY(float penWidth READ penWidth)
+  Q_PROPERTY(float hoveredPenWidth READ hoveredPenWidth)
 
-  Q_PROPERTY(float connectionPointDiameter MEMBER ConnectionPointDiameter)
+  Q_PROPERTY(float connectionPointDiameter READ connectionPointDiameter)
 
-  Q_PROPERTY(float opacity MEMBER Opacity)
+  Q_PROPERTY(float opacity READ opacity)
 
-  // Q_PROPERTY(QIcon statusUpdated MEMBER StatusUpdated)
-  // Q_PROPERTY(QIcon statusProcessing MEMBER StatusProcessing)
-  // Q_PROPERTY(QIcon statusPending MEMBER StatusPending)
-  // Q_PROPERTY(QIcon statusInvalid MEMBER StatusInvalid)
-  // Q_PROPERTY(QIcon statusEmpty MEMBER StatusEmpty)
-  // Q_PROPERTY(QIcon statusPartial MEMBER StatusPartial)
+  // Q_PROPERTY(QIcon statusUpdated READ statusUpdated)
+  // Q_PROPERTY(QIcon statusProcessing READ statusProcessing)
+  // Q_PROPERTY(QIcon statusPending READ statusPending)
+  // Q_PROPERTY(QIcon statusInvalid READ statusInvalid)
+  // Q_PROPERTY(QIcon statusEmpty READ statusEmpty)
+  // Q_PROPERTY(QIcon statusPartial READ statusPartial)
+  // Status icons - initialized in constructor after Q_INIT_RESOURCE
+  QColor normalBoundaryColor() const;
+  QColor selectedBoundaryColor() const;
+  QColor gradientColor0() const;
+  QColor gradientColor1() const;
+  QColor gradientColor2() const;
+  QColor gradientColor3() const;
+  QColor shadowColor() const;
 
-  public:
+  bool shadowEnabled() const;
+
+  QColor fontColor() const;
+  QColor fontColorFaded() const;
+
+  QColor connectionPointColor() const;
+  QColor filledConnectionPointColor() const;
+
+  QColor warningColor() const;
+  QColor errorColor() const;
+  QColor toolTipIconColor() const;
+
+  float penWidth() const;
+  float hoveredPenWidth() const;
+  float connectionPointDiameter() const;
+
+  float opacity() const;
+
+  QIcon statusUpdated;
+  QIcon statusProcessing;
+  QIcon statusPending;
+  QIcon statusInvalid;
+  QIcon statusEmpty;
+  QIcon statusPartial;
+
+  ProcessingIconStyle processingIconStyle{};
+
+  protected:
   QColor NormalBoundaryColor;
   QColor SelectedBoundaryColor;
   QColor GradientColor0;
@@ -110,14 +145,4 @@ class NodeStyle : public Style {
   float ConnectionPointDiameter;
 
   float Opacity;
-
-  // Status icons - initialized in constructor after Q_INIT_RESOURCE
-  QIcon statusUpdated;
-  QIcon statusProcessing;
-  QIcon statusPending;
-  QIcon statusInvalid;
-  QIcon statusEmpty;
-  QIcon statusPartial;
-
-  ProcessingIconStyle processingIconStyle{};
 };

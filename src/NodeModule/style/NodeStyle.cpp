@@ -154,6 +154,32 @@ QJsonObject NodeStyle::toJson() const {
   return root;
 }
 
+QColor NodeStyle::normalBoundaryColor() const { return NormalBoundaryColor; };
+QColor NodeStyle::selectedBoundaryColor() const { return SelectedBoundaryColor; };
+QColor NodeStyle::gradientColor0() const { return GradientColor0; };
+QColor NodeStyle::gradientColor1() const { return GradientColor1; };
+QColor NodeStyle::gradientColor2() const { return GradientColor2; };
+QColor NodeStyle::gradientColor3() const { return GradientColor3; };
+QColor NodeStyle::shadowColor() const { return ShadowColor; };
+
+bool NodeStyle::shadowEnabled() const { return ShadowEnabled; };
+
+QColor NodeStyle::fontColor() const { return FontColor; };
+QColor NodeStyle::fontColorFaded() const { return FontColorFaded; };
+
+QColor NodeStyle::connectionPointColor() const { return ConnectionPointColor; };
+QColor NodeStyle::filledConnectionPointColor() const { return FilledConnectionPointColor; };
+
+QColor NodeStyle::warningColor() const { return WarningColor; };
+QColor NodeStyle::errorColor() const { return ErrorColor; };
+QColor NodeStyle::toolTipIconColor() const { return ToolTipIconColor; };
+
+float NodeStyle::penWidth() const { return PenWidth; };
+float NodeStyle::hoveredPenWidth() const { return HoveredPenWidth; };
+float NodeStyle::connectionPointDiameter() const { return ConnectionPointDiameter; };
+
+float NodeStyle::opacity() const { return Opacity; };
+
 void NodeStyle::setBackgroundColor(QColor const &color) {
   GradientColor0 = color;
   GradientColor1 = color;
