@@ -12,11 +12,15 @@
 
 #include <QString>
 #include <qpoint.h>
+#include <qqmlintegration.h>
 #include <qsize.h>
+#include <qtmetamacros.h>
 #include <unordered_map>
 
 class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   Q_OBJECT
+  QML_IMPLEMENTS_INTERFACES(AbstractGraphModel)
+  QML_ANONYMOUS
 
   public:
   struct NodeGeometryData {
@@ -47,7 +51,7 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
 
   bool nodeExists(NodeId const nodeId) const override;
 
-  QVariant nodeData(NodeId nodeId, NodeRole role) const override;
+  Q_INVOKABLE QVariant nodeData(NodeId nodeId, NodeRole role) const override;
 
   NodeFlags nodeFlags(NodeId nodeId) const override;
 

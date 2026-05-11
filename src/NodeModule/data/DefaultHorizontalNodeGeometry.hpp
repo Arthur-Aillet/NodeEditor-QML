@@ -8,6 +8,10 @@ class AbstractGraphModel;
 class BasicGraphicsScene;
 
 class DefaultHorizontalNodeGeometry : public AbstractNodeGeometry {
+  Q_OBJECT
+  QML_IMPLEMENTS_INTERFACES(AbstractNodeGeometry)
+  QML_ANONYMOUS
+
   public:
   DefaultHorizontalNodeGeometry(AbstractGraphModel &graphModel);
 

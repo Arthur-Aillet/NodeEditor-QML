@@ -30,8 +30,6 @@ qt_add_qml_module(NodeModule
   interface/RegisteryAccess.hpp
   interface/QmlUndoCommands.cpp
   interface/QmlUndoCommands.hpp
-  interface/NodeGeometryInterface.cpp
-  interface/NodeGeometryInterface.hpp
 
   style/ConnectionStyle.cpp
   style/ConnectionStyle.hpp

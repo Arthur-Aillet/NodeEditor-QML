@@ -3,7 +3,6 @@
 #include "AbstractGraphModel.hpp"
 #include "AbstractNodeGeometry.hpp"
 #include "Definitions.hpp"
-#include "NodeGeometryInterface.hpp"
 #include "QmlUndoCommands.hpp"
 #include <QObject>
 #include <memory>
@@ -28,13 +27,14 @@ class ModelInterface : public QObject {
   static ModelInterface *create(QQmlEngine *, QJSEngine *engine);
   static ModelInterface *init(AbstractGraphModel &_graphModel);
 
-  Q_PROPERTY(NodeGeometryInterface nodeGeometry READ getNodeGeometryInterface NOTIFY
-                 nodeGeometryInterfaceChanged);
+  Q_PROPERTY(AbstractGraphModel *graph READ getGraphModel);
+
+  Q_PROPERTY(
+      AbstractNodeGeometry *nodeGeometry READ getNodeGeometry NOTIFY nodeGeometryInterfaceChanged);
 
   protected:
-  NodeGeometryInterface getNodeGeometryInterface() {
-    return NodeGeometryInterface(nodeGeometry.get());
-  }
+  AbstractGraphModel *getGraphModel() { return &graphModel; }
+  AbstractNodeGeometry *getNodeGeometry() { return nodeGeometry.get(); }
 
   inline static ModelInterface *instance = nullptr;
   ModelInterface(AbstractGraphModel &_graphModel);

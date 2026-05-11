@@ -4,9 +4,11 @@
 #include <QtCore/QObject>
 #include <QtCore/QVariant>
 
+#include "AbstractNodeGeometry.hpp"
 #include "ConnectionIdHash.hpp"
 #include "Definitions.hpp"
 
+#include <qqmlintegration.h>
 #include <unordered_set>
 
 /**
@@ -21,6 +23,8 @@
  */
 class AbstractGraphModel : public QObject {
   Q_OBJECT
+  QML_INTERFACE
+
   public:
   /// Generates a new unique NodeId.
   virtual NodeId newNodeId() = 0;
@@ -92,7 +96,7 @@ class AbstractGraphModel : public QObject {
   /**
    * @returns Node Caption, Node Caption Visibility, Node Position etc.
    */
-  virtual QVariant nodeData(NodeId nodeId, NodeRole role) const = 0;
+  Q_INVOKABLE virtual QVariant nodeData(NodeId nodeId, NodeRole role) const = 0;
 
   /**
    * A utility function that unwraps the `QVariant` value returned from the
@@ -231,3 +235,5 @@ class AbstractGraphModel : public QObject {
   private:
   std::vector<ConnectionId> _shiftedByDynamicPortsConnections;
 };
+
+Q_DECLARE_INTERFACE(AbstractGraphModel, "AbstractGraphModel")
