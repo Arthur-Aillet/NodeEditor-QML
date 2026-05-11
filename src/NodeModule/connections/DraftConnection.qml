@@ -13,8 +13,8 @@ Loader {
     active: selectedPort !== null
 
     function tryCreation() {
-        const oppositeCount = selectedPort.portType === PortType.In ? NodeEditor.NodeRole.OutPortCount : NodeEditor.NodeRole.InPortCount;
-        const oppositeSide = selectedPort.portType === PortType.In ? PortType.Out : PortType.In;
+        const oppositeCount = selectedPort.portType === NodeEditor.PortType.In ? NodeEditor.NodeRole.OutPortCount : NodeEditor.NodeRole.InPortCount;
+        const oppositeSide = selectedPort.portType === NodeEditor.PortType.In ? NodeEditor.PortType.Out : NodeEditor.PortType.In;
 
         for (let i = 0; i < nodes.nodes.count; ++i) {
             const node = nodes.nodes.itemAt(i) as NodeGraphicalObject;
@@ -33,7 +33,7 @@ Loader {
                     const tolerance = style.connectionPointDiameter * 2.0;
 
                     if (dist < tolerance) {
-                        if (selectedPort.portType === PortType.In)
+                        if (selectedPort.portType === NodeEditor.PortType.In)
                             ModelInterface.createConnection(selectedPort.nodeId, selectedPort.portId, node.nodeId, j);
                         else
                             ModelInterface.createConnection(node.nodeId, j, selectedPort.nodeId, selectedPort.portId);
@@ -54,10 +54,10 @@ Loader {
         mousePos: root.area.mousePosition
         nodes: root.nodes
 
-        inNodeId: selectedPort.portType === PortType.In ? selectedPort.nodeId : undefined
-        inPortIndex: selectedPort.portType === PortType.In ? selectedPort.portId : undefined
-        outNodeId: selectedPort.portType === PortType.In ? undefined : selectedPort.nodeId
-        outPortIndex: selectedPort.portType === PortType.In ? undefined : selectedPort.portId
+        inNodeId: selectedPort.portType === NodeEditor.PortType.In ? selectedPort.nodeId : undefined
+        inPortIndex: selectedPort.portType === NodeEditor.PortType.In ? selectedPort.portId : undefined
+        outNodeId: selectedPort.portType === NodeEditor.PortType.In ? undefined : selectedPort.nodeId
+        outPortIndex: selectedPort.portType === NodeEditor.PortType.In ? undefined : selectedPort.portId
 
         Connections {
             target: root.area.dragArea

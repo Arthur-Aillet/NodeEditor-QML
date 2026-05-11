@@ -11,21 +11,24 @@
 
 // inline void initResources() { Q_INIT_RESOURCE(resources); }
 
-NodeStyle::NodeStyle() {
+NodeStyle NodeStyle::defaultStyle() {
+  NodeStyle newStyle;
+
   // Explicit resources inialization for preventing the static initialization
   // order fiasco: https://isocpp.org/wiki/faq/ctors#static-init-order
   // initResources();
 
   // Initialize status icons after resources are loaded
-  statusUpdated = QIcon(":/status_icons/updated.svg");
-  statusProcessing = QIcon(":/status_icons/processing.svg");
-  statusPending = QIcon(":/status_icons/pending.svg");
-  statusInvalid = QIcon(":/status_icons/failed.svg");
-  statusEmpty = QIcon(":/status_icons/empty.svg");
-  statusPartial = QIcon(":/status_icons/partial.svg");
+  newStyle.statusUpdated = QIcon(":/status_icons/updated.svg");
+  newStyle.statusProcessing = QIcon(":/status_icons/processing.svg");
+  newStyle.statusPending = QIcon(":/status_icons/pending.svg");
+  newStyle.statusInvalid = QIcon(":/status_icons/failed.svg");
+  newStyle.statusEmpty = QIcon(":/status_icons/empty.svg");
+  newStyle.statusPartial = QIcon(":/status_icons/partial.svg");
 
   // This configuration is stored inside the compiled unit and is loaded statically
-  loadJsonFile(":DefaultStyle.json");
+  newStyle.loadJsonFile(":DefaultStyle.json");
+  return newStyle;
 }
 
 NodeStyle::NodeStyle(QString jsonText) { loadJsonText(jsonText); }
@@ -35,7 +38,7 @@ NodeStyle::NodeStyle(QJsonObject const &json) { loadJson(json); }
 void NodeStyle::setNodeStyle(QString jsonText) {
   NodeStyle style(jsonText);
 
-  // StyleCollection::setNodeStyle(style);
+  StyleCollection::setNodeStyle(style);
 }
 
 #ifdef STYLE_DEBUG

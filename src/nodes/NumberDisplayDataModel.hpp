@@ -36,7 +36,7 @@ class NumberDisplayDataModel : public NodeDelegateModel {
 
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
-  QWidget *embeddedWidget() override;
+  QWidget *embeddedWidget() override { return nullptr; }
 
   double number() const;
 

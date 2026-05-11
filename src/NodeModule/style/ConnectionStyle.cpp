@@ -29,7 +29,7 @@ ConnectionStyle::ConnectionStyle(QString jsonText) {
 void ConnectionStyle::setConnectionStyle(QString jsonText) {
   ConnectionStyle style(jsonText);
 
-  // StyleCollection::setConnectionStyle(style);
+  StyleCollection::setConnectionStyle(style);
 }
 
 #ifdef STYLE_DEBUG
@@ -100,33 +100,33 @@ void ConnectionStyle::loadJson(QJsonObject const &json) {
 
   QJsonObject obj = nodeStyleValues.toObject();
 
-  CONNECTION_STYLE_READ_COLOR(obj, ConstructionColor);
-  CONNECTION_STYLE_READ_COLOR(obj, NormalColor);
-  CONNECTION_STYLE_READ_COLOR(obj, SelectedColor);
-  CONNECTION_STYLE_READ_COLOR(obj, SelectedHaloColor);
-  CONNECTION_STYLE_READ_COLOR(obj, HoveredColor);
+  CONNECTION_STYLE_READ_COLOR(obj, _constructionColor);
+  CONNECTION_STYLE_READ_COLOR(obj, _normalColor);
+  CONNECTION_STYLE_READ_COLOR(obj, _selectedColor);
+  CONNECTION_STYLE_READ_COLOR(obj, _selectedHaloColor);
+  CONNECTION_STYLE_READ_COLOR(obj, _hoveredColor);
 
-  CONNECTION_STYLE_READ_FLOAT(obj, LineWidth);
-  CONNECTION_STYLE_READ_FLOAT(obj, ConstructionLineWidth);
-  CONNECTION_STYLE_READ_FLOAT(obj, PointDiameter);
+  CONNECTION_STYLE_READ_FLOAT(obj, _lineWidth);
+  CONNECTION_STYLE_READ_FLOAT(obj, _constructionLineWidth);
+  CONNECTION_STYLE_READ_FLOAT(obj, _pointDiameter);
 
-  CONNECTION_STYLE_READ_BOOL(obj, UseDataDefinedColors);
+  CONNECTION_STYLE_READ_BOOL(obj, _useDataDefinedColors);
 }
 
 QJsonObject ConnectionStyle::toJson() const {
   QJsonObject obj;
 
-  CONNECTION_STYLE_WRITE_COLOR(obj, ConstructionColor);
-  CONNECTION_STYLE_WRITE_COLOR(obj, NormalColor);
-  CONNECTION_STYLE_WRITE_COLOR(obj, SelectedColor);
-  CONNECTION_STYLE_WRITE_COLOR(obj, SelectedHaloColor);
-  CONNECTION_STYLE_WRITE_COLOR(obj, HoveredColor);
+  CONNECTION_STYLE_WRITE_COLOR(obj, _constructionColor);
+  CONNECTION_STYLE_WRITE_COLOR(obj, _normalColor);
+  CONNECTION_STYLE_WRITE_COLOR(obj, _selectedColor);
+  CONNECTION_STYLE_WRITE_COLOR(obj, _selectedHaloColor);
+  CONNECTION_STYLE_WRITE_COLOR(obj, _hoveredColor);
 
-  CONNECTION_STYLE_WRITE_FLOAT(obj, LineWidth);
-  CONNECTION_STYLE_WRITE_FLOAT(obj, ConstructionLineWidth);
-  CONNECTION_STYLE_WRITE_FLOAT(obj, PointDiameter);
+  CONNECTION_STYLE_WRITE_FLOAT(obj, _lineWidth);
+  CONNECTION_STYLE_WRITE_FLOAT(obj, _constructionLineWidth);
+  CONNECTION_STYLE_WRITE_FLOAT(obj, _pointDiameter);
 
-  CONNECTION_STYLE_WRITE_BOOL(obj, UseDataDefinedColors);
+  CONNECTION_STYLE_WRITE_BOOL(obj, _useDataDefinedColors);
 
   QJsonObject root;
   root["ConnectionStyle"] = obj;
@@ -134,11 +134,7 @@ QJsonObject ConnectionStyle::toJson() const {
   return root;
 }
 
-QColor ConnectionStyle::constructionColor() const { return ConstructionColor; }
-
-QColor ConnectionStyle::normalColor() const { return NormalColor; }
-
-QColor ConnectionStyle::normalColor(QString typeId) const {
+QColor ConnectionStyle::getNormalColor(QString typeId) const {
   std::size_t hash = qHash(typeId);
 
   std::size_t const hue_range = 0xFF;
@@ -152,16 +148,11 @@ QColor ConnectionStyle::normalColor(QString typeId) const {
   return QColor::fromHsl(hue, sat, 160);
 }
 
-QColor ConnectionStyle::selectedColor() const { return SelectedColor; }
-
-QColor ConnectionStyle::selectedHaloColor() const { return SelectedHaloColor; }
-
-QColor ConnectionStyle::hoveredColor() const { return HoveredColor; }
-
-float ConnectionStyle::lineWidth() const { return LineWidth; }
-
-float ConnectionStyle::constructionLineWidth() const { return ConstructionLineWidth; }
-
-float ConnectionStyle::pointDiameter() const { return PointDiameter; }
-
-bool ConnectionStyle::useDataDefinedColors() const { return UseDataDefinedColors; }
+bool ConnectionStyle::operator==(const ConnectionStyle &other) {
+  return _constructionColor == other._constructionColor && _normalColor == other._normalColor &&
+         _selectedColor == other._selectedColor && _selectedHaloColor == other._selectedHaloColor &&
+         _hoveredColor == other._hoveredColor && _lineWidth == other._lineWidth &&
+         _constructionLineWidth == other._constructionLineWidth &&
+         _pointDiameter == other._pointDiameter &&
+         _useDataDefinedColors == other._useDataDefinedColors;
+}

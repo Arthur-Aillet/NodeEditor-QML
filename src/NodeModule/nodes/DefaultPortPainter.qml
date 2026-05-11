@@ -8,15 +8,19 @@ Item {
     required property DefaultNodePainter nodePainter
 
     property int portId: index % nodePainter.nodeObject.inPortCount
-    property var side: (index < nodePainter.nodeObject.inPortCount) ? PortType.In : PortType.Out
+    property var side: (index < nodePainter.nodeObject.inPortCount) ? NodeEditor.PortType.In : NodeEditor.PortType.Out
 
     property bool connected: false
-    property var dataType: ModelInterface.portData(nodePainter.nodeObject.nodeId, side, port.portId, PortRole.DataType)
+    property var dataType: ModelInterface.portData(nodePainter.nodeObject.nodeId, side, port.portId, NodeEditor.PortRole.DataType)
+
+    Component.onCompleted: {
+        console.log("Default Port Painter");
+    }
 
     Text {
         id: portLabel
-        property bool captionVisible: ModelInterface.portData(port.nodePainter.nodeObject.nodeId, port.side, port.portId, PortRole.CaptionVisible)
-        property string caption: ModelInterface.portData(port.nodePainter.nodeObject.nodeId, port.side, port.portId, PortRole.Caption)
+        property bool captionVisible: ModelInterface.portData(port.nodePainter.nodeObject.nodeId, port.side, port.portId, NodeEditor.PortRole.CaptionVisible)
+        property string caption: ModelInterface.portData(port.nodePainter.nodeObject.nodeId, port.side, port.portId, NodeEditor.PortRole.Caption)
 
         property point pos: ModelInterface.nodeGeometry.portTextPosition(port.nodePainter.nodeObject.nodeId, port.side, port.portId)
 

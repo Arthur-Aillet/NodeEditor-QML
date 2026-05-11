@@ -62,11 +62,12 @@ static void insertSerializedItems(QJsonObject const &json, ModelInterface *inter
   // }
 }
 
-CreateCommand::CreateCommand(ModelInterface *interface, QString const name, QPointF const &mousePos)
+CreateCommand::CreateCommand(ModelInterface *interface, QString const name, QPointF const &pos)
     : _interface(interface), _sceneJson(QJsonObject()) {
   _nodeId = _interface->graphModel.addNode(name);
   if (_nodeId != InvalidNodeId) {
-    _interface->graphModel.setNodeData(_nodeId, NodeRole::Position, mousePos);
+    _interface->graphModel.setNodeData(_nodeId, NodeRole::Position, pos);
+    _interface->nodeGeometry->recomputeSize(_nodeId);
   } else {
     setObsolete(true);
   }

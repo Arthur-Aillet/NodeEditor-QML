@@ -41,7 +41,7 @@ Shape {
             root.getNodePosition(root.inNodeId)
     }
 
-    property var inPortPos: inNodeId !== undefined ? ModelInterface.nodeGeometry.portPosition(inNodeId, PortType.In, inPortIndex) : undefined
+    property var inPortPos: inNodeId !== undefined ? ModelInterface.nodeGeometry.portPosition(inNodeId, NodeEditor.PortType.In, inPortIndex) : undefined
     required property var outNodeId
     required property var outPortIndex
     property var outNodePos: undefined
@@ -52,7 +52,7 @@ Shape {
             root.getNodePosition(root.outNodeId)
     }
 
-    property var outPortPos: outNodeId !== undefined ? ModelInterface.nodeGeometry.portPosition(outNodeId, PortType.Out, outPortIndex) : undefined
+    property var outPortPos: outNodeId !== undefined ? ModelInterface.nodeGeometry.portPosition(outNodeId, NodeEditor.PortType.Out, outPortIndex) : undefined
 
     property point inPoint: inNodeId === undefined ? mousePos : Qt.point(inPortPos.x + inNodePos.x, inPortPos.y + inNodePos.y)
     property point outPoint: outNodeId === undefined ? mousePos : Qt.point(outPortPos.x + outNodePos.x, outPortPos.y + outNodePos.y)

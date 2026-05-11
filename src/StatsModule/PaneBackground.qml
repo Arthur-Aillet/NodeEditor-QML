@@ -4,7 +4,7 @@ import "InnerShadow"
 
 Rectangle {
     id: root
-    color: Qt.darker(StyleCollection.graphicsViewStyle.backgroundColor, 2)
+    color: Qt.darker(StyleCollection.graphicsView.backgroundColor, 2)
 
     Item {
         id: background
@@ -20,7 +20,7 @@ Rectangle {
             height: parent.height - 4
             x: 2
             y: 2
-            color: StyleCollection.graphicsViewStyle.backgroundColor
+            color: StyleCollection.graphicsView.backgroundColor
         }
     }
 

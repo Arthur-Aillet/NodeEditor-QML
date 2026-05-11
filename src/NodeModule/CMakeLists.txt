@@ -37,10 +37,8 @@ qt_add_qml_module(NodeModule
   style/ConnectionStyle.hpp
   style/NodeStyle.cpp
   style/NodeStyle.hpp
-  style/QmlConnectionStyle.hpp
-  style/QmlGraphicsViewStyle.hpp
-  style/QmlNodeStyle.hpp
   style/Style.hpp
+  style/StyleCollection.cpp
   style/StyleCollection.hpp
   style/GraphicsViewStyle.cpp
   style/GraphicsViewStyle.hpp

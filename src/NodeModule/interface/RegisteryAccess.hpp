@@ -13,11 +13,11 @@ class RegisteryAccess {
   std::shared_ptr<NodeDelegateModelRegistry> registry = nullptr;
 
   public:
-  Q_PROPERTY(QStandardItemModel *nodeMapModel MEMBER m_nodeMapModel NOTIFY nodeMapModelChanged)
+  Q_PROPERTY(QStandardItemModel *nodeMapModel MEMBER _nodeMapModel NOTIFY nodeMapModelChanged)
 
   Q_INVOKABLE QStandardItemModel *filterNodeMapModel(QString filter);
 
-  QStandardItemModel *m_nodeMapModel = nullptr;
+  QStandardItemModel *_nodeMapModel = nullptr;
 
   RegisteryAccess();
   RegisteryAccess(std::shared_ptr<NodeDelegateModelRegistry> _reg);

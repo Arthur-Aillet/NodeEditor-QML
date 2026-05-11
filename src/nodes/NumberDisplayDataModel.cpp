@@ -49,15 +49,6 @@ void NumberDisplayDataModel::setInData(std::shared_ptr<NodeData> data, PortIndex
   _label->adjustSize();
 }
 
-QWidget *NumberDisplayDataModel::embeddedWidget() {
-  if (!_label) {
-    _label = new QLabel();
-    _label->setMargin(3);
-  }
-
-  return _label;
-}
-
 double NumberDisplayDataModel::number() const {
   if (_numberData)
     return _numberData->number();

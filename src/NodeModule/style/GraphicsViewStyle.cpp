@@ -23,7 +23,7 @@ GraphicsViewStyle::GraphicsViewStyle(QString jsonText) { loadJsonText(jsonText);
 void GraphicsViewStyle::setStyle(QString jsonText) {
   GraphicsViewStyle style(jsonText);
 
-  // StyleCollection::setGraphicsViewStyle(style);
+  StyleCollection::setGraphicsViewStyle(style);
 }
 
 #ifdef STYLE_DEBUG
@@ -79,4 +79,9 @@ QJsonObject GraphicsViewStyle::toJson() const {
   root["GraphicsViewStyle"] = obj;
 
   return root;
+}
+
+bool GraphicsViewStyle::operator==(const GraphicsViewStyle &other) {
+  return BackgroundColor == other.BackgroundColor && FineGridColor == other.FineGridColor &&
+         CoarseGridColor == other.CoarseGridColor;
 }

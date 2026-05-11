@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AbstractGraphModel.hpp"
+#include "Definitions.hpp"
 #include "NodeData.hpp"
 #include "NodeStyle.hpp"
 #include "Serializable.hpp"

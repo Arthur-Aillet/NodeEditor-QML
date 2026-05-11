@@ -46,58 +46,41 @@
 // }
 
 int main(int argc, char *argv[]) {
-  qDebug() << "1";
   // qputenv("QT_QUICK_BACKEND", "software");
   QApplication app(argc, argv);
 
-  qDebug() << "2";
   auto ret = std::make_shared<NodeDelegateModelRegistry>();
-  qDebug() << "3";
 
   ret->registerModel<ValueNodeModel>("Input");
-  qDebug() << "4";
   ret->registerModel<AdditionModel>("Process");
-  qDebug() << "5";
   ret->registerModel<DivisionModel>("Process");
-  qDebug() << "6";
   ret->registerModel<MultiplicationModel>("Process");
-  qDebug() << "7";
   ret->registerModel<SubtractionModel>("Process");
-  qDebug() << "8";
   ret->registerModel<NumberDisplayDataModel>("Display");
-  qDebug() << "9";
 
   auto model = DataFlowGraphModel(ret);
-  qDebug() << "10";
 
   // QWidget mainWidget;
   // auto scene = startOriginalNodeEditor(model, mainWidget);
 
   QQmlApplicationEngine engine;
-  qDebug() << "11";
   QObject::connect(
       &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
       []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
   DataFlowModelInterface::init(model);
-  qDebug() << "12";
 
   engine.loadFromModule("CutieDesignerModule", "Main");
-  qDebug() << "13";
-
   {
-    qDebug() << "14";
     auto source = model.addNode(ValueNodeModel().name());
     model.setNodeData(source, NodeRole::Position, QPointF(0, 0));
     model.setNodeData(source, NodeRole::Type, ValueNodeModel().name());
   }
 
-  qDebug() << "15";
   QObject *item = engine.rootObjects().first();
 
   auto source = model.addNode(NumberDisplayDataModel().name());
   model.setNodeData(source, NodeRole::Position, QPointF(400, 0));
   model.setNodeData(source, NodeRole::Type, NumberDisplayDataModel().name());
-  qDebug() << "16";
   auto display = model.delegateModel<NumberDisplayDataModel>(source);
   QObject::connect(display, SIGNAL(valueUpdated(double)), item, SIGNAL(newDisplayValue(double)));
 

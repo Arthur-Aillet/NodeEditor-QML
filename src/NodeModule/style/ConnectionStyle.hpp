@@ -1,49 +1,50 @@
 #pragma once
 
 #include <QtGui/QColor>
+#include <qqmlintegration.h>
+#include <qtmetamacros.h>
 
 #include "Style.hpp"
 
 class ConnectionStyle : public Style {
+  Q_GADGET
+  QML_VALUE_TYPE(connectionStyle)
+
   public:
   ConnectionStyle();
-
   ConnectionStyle(QString jsonText);
-
   ~ConnectionStyle() = default;
 
-  public:
-  static void setConnectionStyle(QString jsonText);
+  Q_INVOKABLE static void setConnectionStyle(QString jsonText);
+  Q_INVOKABLE void loadJson(QJsonObject const &json) override;
+  Q_INVOKABLE QJsonObject toJson() const override;
 
-  public:
-  void loadJson(QJsonObject const &json) override;
+  Q_PROPERTY(QColor constructionColor MEMBER _constructionColor)
+  Q_PROPERTY(QColor normalColor MEMBER _normalColor)
+  Q_PROPERTY(QColor selectedColor MEMBER _selectedColor)
+  Q_PROPERTY(QColor selectedHaloColor MEMBER _selectedHaloColor)
+  Q_PROPERTY(QColor hoveredColor MEMBER _hoveredColor)
 
-  QJsonObject toJson() const override;
+  Q_PROPERTY(float lineWidth MEMBER _lineWidth)
+  Q_PROPERTY(float constructionLineWidth MEMBER _constructionLineWidth)
+  Q_PROPERTY(float pointDiameter MEMBER _pointDiameter)
 
-  public:
-  QColor constructionColor() const;
-  QColor normalColor() const;
-  QColor normalColor(QString typeId) const;
-  QColor selectedColor() const;
-  QColor selectedHaloColor() const;
-  QColor hoveredColor() const;
+  Q_PROPERTY(bool useDataDefinedColors MEMBER _useDataDefinedColors)
 
-  float lineWidth() const;
-  float constructionLineWidth() const;
-  float pointDiameter() const;
+  QColor getNormalColor(QString typeId) const;
 
-  bool useDataDefinedColors() const;
+  bool operator==(const ConnectionStyle &other);
 
   protected:
-  QColor ConstructionColor;
-  QColor NormalColor;
-  QColor SelectedColor;
-  QColor SelectedHaloColor;
-  QColor HoveredColor;
+  QColor _constructionColor;
+  QColor _normalColor;
+  QColor _selectedColor;
+  QColor _selectedHaloColor;
+  QColor _hoveredColor;
 
-  float LineWidth;
-  float ConstructionLineWidth;
-  float PointDiameter;
+  float _lineWidth;
+  float _constructionLineWidth;
+  float _pointDiameter;
 
-  bool UseDataDefinedColors;
+  bool _useDataDefinedColors;
 };

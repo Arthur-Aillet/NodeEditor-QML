@@ -2,14 +2,14 @@
 
 RegisteryAccess::RegisteryAccess() {}
 
-RegisteryAccess::RegisteryAccess(std::shared_ptr<NodeDelegateModelRegistry> _reg)
-    : registry(_reg), m_nodeMapModel(new QStandardItemModel()) {
+RegisteryAccess::RegisteryAccess(std::shared_ptr<NodeDelegateModelRegistry> reg)
+    : registry(reg), _nodeMapModel(new QStandardItemModel()) {
   filterNodeMapModel("");
 }
 
 QStandardItemModel *RegisteryAccess::filterNodeMapModel(QString filter) {
-  m_nodeMapModel->clear();
-  QStandardItem *root = m_nodeMapModel->invisibleRootItem();
+  _nodeMapModel->clear();
+  QStandardItem *root = _nodeMapModel->invisibleRootItem();
 
   auto categoryList = QStringList(registry->categories().begin(), registry->categories().end());
   categoryList.sort(Qt::CaseInsensitive);
@@ -33,5 +33,5 @@ QStandardItemModel *RegisteryAccess::filterNodeMapModel(QString filter) {
       root->appendRow(categoryItem);
     }
   }
-  return m_nodeMapModel;
+  return _nodeMapModel;
 }

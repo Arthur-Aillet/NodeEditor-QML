@@ -4,7 +4,7 @@
 #include "StyleCollection.hpp"
 #include <qdebug.h>
 
-NodeDelegateModel::NodeDelegateModel() : _nodeStyle(NodeStyle{}) {
+NodeDelegateModel::NodeDelegateModel() : _nodeStyle(StyleCollection::getNodeStyle()) {
   // Derived classes can initialize specific style here
 }
 

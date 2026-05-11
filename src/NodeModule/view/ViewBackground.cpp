@@ -4,9 +4,9 @@
 #include "ViewBackground.hpp"
 
 ViewBackground::ViewBackground(QQuickItem *parent) : QQuickPaintedItem(parent) {
-  // auto const &flowViewStyle = StyleCollection::flowViewStyle();
+  auto const &style = StyleCollection::getGraphicsViewStyle();
 
-  // this->setFillColor(flowViewStyle.BackgroundColor);
+  this->setFillColor(style.BackgroundColor);
 }
 
 void ViewBackground::paint(QPainter *painter) {
@@ -37,15 +37,15 @@ void ViewBackground::paint(QPainter *painter) {
     }
   };
 
-  // auto const &flowViewStyle = StyleCollection::flowViewStyle();
+  auto const &style = StyleCollection::getGraphicsViewStyle();
 
-  // QPen pfine(flowViewStyle.FineGridColor, 1.0);
+  QPen pfine(style.FineGridColor, 1.0);
 
-  // painter->setPen(pfine);
+  painter->setPen(pfine);
   drawGrid(15);
 
-  // QPen p(flowViewStyle.CoarseGridColor, 1.0);
+  QPen p(style.CoarseGridColor, 1.0);
 
-  // painter->setPen(p);
+  painter->setPen(p);
   drawGrid(150);
 };

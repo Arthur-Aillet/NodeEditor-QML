@@ -6,6 +6,7 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QObject>
 #include <QtCore/QString>
+#include <qdebug.h>
 
 class Style // : public QObject
 {

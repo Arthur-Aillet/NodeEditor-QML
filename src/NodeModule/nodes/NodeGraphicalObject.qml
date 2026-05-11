@@ -19,7 +19,13 @@ MouseArea {
 
     Component.onCompleted: {
         const json = ModelInterface.nodeData(nodeId, NodeEditor.NodeRole.Style);
+        console.log("trigger?" + json);
         style.loadJson(json);
+        console.log("trigger?" + style.penWidth);
+        style = style;
+    }
+    onStyleChanged: {
+        console.log("Changed!" + style.penWidth);
     }
 
     property bool selected: false
@@ -146,7 +152,7 @@ MouseArea {
         delegate: MouseArea {
             required property int index
             property int portId: index % root.inPortCount
-            property var side: (index < root.inPortCount) ? PortType.In : PortType.Out
+            property var side: (index < root.inPortCount) ? NodeEditor.PortType.In : NodeEditor.PortType.Out
 
             property point pos: ModelInterface.nodeGeometry.portPosition(root.nodeId, side, portId)
             property real radius: root.style.connectionPointDiameter * 0.6 // Diameter is used a the radius in the original

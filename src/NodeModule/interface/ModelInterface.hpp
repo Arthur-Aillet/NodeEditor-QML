@@ -23,6 +23,7 @@ class ModelInterface : public QObject {
 
   public:
   AbstractGraphModel &graphModel;
+  std::unique_ptr<AbstractNodeGeometry> nodeGeometry;
 
   static ModelInterface *create(QQmlEngine *, QJSEngine *engine);
   static ModelInterface *init(AbstractGraphModel &_graphModel);
@@ -32,9 +33,8 @@ class ModelInterface : public QObject {
 
   protected:
   NodeGeometryInterface getNodeGeometryInterface() {
-    return NodeGeometryInterface(_nodeGeometry.get());
+    return NodeGeometryInterface(nodeGeometry.get());
   }
-  std::unique_ptr<AbstractNodeGeometry> _nodeGeometry;
 
   inline static ModelInterface *instance = nullptr;
   ModelInterface(AbstractGraphModel &_graphModel);
@@ -52,7 +52,7 @@ class ModelInterface : public QObject {
   Q_INVOKABLE bool deleteNode(const NodeId nodeId);
 
   void setNodeGeometry(std::unique_ptr<AbstractNodeGeometry> newGeom) {
-    _nodeGeometry = std::move(newGeom);
+    nodeGeometry = std::move(newGeom);
     emit nodeGeometryInterfaceChanged();
   }
 

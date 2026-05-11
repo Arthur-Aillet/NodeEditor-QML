@@ -9,7 +9,7 @@ class ModelInterface;
 
 class CreateCommand : public QUndoCommand {
   public:
-  CreateCommand(ModelInterface *interface, QString const name, QPointF const &mouseScenePos);
+  CreateCommand(ModelInterface *interface, QString const name, QPointF const &pos);
 
   void undo() override;
   void redo() override;

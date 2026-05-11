@@ -3,7 +3,7 @@
 
 ModelInterface::ModelInterface(AbstractGraphModel &_graphModel)
     : QObject(nullptr), graphModel(_graphModel), undoStack(QUndoStack(this)),
-      _nodeGeometry(std::make_unique<DefaultHorizontalNodeGeometry>(graphModel)) {
+      nodeGeometry(std::make_unique<DefaultHorizontalNodeGeometry>(graphModel)) {
   connect(&graphModel, SIGNAL(connectionCreated(ConnectionId)), this,
           SLOT(forwardConnectionCreated(ConnectionId)));
   connect(&graphModel, SIGNAL(connectionDeleted(ConnectionId)), this,

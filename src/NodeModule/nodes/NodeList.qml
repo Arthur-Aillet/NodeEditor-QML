@@ -59,6 +59,8 @@ Item {
         target: ModelInterface
 
         function onNodeCreated(id: real) {
+            ModelInterface.nodeGeometry.recomputeSize(id);
+
             nodeModel.append({
                 "modelId": id,
                 "posX": 0,
@@ -74,7 +76,7 @@ Item {
         }
 
         function onNodePositionUpdated(id: real) {
-            const position = ModelInterface.nodeData(id, Cutie.NodeEditor.NodeRole.Position);
+            const position = ModelInterface.nodeData(id, NodeEditor.NodeRole.Position);
 
             for (let i = 0; i < nodeModel.count; i++) {
                 const current = nodeModel.get(i);
