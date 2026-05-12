@@ -1,6 +1,9 @@
 #include "NumberDisplayDataModel.hpp"
 
 #include <QtWidgets/QLabel>
+#include <cstdio>
+#include <iostream>
+#include <ostream>
 #include <qdebug.h>
 #include <qtmetamacros.h>
 
@@ -35,22 +38,22 @@ std::shared_ptr<NodeData> NumberDisplayDataModel::outData(PortIndex) {
 
 void NumberDisplayDataModel::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
   _numberData = std::dynamic_pointer_cast<DecimalData>(data);
-  emit valueUpdated(_numberData->number());
 
-  if (!_label)
-    return;
+  // if (!_label)
+  //   return;
 
   if (_numberData) {
-    _label->setText(_numberData->numberAsText());
+    emit valueUpdated(_numberData->number());
+    //_label->setText(_numberData->numberAsText());
   } else {
-    _label->clear();
+    //_label->clear();
   }
 
-  _label->adjustSize();
+  //_label->adjustSize();
 }
 
 double NumberDisplayDataModel::number() const {
-  if (_numberData)
+  if (_numberData != nullptr)
     return _numberData->number();
 
   return 0.0;

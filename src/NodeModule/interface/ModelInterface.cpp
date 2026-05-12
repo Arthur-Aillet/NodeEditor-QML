@@ -5,9 +5,9 @@ ModelInterface::ModelInterface(AbstractGraphModel &_graphModel)
     : QObject(nullptr), graphModel(_graphModel), undoStack(QUndoStack(this)),
       nodeGeometry(std::make_unique<DefaultHorizontalNodeGeometry>(graphModel)) {
   connect(&graphModel, SIGNAL(connectionCreated(ConnectionId)), this,
-          SLOT(forwardConnectionCreated(ConnectionId)));
+          SIGNAL(connectionCreated(ConnectionId)));
   connect(&graphModel, SIGNAL(connectionDeleted(ConnectionId)), this,
-          SLOT(forwardConnectionDeleted(ConnectionId)));
+          SIGNAL(connectionDeleted(ConnectionId)));
   connect(&graphModel, SIGNAL(nodeCreated(NodeId)), this, SIGNAL(nodeCreated(NodeId)));
   connect(&graphModel, SIGNAL(nodeDeleted(NodeId)), this, SIGNAL(nodeDeleted(NodeId)));
   connect(&graphModel, SIGNAL(nodeUpdated(NodeId)), this, SIGNAL(nodeUpdated(NodeId)));
@@ -44,14 +44,12 @@ bool ModelInterface::setNodeData(NodeId nodeId, NodeRole role, QVariant value) {
   return graphModel.setNodeData(nodeId, role, value);
 }
 
-void ModelInterface::createConnection(NodeId inNode, PortIndex inPort, NodeId outNode,
-                                      PortIndex outPort) {
-  undoStack.push(new ConnectCommand(this, ConnectionId{outNode, outPort, inNode, inPort}));
+void ModelInterface::createConnection(ConnectionId id) {
+  undoStack.push(new ConnectCommand(this, id));
 }
 
-void ModelInterface::deleteConnection(NodeId inNode, PortIndex inPort, NodeId outNode,
-                                      PortIndex outPort) {
-  undoStack.push(new DisconnectCommand(this, ConnectionId{outNode, outPort, inNode, inPort}));
+void ModelInterface::deleteConnection(ConnectionId id) {
+  undoStack.push(new DisconnectCommand(this, id));
 }
 
 void ModelInterface::createNode(QString const nodeType, QPoint const &scenePos) {
@@ -61,14 +59,4 @@ void ModelInterface::createNode(QString const nodeType, QPoint const &scenePos) 
 bool ModelInterface::deleteNode(const NodeId nodeId) {
   // TODO: restore DeleteNodeCommand
   return graphModel.deleteNode(nodeId);
-}
-
-void ModelInterface::forwardConnectionCreated(ConnectionId const connectionId) {
-  emit connectionCreated(connectionId.inNodeId, connectionId.inPortIndex, connectionId.outNodeId,
-                         connectionId.outPortIndex);
-}
-
-void ModelInterface::forwardConnectionDeleted(ConnectionId const connectionId) {
-  emit connectionDeleted(connectionId.inNodeId, connectionId.inPortIndex, connectionId.outNodeId,
-                         connectionId.outPortIndex);
 }

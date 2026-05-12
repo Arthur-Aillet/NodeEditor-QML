@@ -1,6 +1,7 @@
 #include "DataFlowGraphModel.hpp"
 
 #include <QJsonArray>
+#include <qdebug.h>
 #include <stack>
 
 DataFlowGraphModel::DataFlowGraphModel(std::shared_ptr<NodeDelegateModelRegistry> registry)
@@ -447,6 +448,7 @@ bool DataFlowGraphModel::setPortData(NodeId nodeId, PortType portType, PortIndex
     break;
   }
 
+  std::cout << "11" << std::endl;
   return false;
 }
 

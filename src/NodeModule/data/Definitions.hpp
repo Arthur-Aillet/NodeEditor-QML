@@ -3,7 +3,12 @@
 #include <QtCore/QMetaObject>
 
 #include <limits>
+#include <qjsvalue.h>
+#include <qlist.h>
 #include <qqmlintegration.h>
+#include <qtmetamacros.h>
+#include <qtypes.h>
+#include <qvariant.h>
 
 /**
  * @file
@@ -116,18 +121,38 @@ static constexpr GroupId InvalidGroupId = std::numeric_limits<GroupId>::max();
  * out `NodeId`, out `PortIndex`, in `NodeId`, in `PortIndex`
  */
 struct ConnectionId {
+  Q_GADGET
+  QML_VALUE_TYPE(connectionId)
+  QML_STRUCTURED_VALUE
+
+  public:
   NodeId outNodeId;
   PortIndex outPortIndex;
   NodeId inNodeId;
   PortIndex inPortIndex;
+
+  Q_PROPERTY(NodeId outNodeId MEMBER outNodeId)
+  Q_PROPERTY(PortIndex outPortIndex MEMBER outPortIndex)
+  Q_PROPERTY(NodeId inNodeId MEMBER inNodeId)
+  Q_PROPERTY(PortIndex inPortIndex MEMBER inPortIndex)
+
+  // Q_INVOKABLE bool equal(const ConnectionId other) const {
+  //   qDebug() << "They are equal?";
+  //   return *this == other;
+  // }
+
+  Q_INVOKABLE bool equal(const ConnectionId &other) const {
+    qDebug() << "They are equal2?";
+    return *this == other;
+  }
+
+  bool operator==(const ConnectionId &other) const {
+    return outNodeId == other.outNodeId && outPortIndex == other.outPortIndex &&
+           inNodeId == other.inNodeId && inPortIndex == other.inPortIndex;
+  }
 };
 
-inline bool operator==(ConnectionId const &a, ConnectionId const &b) {
-  return a.outNodeId == b.outNodeId && a.outPortIndex == b.outPortIndex &&
-         a.inNodeId == b.inNodeId && a.inPortIndex == b.inPortIndex;
-}
-
-inline bool operator!=(ConnectionId const &a, ConnectionId const &b) { return !(a == b); }
+// inline bool operator!=(ConnectionId const &a, ConnectionId const &b) { return !(a == b); }
 
 inline void invertConnection(ConnectionId &id) {
   std::swap(id.outNodeId, id.inNodeId);

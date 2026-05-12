@@ -160,7 +160,7 @@ float ConnectionStyle::pointDiameter() const { return PointDiameter; };
 
 bool ConnectionStyle::useDataDefinedColors() const { return UseDataDefinedColors; };
 
-bool ConnectionStyle::operator==(const ConnectionStyle &other) {
+bool ConnectionStyle::operator==(const ConnectionStyle &other) const {
   return ConstructionColor == other.ConstructionColor && NormalColor == other.NormalColor &&
          SelectedColor == other.SelectedColor && SelectedHaloColor == other.SelectedHaloColor &&
          HoveredColor == other.HoveredColor && LineWidth == other.LineWidth &&

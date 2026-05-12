@@ -32,20 +32,24 @@ Item {
     Connections {
         target: ModelInterface
 
-        function onConnectionDeleted(inNodeId, inPortIndex, outNodeId, outPortIndex) {
-            for (let i = 0; i < connectionModel.count; ++i) {
-                const connection = connectionModel.get(i);
-                if (connection.inputInNodeId == inNodeId && connection.inputInPortIndex == inPortIndex && connection.inputOutNodeId == outNodeId && connection.inputOutPortIndex == outPortIndex)
-                    connectionModel.remove(i);
-            }
+        function equal(fst: connectionId, snd: connectionId): bool {
+            return fst.outNodeId == snd.outNodeId && fst.outPortIndex == snd.outPortIndex && fst.inNodeId == snd.inNodeId && fst.inPortIndex == snd.inPortIndex;
         }
 
-        function onConnectionCreated(inNodeId, inPortIndex, outNodeId, outPortIndex) {
+        function onConnectionDeleted(id) {
+            console.log("yeaa");
+            for (let i = 0; i < connectionModel.count; ++i) {
+                const connection = connectionModel.get(i);
+                if (equal(connection.inputConnectionId, id)) {
+                    connectionModel.remove(i);
+                }
+            }
+            console.log("yeaa?");
+        }
+
+        function onConnectionCreated(id) {
             connectionModel.append({
-                "inputInNodeId": inNodeId,
-                "inputInPortIndex": inPortIndex,
-                "inputOutNodeId": outNodeId,
-                "inputOutPortIndex": outPortIndex
+                "inputConnectionId": id
             });
         }
     }
@@ -53,15 +57,9 @@ Item {
     Repeater {
         id: connections
         delegate: DefaultConnection {
-            required property real inputInNodeId
-            required property real inputInPortIndex
-            required property real inputOutNodeId
-            required property real inputOutPortIndex
-            inNodeId: inputInNodeId
-            inPortIndex: inputInPortIndex
-            outNodeId: inputOutNodeId
-            outPortIndex: inputOutPortIndex
+            required property connectionId inputConnectionId
 
+            conId: inputConnectionId
             nodes: root.nodes
             mousePos: root.area.mousePosition
         }

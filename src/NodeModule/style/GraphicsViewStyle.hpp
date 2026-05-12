@@ -30,7 +30,7 @@ class GraphicsViewStyle : public Style {
   QColor fineGridColor() const;
   QColor coarseGridColor() const;
 
-  bool operator==(const GraphicsViewStyle &other);
+  bool operator==(const GraphicsViewStyle &other) const;
 
   protected:
   QColor BackgroundColor;

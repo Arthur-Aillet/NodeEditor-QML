@@ -4,7 +4,6 @@
 #include <QtCore/QObject>
 #include <QtCore/QVariant>
 
-#include "AbstractNodeGeometry.hpp"
 #include "ConnectionIdHash.hpp"
 #include "Definitions.hpp"
 

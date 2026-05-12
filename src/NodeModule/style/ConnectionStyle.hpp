@@ -44,7 +44,7 @@ class ConnectionStyle : public Style {
 
   bool useDataDefinedColors() const;
 
-  bool operator==(const ConnectionStyle &other);
+  bool operator==(const ConnectionStyle &other) const;
 
   protected:
   QColor ConstructionColor;

@@ -22,7 +22,7 @@ class RegisteryAccess {
   RegisteryAccess();
   RegisteryAccess(std::shared_ptr<NodeDelegateModelRegistry> _reg);
 
-  bool operator==(const RegisteryAccess &other) { return registry == other.registry; }
+  bool operator==(const RegisteryAccess &other) const { return registry == other.registry; }
 
   signals:
   void nodeMapModelChanged();

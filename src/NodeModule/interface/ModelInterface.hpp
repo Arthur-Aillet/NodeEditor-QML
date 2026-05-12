@@ -44,10 +44,8 @@ class ModelInterface : public QObject {
   Q_INVOKABLE QVariant nodeData(NodeId nodeId, NodeRole role);
   Q_INVOKABLE QVariant portData(NodeId nodeId, PortType portType, PortIndex index, PortRole role);
   Q_INVOKABLE bool setNodeData(NodeId nodeId, NodeRole role, QVariant value);
-  Q_INVOKABLE void createConnection(NodeId inNode, PortIndex inPort, NodeId outNode,
-                                    PortIndex outPort);
-  Q_INVOKABLE void deleteConnection(NodeId inNode, PortIndex inPort, NodeId outNode,
-                                    PortIndex outPort);
+  Q_INVOKABLE void createConnection(ConnectionId const id);
+  Q_INVOKABLE void deleteConnection(ConnectionId const id);
   Q_INVOKABLE void createNode(QString const nodeType, QPoint const &scenePos);
   Q_INVOKABLE bool deleteNode(const NodeId nodeId);
 
@@ -56,16 +54,10 @@ class ModelInterface : public QObject {
     emit nodeGeometryInterfaceChanged();
   }
 
-  public slots:
-  void forwardConnectionCreated(ConnectionId const connectionId);
-  void forwardConnectionDeleted(ConnectionId const connectionId);
-
   Q_SIGNALS:
   void nodeGeometryInterfaceChanged();
-  void connectionCreated(NodeId const inNodeId, PortIndex const inPortIndex, NodeId const outNodeId,
-                         PortIndex const outPortIndex);
-  void connectionDeleted(NodeId const inNodeId, PortIndex const inPortIndex, NodeId const outNodeId,
-                         PortIndex const outPortIndex);
+  void connectionCreated(ConnectionId const id);
+  void connectionDeleted(ConnectionId const id);
   void nodeCreated(NodeId const nodeId);
   void nodeDeleted(NodeId const nodeId);
   void nodeUpdated(NodeId const nodeId);

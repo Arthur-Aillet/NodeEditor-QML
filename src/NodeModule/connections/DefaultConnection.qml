@@ -21,9 +21,11 @@ Shape {
         }
     }
 
+    required property connectionId conId
+
     //undefined or int
-    required property var inNodeId
-    required property var inPortIndex
+    property var inNodeId: conId.inNodeId > 1000 ? undefined : conId.inNodeId
+    property var inPortIndex: conId.inPortIndex > 1000 ? undefined : conId.inPortIndex
     property var inNodePos: undefined
 
     function getNodePosition(id: int): var {
@@ -42,8 +44,8 @@ Shape {
     }
 
     property var inPortPos: inNodeId !== undefined ? ModelInterface.nodeGeometry.portPosition(inNodeId, NodeEditor.PortType.In, inPortIndex) : undefined
-    required property var outNodeId
-    required property var outPortIndex
+    property var outNodeId: conId.outNodeId > 1000 ? undefined : conId.outNodeId
+    property var outPortIndex: conId.outPortIndex > 1000 ? undefined : conId.outPortIndex
     property var outNodePos: undefined
 
     Binding on outNodePos {
@@ -129,7 +131,7 @@ Shape {
             return;
 
         if (event.key == Qt.Key_Delete || event.key == Qt.Key_Back) {
-            ModelInterface.deleteConnection(inNodeId, inPortIndex, outNodeId, outPortIndex);
+            ModelInterface.deleteConnection(conId);
         }
     }
 

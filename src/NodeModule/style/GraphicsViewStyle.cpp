@@ -85,7 +85,7 @@ QColor GraphicsViewStyle::backgroundColor() const { return BackgroundColor; }
 QColor GraphicsViewStyle::fineGridColor() const { return FineGridColor; }
 QColor GraphicsViewStyle::coarseGridColor() const { return CoarseGridColor; }
 
-bool GraphicsViewStyle::operator==(const GraphicsViewStyle &other) {
+bool GraphicsViewStyle::operator==(const GraphicsViewStyle &other) const {
   return BackgroundColor == other.BackgroundColor && FineGridColor == other.FineGridColor &&
          CoarseGridColor == other.CoarseGridColor;
 }
