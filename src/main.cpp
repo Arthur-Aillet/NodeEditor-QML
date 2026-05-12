@@ -77,10 +77,6 @@ int main(int argc, char *argv[]) {
     model.setNodeData(source, NodeRole::Type, ValueNodeModel().name());
   }
 
-  engine.rootContext()->setContextProperty("InvalidNodeId", InvalidNodeId);
-  engine.rootContext()->setContextProperty("InvalidPortIndex", InvalidPortIndex);
-  engine.rootContext()->setContextProperty("InvalidGroupId", InvalidGroupId);
-
   QObject *item = engine.rootObjects().first();
 
   auto source = model.addNode(NumberDisplayDataModel().name());

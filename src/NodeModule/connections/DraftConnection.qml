@@ -65,10 +65,10 @@ Loader {
         nodes: root.nodes
 
         connection: ({
-                outNodeId: selectedPort.portType === NodeEditor.PortType.In ? InvalidNodeId : selectedPort.nodeId,
-                outPortIndex: selectedPort.portType === NodeEditor.PortType.In ? InvalidPortIndex : selectedPort.portId,
-                inNodeId: selectedPort.portType === NodeEditor.PortType.In ? selectedPort.nodeId : InvalidNodeId,
-                inPortIndex: selectedPort.portType === NodeEditor.PortType.In ? selectedPort.portId : InvalidPortIndex
+                outNodeId: selectedPort.portType === NodeEditor.PortType.In ? NodeEditorUtils.InvalidNodeId : selectedPort.nodeId,
+                outPortIndex: selectedPort.portType === NodeEditor.PortType.In ? NodeEditorUtils.InvalidPortIndex : selectedPort.portId,
+                inNodeId: selectedPort.portType === NodeEditor.PortType.In ? selectedPort.nodeId : NodeEditorUtils.InvalidNodeId,
+                inPortIndex: selectedPort.portType === NodeEditor.PortType.In ? selectedPort.portId : NodeEditorUtils.InvalidPortIndex
             })
 
         Connections {

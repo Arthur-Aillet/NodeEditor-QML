@@ -46,8 +46,8 @@ Shape {
         }
     }
 
-    property point inPoint: connection.inNodeId === InvalidNodeId ? mousePos : getPortPosition(NodeEditor.PortType.In)
-    property point outPoint: connection.outNodeId === InvalidNodeId ? mousePos : getPortPosition(NodeEditor.PortType.Out)
+    property point inPoint: connection.inNodeId === NodeEditorUtils.InvalidNodeId ? mousePos : getPortPosition(NodeEditor.PortType.In)
+    property point outPoint: connection.outNodeId === NodeEditorUtils.InvalidNodeId ? mousePos : getPortPosition(NodeEditor.PortType.Out)
 
     property point c1
     property point c2
@@ -91,7 +91,7 @@ Shape {
     }
     preferredRendererType: Shape.CurveRenderer
 
-    property bool fullyConnected: connection.inNodeId !== InvalidNodeId && connection.outNodeId !== InvalidNodeId
+    property bool fullyConnected: connection.inNodeId !== NodeEditorUtils.InvalidNodeId && connection.outNodeId !== NodeEditorUtils.InvalidNodeId
     property bool hovered: false
 
     function distanceToCurve(point: point): real {
@@ -146,22 +146,22 @@ Shape {
 
     ShapePath {
         id: path
-        property bool swapped: root.connection.inNodeId === InvalidNodeId
+        property bool swap: root.connection.inNodeId === NodeEditorUtils.InvalidNodeId
 
-        startX: swapped ? root.outPoint.x : root.inPoint.x
-        startY: swapped ? root.outPoint.y : root.inPoint.y
+        startX: swap ? root.outPoint.x : root.inPoint.x
+        startY: swap ? root.outPoint.y : root.inPoint.y
         fillColor: "transparent"
         strokeWidth: 2
         strokeColor: root.fullyConnected ? "teal" : "grey"
         strokeStyle: root.fullyConnected ? ShapePath.SolidLine : ShapePath.DashLine
         dashPattern: [6, 2]
         PathCubic {
-            x: path.swapped ? root.inPoint.x : root.outPoint.x
-            y: path.swapped ? root.inPoint.y : root.outPoint.y
-            control1X: path.swapped ? root.c2.x : root.c1.x
-            control1Y: path.swapped ? root.c2.y : root.c1.y
-            control2X: path.swapped ? root.c1.x : root.c2.x
-            control2Y: path.swapped ? root.c1.y : root.c2.y
+            x: path.swap ? root.inPoint.x : root.outPoint.x
+            y: path.swap ? root.inPoint.y : root.outPoint.y
+            control1X: path.swap ? root.c2.x : root.c1.x
+            control1Y: path.swap ? root.c2.y : root.c1.y
+            control2X: path.swap ? root.c1.x : root.c2.x
+            control2Y: path.swap ? root.c1.y : root.c2.y
         }
     }
 }

@@ -5,6 +5,7 @@
 #include <limits>
 #include <qjsvalue.h>
 #include <qlist.h>
+#include <qobject.h>
 #include <qqmlintegration.h>
 #include <qtmetamacros.h>
 #include <qtypes.h>
@@ -116,6 +117,21 @@ static constexpr PortIndex InvalidPortIndex = std::numeric_limits<PortIndex>::ma
 static constexpr NodeId InvalidNodeId = std::numeric_limits<NodeId>::max();
 static constexpr GroupId InvalidGroupId = std::numeric_limits<GroupId>::max();
 
+/// Access some constants from QML
+class NodeEditorUtils : public QObject {
+  Q_OBJECT
+  QML_ELEMENT
+  QML_SINGLETON
+
+  Q_PROPERTY(uint InvalidPortIndex READ invalidPortIndex CONSTANT)
+  Q_PROPERTY(uint InvalidNodeId READ invalidNodeId CONSTANT)
+  Q_PROPERTY(uint InvalidGroupId READ invalidGroupId CONSTANT)
+
+  inline PortIndex invalidPortIndex() const { return InvalidPortIndex; }
+  inline NodeId invalidNodeId() const { return InvalidNodeId; }
+  inline GroupId invalidGroupId() const { return InvalidGroupId; }
+};
+
 /**
  * A unique connection identificator that stores
  * out `NodeId`, out `PortIndex`, in `NodeId`, in `PortIndex`
@@ -131,28 +147,16 @@ struct ConnectionId {
   NodeId inNodeId;
   PortIndex inPortIndex;
 
-  Q_PROPERTY(NodeId outNodeId MEMBER outNodeId)
-  Q_PROPERTY(PortIndex outPortIndex MEMBER outPortIndex)
-  Q_PROPERTY(NodeId inNodeId MEMBER inNodeId)
-  Q_PROPERTY(PortIndex inPortIndex MEMBER inPortIndex)
-
-  // Q_INVOKABLE bool equal(const ConnectionId other) const {
-  //   qDebug() << "They are equal?";
-  //   return *this == other;
-  // }
-
-  Q_INVOKABLE bool equal(const ConnectionId &other) const {
-    qDebug() << "They are equal2?";
-    return *this == other;
-  }
+  Q_PROPERTY(uint outNodeId MEMBER outNodeId)
+  Q_PROPERTY(uint outPortIndex MEMBER outPortIndex)
+  Q_PROPERTY(uint inNodeId MEMBER inNodeId)
+  Q_PROPERTY(uint inPortIndex MEMBER inPortIndex)
 
   bool operator==(const ConnectionId &other) const {
     return outNodeId == other.outNodeId && outPortIndex == other.outPortIndex &&
            inNodeId == other.inNodeId && inPortIndex == other.inPortIndex;
   }
 };
-
-// inline bool operator!=(ConnectionId const &a, ConnectionId const &b) { return !(a == b); }
 
 inline void invertConnection(ConnectionId &id) {
   std::swap(id.outNodeId, id.inNodeId);
