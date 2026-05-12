@@ -64,11 +64,11 @@ Loader {
         mousePos: root.area.mousePosition
         nodes: root.nodes
 
-        conId: ({
-                outNodeId: selectedPort.portType === NodeEditor.PortType.In ? 100000 : selectedPort.nodeId,
-                outPortIndex: selectedPort.portType === NodeEditor.PortType.In ? 100000 : selectedPort.portId,
-                inNodeId: selectedPort.portType === NodeEditor.PortType.In ? selectedPort.nodeId : 100000,
-                inPortIndex: selectedPort.portType === NodeEditor.PortType.In ? selectedPort.portId : 10000
+        connection: ({
+                outNodeId: selectedPort.portType === NodeEditor.PortType.In ? InvalidNodeId : selectedPort.nodeId,
+                outPortIndex: selectedPort.portType === NodeEditor.PortType.In ? InvalidPortIndex : selectedPort.portId,
+                inNodeId: selectedPort.portType === NodeEditor.PortType.In ? selectedPort.nodeId : InvalidNodeId,
+                inPortIndex: selectedPort.portType === NodeEditor.PortType.In ? selectedPort.portId : InvalidPortIndex
             })
 
         Connections {

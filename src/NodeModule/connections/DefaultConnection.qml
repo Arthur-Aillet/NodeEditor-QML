@@ -11,53 +11,43 @@ Shape {
     Connections {
         target: ModelInterface
 
-        function onNodePositionUpdated(id: real) {
-            if (id == root.inNodeId) {
-                root.inNodePos = ModelInterface.nodeData(id, NodeEditor.NodeRole.Position);
+        function onNodePositionUpdated(nodeId: real) {
+            if (nodeId == root.connection.inNodeId) {
+                root.inNodePos = ModelInterface.nodeData(nodeId, NodeEditor.NodeRole.Position);
             }
-            if (id == root.outNodeId) {
-                root.outNodePos = ModelInterface.nodeData(id, NodeEditor.NodeRole.Position);
+            if (nodeId == root.connection.outNodeId) {
+                root.outNodePos = ModelInterface.nodeData(nodeId, NodeEditor.NodeRole.Position);
             }
         }
     }
 
-    required property connectionId conId
+    required property connectionId connection
 
-    //undefined or int
-    property var inNodeId: conId.inNodeId > 1000 ? undefined : conId.inNodeId
-    property var inPortIndex: conId.inPortIndex > 1000 ? undefined : conId.inPortIndex
-    property var inNodePos: undefined
+    function getPortPosition(side): var {
+        let nodeId;
+        let portIndex;
 
-    function getNodePosition(id: int): var {
+        if (side == NodeEditor.PortType.In) {
+            nodeId = connection.inNodeId;
+            portIndex = connection.inPortIndex;
+        } else {
+            nodeId = connection.outNodeId;
+            portIndex = connection.outPortIndex;
+        }
+
         for (let i = 0; i != nodes.nodes.count; i++) {
             const node = nodes.nodes.itemAt(i) as NodeGraphicalObject;
-            if (node.nodeId == id) {
-                return Qt.point(node.x, node.y);
+
+            if (node.nodeId == nodeId) {
+                const portPos = ModelInterface.nodeGeometry.portPosition(nodeId, side, portIndex);
+
+                return Qt.point(node.x + portPos.x, node.y + portPos.y);
             }
         }
     }
 
-    Binding on inNodePos {
-        when: root.inNodeId !== undefined
-        value: if (root.inNodeId !== undefined)
-            root.getNodePosition(root.inNodeId)
-    }
-
-    property var inPortPos: inNodeId !== undefined ? ModelInterface.nodeGeometry.portPosition(inNodeId, NodeEditor.PortType.In, inPortIndex) : undefined
-    property var outNodeId: conId.outNodeId > 1000 ? undefined : conId.outNodeId
-    property var outPortIndex: conId.outPortIndex > 1000 ? undefined : conId.outPortIndex
-    property var outNodePos: undefined
-
-    Binding on outNodePos {
-        when: root.outNodeId !== undefined
-        value: if (root.outNodeId !== undefined)
-            root.getNodePosition(root.outNodeId)
-    }
-
-    property var outPortPos: outNodeId !== undefined ? ModelInterface.nodeGeometry.portPosition(outNodeId, NodeEditor.PortType.Out, outPortIndex) : undefined
-
-    property point inPoint: inNodeId === undefined ? mousePos : Qt.point(inPortPos.x + inNodePos.x, inPortPos.y + inNodePos.y)
-    property point outPoint: outNodeId === undefined ? mousePos : Qt.point(outPortPos.x + outNodePos.x, outPortPos.y + outNodePos.y)
+    property point inPoint: connection.inNodeId === InvalidNodeId ? mousePos : getPortPosition(NodeEditor.PortType.In)
+    property point outPoint: connection.outNodeId === InvalidNodeId ? mousePos : getPortPosition(NodeEditor.PortType.Out)
 
     property point c1
     property point c2
@@ -101,7 +91,7 @@ Shape {
     }
     preferredRendererType: Shape.CurveRenderer
 
-    property bool fullyConnected: inNodeId !== undefined && outNodeId !== undefined
+    property bool fullyConnected: connection.inNodeId !== InvalidNodeId && connection.outNodeId !== InvalidNodeId
     property bool hovered: false
 
     function distanceToCurve(point: point): real {
@@ -131,7 +121,7 @@ Shape {
             return;
 
         if (event.key == Qt.Key_Delete || event.key == Qt.Key_Back) {
-            ModelInterface.deleteConnection(conId);
+            ModelInterface.deleteConnection(connection);
         }
     }
 
@@ -156,7 +146,7 @@ Shape {
 
     ShapePath {
         id: path
-        property bool swapped: root.inNodeId === undefined
+        property bool swapped: root.connection.inNodeId === InvalidNodeId
 
         startX: swapped ? root.outPoint.x : root.inPoint.x
         startY: swapped ? root.outPoint.y : root.inPoint.y

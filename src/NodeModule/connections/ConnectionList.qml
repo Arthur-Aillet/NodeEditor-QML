@@ -37,14 +37,12 @@ Item {
         }
 
         function onConnectionDeleted(id) {
-            console.log("yeaa");
             for (let i = 0; i < connectionModel.count; ++i) {
                 const connection = connectionModel.get(i);
                 if (equal(connection.inputConnectionId, id)) {
                     connectionModel.remove(i);
                 }
             }
-            console.log("yeaa?");
         }
 
         function onConnectionCreated(id) {
@@ -59,7 +57,7 @@ Item {
         delegate: DefaultConnection {
             required property connectionId inputConnectionId
 
-            conId: inputConnectionId
+            connection: inputConnectionId
             nodes: root.nodes
             mousePos: root.area.mousePosition
         }

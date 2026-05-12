@@ -1,6 +1,7 @@
 #include "DataFlowModelInterface.hpp"
 
 #include "AdditionModel.hpp"
+#include "Definitions.hpp"
 #include "DivisionModel.hpp"
 #include "MultiplicationModel.hpp"
 #include "NumberDisplayDataModel.hpp"
@@ -75,6 +76,10 @@ int main(int argc, char *argv[]) {
     model.setNodeData(source, NodeRole::Position, QPointF(0, 0));
     model.setNodeData(source, NodeRole::Type, ValueNodeModel().name());
   }
+
+  engine.rootContext()->setContextProperty("InvalidNodeId", InvalidNodeId);
+  engine.rootContext()->setContextProperty("InvalidPortIndex", InvalidPortIndex);
+  engine.rootContext()->setContextProperty("InvalidGroupId", InvalidGroupId);
 
   QObject *item = engine.rootObjects().first();
 
