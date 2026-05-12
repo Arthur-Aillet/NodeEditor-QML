@@ -5,8 +5,11 @@
 #include "NodeStyle.hpp"
 #include "Serializable.hpp"
 
+#include <QQmlComponent>
 #include <QtGui/QColor>
 #include <QtWidgets/QWidget>
+#include <qobject.h>
+#include <qqmlengine.h>
 
 /**
  * Describes whether a node configuration is usable and defines a description message
@@ -124,17 +127,7 @@ class NodeDelegateModel : public QObject, public Serializable {
 
   virtual std::shared_ptr<NodeData> outData(PortIndex const port) = 0;
 
-  /**
-   * It is recommented to preform lazy initialization for the embedded widget
-   * and create it inside this function, not in the constructor of the current
-   * model.
-   *
-   * Our Model Registry is able to shortly instantiate models in order to call
-   * the non-static `Model::name()`. If the embedded widget is allocated in the
-   * constructor but not actually embedded into some QGraphicsProxyWidget,
-   * we'll gonna have a dangling pointer.
-   */
-  virtual QWidget *embeddedWidget() = 0;
+  virtual std::shared_ptr<QQmlComponent> embeddedComponent(QQmlEngine *engine) = 0;
 
   virtual bool resizable() const { return false; }
 
@@ -147,6 +140,7 @@ class NodeDelegateModel : public QObject, public Serializable {
   virtual void inputConnectionDeleted(ConnectionId const &) {}
   virtual void outputConnectionCreated(ConnectionId const &) {}
   virtual void outputConnectionDeleted(ConnectionId const &) {}
+  virtual void embeddedComponentLoaded(QObject *instance) {}
 
   Q_SIGNALS:
   /// Triggers the updates in the nodes downstream.
@@ -158,7 +152,7 @@ class NodeDelegateModel : public QObject, public Serializable {
   void computingStarted();
   void computingFinished();
 
-  void embeddedWidgetSizeUpdated();
+  void embeddedComponentSizeUpdated();
 
   /// Request an update of the node's UI.
   /**

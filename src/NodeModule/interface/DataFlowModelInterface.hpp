@@ -14,7 +14,12 @@ class DataFlowModelInterface : public ModelInterface {
   RegisteryAccess registeryAccess;
 
   Q_PROPERTY(RegisteryAccess registery MEMBER registeryAccess NOTIFY registeryChanged)
+  Q_PROPERTY(DataFlowGraphModel *dataFlowGraph READ getDataFlowGraphModel);
 
+  protected:
+  DataFlowGraphModel *getDataFlowGraphModel() { return &graphModel; }
+
+  public:
   static DataFlowModelInterface *create(QQmlEngine *, QJSEngine *engine);
   static DataFlowModelInterface *init(DataFlowGraphModel &_graphModel);
 

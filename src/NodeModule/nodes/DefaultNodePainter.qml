@@ -105,4 +105,14 @@ AbstractNodePainter {
         x: parent.capPos.x + parent.capRect.width / 2.0
         y: parent.capPos.y - fontMetrics.height - 2.0 - fontMetrics.ascent
     }
+
+    // Embedded component
+    Loader {
+        sourceComponent: ModelInterface.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.Component)
+        onStatusChanged: {
+            if (status == Loader.Ready) {
+                DataFlowModelInterface.dataFlowGraph.sendComponentLoaded(root.nodeObject.nodeId, item);
+            }
+        }
+    }
 }

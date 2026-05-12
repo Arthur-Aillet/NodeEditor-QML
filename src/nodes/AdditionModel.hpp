@@ -3,10 +3,7 @@
 #include "DecimalData.hpp"
 #include "MathOperationDataModel.hpp"
 
-#include "NodeDelegateModel.hpp"
-
 #include <QtCore/QObject>
-#include <QtWidgets/QLabel>
 
 /// The model dictates the number of inputs and outputs for the Node.
 /// In this example it has no logic.

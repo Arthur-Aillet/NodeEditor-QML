@@ -2,8 +2,11 @@
 
 #include "NodeDelegateModel.hpp"
 
+#include <QQmlComponent>
 #include <QtCore/QObject>
 #include <qdebug.h>
+#include <qqmlcomponent.h>
+#include <qqmlengine.h>
 #include <qtmetamacros.h>
 
 #include "DecimalData.hpp"
@@ -36,7 +39,13 @@ class NumberDisplayDataModel : public NodeDelegateModel {
 
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
-  QWidget *embeddedWidget() override { return nullptr; }
+  std::shared_ptr<QQmlComponent> embeddedComponent(QQmlEngine *engine) override {
+    if (_component == nullptr) {
+      _component = std::make_shared<QQmlComponent>(engine, "CutieDesignerModule", "PortLabel");
+    }
+
+    return _component;
+  }
 
   double number() const;
 
@@ -46,5 +55,5 @@ class NumberDisplayDataModel : public NodeDelegateModel {
   private:
   std::shared_ptr<DecimalData> _numberData;
 
-  QLabel *_label;
+  std::shared_ptr<QQmlComponent> _component{nullptr};
 };

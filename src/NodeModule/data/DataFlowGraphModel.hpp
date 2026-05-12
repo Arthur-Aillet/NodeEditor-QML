@@ -29,7 +29,8 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   };
 
   public:
-  DataFlowGraphModel(std::shared_ptr<NodeDelegateModelRegistry> registry);
+  DataFlowGraphModel(std::shared_ptr<NodeDelegateModelRegistry> registry,
+                     QQmlEngine *engine = nullptr);
 
   std::shared_ptr<NodeDelegateModelRegistry> dataModelRegistry() { return _registry; }
 
@@ -95,6 +96,8 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   /// Loops do not make any sense in uni-direction data propagation
   bool loopsEnabled() const override { return false; }
 
+  Q_INVOKABLE void sendComponentLoaded(NodeId nodeId, QObject *object);
+
   Q_SIGNALS:
   void inPortDataWasSet(NodeId const, PortType const, PortIndex const);
 
@@ -122,6 +125,8 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   void propagateEmptyDataTo(NodeId const nodeId, PortIndex const portIndex);
 
   private:
+  QQmlEngine *_engine;
+
   std::shared_ptr<NodeDelegateModelRegistry> _registry;
 
   NodeId _nextNodeId;

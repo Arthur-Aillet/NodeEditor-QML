@@ -3,7 +3,11 @@
 #include "NodeDelegateModel.hpp"
 #include "nodes/DecimalData.hpp"
 
+#include <QQuickItem>
 #include <QtCore/QObject>
+#include <qforeach.h>
+#include <qobject.h>
+#include <qqmlengine.h>
 
 class NumberData;
 
@@ -40,17 +44,30 @@ class ValueNodeModel : public NodeDelegateModel {
 
   void setInData(std::shared_ptr<NodeData>, PortIndex) override {}
 
-  QWidget *embeddedWidget() override;
+  std::shared_ptr<QQmlComponent> embeddedComponent(QQmlEngine *engine) override {
+    if (_component == nullptr) {
+      _component = std::make_shared<QQmlComponent>(engine, "CutieDesignerModule", "PortLabel");
+    }
+
+    return _component;
+  }
+  QObject *portLabel{nullptr};
+
+  void embeddedComponentLoaded(QObject *loaded) override {
+    portLabel = loaded;
+    portLabel->setProperty("placeholderText", "Value");
+    portLabel->connect(portLabel, SIGNAL(textEdited()), this, SLOT(onTextEdited()));
+  }
 
   public:
   void setNumber(double number);
 
   private Q_SLOTS:
 
-  void onTextEdited(QString const &string);
+  void onTextEdited();
 
   private:
   std::shared_ptr<DecimalData> _number;
 
-  QLineEdit *_lineEdit;
+  std::shared_ptr<QQmlComponent> _component{nullptr};
 };

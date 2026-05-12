@@ -4,8 +4,8 @@
 #include "NodeData.hpp"
 
 #include <QPoint>
+#include <QQmlComponent>
 #include <QRect>
-#include <QtWidgets/QWidget>
 
 DefaultHorizontalNodeGeometry::DefaultHorizontalNodeGeometry(AbstractGraphModel &graphModel)
     : AbstractNodeGeometry(graphModel), _portSize(20), _portSpacing(10), _fontMetrics(QFont()),
@@ -35,8 +35,8 @@ QSize DefaultHorizontalNodeGeometry::size(NodeId const nodeId) const {
 void DefaultHorizontalNodeGeometry::recomputeSize(NodeId const nodeId) const {
   unsigned int height = maxVerticalPortsExtent(nodeId);
 
-  if (auto w = _graphModel.nodeData<QWidget *>(nodeId, NodeRole::Widget)) {
-    height = std::max(height, static_cast<unsigned int>(w->height()));
+  if (auto component = _graphModel.nodeData<QQmlComponent *>(nodeId, NodeRole::Component)) {
+    // height = std::max(height, static_cast<unsigned int>(component->height()));
   }
 
   QRectF const capRect = captionRect(nodeId);
@@ -63,8 +63,8 @@ void DefaultHorizontalNodeGeometry::recomputeSize(NodeId const nodeId) const {
 
   unsigned int width = inPortWidth + outPortWidth + 4 * _portSpacing;
 
-  if (auto w = _graphModel.nodeData<QWidget *>(nodeId, NodeRole::Widget)) {
-    width += w->width();
+  if (auto component = _graphModel.nodeData<QQmlComponent *>(nodeId, NodeRole::Component)) {
+    // width += component->width();
   }
 
   unsigned int textWidth = static_cast<unsigned int>(capRect.width());
@@ -209,16 +209,18 @@ QPointF DefaultHorizontalNodeGeometry::widgetPosition(NodeId const nodeId) const
   if (_graphModel.nodeData<bool>(nodeId, NodeRole::LabelVisible))
     captionHeight += labelRect(nodeId).height() + _portSpacing / 2;
 
-  if (auto w = _graphModel.nodeData<QWidget *>(nodeId, NodeRole::Widget)) {
+  if (auto component = _graphModel.nodeData<QQmlComponent *>(nodeId, NodeRole::Component)) {
     // If the widget wants to use as much vertical space as possible,
     // place it immediately after the caption.
-    if (w->sizePolicy().verticalPolicy() & QSizePolicy::ExpandFlag) {
-      return QPointF(2.0 * _portSpacing + maxPortsTextAdvance(nodeId, PortType::In),
-                     _portSpacing + captionHeight);
-    } else {
-      return QPointF(2.0 * _portSpacing + maxPortsTextAdvance(nodeId, PortType::In),
-                     (captionHeight + size.height() - w->height()) / 2.0);
-    }
+
+    // TODO:
+    // if (w->sizePolicy().verticalPolicy() & QSizePolicy::ExpandFlag) {
+    //   return QPointF(2.0 * _portSpacing + maxPortsTextAdvance(nodeId, PortType::In),
+    //                  _portSpacing + captionHeight);
+    // } else {
+    // return QPointF(2.0 * _portSpacing + maxPortsTextAdvance(nodeId, PortType::In),
+    //                (captionHeight + size.height() - component->height()) / 2.0);
+    //}
   }
   return QPointF();
 }

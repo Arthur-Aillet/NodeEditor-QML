@@ -1,9 +1,6 @@
 #pragma once
 
-#include "NodeDelegateModel.hpp"
-
 #include <QtCore/QObject>
-#include <QtWidgets/QLabel>
 
 #include "MathOperationDataModel.hpp"
 

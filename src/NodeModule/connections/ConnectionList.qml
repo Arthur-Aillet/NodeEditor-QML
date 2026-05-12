@@ -54,6 +54,8 @@ Item {
 
     Repeater {
         id: connections
+
+        // TODO: Default Connection will also become a ConnectionObject + ConnectionPainter, just like Nodes
         delegate: DefaultConnection {
             required property connectionId inputConnectionId
 

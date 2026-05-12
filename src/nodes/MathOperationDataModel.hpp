@@ -2,9 +2,12 @@
 
 #include "NodeDelegateModel.hpp"
 
+#include <QQmlComponent>
 #include <QtCore/QJsonObject>
 #include <QtCore/QObject>
 #include <QtWidgets/QLabel>
+#include <qqmlcomponent.h>
+#include <qqmlengine.h>
 
 class DecimalData;
 
@@ -25,7 +28,7 @@ class MathOperationDataModel : public NodeDelegateModel {
 
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
-  QWidget *embeddedWidget() override { return nullptr; }
+  std::shared_ptr<QQmlComponent> embeddedComponent(QQmlEngine *engine) override { return nullptr; }
 
   protected:
   virtual void compute() = 0;

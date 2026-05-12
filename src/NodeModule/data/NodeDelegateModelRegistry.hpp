@@ -6,6 +6,7 @@
 
 #include <functional>
 #include <memory>
+#include <qqmlengine.h>
 #include <set>
 #include <type_traits>
 #include <unordered_map>

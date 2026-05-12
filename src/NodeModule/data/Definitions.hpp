@@ -33,7 +33,7 @@ enum class NodeRole {
   InternalData = 6,      ///< Node-stecific user data as QJsonObject
   InPortCount = 7,       ///< `unsigned int`
   OutPortCount = 9,      ///< `unsigned int`
-  Widget = 10,           ///< Optional `QWidget*` or `nullptr`
+  Component = 10,        ///< Optional `QQmlComponent*` or `nullptr`
   ValidationState = 11,  ///< Enum NodeValidationState of the node
   LabelVisible = 12,     ///< `bool` for label visibility.
   ProcessingStatus = 13, ///< Enum NodeProcessingStatus of the node

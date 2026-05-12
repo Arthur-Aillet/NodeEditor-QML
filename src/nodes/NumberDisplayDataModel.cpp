@@ -2,12 +2,12 @@
 
 #include <QtWidgets/QLabel>
 #include <cstdio>
-#include <iostream>
-#include <ostream>
+#include <memory>
 #include <qdebug.h>
+#include <qqmlcomponent.h>
 #include <qtmetamacros.h>
 
-NumberDisplayDataModel::NumberDisplayDataModel() : _label{nullptr} {}
+NumberDisplayDataModel::NumberDisplayDataModel() {}
 
 unsigned int NumberDisplayDataModel::nPorts(PortType portType) const {
   unsigned int result = 1;

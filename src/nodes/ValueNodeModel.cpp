@@ -1,13 +1,14 @@
 #include "ValueNodeModel.hpp"
 #include "DecimalData.hpp"
+#include "NodeDelegateModel.hpp"
 
 #include <QtCore/QJsonValue>
 #include <QtGui/QDoubleValidator>
 #include <QtWidgets/QLineEdit>
+#include <qqmlcomponent.h>
 #include <qvalidator.h>
 
-ValueNodeModel::ValueNodeModel()
-    : _lineEdit{nullptr}, _number(std::make_shared<DecimalData>(0.0)) {}
+ValueNodeModel::ValueNodeModel() : _number(std::make_shared<DecimalData>(0.0)) {}
 
 QJsonObject ValueNodeModel::save() const {
   QJsonObject modelJson = NodeDelegateModel::save();
@@ -28,8 +29,8 @@ void ValueNodeModel::load(QJsonObject const &p) {
     if (ok) {
       _number = std::make_shared<DecimalData>(d);
 
-      if (_lineEdit)
-        _lineEdit->setText(strNum);
+      // if (_lineEdit)
+      //   _lineEdit->setText(strNum);
     }
   }
 }
@@ -52,7 +53,8 @@ unsigned int ValueNodeModel::nPorts(PortType portType) const {
   return result;
 }
 
-void ValueNodeModel::onTextEdited(QString const &str) {
+void ValueNodeModel::onTextEdited() {
+  auto str = portLabel->property("text");
   bool ok = false;
 
   double number = str.toDouble(&ok);
@@ -71,26 +73,11 @@ NodeDataType ValueNodeModel::dataType(PortType, PortIndex) const { return Decima
 
 std::shared_ptr<NodeData> ValueNodeModel::outData(PortIndex) { return _number; }
 
-QWidget *ValueNodeModel::embeddedWidget() {
-  if (!_lineEdit) {
-    _lineEdit = new QLineEdit();
-
-    _lineEdit->setValidator(new QDoubleValidator());
-    _lineEdit->setMaximumSize(_lineEdit->sizeHint());
-
-    connect(_lineEdit, &QLineEdit::textChanged, this, &ValueNodeModel::onTextEdited);
-
-    _lineEdit->setText(QString::number(_number->number()));
-  }
-
-  return _lineEdit;
-}
-
 void ValueNodeModel::setNumber(double n) {
   _number = std::make_shared<DecimalData>(n);
 
   Q_EMIT dataUpdated(0);
 
-  if (_lineEdit)
-    _lineEdit->setText(QString::number(_number->number()));
+  // if (_lineEdit)
+  //   _lineEdit->setText(QString::number(_number->number()));
 }

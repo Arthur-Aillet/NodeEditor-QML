@@ -59,12 +59,13 @@ int main(int argc, char *argv[]) {
   ret->registerModel<SubtractionModel>("Process");
   ret->registerModel<NumberDisplayDataModel>("Display");
 
-  auto model = DataFlowGraphModel(ret);
+  QQmlApplicationEngine engine;
+
+  auto model = DataFlowGraphModel(ret, &engine);
 
   // QWidget mainWidget;
   // auto scene = startOriginalNodeEditor(model, mainWidget);
 
-  QQmlApplicationEngine engine;
   QObject::connect(
       &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
       []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);

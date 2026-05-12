@@ -2,10 +2,13 @@
 
 #include <QJsonArray>
 #include <qdebug.h>
+#include <qobject.h>
+#include <qqmlengine.h>
 #include <stack>
 
-DataFlowGraphModel::DataFlowGraphModel(std::shared_ptr<NodeDelegateModelRegistry> registry)
-    : _registry(std::move(registry)), _nextNodeId{0} {}
+DataFlowGraphModel::DataFlowGraphModel(std::shared_ptr<NodeDelegateModelRegistry> registry,
+                                       QQmlEngine *engine)
+    : _registry(std::move(registry)), _nextNodeId{0}, _engine(engine) {}
 
 std::unordered_set<NodeId> DataFlowGraphModel::allNodeIds() const {
   std::unordered_set<NodeId> nodeIds;
@@ -192,6 +195,14 @@ void DataFlowGraphModel::sendConnectionDeletion(ConnectionId const connectionId)
   }
 }
 
+void DataFlowGraphModel::sendComponentLoaded(NodeId nodeId, QObject *object) {
+  auto modeli = _models.find(nodeId);
+  if (modeli != _models.end()) {
+    auto &model = modeli->second;
+    model->embeddedComponentLoaded(object);
+  }
+}
+
 bool DataFlowGraphModel::nodeExists(NodeId const nodeId) const {
   return (_models.find(nodeId) != _models.end());
 }
@@ -248,9 +259,9 @@ QVariant DataFlowGraphModel::nodeData(NodeId nodeId, NodeRole role) const {
     result = model->nPorts(PortType::Out);
     break;
 
-  case NodeRole::Widget: {
-    auto *w = model->embeddedWidget();
-    result = QVariant::fromValue(w);
+  case NodeRole::Component: {
+    auto c = model->embeddedComponent(_engine);
+    result = QVariant::fromValue(c.get());
   } break;
 
   case NodeRole::ValidationState: {
@@ -336,7 +347,7 @@ bool DataFlowGraphModel::setNodeData(NodeId nodeId, NodeRole role, QVariant valu
   case NodeRole::OutPortCount:
     break;
 
-  case NodeRole::Widget:
+  case NodeRole::Component:
     break;
 
   case NodeRole::ValidationState: {

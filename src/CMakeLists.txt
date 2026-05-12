@@ -10,6 +10,7 @@ qt_add_qml_module(CutieDesigner
   QML_FILES
   Main.qml
   TextDisplay.qml
+  nodes/PortLabel.qml
   SOURCES
 
   nodes/AdditionModel.hpp
