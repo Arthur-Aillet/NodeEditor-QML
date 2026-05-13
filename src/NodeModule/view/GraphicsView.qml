@@ -8,6 +8,8 @@ Frame {
     clip: true
     padding: 1
 
+    property alias area: areaId
+
     NavigableArea {
         id: areaId
         width: root.width
@@ -33,9 +35,6 @@ Frame {
     }
 
     ContextMenu.menu: SceneMenu {
-        id: menu
-        onCreateNode: name => {
-            ModelInterface.createNode(name, areaId.inner.mapFromItem(root, Qt.point(x, y)));
-        }
+        area: areaId
     }
 }

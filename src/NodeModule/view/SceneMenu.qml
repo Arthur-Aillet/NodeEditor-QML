@@ -8,7 +8,7 @@ Menu {
     popupType: Popup.Window
     focus: true
 
-    signal createNode(string name)
+    required property NavigableArea area
 
     property var nodeMap: DataFlowModelInterface.registery.nodeMapModel
 
@@ -98,7 +98,10 @@ Menu {
                 if (hasChildren) {
                     view.toggleExpanded(row);
                 } else {
-                    root.createNode(delegate.model.display);
+                    const name = delegate.model.display.toString();
+                    const pos = Qt.point(root.x, root.y);
+
+                    ModelInterface.createNode(name, root.area.mapToItem(root.area.inner, pos));
                     root.close();
                 }
             }
@@ -108,7 +111,7 @@ Menu {
         Component.onCompleted: expandRecursively()
 
         // Move view to include newly opened rows
-        // TODO: Logic not perfect yet this sometimes
+        // TODO: Logic not perfect yet, this sometimes break
         onExpanded: (row, col) => {
             if (row < 0)
                 return;
