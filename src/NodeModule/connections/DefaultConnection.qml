@@ -137,7 +137,7 @@ Shape {
         startX: root.inPoint.x
         startY: root.inPoint.y
         fillColor: "transparent"
-        strokeWidth: 4
+        strokeWidth: StyleCollection.connection.lineWidth * 2
         strokeColor: {
             if (root.focus)
                 return StyleCollection.connection.selectedHaloColor;
@@ -163,7 +163,11 @@ Shape {
         startX: swap ? root.outPoint.x : root.inPoint.x
         startY: swap ? root.outPoint.y : root.inPoint.y
         fillColor: "transparent"
-        strokeWidth: 2
+        strokeWidth: {
+            if (root.fullyConnected)
+                return StyleCollection.connection.lineWidth;
+            return StyleCollection.connection.constructionLineWidth;
+        }
         strokeColor: {
             if (!root.fullyConnected)
                 return StyleCollection.connection.constructionColor;

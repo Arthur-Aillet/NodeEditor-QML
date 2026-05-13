@@ -50,7 +50,7 @@ Item {
         preferredRendererType: Shape.CurveRenderer
 
         ShapePath {
-            fillColor: port.connected ? "red" : port.style.connectionPointColor
+            fillColor: port.connected ? port.style.filledConnectionPointColor : port.style.connectionPointColor
             strokeWidth: port.nodePainter.strokeWidth
             strokeColor: port.nodePainter.strokeColor
 
