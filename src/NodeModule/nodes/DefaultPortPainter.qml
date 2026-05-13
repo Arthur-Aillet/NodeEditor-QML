@@ -10,7 +10,7 @@ Item {
     width: portLabel.width + portLabel.offset
 
     property var style: port.nodePainter.nodeObject.style
-    property var side: (index < nodePainter.nodeObject.inPortCount) ? NodeEditor.PortType.In : NodeEditor.PortType.Out
+    property int side: (index < nodePainter.nodeObject.inPortCount) ? NodeEditor.PortType.In : NodeEditor.PortType.Out
     property int portId: side == NodeEditor.PortType.In ? index : index - nodePainter.nodeObject.inPortCount
 
     property bool connected: false
@@ -36,7 +36,7 @@ Item {
 
     Shape {
         id: connectionPoint
-        property point pos: port.nodePainter.getPortPosition(port.portId, port.side)
+        property point pos: (port.nodePainter as AbstractNodePainter).getPortPosition(port.portId, port.side)
 
         x: pos.x
         y: pos.y

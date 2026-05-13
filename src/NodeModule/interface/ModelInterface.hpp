@@ -1,11 +1,9 @@
 #pragma once
 
 #include "AbstractGraphModel.hpp"
-#include "AbstractNodeGeometry.hpp"
 #include "Definitions.hpp"
 #include "QmlUndoCommands.hpp"
 #include <QObject>
-#include <memory>
 #include <qdebug.h>
 #include <qjsengine.h>
 #include <qloggingcategory.h>
@@ -22,19 +20,14 @@ class ModelInterface : public QObject {
 
   public:
   AbstractGraphModel &graphModel;
-  std::unique_ptr<AbstractNodeGeometry> nodeGeometry;
 
   static ModelInterface *create(QQmlEngine *, QJSEngine *engine);
   static ModelInterface *init(AbstractGraphModel &_graphModel);
 
   Q_PROPERTY(AbstractGraphModel *graph READ getGraphModel);
 
-  Q_PROPERTY(
-      AbstractNodeGeometry *nodeGeometry READ getNodeGeometry NOTIFY nodeGeometryInterfaceChanged);
-
   protected:
   AbstractGraphModel *getGraphModel() { return &graphModel; }
-  AbstractNodeGeometry *getNodeGeometry() { return nodeGeometry.get(); }
 
   inline static ModelInterface *instance = nullptr;
   ModelInterface(AbstractGraphModel &_graphModel);
@@ -49,13 +42,7 @@ class ModelInterface : public QObject {
   Q_INVOKABLE void createNode(QString const nodeType, QPoint const &scenePos);
   Q_INVOKABLE bool deleteNode(const NodeId nodeId);
 
-  void setNodeGeometry(std::unique_ptr<AbstractNodeGeometry> newGeom) {
-    nodeGeometry = std::move(newGeom);
-    emit nodeGeometryInterfaceChanged();
-  }
-
   Q_SIGNALS:
-  void nodeGeometryInterfaceChanged();
   void connectionCreated(ConnectionId const id);
   void connectionDeleted(ConnectionId const id);
   void nodeCreated(NodeId const nodeId);

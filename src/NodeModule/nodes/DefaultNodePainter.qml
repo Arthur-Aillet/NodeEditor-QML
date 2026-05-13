@@ -18,6 +18,9 @@ AbstractNodePainter {
         const step = spacing + portSize;
 
         let totalHeight = content.y;
+        if (content.y != 0) {
+            totalHeight -= spacing / 2;
+        }
         totalHeight += step * (portIndex + 1);
         totalHeight -= spacing / 2;
 
@@ -84,7 +87,6 @@ AbstractNodePainter {
 
     FlexboxLayout {
         id: column
-        columnGap: root.spacing * 2
         direction: FlexboxLayout.Column
         alignItems: FlexboxLayout.AlignCenter
 
@@ -95,7 +97,7 @@ AbstractNodePainter {
             font.bold: true
             // font.bold: root.label == ""
             // font.italic: root.label != ""
-            topPadding: root.spacing / 4
+            topPadding: root.spacing
             bottomPadding: labelText.visible ? 0 : root.spacing / 4
             visible: ModelInterface.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.CaptionVisible)
             Layout.maximumHeight: visible ? height : 0
@@ -107,7 +109,7 @@ AbstractNodePainter {
             color: root.nodeObject.style.fontColor
             visible: ModelInterface.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.LabelVisible)
             padding: 1
-            font.pixelSize: 8
+            font.pixelSize: 10
             Layout.maximumHeight: visible ? height : 0
         }
 
@@ -118,7 +120,7 @@ AbstractNodePainter {
             property int maxPortCount: Math.max(root.nodeObject.inPortCount, root.nodeObject.outPortCount)
 
             Layout.minimumWidth: maxLabelWidthIn + root.spacing + (embed.loaded ? embed.width : 0) + root.spacing + maxLabelWidthOut
-            Layout.minimumHeight: Math.max((embed.loaded ? embed.height : 0), maxPortCount * (root.portSize + root.spacing)) + root.spacing
+            Layout.minimumHeight: Math.max((embed.loaded ? embed.height : 0), maxPortCount * (root.portSize + root.spacing) - (content.y != 0 ? root.spacing / 2 : 0)) + root.spacing
 
             Repeater {
                 id: inOutRepeater

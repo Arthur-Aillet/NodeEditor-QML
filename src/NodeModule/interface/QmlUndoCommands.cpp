@@ -67,7 +67,6 @@ CreateCommand::CreateCommand(ModelInterface *interface, QString const name, QPoi
   _nodeId = _interface->graphModel.addNode(name);
   if (_nodeId != InvalidNodeId) {
     _interface->graphModel.setNodeData(_nodeId, NodeRole::Position, pos);
-    _interface->nodeGeometry->recomputeSize(_nodeId);
   } else {
     setObsolete(true);
   }

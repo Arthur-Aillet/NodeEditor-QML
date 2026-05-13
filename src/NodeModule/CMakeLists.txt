@@ -45,14 +45,10 @@ qt_add_qml_module(NodeModule
 
   data/AbstractGraphModel.cpp
   data/AbstractGraphModel.hpp
-  data/AbstractNodeGeometry.cpp
-  data/AbstractNodeGeometry.hpp
   data/ConnectionIdHash.hpp
   data/ConnectionIdUtils.hpp
   data/DataFlowGraphModel.cpp
   data/DataFlowGraphModel.hpp
-  data/DefaultHorizontalNodeGeometry.cpp
-  data/DefaultHorizontalNodeGeometry.hpp
   data/Definitions.hpp
   data/NodeData.hpp
   data/NodeDelegateModel.cpp
