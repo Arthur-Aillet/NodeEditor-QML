@@ -7,33 +7,36 @@ Item {
     required property int index
     required property DefaultNodePainter nodePainter
 
-    property int portId: index % nodePainter.nodeObject.inPortCount
+    width: portLabel.width + portLabel.offset
+
+    property var style: port.nodePainter.nodeObject.style
     property var side: (index < nodePainter.nodeObject.inPortCount) ? NodeEditor.PortType.In : NodeEditor.PortType.Out
+    property int portId: side == NodeEditor.PortType.In ? index : index - nodePainter.nodeObject.inPortCount
 
     property bool connected: false
     property var dataType: ModelInterface.portData(nodePainter.nodeObject.nodeId, side, port.portId, NodeEditor.PortRole.DataType)
 
     Text {
         id: portLabel
+        readonly property real offset: 10
+
         property bool captionVisible: ModelInterface.portData(port.nodePainter.nodeObject.nodeId, port.side, port.portId, NodeEditor.PortRole.CaptionVisible)
         property string caption: ModelInterface.portData(port.nodePainter.nodeObject.nodeId, port.side, port.portId, NodeEditor.PortRole.Caption)
-
-        property point pos: ModelInterface.nodeGeometry.portTextPosition(port.nodePainter.nodeObject.nodeId, port.side, port.portId)
 
         FontMetrics {
             id: portLabelMetrics
             font.family: portLabel.font.family
         }
 
-        x: pos.x
-        y: pos.y - portLabelMetrics.ascent
+        x: connectionPoint.x + (port.side == NodeEditor.PortType.In ? offset : -width - offset)
+        y: connectionPoint.y - portLabelMetrics.ascent / 2.0 - port.style.connectionPointDiameter / 4.0
         text: captionVisible ? caption : port.dataType.name
-        color: port.connected ? port.nodePainter.nodeObject.style.fontColor : port.nodePainter.nodeObject.style.fontColorFaded
+        color: port.connected ? port.style.fontColor : port.style.fontColorFaded
     }
 
     Shape {
         id: connectionPoint
-        property point pos: ModelInterface.nodeGeometry.portPosition(port.nodePainter.nodeObject.nodeId, port.side, port.portId)
+        property point pos: port.nodePainter.getPortPosition(port.portId, port.side)
 
         x: pos.x
         y: pos.y
@@ -41,19 +44,19 @@ Item {
         preferredRendererType: Shape.CurveRenderer
 
         ShapePath {
-            fillColor: port.nodePainter.nodeObject.style.connectionPointColor
+            fillColor: port.style.connectionPointColor
             strokeWidth: port.nodePainter.strokeWidth
             strokeColor: port.nodePainter.strokeColor
 
             PathAngleArc {
-                property real radius: port.nodePainter.nodeObject.style.connectionPointDiameter * 0.6 // Diameter is used a the radius in the original
+                property real radius: port.style.connectionPointDiameter * 0.6 // Diameter is used a the radius in the original
 
                 Binding on radius {
                     when: port.nodePainter.draftConnection.selectedPort !== null
                     value: {
                         if (port.nodePainter.draftConnection.selectedPort === null || port.nodePainter.draftConnection.selectedPort.portType == port.side)
-                            return port.nodePainter.nodeObject.style.connectionPointDiameter * 0.6;
-                        const pos = Qt.point(port.nodePainter.nodeObject.x + connectionPoint.pos.x, port.nodePainter.nodeObject.y + connectionPoint.pos.y);
+                            return port.style.connectionPointDiameter * 0.6;
+                        const pos = Qt.point(port.nodePainter.nodeObject.x + connectionPoint.x, port.nodePainter.nodeObject.y + connectionPoint.y);
                         const diff = Qt.vector2d(port.nodePainter.area.mousePosition.x - pos.x, port.nodePainter.area.mousePosition.y - pos.y);
                         const dist = Math.sqrt(diff.dotProduct(diff));
 
@@ -65,7 +68,7 @@ Item {
                             const thres = 80.0;
                             r = (dist < thres) ? (dist / thres) : 1.0;
                         }
-                        return port.nodePainter.nodeObject.style.connectionPointDiameter * 0.6 * r;
+                        return port.style.connectionPointDiameter * 0.6 * r;
                     }
                 }
                 radiusX: radius

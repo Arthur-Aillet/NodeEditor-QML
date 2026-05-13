@@ -12,7 +12,7 @@ Loader {
 
     active: selectedPort !== null
 
-    function tryCreation() {
+    function tryToCreate() {
         const oppositeCount = selectedPort.portType === NodeEditor.PortType.In ? NodeEditor.NodeRole.OutPortCount : NodeEditor.NodeRole.InPortCount;
         const oppositeSide = selectedPort.portType === NodeEditor.PortType.In ? NodeEditor.PortType.Out : NodeEditor.PortType.In;
 
@@ -23,14 +23,13 @@ Loader {
                 if (ports < 1)
                     continue;
                 for (let j = 0; j < ports; j++) {
-                    const relativePortPos = ModelInterface.nodeGeometry.portPosition(node.nodeId, oppositeSide, j);
+                    const relativePortPos = node.getPortPosition(j, oppositeSide);
 
                     const pos = Qt.point(relativePortPos.x + node.x, relativePortPos.y + node.y);
                     const diff = Qt.vector2d(pos.x - area.mousePosition.x, pos.y - area.mousePosition.y);
                     const dist = Math.sqrt(diff.dotProduct(diff));
 
-                    const style = node.style;
-                    const tolerance = style.connectionPointDiameter * 2.0;
+                    const tolerance = node.style.connectionPointDiameter * 2.0;
 
                     if (dist < tolerance) {
                         if (selectedPort.portType === NodeEditor.PortType.In)
@@ -75,7 +74,7 @@ Loader {
         Connections {
             target: root.area.dragArea
             function onReleased() {
-                root.tryCreation();
+                root.tryToCreate();
             }
         }
     }

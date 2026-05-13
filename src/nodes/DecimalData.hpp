@@ -14,7 +14,7 @@ class DecimalData : public NodeData {
 
   double number() const { return _number; }
 
-  QString numberAsText() const { return QString::number(_number, 'f'); }
+  QString numberAsText() const { return QString::number(_number, 'f', 2); }
 
   private:
   double _number;

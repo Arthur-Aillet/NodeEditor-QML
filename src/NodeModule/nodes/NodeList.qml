@@ -59,8 +59,6 @@ Item {
         target: ModelInterface
 
         function onNodeCreated(id: real) {
-            ModelInterface.nodeGeometry.recomputeSize(id);
-
             nodeModel.append({
                 "modelId": id,
                 "posX": 0,

@@ -76,7 +76,7 @@ class NodeDelegateModel : public QObject, public Serializable {
   virtual QString label() const { return QString(); }
 
   /// It is possible to hide the nickname in GUI
-  virtual bool labelVisible() const { return true; }
+  virtual bool labelVisible() const { return false; }
 
   /// Controls whether the label can be edited or not
   virtual bool labelEditable() const { return false; }

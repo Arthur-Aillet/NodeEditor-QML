@@ -49,10 +49,20 @@ class NumberDisplayDataModel : public NodeDelegateModel {
 
   double number() const;
 
+  void embeddedComponentLoaded(QObject *loaded) override {
+    portLabel = loaded;
+    portLabel->setProperty("placeholderText", "Value");
+    if (_numberData != nullptr) {
+      portLabel->setProperty("text", _numberData->numberAsText());
+    }
+  }
+
   signals:
   void valueUpdated(double newValue);
 
   private:
+  QObject *portLabel{nullptr};
+
   std::shared_ptr<DecimalData> _numberData;
 
   std::shared_ptr<QQmlComponent> _component{nullptr};

@@ -44,7 +44,7 @@ unsigned int ValueNodeModel::nPorts(PortType portType) const {
     break;
 
   case PortType::Out:
-    result = 1;
+    result = 3;
 
   default:
     break;
@@ -69,7 +69,13 @@ void ValueNodeModel::onTextEdited() {
   }
 }
 
-NodeDataType ValueNodeModel::dataType(PortType, PortIndex) const { return DecimalData().type(); }
+NodeDataType ValueNodeModel::dataType(PortType, PortIndex id) const {
+  if (id == 0) {
+    return NodeDataType{"decimal", "0"};
+  }
+  return NodeDataType{"decimal", "1"};
+  // return DecimalData().type();
+}
 
 std::shared_ptr<NodeData> ValueNodeModel::outData(PortIndex) { return _number; }
 

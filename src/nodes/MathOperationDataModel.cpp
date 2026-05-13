@@ -5,7 +5,7 @@ unsigned int MathOperationDataModel::nPorts(PortType portType) const {
   unsigned int result;
 
   if (portType == PortType::In)
-    result = 2;
+    result = 3;
   else
     result = 1;
 

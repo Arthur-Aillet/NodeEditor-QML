@@ -15,6 +15,8 @@ MouseArea {
     property int inPortCount: ModelInterface.nodeData(root.nodeId, NodeEditor.NodeRole.InPortCount)
     property int outPortCount: ModelInterface.nodeData(root.nodeId, NodeEditor.NodeRole.OutPortCount)
 
+    property var getPortPosition: (painter.item as AbstractNodePainter).getPortPosition
+
     property nodeStyle style
 
     Component.onCompleted: {
@@ -146,10 +148,10 @@ MouseArea {
         model: root.inPortCount + root.outPortCount
         delegate: MouseArea {
             required property int index
-            property int portId: index % root.inPortCount
             property var side: (index < root.inPortCount) ? NodeEditor.PortType.In : NodeEditor.PortType.Out
+            property int portId: (index < root.inPortCount) ? index : index - root.inPortCount
 
-            property point pos: ModelInterface.nodeGeometry.portPosition(root.nodeId, side, portId)
+            property point pos: (painter.item as AbstractNodePainter).getPortPosition(portId, side)
             property real radius: root.style.connectionPointDiameter * 0.6 // Diameter is used a the radius in the original
 
             x: pos.x - radius * 1.5

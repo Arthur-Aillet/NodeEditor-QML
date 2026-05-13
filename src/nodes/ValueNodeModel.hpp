@@ -56,6 +56,9 @@ class ValueNodeModel : public NodeDelegateModel {
   void embeddedComponentLoaded(QObject *loaded) override {
     portLabel = loaded;
     portLabel->setProperty("placeholderText", "Value");
+    if (_number != nullptr) {
+      portLabel->setProperty("text", _number->numberAsText());
+    }
     portLabel->connect(portLabel, SIGNAL(textEdited()), this, SLOT(onTextEdited()));
   }
 

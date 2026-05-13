@@ -13,6 +13,8 @@ class AdditionModel : public MathOperationDataModel {
 
   public:
   QString caption() const override { return QStringLiteral("Addition"); }
+  QString label() const override { return QStringLiteral("labels are bad"); }
+  bool labelVisible() const override { return true; }
 
   QString name() const override { return QStringLiteral("Addition"); }
 

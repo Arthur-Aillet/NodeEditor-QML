@@ -1,18 +1,34 @@
 pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Shapes
+import QtQuick.Layouts
+
 import NodeModule
 
 AbstractNodePainter {
     id: root
 
-    property size size: ModelInterface.nodeGeometry.size(nodeObject.nodeId)
-
-    width: size.width
-    height: size.height
-
     property alias strokeColor: rect.strokeColor
     property alias strokeWidth: rect.strokeWidth
+
+    readonly property int spacing: 10
+    readonly property int portSize: 20
+
+    override property var getPortPosition: (portIndex, portType) => {
+        const step = spacing + portSize;
+
+        let totalHeight = content.y;
+        totalHeight += step * (portIndex + 1);
+        totalHeight -= spacing / 2;
+
+        if (portType == NodeEditor.PortType.In) {
+            return Qt.point(0, totalHeight);
+        }
+        return Qt.point(content.width, totalHeight);
+    }
+
+    width: column.width
+    height: column.height
 
     ShapePath {
         id: rect
@@ -62,56 +78,79 @@ AbstractNodePainter {
         }
     }
 
-    Repeater {
-        id: inOutRepeater
-        model: root.nodeObject.inPortCount + root.nodeObject.outPortCount
-        delegate: DefaultPortPainter {
-            nodePainter: root as DefaultNodePainter
-        }
-    }
-
     property string label: ModelInterface.nodeData(nodeObject.nodeId, NodeEditor.NodeRole.Label)
     property bool labelEditable: ModelInterface.nodeData(nodeObject.nodeId, NodeEditor.NodeRole.LabelEditable)
     property string caption: ModelInterface.nodeData(nodeObject.nodeId, NodeEditor.NodeRole.Caption)
 
-    property var capPos: ModelInterface.nodeGeometry.captionPosition(nodeObject.nodeId)
-    property var capRect: ModelInterface.nodeGeometry.captionRect(nodeObject.nodeId)
+    FlexboxLayout {
+        id: column
+        columnGap: root.spacing * 2
+        direction: FlexboxLayout.Column
+        alignItems: FlexboxLayout.AlignCenter
 
-    FontMetrics {
-        id: fontMetrics
-        font.family: captionText.font.family
-        font.bold: captionText.font.bold
-        font.italic: captionText.font.italic
-    }
+        Text {
+            id: captionText
+            text: root.caption
+            color: root.nodeObject.style.fontColor
+            font.bold: true
+            // font.bold: root.label == ""
+            // font.italic: root.label != ""
+            topPadding: root.spacing / 4
+            bottomPadding: labelText.visible ? 0 : root.spacing / 4
+            visible: ModelInterface.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.CaptionVisible)
+            Layout.maximumHeight: visible ? height : 0
+        }
 
-    Text {
-        id: captionText
-        text: root.caption
-        color: root.nodeObject.style.fontColor
-        font.bold: root.label == ""
-        font.italic: root.label != ""
-        visible: ModelInterface.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.CaptionVisible)
+        Text {
+            id: labelText
+            text: root.label
+            color: root.nodeObject.style.fontColor
+            visible: ModelInterface.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.LabelVisible)
+            padding: 1
+            font.pixelSize: 8
+            Layout.maximumHeight: visible ? height : 0
+        }
 
-        x: parent.capPos.x + parent.capRect.width / 2.0 - fontMetrics.boundingRect(root.caption).width / 2.0
-        y: parent.capPos.y - fontMetrics.ascent
-    }
+        Item {
+            id: content
+            property real maxLabelWidthIn: inOutRepeater.getMaxLabelWidth(NodeEditor.PortType.In)
+            property real maxLabelWidthOut: inOutRepeater.getMaxLabelWidth(NodeEditor.PortType.Out)
+            property int maxPortCount: Math.max(root.nodeObject.inPortCount, root.nodeObject.outPortCount)
 
-    Text {
-        text: root.label
-        color: root.nodeObject.style.fontColor
-        visible: ModelInterface.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.LabelVisible)
-        anchors.horizontalCenter: parent.horizontalCenter
+            Layout.minimumWidth: maxLabelWidthIn + root.spacing + (embed.loaded ? embed.width : 0) + root.spacing + maxLabelWidthOut
+            Layout.minimumHeight: Math.max((embed.loaded ? embed.height : 0), maxPortCount * (root.portSize + root.spacing)) + root.spacing
 
-        x: parent.capPos.x + parent.capRect.width / 2.0
-        y: parent.capPos.y - fontMetrics.height - 2.0 - fontMetrics.ascent
-    }
+            Repeater {
+                id: inOutRepeater
+                model: root.nodeObject.inPortCount + root.nodeObject.outPortCount
+                delegate: DefaultPortPainter {
+                    y: -content.y
+                    nodePainter: root as DefaultNodePainter
+                }
 
-    // Embedded component
-    Loader {
-        sourceComponent: ModelInterface.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.Component)
-        onStatusChanged: {
-            if (status == Loader.Ready) {
-                DataFlowModelInterface.dataFlowGraph.sendComponentLoaded(root.nodeObject.nodeId, item);
+                function getMaxLabelWidth(side): real {
+                    let maxLabelWidth = 0;
+                    for (let i = 0; i < count; i++) {
+                        const port = itemAt(i) as DefaultPortPainter;
+                        if (port.side == side && port.width > maxLabelWidth) {
+                            maxLabelWidth = port.width;
+                        }
+                    }
+                    return maxLabelWidth;
+                }
+            }
+
+            // Embedded component
+            Loader {
+                id: embed
+                x: content.maxLabelWidthIn + root.spacing
+                anchors.verticalCenter: parent.verticalCenter
+                sourceComponent: ModelInterface.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.Component)
+                onStatusChanged: {
+                    if (status == Loader.Ready) {
+                        DataFlowModelInterface.dataFlowGraph.sendComponentLoaded(root.nodeObject.nodeId, item);
+                    }
+                }
             }
         }
     }

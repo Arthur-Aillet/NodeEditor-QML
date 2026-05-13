@@ -29,7 +29,7 @@ class AbstractNodeGeometry : public QObject {
   Q_INVOKABLE virtual QRectF boundingRect(NodeId const nodeId) const = 0;
 
   /// A direct rectangle defining the borders of the node's rectangle.
-  Q_INVOKABLE virtual QSize size(NodeId const nodeId) const = 0;
+  virtual QSize size(NodeId const nodeId) const = 0;
 
   /**
    * The function is triggeren when a number of ports is changed or when an
@@ -53,10 +53,10 @@ class AbstractNodeGeometry : public QObject {
    * Defines where to start drawing the caption. The point corresponds to a font
    * baseline.
    */
-  Q_INVOKABLE virtual QPointF captionPosition(NodeId const nodeId) const = 0;
+  virtual QPointF captionPosition(NodeId const nodeId) const = 0;
 
   /// Caption rect is needed for estimating the total node size.
-  Q_INVOKABLE virtual QRectF captionRect(NodeId const nodeId) const = 0;
+  virtual QRectF captionRect(NodeId const nodeId) const = 0;
 
   /**
    * Defines where to start drawing the label. The point corresponds to a font

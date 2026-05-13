@@ -39,7 +39,7 @@ Shape {
             const node = nodes.nodes.itemAt(i) as NodeGraphicalObject;
 
             if (node.nodeId == nodeId) {
-                const portPos = ModelInterface.nodeGeometry.portPosition(nodeId, side, portIndex);
+                const portPos = node.getPortPosition(portIndex, side);
 
                 return Qt.point(node.x + portPos.x, node.y + portPos.y);
             }

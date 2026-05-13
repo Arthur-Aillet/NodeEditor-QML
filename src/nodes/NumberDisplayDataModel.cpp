@@ -39,10 +39,12 @@ std::shared_ptr<NodeData> NumberDisplayDataModel::outData(PortIndex) {
 void NumberDisplayDataModel::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
   _numberData = std::dynamic_pointer_cast<DecimalData>(data);
 
-  // if (!_label)
-  //   return;
+  if (!portLabel)
+    return;
 
   if (_numberData) {
+    portLabel->setProperty("text", _numberData->numberAsText());
+
     emit valueUpdated(_numberData->number());
     //_label->setText(_numberData->numberAsText());
   } else {

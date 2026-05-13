@@ -15,7 +15,6 @@ ApplicationWindow {
 
     onNewDisplayValue: newValue => {
         display.text = newValue;
-        console.log(newValue);
     }
 
     footer: ToolBar {
