@@ -46,8 +46,16 @@ Shape {
         }
     }
 
-    property point inPoint: connection.inNodeId === NodeEditorUtils.InvalidNodeId ? mousePos : getPortPosition(NodeEditor.PortType.In)
-    property point outPoint: connection.outNodeId === NodeEditorUtils.InvalidNodeId ? mousePos : getPortPosition(NodeEditor.PortType.Out)
+    property point inPoint: {
+        if (connection.inNodeId === NodeEditorUtils.InvalidNodeId)
+            return mousePos;
+        return getPortPosition(NodeEditor.PortType.In);
+    }
+    property point outPoint: {
+        if (connection.outNodeId === NodeEditorUtils.InvalidNodeId)
+            return mousePos;
+        return getPortPosition(NodeEditor.PortType.Out);
+    }
 
     property point c1
     property point c2
@@ -111,9 +119,7 @@ Shape {
 
     TapHandler {
         enabled: root.hovered
-        onTapped: {
-            root.focus = true;
-        }
+        onTapped: root.focus = true
     }
 
     Keys.onPressed: event => {
@@ -132,7 +138,13 @@ Shape {
         startY: root.inPoint.y
         fillColor: "transparent"
         strokeWidth: 4
-        strokeColor: root.focus ? "orange" : (root.hovered ? "white" : "transparent")
+        strokeColor: {
+            if (root.focus)
+                return StyleCollection.connection.selectedHaloColor;
+            if (root.hovered)
+                return StyleCollection.connection.hoveredColor;
+            return "transparent";
+        }
         strokeStyle: ShapePath.SolidLine
         PathCubic {
             x: root.outPoint.x
@@ -152,7 +164,13 @@ Shape {
         startY: swap ? root.outPoint.y : root.inPoint.y
         fillColor: "transparent"
         strokeWidth: 2
-        strokeColor: root.fullyConnected ? "teal" : "grey"
+        strokeColor: {
+            if (!root.fullyConnected)
+                return StyleCollection.connection.constructionColor;
+            if (root.focus)
+                return StyleCollection.connection.selectedColor;
+            return StyleCollection.connection.normalColor;
+        }
         strokeStyle: root.fullyConnected ? ShapePath.SolidLine : ShapePath.DashLine
         dashPattern: [6, 2]
         PathCubic {
