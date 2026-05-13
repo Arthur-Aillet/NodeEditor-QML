@@ -52,9 +52,9 @@ AbstractNodePainter {
             //     return warningColor;
             // } else
             if (nodeObject.selected) {
-                nodeObject.style.selectedBoundaryColor;
+                return nodeObject.style.selectedBoundaryColor;
             } else {
-                nodeObject.style.normalBoundaryColor;
+                return nodeObject.style.normalBoundaryColor;
             }
         }
         fillGradient: LinearGradient {
@@ -127,12 +127,22 @@ AbstractNodePainter {
         Item {
             id: content
             property real maxLabelWidthIn: inOutRepeater.getMaxLabelWidth(NodeEditor.PortType.In)
-            property real maxLabelWidthOut: inOutRepeater.getMaxLabelWidth(NodeEditor.PortType.Out)
-            property int maxPortCount: Math.max(root.nodeObject.inPortCount, root.nodeObject.outPortCount)
 
             Layout.fillWidth: true
-            Layout.minimumWidth: maxLabelWidthIn + root.spacing + (embed.loaded ? embed.width : 0) + root.spacing + maxLabelWidthOut
-            Layout.minimumHeight: Math.max((embed.loaded ? embed.height : 0), maxPortCount * (root.portSize + root.spacing) - (content.y != 0 ? root.spacing / 2 : 0)) + root.spacing
+            Layout.minimumWidth: {
+                const maxLabelWidthOut = inOutRepeater.getMaxLabelWidth(NodeEditor.PortType.Out);
+                const embedWidth = (embed.loaded ? embed.width : 0);
+
+                return maxLabelWidthIn + root.spacing + embedWidth + root.spacing + maxLabelWidthOut;
+            }
+            Layout.minimumHeight: {
+                const embedHeight = (embed.loaded ? embed.height : 0);
+                const offsetForLabelNodes = content.y === 0 ? 0 : -root.spacing / 2;
+                const maxPortCount = Math.max(root.nodeObject.inPortCount, root.nodeObject.outPortCount);
+                const portsHeight = maxPortCount * (root.portSize + root.spacing);
+
+                return Math.max(embedHeight, portsHeight + offsetForLabelNodes) + root.spacing;
+            }
 
             Repeater {
                 id: inOutRepeater
@@ -161,9 +171,8 @@ AbstractNodePainter {
                     let maxLabelWidth = 0;
                     for (let i = 0; i < count; i++) {
                         const port = itemAt(i) as DefaultPortPainter;
-                        if (port.side == side && port.width > maxLabelWidth) {
+                        if (port.side == side && port.width > maxLabelWidth)
                             maxLabelWidth = port.width;
-                        }
                     }
                     return maxLabelWidth;
                 }

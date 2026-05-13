@@ -9,18 +9,18 @@ Item {
 
     width: portLabel.width + portLabel.offset
 
-    property var style: port.nodePainter.nodeObject.style
+    property var style: nodePainter.nodeObject.style
     property int side: (index < nodePainter.nodeObject.inPortCount) ? NodeEditor.PortType.In : NodeEditor.PortType.Out
     property int portId: side == NodeEditor.PortType.In ? index : index - nodePainter.nodeObject.inPortCount
 
     signal portConnectionChanged
 
     onPortConnectionChanged: {
-        connected = ModelInterface.graph.connections(port.nodePainter.nodeObject.nodeId, port.side, port.portId).length != 0;
+        connected = ModelInterface.graph.connections(nodePainter.nodeObject.nodeId, side, portId).length != 0;
     }
 
-    property bool connected: ModelInterface.graph.connections(port.nodePainter.nodeObject.nodeId, port.side, port.portId).length != 0
-    property var dataType: ModelInterface.portData(nodePainter.nodeObject.nodeId, side, port.portId, NodeEditor.PortRole.DataType)
+    property bool connected: ModelInterface.graph.connections(nodePainter.nodeObject.nodeId, side, portId).length != 0
+    property var dataType: ModelInterface.portData(nodePainter.nodeObject.nodeId, side, portId, NodeEditor.PortRole.DataType)
 
     Text {
         id: portLabel
@@ -58,16 +58,18 @@ Item {
                 property real radius: port.style.connectionPointDiameter * 0.6 // Diameter is used a the radius in the original
 
                 Binding on radius {
-                    when: port.nodePainter.draftConnection.selectedPort !== null
+                    property alias painter: port.nodePainter
+
+                    when: painter.draftConnection.selectedPort !== null && !port.connected
                     value: {
-                        if (port.nodePainter.draftConnection.selectedPort === null || port.nodePainter.draftConnection.selectedPort.portType == port.side)
+                        if (painter.draftConnection.selectedPort === null || painter.draftConnection.selectedPort.portType === port.side)
                             return port.style.connectionPointDiameter * 0.6;
-                        const pos = Qt.point(port.nodePainter.nodeObject.x + connectionPoint.x, port.nodePainter.nodeObject.y + connectionPoint.y);
-                        const diff = Qt.vector2d(port.nodePainter.area.mousePosition.x - pos.x, port.nodePainter.area.mousePosition.y - pos.y);
+                        const pos = Qt.point(painter.nodeObject.x + connectionPoint.x, painter.nodeObject.y + connectionPoint.y);
+                        const diff = Qt.vector2d(painter.area.mousePosition.x - pos.x, painter.area.mousePosition.y - pos.y);
                         const dist = Math.sqrt(diff.dotProduct(diff));
 
                         let r;
-                        if (port.nodePainter.draftConnection.selectedPort.nodeId != port.nodePainter.nodeObject.nodeId) {
+                        if (painter.draftConnection.selectedPort.nodeId != painter.nodeObject.nodeId) {
                             const thres = 40.0;
                             r = (dist < thres) ? (2.0 - dist / thres) : 1.0;
                         } else {

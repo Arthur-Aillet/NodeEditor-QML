@@ -64,16 +64,16 @@ Loader {
     sourceComponent: DefaultConnection {
         id: painter
 
-        property var selectedPort: root.selectedPort
+        property var p: root.selectedPort
 
         mousePos: root.area.mousePosition
         nodes: root.nodes
 
         connection: ({
-                outNodeId: selectedPort.portType === NodeEditor.PortType.In ? NodeEditorUtils.InvalidNodeId : selectedPort.nodeId,
-                outPortIndex: selectedPort.portType === NodeEditor.PortType.In ? NodeEditorUtils.InvalidPortIndex : selectedPort.portId,
-                inNodeId: selectedPort.portType === NodeEditor.PortType.In ? selectedPort.nodeId : NodeEditorUtils.InvalidNodeId,
-                inPortIndex: selectedPort.portType === NodeEditor.PortType.In ? selectedPort.portId : NodeEditorUtils.InvalidPortIndex
+                outNodeId: p.portType === NodeEditor.PortType.In ? NodeEditorUtils.InvalidNodeId : p.nodeId,
+                outPortIndex: p.portType === NodeEditor.PortType.In ? NodeEditorUtils.InvalidPortIndex : p.portId,
+                inNodeId: p.portType === NodeEditor.PortType.In ? p.nodeId : NodeEditorUtils.InvalidNodeId,
+                inPortIndex: p.portType === NodeEditor.PortType.In ? p.portId : NodeEditorUtils.InvalidPortIndex
             })
 
         Connections {

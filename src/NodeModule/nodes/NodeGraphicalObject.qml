@@ -36,18 +36,13 @@ MouseArea {
         }
     }
 
-    onFocusChanged: {
-        if (!focus) {
-            nodes.loseFocus();
-        }
-    }
+    onFocusChanged: if (!focus)
+        nodes.loseFocus()
 
     onClicked: mouse => {
-        if (mouse.modifiers & Qt.ShiftModifier) {
-            if (selected && !waitForClick) {
+        if (mouse.modifiers & Qt.ShiftModifier)
+            if (selected && !waitForClick)
                 nodes.selectedNodes.remove(nodeId);
-            }
-        }
         waitForClick = false;
     }
 
@@ -66,11 +61,9 @@ MouseArea {
     }
 
     Keys.onPressed: event => {
-        if (event.key == Qt.Key_Delete || event.key == Qt.Key_Back) {
-            for (let id of nodes.selectedNodes.inner) {
+        if (event.key == Qt.Key_Delete || event.key == Qt.Key_Back)
+            for (let id of nodes.selectedNodes.inner)
                 event.accepted = ModelInterface.deleteNode(id);
-            }
-        }
     }
 
     Connections {
@@ -93,15 +86,10 @@ MouseArea {
     property real xPrev
     property real yPrev
 
-    onXChanged: {
-        if (!drag.active)
-            xPrev = x;
-    }
-
-    onYChanged: {
-        if (!drag.active)
-            yPrev = y;
-    }
+    onXChanged: if (!drag.active)
+        xPrev = x
+    onYChanged: if (!drag.active)
+        yPrev = y
 
     onPositionChanged: mouse => {
         if (drag.active) {
@@ -114,11 +102,8 @@ MouseArea {
     drag {
         filterChildren: true
         target: root.selected ? root : undefined
-        onActiveChanged: {
-            if (drag.active) {
-                focus = true;
-            }
-        }
+        onActiveChanged: if (drag.active)
+            focus = true
     }
     propagateComposedEvents: true
     anchors.fill: root
@@ -140,9 +125,7 @@ MouseArea {
             };
             setSource(nodePainterUrl, initialProperties);
         }
-        Component.onCompleted: {
-            nodePainterUrl = "DefaultNodePainter.qml";
-        }
+        Component.onCompleted: nodePainterUrl = "DefaultNodePainter.qml"
     }
 
     // Port Interaction points
@@ -162,12 +145,10 @@ MouseArea {
             width: radius * 2 * 1.5
             height: radius * 2 * 1.5
 
-            onPressed: {
-                root.draftConnection.selectedPort = {
-                    "portId": portId,
-                    "nodeId": root.nodeId,
-                    "portType": side
-                };
+            onPressed: root.draftConnection.selectedPort = {
+                "portId": portId,
+                "nodeId": root.nodeId,
+                "portType": side
             }
         }
     }

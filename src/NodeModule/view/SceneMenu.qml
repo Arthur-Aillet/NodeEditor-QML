@@ -18,10 +18,8 @@ Menu {
     TextField {
         id: searchField
         placeholderText: qsTr("Filter")
-        Component.onCompleted: () => {
-            searchField.forceActiveFocus(Qt.PopupFocusReason);
-        }
-        onTextChanged: () => {
+        Component.onCompleted: searchField.forceActiveFocus(Qt.PopupFocusReason)
+        onTextChanged: {
             DataFlowModelInterface.registery.filterNodeMapModel(text);
             view.expandRecursively();
         }
@@ -77,7 +75,12 @@ Menu {
                 width: root.width
                 color: (view.alternatingRows && delegate.row % 2 !== 0) ? "white" : "lightgrey"
                 Rectangle {
-                    x: delegate.hasChildren ? delegate.padding + (delegate.isTreeNode ? (delegate.depth + 1) * delegate.indentation : 0) + 4 : 0
+                    x: {
+                        if (!delegate.hasChildren)
+                            return 0;
+                        const indent = delegate.isTreeNode ? (delegate.depth + 1) * delegate.indentation : 0;
+                        return delegate.padding + indent + 4;
+                    }
                     width: parent.width - delegate.padding - x
                     height: parent.height
                     color: Qt.rgba(palette.highlight.r, palette.highlight.g, palette.highlight.b, delegate.hasChildren ? 0.2 : 1)
@@ -123,7 +126,5 @@ Menu {
         }
     }
 
-    onClosed: {
-        searchField.text = "";
-    }
+    onClosed: searchField.text = ""
 }
