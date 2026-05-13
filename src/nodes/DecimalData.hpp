@@ -10,7 +10,7 @@ class DecimalData : public NodeData {
 
   DecimalData(double const number) : _number(number) {}
 
-  NodeDataType type() const override { return NodeDataType{"decimal", ""}; }
+  NodeDataType type() const override { return NodeDataType{"decimal", "Decimal"}; }
 
   double number() const { return _number; }
 

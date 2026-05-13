@@ -30,6 +30,9 @@ class NumberDisplayDataModel : public NodeDelegateModel {
 
   QString name() const override { return QStringLiteral("Result"); }
 
+  QString portCaption(PortType, PortIndex) const override { return QString(); }
+  bool portCaptionVisible(PortType, PortIndex) const override { return true; }
+
   public:
   unsigned int nPorts(PortType portType) const override;
 

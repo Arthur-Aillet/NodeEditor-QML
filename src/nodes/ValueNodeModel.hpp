@@ -20,7 +20,6 @@ class ValueNodeModel : public NodeDelegateModel {
 
   public:
   ValueNodeModel();
-
   ~ValueNodeModel() override = default;
 
   public:
@@ -41,6 +40,9 @@ class ValueNodeModel : public NodeDelegateModel {
   NodeDataType dataType(PortType portType, PortIndex portIndex) const override;
 
   std::shared_ptr<NodeData> outData(PortIndex port) override;
+
+  QString portCaption(PortType portType, PortIndex portIndex) const override { return QString(); }
+  bool portCaptionVisible(PortType, PortIndex) const override { return true; }
 
   void setInData(std::shared_ptr<NodeData>, PortIndex) override {}
 
