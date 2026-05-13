@@ -32,20 +32,25 @@ Loader {
                     const tolerance = node.style.connectionPointDiameter * 2.0;
 
                     if (dist < tolerance) {
-                        if (selectedPort.portType === NodeEditor.PortType.In)
-                            ModelInterface.createConnection({
+                        let newConnection;
+                        if (selectedPort.portType === NodeEditor.PortType.In) {
+                            newConnection = {
                                 inNodeId: selectedPort.nodeId,
                                 inPortIndex: selectedPort.portId,
                                 outNodeId: node.nodeId,
                                 outPortIndex: j
-                            });
-                        else
-                            ModelInterface.createConnection({
+                            };
+                        } else {
+                            newConnection = {
                                 inNodeId: node.nodeId,
                                 inPortIndex: j,
                                 outNodeId: selectedPort.nodeId,
                                 outPortIndex: selectedPort.portId
-                            });
+                            };
+                        }
+                        if (ModelInterface.graph.connectionPossible(newConnection)) {
+                            ModelInterface.createConnection(newConnection);
+                        }
                         selectedPort = null;
                         return;
                     }

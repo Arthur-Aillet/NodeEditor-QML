@@ -8,6 +8,7 @@
 #include "Definitions.hpp"
 
 #include <qqmlintegration.h>
+#include <qtmetamacros.h>
 #include <unordered_set>
 
 /**
@@ -69,10 +70,10 @@ class AbstractGraphModel : public QObject {
    * It is possible to override the function and connect non-equal
    * data types.
    */
-  virtual bool connectionPossible(ConnectionId const connectionId) const = 0;
+  Q_INVOKABLE virtual bool connectionPossible(ConnectionId const connectionId) const = 0;
 
   /// Defines if detaching the connection is possible.
-  virtual bool detachPossible(ConnectionId const) const { return true; }
+  Q_INVOKABLE virtual bool detachPossible(ConnectionId const) const { return true; }
 
   /**
    * @brief Creates a new connection between two nodes.
@@ -126,8 +127,8 @@ class AbstractGraphModel : public QObject {
    * @returns Port Data Type, Port Data, Connection Policy, Port
    * Caption.
    */
-  virtual QVariant portData(NodeId nodeId, PortType portType, PortIndex index,
-                            PortRole role) const = 0;
+  Q_INVOKABLE virtual QVariant portData(NodeId nodeId, PortType portType, PortIndex index,
+                                        PortRole role) const = 0;
 
   /**
    * A utility function that unwraps the `QVariant` value returned from the
@@ -138,12 +139,12 @@ class AbstractGraphModel : public QObject {
     return portData(nodeId, portType, index, role).value<T>();
   }
 
-  virtual bool setPortData(NodeId nodeId, PortType portType, PortIndex index, QVariant const &value,
-                           PortRole role = PortRole::Data) = 0;
+  Q_INVOKABLE virtual bool setPortData(NodeId nodeId, PortType portType, PortIndex index,
+                                       QVariant const &value, PortRole role = PortRole::Data) = 0;
 
-  virtual bool deleteConnection(ConnectionId const connectionId) = 0;
+  Q_INVOKABLE virtual bool deleteConnection(ConnectionId const connectionId) = 0;
 
-  virtual bool deleteNode(NodeId const nodeId) = 0;
+  Q_INVOKABLE virtual bool deleteNode(NodeId const nodeId) = 0;
 
   /**
    * Reimplement the function if you want to store/restore the node's
