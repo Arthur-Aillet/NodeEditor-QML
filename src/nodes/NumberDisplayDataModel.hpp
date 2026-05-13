@@ -52,6 +52,7 @@ class NumberDisplayDataModel : public NodeDelegateModel {
   void embeddedComponentLoaded(QObject *loaded) override {
     portLabel = loaded;
     portLabel->setProperty("placeholderText", "Value");
+    portLabel->setProperty("enabled", false);
     if (_numberData != nullptr) {
       portLabel->setProperty("text", _numberData->numberAsText());
     }
