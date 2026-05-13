@@ -37,6 +37,16 @@ Item {
 
     Repeater {
         id: nodes
+
+        function nodeAt(nodeId: int): var {
+            for (let i = 0; i != count; i++) {
+                const node = itemAt(i) as NodeGraphicalObject;
+                if ((node).nodeId == nodeId)
+                    return node;
+            }
+            return undefined;
+        }
+
         delegate: NodeGraphicalObject {
             id: node
             required property real modelId
@@ -52,6 +62,20 @@ Item {
         }
         model: ListModel {
             id: nodeModel
+        }
+    }
+
+    Connections {
+        target: ModelInterface.graph
+
+        function onConnectionCreated(connection: connectionId) {
+            nodes.nodeAt(connection.inNodeId).connectionChanged(connection.inPortIndex, NodeEditor.PortType.In, connection.outNodeId, connection.outPortIndex);
+            nodes.nodeAt(connection.outNodeId).connectionChanged(connection.outPortIndex, NodeEditor.PortType.Out, connection.inNodeId, connection.inPortIndex);
+        }
+
+        function onConnectionDeleted(connection: connectionId) {
+            nodes.nodeAt(connection.inNodeId).connectionChanged(connection.inPortIndex, NodeEditor.PortType.In, connection.outNodeId, connection.outPortIndex);
+            nodes.nodeAt(connection.outNodeId).connectionChanged(connection.outPortIndex, NodeEditor.PortType.Out, connection.inNodeId, connection.inPortIndex);
         }
     }
 

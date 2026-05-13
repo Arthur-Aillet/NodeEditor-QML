@@ -7,6 +7,8 @@ MouseArea {
     opacity: selected ? 1 : style.opacity
     focusPolicy: Qt.StrongFocus
 
+    signal connectionChanged(portIndex: int, portType: int, otherNodeId: int, otherPortId: int)
+
     required property DraftConnection draftConnection
     required property NavigableArea area
     required property NodeList nodes

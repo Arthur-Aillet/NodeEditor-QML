@@ -111,7 +111,7 @@ DeleteCommand::DeleteCommand(BasicGraphicsScene *scene)
     // Delete the nodes; this will delete many of the connections.
     // Selected connections were already deleted prior to this loop,
 
-    std::unordered_set<NodeId> processedNodes;
+    QSet<NodeId> processedNodes;
 
     auto appendNode = [&](NodeGraphicsObject *node) {
         if (!node)

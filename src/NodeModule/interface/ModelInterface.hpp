@@ -24,7 +24,7 @@ class ModelInterface : public QObject {
   static ModelInterface *create(QQmlEngine *, QJSEngine *engine);
   static ModelInterface *init(AbstractGraphModel &_graphModel);
 
-  Q_PROPERTY(AbstractGraphModel *graph READ getGraphModel);
+  Q_PROPERTY(AbstractGraphModel *graph READ getGraphModel CONSTANT);
 
   protected:
   AbstractGraphModel *getGraphModel() { return &graphModel; }

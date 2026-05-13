@@ -9,7 +9,6 @@
 
 #include <qqmlintegration.h>
 #include <qtmetamacros.h>
-#include <unordered_set>
 
 /**
  * The central class in the Model-View approach. It delivers all kinds
@@ -36,20 +35,20 @@ class AbstractGraphModel : public QObject {
    * possible to trace back to the model's internal representation of
    * the node.
    */
-  virtual std::unordered_set<NodeId> allNodeIds() const = 0;
+  virtual QSet<NodeId> allNodeIds() const = 0;
 
   /**
    * A collection of all input and output connections for the given `nodeId`.
    */
-  virtual std::unordered_set<ConnectionId> allConnectionIds(NodeId const nodeId) const = 0;
+  virtual QSet<ConnectionId> allConnectionIds(NodeId const nodeId) const = 0;
 
   /// @brief Returns all connected Node Ids for given port.
   /**
    * The returned set of nodes and port indices correspond to the type
    * opposite to the given `portType`.
    */
-  virtual std::unordered_set<ConnectionId> connections(NodeId nodeId, PortType portType,
-                                                       PortIndex index) const = 0;
+  Q_INVOKABLE virtual QSet<ConnectionId> connections(NodeId nodeId, PortType portType,
+                                                     PortIndex index) const = 0;
 
   /// Checks if two nodes with the given `connectionId` are connected.
   virtual bool connectionExists(ConnectionId const connectionId) const = 0;

@@ -14,6 +14,13 @@ AbstractNodePainter {
     readonly property int spacing: 10
     readonly property int portSize: 20
 
+    Connections {
+        target: root.nodeObject
+        function onConnectionChanged(portIndex: int, portType: int, otherNodeId: int, otherPortId: int) {
+            inOutRepeater.portAt(portIndex, portType).portConnectionChanged();
+        }
+    }
+
     override property var getPortPosition: (portIndex, portType) => {
         const step = spacing + portSize;
 
@@ -97,6 +104,8 @@ AbstractNodePainter {
             font.bold: true
             // font.bold: root.label == ""
             // font.italic: root.label != ""
+            leftPadding: 2
+            rightPadding: 2
             topPadding: root.spacing
             bottomPadding: labelText.visible ? 0 : root.spacing / 4
             visible: ModelInterface.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.CaptionVisible)
@@ -109,6 +118,8 @@ AbstractNodePainter {
             color: root.nodeObject.style.fontColor
             visible: ModelInterface.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.LabelVisible)
             padding: 1
+            leftPadding: 2
+            rightPadding: 2
             font.pixelSize: 10
             Layout.maximumHeight: visible ? height : 0
         }
@@ -119,6 +130,7 @@ AbstractNodePainter {
             property real maxLabelWidthOut: inOutRepeater.getMaxLabelWidth(NodeEditor.PortType.Out)
             property int maxPortCount: Math.max(root.nodeObject.inPortCount, root.nodeObject.outPortCount)
 
+            Layout.fillWidth: true
             Layout.minimumWidth: maxLabelWidthIn + root.spacing + (embed.loaded ? embed.width : 0) + root.spacing + maxLabelWidthOut
             Layout.minimumHeight: Math.max((embed.loaded ? embed.height : 0), maxPortCount * (root.portSize + root.spacing) - (content.y != 0 ? root.spacing / 2 : 0)) + root.spacing
 
@@ -128,6 +140,21 @@ AbstractNodePainter {
                 delegate: DefaultPortPainter {
                     y: -content.y
                     nodePainter: root as DefaultNodePainter
+                }
+
+                function portAt(portId: int, portType: int): var {
+                    let i = 0;
+                    let target = root.nodeObject.inPortCount;
+                    if (portType == NodeEditor.PortType.Out) {
+                        i += root.nodeObject.inPortCount;
+                        target += root.nodeObject.outPortCount;
+                    }
+                    for (i; i != target; i++) {
+                        const port = itemAt(i) as DefaultPortPainter;
+                        if (port.portId == portId)
+                            return port;
+                    }
+                    return undefined;
                 }
 
                 function getMaxLabelWidth(side): real {

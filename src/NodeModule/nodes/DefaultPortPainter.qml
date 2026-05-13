@@ -13,7 +13,13 @@ Item {
     property int side: (index < nodePainter.nodeObject.inPortCount) ? NodeEditor.PortType.In : NodeEditor.PortType.Out
     property int portId: side == NodeEditor.PortType.In ? index : index - nodePainter.nodeObject.inPortCount
 
-    property bool connected: false
+    signal portConnectionChanged
+
+    onPortConnectionChanged: {
+        connected = ModelInterface.graph.connections(port.nodePainter.nodeObject.nodeId, port.side, port.portId).length != 0;
+    }
+
+    property bool connected: ModelInterface.graph.connections(port.nodePainter.nodeObject.nodeId, port.side, port.portId).length != 0
     property var dataType: ModelInterface.portData(nodePainter.nodeObject.nodeId, side, port.portId, NodeEditor.PortRole.DataType)
 
     Text {
@@ -44,7 +50,7 @@ Item {
         preferredRendererType: Shape.CurveRenderer
 
         ShapePath {
-            fillColor: port.style.connectionPointColor
+            fillColor: port.connected ? "red" : port.style.connectionPointColor
             strokeWidth: port.nodePainter.strokeWidth
             strokeColor: port.nodePainter.strokeColor
 

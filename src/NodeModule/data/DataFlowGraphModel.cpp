@@ -10,15 +10,15 @@ DataFlowGraphModel::DataFlowGraphModel(std::shared_ptr<NodeDelegateModelRegistry
                                        QQmlEngine *engine)
     : _registry(std::move(registry)), _nextNodeId{0}, _engine(engine) {}
 
-std::unordered_set<NodeId> DataFlowGraphModel::allNodeIds() const {
-  std::unordered_set<NodeId> nodeIds;
+QSet<NodeId> DataFlowGraphModel::allNodeIds() const {
+  QSet<NodeId> nodeIds;
   for_each(_models.begin(), _models.end(), [&nodeIds](auto const &p) { nodeIds.insert(p.first); });
 
   return nodeIds;
 }
 
-std::unordered_set<ConnectionId> DataFlowGraphModel::allConnectionIds(NodeId const nodeId) const {
-  std::unordered_set<ConnectionId> result;
+QSet<ConnectionId> DataFlowGraphModel::allConnectionIds(NodeId const nodeId) const {
+  QSet<ConnectionId> result;
 
   std::copy_if(_connectivity.begin(), _connectivity.end(), std::inserter(result, std::end(result)),
                [&nodeId](ConnectionId const &cid) {
@@ -28,9 +28,9 @@ std::unordered_set<ConnectionId> DataFlowGraphModel::allConnectionIds(NodeId con
   return result;
 }
 
-std::unordered_set<ConnectionId> DataFlowGraphModel::connections(NodeId nodeId, PortType portType,
-                                                                 PortIndex portIndex) const {
-  std::unordered_set<ConnectionId> result;
+QSet<ConnectionId> DataFlowGraphModel::connections(NodeId nodeId, PortType portType,
+                                                   PortIndex portIndex) const {
+  QSet<ConnectionId> result;
 
   std::copy_if(_connectivity.begin(), _connectivity.end(), std::inserter(result, std::end(result)),
                [&portType, &portIndex, &nodeId](ConnectionId const &cid) {
@@ -636,7 +636,7 @@ void DataFlowGraphModel::load(QJsonObject const &jsonDocument) {
 }
 
 void DataFlowGraphModel::onOutPortDataUpdated(NodeId const nodeId, PortIndex const portIndex) {
-  std::unordered_set<ConnectionId> const &connected = connections(nodeId, PortType::Out, portIndex);
+  QSet<ConnectionId> const &connected = connections(nodeId, PortType::Out, portIndex);
 
   QVariant const portDataToPropagate = portData(nodeId, PortType::Out, portIndex, PortRole::Data);
 

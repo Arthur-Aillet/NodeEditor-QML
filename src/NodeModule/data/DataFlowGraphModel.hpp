@@ -35,12 +35,12 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   std::shared_ptr<NodeDelegateModelRegistry> dataModelRegistry() { return _registry; }
 
   public:
-  std::unordered_set<NodeId> allNodeIds() const override;
+  QSet<NodeId> allNodeIds() const override;
 
-  std::unordered_set<ConnectionId> allConnectionIds(NodeId const nodeId) const override;
+  QSet<ConnectionId> allConnectionIds(NodeId const nodeId) const override;
 
-  std::unordered_set<ConnectionId> connections(NodeId nodeId, PortType portType,
-                                               PortIndex portIndex) const override;
+  QSet<ConnectionId> connections(NodeId nodeId, PortType portType,
+                                 PortIndex portIndex) const override;
 
   bool connectionExists(ConnectionId const connectionId) const override;
 
@@ -133,7 +133,7 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
 
   std::unordered_map<NodeId, std::unique_ptr<NodeDelegateModel>> _models;
 
-  std::unordered_set<ConnectionId> _connectivity;
+  QSet<ConnectionId> _connectivity;
 
   mutable std::unordered_map<NodeId, NodeGeometryData> _nodeGeometryData;
 

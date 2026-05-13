@@ -18,7 +18,7 @@ void AbstractGraphModel::portsAboutToBeDeleted(NodeId const nodeId, PortType con
   auto clampedLast = std::min(last, portCount - 1);
 
   for (PortIndex portIndex = first; portIndex <= clampedLast; ++portIndex) {
-    std::unordered_set<ConnectionId> conns = connections(nodeId, portType, portIndex);
+    QSet<ConnectionId> conns = connections(nodeId, portType, portIndex);
 
     for (auto connectionId : conns) {
       deleteConnection(connectionId);
@@ -28,7 +28,7 @@ void AbstractGraphModel::portsAboutToBeDeleted(NodeId const nodeId, PortType con
   std::size_t const nRemovedPorts = clampedLast - first + 1;
 
   for (PortIndex portIndex = clampedLast + 1; portIndex < portCount; ++portIndex) {
-    std::unordered_set<ConnectionId> conns = connections(nodeId, portType, portIndex);
+    QSet<ConnectionId> conns = connections(nodeId, portType, portIndex);
 
     for (auto connectionId : conns) {
       // Erases the information about the port on one side;
@@ -68,7 +68,7 @@ void AbstractGraphModel::portsAboutToBeInserted(NodeId const nodeId, PortType co
   std::size_t const nNewPorts = last - first + 1;
 
   for (PortIndex portIndex = first; portIndex < portCount; ++portIndex) {
-    std::unordered_set<ConnectionId> conns = connections(nodeId, portType, portIndex);
+    QSet<ConnectionId> conns = connections(nodeId, portType, portIndex);
 
     for (auto connectionId : conns) {
       // Erases the information about the port on one side;

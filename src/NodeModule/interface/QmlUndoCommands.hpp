@@ -110,6 +110,6 @@ public:
 
 private:
     ModelInterface *_scene;
-    std::unordered_set<NodeId> _selectedNodes;
+    QSet<NodeId> _selectedNodes;
     QPointF _diff;
 };*/
