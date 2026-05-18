@@ -11,6 +11,8 @@ qt_add_qml_module(CutieDesigner
   Main.qml
   TextDisplay.qml
   nodes/PortLabel.qml
+  objects/Atype.qml
+  objects/UkrugCharacter.qml
   SOURCES
 
   nodes/AdditionModel.hpp
@@ -20,10 +22,11 @@ qt_add_qml_module(CutieDesigner
   nodes/ValueNodeModel.cpp
   nodes/ValueNodeModel.hpp
   nodes/DecimalData.hpp
+  nodes/TextData.hpp
   nodes/MathOperationDataModel.cpp
   nodes/MultiplicationModel.hpp
-  nodes/NumberDisplayDataModel.cpp
-  nodes/NumberDisplayDataModel.hpp
+  nodes/TextDisplayDataModel.cpp
+  nodes/TextDisplayDataModel.hpp
 
   DEPENDENCIES QtQuick QtQuick.Layout StatsModule NodeModule
 )

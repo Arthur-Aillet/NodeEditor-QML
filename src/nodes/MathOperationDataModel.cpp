@@ -12,7 +12,7 @@ unsigned int MathOperationDataModel::nPorts(PortType portType) const {
   return result;
 }
 
-NodeDataType MathOperationDataModel::dataType(PortType, PortIndex) const {
+const NodeDataType &MathOperationDataModel::dataType(PortType, PortIndex) const {
   return DecimalData().type();
 }
 

@@ -11,7 +11,7 @@ ApplicationWindow {
     visible: true
     title: qsTr("CutieDesigner!")
 
-    signal newDisplayValue(newValue: double)
+    signal newDisplayValue(newValue: string)
 
     onNewDisplayValue: newValue => {
         display.text = newValue;
@@ -27,17 +27,20 @@ ApplicationWindow {
         orientation: Qt.Vertical
         Rectangle {
             SplitView.preferredWidth: root.width
-            SplitView.preferredHeight: root.height / 2
+            SplitView.preferredHeight: root.height - 120 // root.height / 2
             color: "blue"
-            TextDisplay {
+            Atype {
                 id: display
-                anchors.centerIn: parent
             }
+            // TextDisplay {
+            //     id: display
+            //     anchors.centerIn: parent
+            // }
         }
         SplitView {
             id: editView
             SplitView.preferredWidth: root.width
-            SplitView.preferredHeight: root.height / 2
+            SplitView.preferredHeight: 120 //root.height / 2
             orientation: Qt.Horizontal
             PaneBackground {
                 SplitView.preferredWidth: editView.width / 6

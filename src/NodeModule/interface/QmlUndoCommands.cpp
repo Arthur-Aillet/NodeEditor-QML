@@ -73,7 +73,6 @@ CreateCommand::CreateCommand(ModelInterface *interface, QString const name, QPoi
 }
 
 void CreateCommand::undo() {
-  qDebug() << "undo";
   QJsonArray nodesJsonArray;
   nodesJsonArray.append(_interface->graphModel.saveNode(_nodeId));
   _sceneJson["nodes"] = nodesJsonArray;

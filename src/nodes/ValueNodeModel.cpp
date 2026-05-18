@@ -69,7 +69,9 @@ void ValueNodeModel::onTextEdited() {
   }
 }
 
-NodeDataType ValueNodeModel::dataType(PortType, PortIndex id) const { return DecimalData().type(); }
+const NodeDataType &ValueNodeModel::dataType(PortType, PortIndex id) const {
+  return DecimalData().type();
+}
 
 std::shared_ptr<NodeData> ValueNodeModel::outData(PortIndex) { return _number; }
 

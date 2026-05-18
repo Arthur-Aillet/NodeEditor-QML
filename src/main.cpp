@@ -4,8 +4,8 @@
 #include "Definitions.hpp"
 #include "DivisionModel.hpp"
 #include "MultiplicationModel.hpp"
-#include "NumberDisplayDataModel.hpp"
 #include "SubtractionModel.hpp"
+#include "TextDisplayDataModel.hpp"
 #include "ValueNodeModel.hpp"
 
 #include <QAction>
@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
   ret->registerModel<DivisionModel>("Process");
   ret->registerModel<MultiplicationModel>("Process");
   ret->registerModel<SubtractionModel>("Process");
-  ret->registerModel<NumberDisplayDataModel>("Display");
+  ret->registerModel<TextDisplayDataModel>("Display");
 
   QQmlApplicationEngine engine;
 
@@ -80,11 +80,11 @@ int main(int argc, char *argv[]) {
 
   QObject *item = engine.rootObjects().first();
 
-  auto source = model.addNode(NumberDisplayDataModel().name());
+  auto source = model.addNode(TextDisplayDataModel().name());
   model.setNodeData(source, NodeRole::Position, QPointF(400, 0));
-  model.setNodeData(source, NodeRole::Type, NumberDisplayDataModel().name());
-  auto display = model.delegateModel<NumberDisplayDataModel>(source);
-  QObject::connect(display, SIGNAL(valueUpdated(double)), item, SIGNAL(newDisplayValue(double)));
+  model.setNodeData(source, NodeRole::Type, TextDisplayDataModel().name());
+  auto display = model.delegateModel<TextDisplayDataModel>(source);
+  QObject::connect(display, SIGNAL(valueUpdated(QString)), item, SIGNAL(newDisplayValue(QString)));
 
   return app.exec();
 }
