@@ -27,7 +27,7 @@ ApplicationWindow {
         orientation: Qt.Vertical
         Rectangle {
             SplitView.preferredWidth: root.width
-            SplitView.preferredHeight: root.height - 120 // root.height / 2
+            SplitView.preferredHeight: root.height / 2
             color: "blue"
             Atype {
                 id: display
@@ -40,7 +40,7 @@ ApplicationWindow {
         SplitView {
             id: editView
             SplitView.preferredWidth: root.width
-            SplitView.preferredHeight: 120 //root.height / 2
+            SplitView.preferredHeight: root.height / 2
             orientation: Qt.Horizontal
             PaneBackground {
                 SplitView.preferredWidth: editView.width / 6

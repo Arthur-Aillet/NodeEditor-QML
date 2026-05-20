@@ -10,8 +10,6 @@
 #include <qqmlengine.h>
 #include <qtmetamacros.h>
 
-class QLabel;
-
 class TextDisplayDataModel : public NodeDelegateModel {
   Q_OBJECT
 
@@ -39,32 +37,19 @@ class TextDisplayDataModel : public NodeDelegateModel {
 
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
-  std::shared_ptr<QQmlComponent> embeddedComponent(QQmlEngine *engine) override {
-    if (_component == nullptr) {
-      _component = std::make_shared<QQmlComponent>(engine, "CutieDesignerModule", "PortLabel");
-    }
-
-    return _component;
-  }
-
-  void embeddedComponentLoaded(QObject *loaded) override {
-    portLabel = loaded;
-    portLabel->setProperty("placeholderText", "Value");
-    portLabel->setProperty("enabled", !_connected);
-    portLabel->setProperty("text", _content);
-    portLabel->connect(portLabel, SIGNAL(textEdited()), this, SLOT(onTextEdited()));
-  }
+  const QUrl embeddedComponent(QQmlEngine *engine) override;
+  void embeddedComponentLoaded(QObject *loaded) override;
 
   void inputConnectionCreated(ConnectionId const &) override {
     _connected = true;
-    if (portLabel != nullptr) {
-      portLabel->setProperty("enabled", false);
+    if (_portLabel != nullptr) {
+      _portLabel->setProperty("enabled", false);
     }
   }
   void inputConnectionDeleted(ConnectionId const &) override {
     _connected = false;
-    if (portLabel != nullptr) {
-      portLabel->setProperty("enabled", true);
+    if (_portLabel != nullptr) {
+      _portLabel->setProperty("enabled", true);
     }
   }
 
@@ -76,7 +61,7 @@ class TextDisplayDataModel : public NodeDelegateModel {
 
   private:
   bool _connected = false;
-  QObject *portLabel{nullptr};
+  QObject *_portLabel{nullptr};
 
   QString _content;
 

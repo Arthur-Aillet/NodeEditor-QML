@@ -127,7 +127,8 @@ class NodeDelegateModel : public QObject, public Serializable {
 
   virtual std::shared_ptr<NodeData> outData(PortIndex const port) = 0;
 
-  virtual std::shared_ptr<QQmlComponent> embeddedComponent(QQmlEngine *engine) = 0;
+  virtual const QUrl embeddedComponent(QQmlEngine *engine) { return QUrl(); };
+  virtual QVariantMap componentInitialProperties() { return QVariantMap(); };
 
   virtual bool resizable() const { return false; }
 

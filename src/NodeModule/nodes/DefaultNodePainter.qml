@@ -21,6 +21,7 @@ AbstractNodePainter {
         }
     }
 
+    override property var embeddedComponentContainer: embedContainer
     override property var getPortPosition: (portIndex, portType) => {
         const step = spacing + portSize;
 
@@ -131,17 +132,15 @@ AbstractNodePainter {
             Layout.fillWidth: true
             Layout.minimumWidth: {
                 const maxLabelWidthOut = inOutRepeater.getMaxLabelWidth(NodeEditor.PortType.Out);
-                const embedWidth = (embed.loaded ? embed.width : 0);
 
-                return maxLabelWidthIn + root.spacing + embedWidth + root.spacing + maxLabelWidthOut;
+                return maxLabelWidthIn + root.spacing + embedContainer.width + root.spacing + maxLabelWidthOut;
             }
             Layout.minimumHeight: {
-                const embedHeight = (embed.loaded ? embed.height : 0);
                 const offsetForLabelNodes = content.y === 0 ? 0 : -root.spacing / 2;
                 const maxPortCount = Math.max(root.nodeObject.inPortCount, root.nodeObject.outPortCount);
                 const portsHeight = maxPortCount * (root.portSize + root.spacing);
 
-                return Math.max(embedHeight, portsHeight + offsetForLabelNodes) + root.spacing;
+                return Math.max(embedContainer.height, portsHeight + offsetForLabelNodes) + root.spacing;
             }
 
             Repeater {
@@ -179,16 +178,14 @@ AbstractNodePainter {
             }
 
             // Embedded component
-            Loader {
-                id: embed
+            Rectangle {
+                id: embedContainer
                 x: content.maxLabelWidthIn + root.spacing
                 anchors.verticalCenter: parent.verticalCenter
-                sourceComponent: ModelInterface.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.Component)
-                onStatusChanged: {
-                    if (status == Loader.Ready) {
-                        DataFlowModelInterface.dataFlowGraph.sendComponentLoaded(root.nodeObject.nodeId, item);
-                    }
-                }
+                height: childrenRect.height
+                width: childrenRect.width
+                Layout.minimumHeight: childrenRect.height
+                Layout.minimumWidth: childrenRect.width
             }
         }
     }

@@ -12,21 +12,12 @@
 TextDisplayDataModel::TextDisplayDataModel() {}
 
 unsigned int TextDisplayDataModel::nPorts(PortType portType) const {
-  unsigned int result = 1;
-
   switch (portType) {
   case PortType::In:
-    result = 1;
-    break;
-
-  case PortType::Out:
-    result = 0;
-
+    return 1;
   default:
-    break;
+    return 0;
   }
-
-  return result;
 }
 
 const NodeDataType &TextDisplayDataModel::dataType(PortType, PortIndex) const {
@@ -47,17 +38,29 @@ void TextDisplayDataModel::setInData(std::shared_ptr<NodeData> data, PortIndex p
     _content = textData->text();
   }
 
-  if (!portLabel)
+  if (!_portLabel)
     return;
 
-  portLabel->setProperty("text", _content);
+  _portLabel->setProperty("text", _content);
 
   emit valueUpdated(_content);
 }
 
+const QUrl TextDisplayDataModel::embeddedComponent(QQmlEngine *engine) {
+  return QQmlComponent(engine, "CutieDesignerModule", "PortLabel").url();
+}
+
+void TextDisplayDataModel::embeddedComponentLoaded(QObject *loaded) {
+  _portLabel = loaded;
+  _portLabel->setProperty("placeholderText", "Value");
+  _portLabel->setProperty("enabled", !_connected);
+  _portLabel->setProperty("text", _content);
+  _portLabel->connect(_portLabel, SIGNAL(textEdited()), this, SLOT(onTextEdited()));
+}
+
 void TextDisplayDataModel::onTextEdited() {
-  if (!portLabel)
+  if (_portLabel == nullptr)
     return;
-  _content = portLabel->property("text").toString();
+  _content = _portLabel->property("text").toString();
   emit valueUpdated(_content);
 }

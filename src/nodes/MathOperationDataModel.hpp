@@ -28,8 +28,6 @@ class MathOperationDataModel : public NodeDelegateModel {
 
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
-  std::shared_ptr<QQmlComponent> embeddedComponent(QQmlEngine *engine) override { return nullptr; }
-
   protected:
   virtual void compute() = 0;
 

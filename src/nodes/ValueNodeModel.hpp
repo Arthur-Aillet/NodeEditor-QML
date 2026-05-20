@@ -27,7 +27,7 @@ class ValueNodeModel : public NodeDelegateModel {
 
   bool captionVisible() const override { return false; }
 
-  QString name() const override { return QStringLiteral("NumberSource"); }
+  QString name() const override { return QStringLiteral("Number Source"); }
 
   public:
   QJsonObject save() const override;
@@ -46,23 +46,9 @@ class ValueNodeModel : public NodeDelegateModel {
 
   void setInData(std::shared_ptr<NodeData>, PortIndex) override {}
 
-  std::shared_ptr<QQmlComponent> embeddedComponent(QQmlEngine *engine) override {
-    if (_component == nullptr) {
-      _component = std::make_shared<QQmlComponent>(engine, "CutieDesignerModule", "PortLabel");
-    }
+  const QUrl embeddedComponent(QQmlEngine *engine) override;
 
-    return _component;
-  }
-  QObject *portLabel{nullptr};
-
-  void embeddedComponentLoaded(QObject *loaded) override {
-    portLabel = loaded;
-    portLabel->setProperty("placeholderText", "Value");
-    if (_number != nullptr) {
-      portLabel->setProperty("text", _number->numberAsText());
-    }
-    portLabel->connect(portLabel, SIGNAL(textEdited()), this, SLOT(onTextEdited()));
-  }
+  void embeddedComponentLoaded(QObject *loaded) override;
 
   public:
   void setNumber(double number);
@@ -72,7 +58,7 @@ class ValueNodeModel : public NodeDelegateModel {
   void onTextEdited();
 
   private:
+  QObject *_portLabel{nullptr};
   std::shared_ptr<DecimalData> _number;
-
   std::shared_ptr<QQmlComponent> _component{nullptr};
 };

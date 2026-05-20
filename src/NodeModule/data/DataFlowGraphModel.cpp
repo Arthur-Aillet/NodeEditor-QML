@@ -261,8 +261,11 @@ QVariant DataFlowGraphModel::nodeData(NodeId nodeId, NodeRole role) const {
     break;
 
   case NodeRole::Component: {
-    auto c = model->embeddedComponent(_engine);
-    result = QVariant::fromValue(c.get());
+    result = model->embeddedComponent(_engine);
+  } break;
+
+  case NodeRole::ComponentInitialProperties: {
+    result = model->componentInitialProperties();
   } break;
 
   case NodeRole::ValidationState: {
@@ -387,6 +390,8 @@ bool DataFlowGraphModel::setNodeData(NodeId nodeId, NodeRole role, QVariant valu
     break;
 
   case NodeRole::ProgressValue:
+    break;
+  case NodeEditor::NodeRole::ComponentInitialProperties:
     break;
   }
 

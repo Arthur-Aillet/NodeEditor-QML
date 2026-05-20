@@ -13,7 +13,12 @@ qt_add_qml_module(CutieDesigner
   nodes/PortLabel.qml
   objects/Atype.qml
   objects/UkrugCharacter.qml
+  nodes/TextTyper/TextTyper.qml
+
   SOURCES
+
+  objects/Ukrug.hpp
+  objects/Ukrug.cpp
 
   nodes/AdditionModel.hpp
   nodes/DivisionModel.hpp
@@ -28,6 +33,12 @@ qt_add_qml_module(CutieDesigner
   nodes/TextDisplayDataModel.cpp
   nodes/TextDisplayDataModel.hpp
 
+  nodes/TextTyper/TextTyperModel.hpp
+  nodes/TextTyper/TextTyperModel.cpp
+
+  nodes/TextTyper/TextTyperEventList.hpp
+  nodes/TextTyper/TextTyperEventList.cpp
+
   DEPENDENCIES QtQuick QtQuick.Layout StatsModule NodeModule
 )
 
@@ -40,7 +51,9 @@ target_link_directories(CutieDesigner
 target_include_directories(CutieDesigner
   PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
+  nodes/TextTyper
   nodes
+  objects
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

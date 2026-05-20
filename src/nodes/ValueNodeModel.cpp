@@ -36,25 +36,29 @@ void ValueNodeModel::load(QJsonObject const &p) {
 }
 
 unsigned int ValueNodeModel::nPorts(PortType portType) const {
-  unsigned int result = 1;
-
   switch (portType) {
-  case PortType::In:
-    result = 0;
-    break;
-
   case PortType::Out:
-    result = 1;
-
+    return 1;
   default:
-    break;
+    return 0;
   }
+}
 
-  return result;
+const QUrl ValueNodeModel::embeddedComponent(QQmlEngine *engine) {
+  return QQmlComponent(engine, "CutieDesignerModule", "PortLabel").url();
+}
+
+void ValueNodeModel::embeddedComponentLoaded(QObject *loaded) {
+  _portLabel = loaded;
+  _portLabel->setProperty("placeholderText", "Value");
+  if (_number != nullptr) {
+    _portLabel->setProperty("text", _number->numberAsText());
+  }
+  _portLabel->connect(_portLabel, SIGNAL(textEdited()), this, SLOT(onTextEdited()));
 }
 
 void ValueNodeModel::onTextEdited() {
-  auto str = portLabel->property("text");
+  auto str = _portLabel->property("text");
   bool ok = false;
 
   double number = str.toDouble(&ok);

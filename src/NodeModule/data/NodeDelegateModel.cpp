@@ -4,9 +4,7 @@
 #include "StyleCollection.hpp"
 #include <qdebug.h>
 
-NodeDelegateModel::NodeDelegateModel() : _nodeStyle(StyleCollection::getNodeStyle()) {
-  // Derived classes can initialize specific style here
-}
+NodeDelegateModel::NodeDelegateModel() : _nodeStyle(StyleCollection::getNodeStyle()) {}
 
 QJsonObject NodeDelegateModel::save() const {
   QJsonObject modelJson;

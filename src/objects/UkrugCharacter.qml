@@ -2,6 +2,8 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Shapes
 
+import CutieDesignerModule
+
 Shape {
     id: root
     width: 120
@@ -26,40 +28,6 @@ Shape {
         }
     }
 
-    function letterAsData() {
-        if (char == "A" || char == "a") {
-            return [
-                {
-                    layer: 1,
-                    angle: 0
-                },
-                {
-                    layer: 2,
-                    angle: 0
-                },
-                {
-                    layer: 2,
-                    angle: 360 * 1 / 3
-                },
-                {
-                    layer: 2,
-                    angle: 360 * 2 / 3
-                }
-            ];
-        } else {
-            return [
-                {
-                    layer: 2,
-                    angle: 90
-                },
-                {
-                    layer: 2,
-                    angle: -90
-                }
-            ];
-        }
-    }
-
     function toAbsoluteAngle(angle: real): real {
         while (angle < 0) {
             angle += 360;
@@ -67,91 +35,91 @@ Shape {
         return angle % 360;
     }
 
-    function processLayer(newCharData) {
-        let indexMapping = {};
-        let updateIndexes = [];
-        let toAppend = [];
+    // function processLayer(newCharData) {
+    //     let indexMapping = {};
+    //     let updateIndexes = [];
+    //     let toAppend = [];
 
-        for (let i = 0; i != newCharData.length; i++) {
-            if (i >= layer2.length) {
-                for (let j = 0; j != newCharData.length; j++) {
-                    if (!(j in indexMapping)) {
-                        console.log("adding " + j);
-                        toAppend.push({
-                            layer: 2,
-                            color: "black",
-                            angle: newCharData[j].angle
-                        });
-                    }
-                }
-            } else {
-                let closestDistance = Infinity;
-                let indexNew = -1;
-                let indexOld = -1;
+    //     for (let i = 0; i != newCharData.length; i++) {
+    //         if (i >= repeater.count) {
+    //             for (let j = 0; j != newCharData.length; j++) {
+    //                 if (!(j in toAppend)) {
+    //                     console.log("To append " + j);
+    //                     toAppend.push({
+    //                         layer: 2,
+    //                         color: "black",
+    //                         angle: newCharData[j].angle
+    //                     });
+    //                 }
+    //             }
+    //         } else {
+    //             let closestDistance = Infinity;
+    //             let indexNew = -1;
+    //             let indexOld = -1;
 
-                for (let j = 0; j != newCharData.length; j++) {
-                    if (j in indexMapping) {
-                        continue;
-                    }
+    //             for (let j = 0; j != newCharData.length; j++) {
+    //                 if (j in indexMapping) {
+    //                     continue;
+    //                 }
 
-                    for (let k = 0; k != layer2.length; k++) {
-                        const distance = Math.abs(toAbsoluteAngle(newCharData[j].angle) - toAbsoluteAngle(layer2[k].angle));
+    //                 for (let k = 0; k != repeater.count; k++) {
+    //                     const distance = Math.abs(toAbsoluteAngle(newCharData[j].angle) - toAbsoluteAngle(repeater.itemAt(k).angle));
 
-                        if (distance < closestDistance) {
-                            closestDistance = distance;
-                            indexNew = j;
-                            indexOld = k;
-                        }
-                    }
-                }
+    //                     if (distance < closestDistance) {
+    //                         closestDistance = distance;
+    //                         indexNew = j;
+    //                         indexOld = k;
+    //                     }
+    //                 }
+    //             }
 
-                if (indexNew != -1) {
-                    indexMapping[indexNew] = indexOld;
-                }
-                console.log("mapped: " + indexNew + "  " + indexOld);
-                updateIndexes.push({
-                    index: indexOld,
-                    angle: newCharData[indexNew].angle
-                });
-            }
-        }
-        if (newCharData.length < layer2.length) {
-            console.log("prunning");
-        }
+    //             if (indexNew != -1) {
+    //                 indexMapping[indexNew] = indexOld;
+    //             }
+    //             console.log("mapped: " + indexNew + "  " + indexOld);
+    //             updateIndexes.push({
+    //                 index: indexOld,
+    //                 angle: newCharData[indexNew].angle
+    //             });
+    //         }
+    //     }
 
-        layer2.concat(toAppend);
+    //     // prunning
+    //     for (let i = repeater.count - newCharData.length; i > 0; i--) {
+    //         console.log("prunning " + i);
 
-        for (let i = 0; i != updateIndexes.length; i++) {
-            console.log("> " + updateIndexes[i].index + "  " + updateIndexes[i].angle);
-            repeater.itemAt(updateIndexes[i].index).angle = root.toAbsoluteAngle(updateIndexes[i].angle);
-        }
-    }
+    //         for (let j = 0; j != repeater.count; j++) {
+    //             console.log("mapping: " + Object.values(indexMapping));
+    //             if (j in Object.values(indexMapping)) {
+    //                 continue;
+    //             }
+    //             console.log("J is free" + j);
+    //         }
+    //     }
+
+    //     repeater.model = repeater.model.concat(toAppend);
+
+    //     for (let i = 0; i != updateIndexes.length; i++) {
+    //         console.log("> " + updateIndexes[i].index + "  " + updateIndexes[i].angle);
+    //         //repeater.itemAt(updateIndexes[i].index).angle = root.toAbsoluteAngle(updateIndexes[i].angle);
+    //     }
+    // }
 
     onCharChanged: {
-        let letter = letterAsData();
+        pointsModel.setLetter(char);
+        pointsModel.print();
 
         //processLayer(letter.filter(el => el.layer == 1), layer1);
-        processLayer(letter.filter(el => el.layer == 2));
+        //processLayer(letter.filter(el => el.layer == 2));
     }
 
-    property var dots: layer1.concat(layer2)
-    property var layer1: []
-    property var layer2: [
-        {
-            layer: 2,
-            angle: 90,
-            color: "red"
-        },
-        {
-            layer: 2,
-            angle: -90,
-            color: "purple"
-        }
-    ]
+    UkrugPointsListModel {
+        id: pointsModel
+    }
 
     Repeater {
         id: repeater
-        model: root.layer2
+        model: pointsModel
         delegate: Shape {
             id: dot
             required property var modelData
@@ -181,7 +149,7 @@ Shape {
             antialiasing: true
 
             ShapePath {
-                fillColor: dot.modelData.color
+                fillColor: "white"
 
                 PathAngleArc {
                     centerX: 0

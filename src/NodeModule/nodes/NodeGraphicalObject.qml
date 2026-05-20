@@ -125,7 +125,29 @@ MouseArea {
             };
             setSource(nodePainterUrl, initialProperties);
         }
-        Component.onCompleted: nodePainterUrl = "DefaultNodePainter.qml"
+        Component.onCompleted: {
+            nodePainterUrl = "DefaultNodePainter.qml";
+        }
+        onItemChanged: {
+            const url = ModelInterface.nodeData(root.nodeId, NodeEditor.NodeRole.Component);
+            const parent = (item as AbstractNodePainter).embeddedComponentContainer;
+            const component = Qt.createComponent(url, Component.PreferSynchronous, parent);
+            const prop = ModelInterface.nodeData(root.nodeId, NodeEditor.NodeRole.ComponentInitialProperties);
+
+            const finished = () => {
+                var obj = component.createObject(parent, prop);
+                DataFlowModelInterface.dataFlowGraph.sendComponentLoaded(root.nodeId, obj);
+            };
+
+            if (component.status !== Component.Ready) {
+                component.onStatusChanged = status => {
+                    if (status === Component.Ready)
+                        finished();
+                };
+            } else {
+                finished();
+            }
+        }
     }
 
     // Port Interaction points

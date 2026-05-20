@@ -6,6 +6,7 @@
 #include "MultiplicationModel.hpp"
 #include "SubtractionModel.hpp"
 #include "TextDisplayDataModel.hpp"
+#include "TextTyperModel.hpp"
 #include "ValueNodeModel.hpp"
 
 #include <QAction>
@@ -20,34 +21,7 @@
 #include <qqmlcontext.h>
 #include <qwidget.h>
 
-// static QtNodes::DataFlowGraphicsScene *startOriginalNodeEditor(QtNodes::DataFlowGraphModel
-// &model,
-//                                                                QWidget &mainWidget) {
-//   QVBoxLayout *l = new QVBoxLayout(&mainWidget);
-
-//   auto scene = new QtNodes::DataFlowGraphicsScene(model, &mainWidget);
-
-//   auto view = new QtNodes::GraphicsView(scene);
-//   l->addWidget(view);
-//   l->setContentsMargins(0, 0, 0, 0);
-//   l->setSpacing(0);
-
-//   QObject::connect(scene, &QtNodes::DataFlowGraphicsScene::sceneLoaded, view,
-//                    &QtNodes::GraphicsView::centerScene);
-
-//   QObject::connect(scene, &QtNodes::DataFlowGraphicsScene::modified, &mainWidget,
-//                    [&mainWidget]() { mainWidget.setWindowModified(true); });
-//   mainWidget.setWindowTitle("[*]CutieOriginal");
-//   mainWidget.resize(800, 600);
-//   // Center window.
-//   mainWidget.move(QApplication::primaryScreen()->availableGeometry().center() -
-//                   mainWidget.rect().center());
-//   mainWidget.showNormal();
-//   return scene;
-// }
-
 int main(int argc, char *argv[]) {
-  // qputenv("QT_QUICK_BACKEND", "software");
   QApplication app(argc, argv);
 
   auto ret = std::make_shared<NodeDelegateModelRegistry>();
@@ -58,13 +32,11 @@ int main(int argc, char *argv[]) {
   ret->registerModel<MultiplicationModel>("Process");
   ret->registerModel<SubtractionModel>("Process");
   ret->registerModel<TextDisplayDataModel>("Display");
+  ret->registerModel<TextTyperModel>("Process");
 
   QQmlApplicationEngine engine;
 
   auto model = DataFlowGraphModel(ret, &engine);
-
-  // QWidget mainWidget;
-  // auto scene = startOriginalNodeEditor(model, mainWidget);
 
   QObject::connect(
       &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
@@ -77,6 +49,12 @@ int main(int argc, char *argv[]) {
     model.setNodeData(source, NodeRole::Position, QPointF(0, 0));
     model.setNodeData(source, NodeRole::Type, ValueNodeModel().name());
   }
+
+  // {
+  //   auto source = model.addNode(TextTyperModel().name());
+  //   model.setNodeData(source, NodeRole::Position, QPointF(100, 100));
+  //   model.setNodeData(source, NodeRole::Type, TextTyperModel().name());
+  // }
 
   QObject *item = engine.rootObjects().first();
 

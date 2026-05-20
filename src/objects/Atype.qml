@@ -2,28 +2,28 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 
-Item {
+FlexboxLayout {
     id: root
-    anchors.fill: parent
-    anchors.centerIn: parent
-    width: rep.width
-    height: 120
-
     property string text: "A"
 
-    FlexboxLayout {
-        anchors.fill: parent
-        direction: FlexboxLayout.Row
-        justifyContent: FlexboxLayout.JustifyCenter
-        gap: 15
+    anchors.fill: parent
+    direction: FlexboxLayout.Row
+    justifyContent: FlexboxLayout.JustifyStart
+    gap: 15
 
-        Repeater {
-            id: rep
-            model: root.text.length
-            delegate: UkrugCharacter {
-                required property int index
-                char: root.text[index]
-            }
-        }
+    Text {
+        color: "white"
+        text: root.text
+        font.bold: true
+        font.pixelSize: 80
     }
+
+    // Repeater {
+    //     id: rep
+    //     model: root.text.length
+    //     delegate: UkrugCharacter {
+    //         required property int index
+    //         char: root.text[index]
+    //     }
+    // }
 }
