@@ -137,6 +137,7 @@ class NodeDelegateModel : public QObject, public Serializable {
         component.createWithInitialProperties(componentInitialProperties())));
     _embed->setParentItem(container);
     QJSEngine::setObjectOwnership(_embed.get(), QJSEngine::CppOwnership);
+    emit embeddedComponentLoaded(_embed);
   };
 
   virtual QQmlComponent embeddedComponent(QQmlEngine *engine) { return QQmlComponent(); };

@@ -9,7 +9,7 @@
 #include <qqmlcomponent.h>
 #include <qtmetamacros.h>
 
-TextDisplayDataModel::TextDisplayDataModel() {}
+TextDisplayDataModel::TextDisplayDataModel() : _content(std::make_shared<TextData>(QString())) {}
 
 unsigned int TextDisplayDataModel::nPorts(PortType portType) const {
   switch (portType) {
@@ -32,18 +32,18 @@ void TextDisplayDataModel::setInData(std::shared_ptr<NodeData> data, PortIndex p
 
   if (data->type().id == DecimalData().type().id) {
     auto numberData = std::dynamic_pointer_cast<DecimalData>(data);
-    _content = numberData->numberAsText();
+    _content = std::make_shared<TextData>(numberData->numberAsText());
   } else {
     auto textData = std::dynamic_pointer_cast<TextData>(data);
-    _content = textData->text();
+    _content = textData;
   }
 
   if (!_portLabel)
     return;
 
-  _portLabel->setProperty("text", _content);
+  _portLabel->setProperty("text", _content->text);
 
-  emit valueUpdated(_content);
+  emit valueUpdated(_content->text);
 }
 
 QQmlComponent TextDisplayDataModel::embeddedComponent(QQmlEngine *engine) {
@@ -54,13 +54,13 @@ void TextDisplayDataModel::embeddedComponentLoaded(std::shared_ptr<QQuickItem> l
   _portLabel = loaded;
   _portLabel->setProperty("placeholderText", "Value");
   _portLabel->setProperty("enabled", !_connected);
-  _portLabel->setProperty("text", _content);
+  _portLabel->setProperty("text", _content->text);
   _portLabel->connect(_portLabel.get(), SIGNAL(textEdited()), this, SLOT(onTextEdited()));
 }
 
 void TextDisplayDataModel::onTextEdited() {
   if (_portLabel == nullptr)
     return;
-  _content = _portLabel->property("text").toString();
-  emit valueUpdated(_content);
+  _content = std::make_shared<TextData>(_portLabel->property("text").toString());
+  emit valueUpdated(_content->text);
 }

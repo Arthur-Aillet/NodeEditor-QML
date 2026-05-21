@@ -1,7 +1,9 @@
 #pragma once
 
 #include "NodeDelegateModel.hpp"
+#include "TextData.hpp"
 #include "TextTyperEventList.hpp"
+#include <QTimer>
 
 class TextTyperModel : public NodeDelegateModel {
   Q_OBJECT
@@ -9,8 +11,17 @@ class TextTyperModel : public NodeDelegateModel {
   QML_UNCREATABLE("")
 
   public:
-  Q_PROPERTY(bool play MEMBER _playing NOTIFY playChanged)
-  TextTyperModel() : eventList(std::make_shared<TextTyperEventList>()) {};
+  Q_PROPERTY(bool play READ getPlay WRITE setPlay NOTIFY playChanged)
+  Q_PROPERTY(QString text READ getText WRITE setText NOTIFY textChanged)
+  Q_PROPERTY(TextTyperEventList *model READ getModel CONSTANT)
+
+  TextTyperModel()
+      : eventList(), _content(std::make_shared<TextData>(QString("..."))),
+        _timer(std::make_unique<QTimer>(this)) {
+    _timer->connect(_timer.get(), SIGNAL(timeout()), this, SLOT(finished()));
+    _timer->setInterval(100);
+  };
+
   ~TextTyperModel() = default;
 
   QString caption() const override { return QStringLiteral("Text Typer"); }
@@ -32,13 +43,39 @@ class TextTyperModel : public NodeDelegateModel {
   void embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded) override;
   QVariantMap componentInitialProperties() override;
 
+  TextTyperEventList *getModel() { return &eventList; }
+
+  bool getPlay() { return _playing; }
+  void setPlay(bool playState) {
+    _playing = playState;
+    if (playState == true) {
+      _timer->start();
+    } else {
+      _timer->stop();
+    }
+  }
+
+  QString getText() { return _content->text; }
+  void setText(QString newText) {
+    _content->text = newText;
+    Q_EMIT dataUpdated(0);
+  }
+
   signals:
+  void textChanged();
   void playChanged();
+
+  public slots:
+  void finished() {
+    _content->text.append('.');
+    Q_EMIT textChanged();
+    Q_EMIT dataUpdated(0);
+  }
 
   private:
   std::shared_ptr<QQuickItem> _textTyperQml{nullptr};
-  std::shared_ptr<TextTyperEventList> eventList;
-
+  TextTyperEventList eventList;
+  std::unique_ptr<QTimer> _timer;
   bool _playing;
-  QString _content;
+  std::shared_ptr<TextData> _content;
 };

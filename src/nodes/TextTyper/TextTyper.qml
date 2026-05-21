@@ -10,10 +10,6 @@ FlexboxLayout {
     id: root
     direction: FlexboxLayout.Column
 
-    required property var model
-    //required property bool play
-    //property bool play: true
-    //required property string text
     required property TextTyperModel textTyper
 
     Item {
@@ -25,14 +21,28 @@ FlexboxLayout {
             id: displayArea
             width: parent.width - 20
             placeholderText: "Text"
-            text: "text" //root.text
+            text: root.textTyper.text
+            onTextEdited: root.textTyper.text = text
+            Connections {
+                target: root.textTyper
+                function onTextChanged() {
+                    displayArea.text = root.textTyper.text;
+                }
+            }
         }
         Button {
+            id: pauseBtn
             anchors.left: displayArea.right
             height: parent.height
             width: 20
             text: root.textTyper.play ? "\u25B6" : "\u23F8"
-            //onClicked: root.play = !root.play
+            onClicked: root.textTyper.play = !root.textTyper.play
+            Connections {
+                target: root.textTyper
+                function onPlayChanged() {
+                    pauseBtn.text = root.textTyper.play ? "\u25B6" : "\u23F8";
+                }
+            }
         }
     }
 
@@ -55,7 +65,7 @@ FlexboxLayout {
             return largest;
         }
         width: maxWidth
-        model: parent.model
+        model: root.textTyper.model
 
         ScrollBar.vertical: ScrollBar {
             anchors.right: parent.right
@@ -172,7 +182,7 @@ FlexboxLayout {
                 width: 16
                 height: 16
                 rightPadding: 6
-                onClicked: root.model.removeEvent(line.index)
+                onClicked: root.textTyper.model.removeEvent(line.index)
                 text: "\u2717" // Unicode Character 'BALLOT X'
                 radius: 8
             }
@@ -184,7 +194,7 @@ FlexboxLayout {
         model: ["Wait", "Erase", "Insert", "Replace"]
         currentIndex: -1
         onActivated: index => {
-            root.model.addEvent(model[index]);
+            root.textTyper.model.addEvent(model[index]);
             currentIndex = -1;
         }
     }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "NodeDelegateModel.hpp"
+#include "TextData.hpp"
 
 #include <QQmlComponent>
 #include <QtCore/QObject>
@@ -63,7 +64,5 @@ class TextDisplayDataModel : public NodeDelegateModel {
   bool _connected = false;
   std::shared_ptr<QQuickItem> _portLabel{nullptr};
 
-  QString _content;
-
-  std::shared_ptr<QQmlComponent> _component{nullptr};
+  std::shared_ptr<TextData> _content;
 };

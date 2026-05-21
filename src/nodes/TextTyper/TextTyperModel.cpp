@@ -36,9 +36,11 @@ const NodeDataType &TextTyperModel::dataType(PortType portType, PortIndex portIn
   }
 }
 
-std::shared_ptr<NodeData> TextTyperModel::outData(PortIndex port) { return nullptr; };
+std::shared_ptr<NodeData> TextTyperModel::outData(PortIndex port) { return _content; };
 
-void TextTyperModel::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {};
+void TextTyperModel::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
+  qDebug() << data.get();
+};
 
 QQmlComponent TextTyperModel::embeddedComponent(QQmlEngine *engine) {
   return QQmlComponent(engine, "CutieDesignerModule", "TextTyper");
@@ -46,7 +48,6 @@ QQmlComponent TextTyperModel::embeddedComponent(QQmlEngine *engine) {
 
 QVariantMap TextTyperModel::componentInitialProperties() {
   QVariantMap map;
-  map["model"] = QVariant::fromValue(eventList.get());
   map["textTyper"] = QVariant::fromValue(this);
   return map;
 }

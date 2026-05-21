@@ -19,16 +19,13 @@ class TextDataType : public NodeDataType {
 
 class TextData : public NodeData {
   public:
-  TextData() : _text() {}
+  TextData() {}
 
-  TextData(QString const text) : _text(text) {}
+  TextData(QString const text) : text(text) {}
 
   static inline const TextDataType dataType = TextDataType("text", "Text");
 
   const NodeDataType &type() const override { return dataType; }
 
-  QString text() const { return _text; }
-
-  private:
-  QString _text;
+  QString text;
 };
