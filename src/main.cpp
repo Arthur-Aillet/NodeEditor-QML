@@ -50,11 +50,11 @@ int main(int argc, char *argv[]) {
     model.setNodeData(source, NodeRole::Type, ValueNodeModel().name());
   }
 
-  // {
-  //   auto source = model.addNode(TextTyperModel().name());
-  //   model.setNodeData(source, NodeRole::Position, QPointF(100, 100));
-  //   model.setNodeData(source, NodeRole::Type, TextTyperModel().name());
-  // }
+  {
+    auto source = model.addNode(TextTyperModel().name());
+    model.setNodeData(source, NodeRole::Position, QPointF(100, 100));
+    model.setNodeData(source, NodeRole::Type, TextTyperModel().name());
+  }
 
   QObject *item = engine.rootObjects().first();
 

@@ -11,7 +11,7 @@ QString TextTyperModel::portCaption(PortType portType, PortIndex index) const {
       return QString("Speed scale");
   case NodeEditor::PortType::Out:
     return QString("Text");
-  case NodeEditor::PortType::None:
+  default:
     return QString();
   }
 }

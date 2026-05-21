@@ -9,7 +9,7 @@ struct TypeEvent {
   QML_STRUCTURED_VALUE
 
   public:
-  enum State { Wait, Remove, Replace, Insert };
+  enum State { Wait, Erase, Replace, Insert };
   Q_ENUM(State)
 
   State state;
@@ -18,23 +18,16 @@ struct TypeEvent {
 class TextTyperEventList : public QAbstractListModel {
   Q_OBJECT
   QML_ELEMENT
-  QML_UNCREATABLE("")
 
   public:
-  TextTyperEventList()
-      : _events({TypeEvent{TypeEvent::State::Wait}, TypeEvent{TypeEvent::State::Remove},
-                 TypeEvent{TypeEvent::State::Replace}, TypeEvent{TypeEvent::State::Insert}}),
-        QAbstractListModel() {}
+  TextTyperEventList() = default;
 
   explicit TextTyperEventList(const TextTyperEventList &other)
       : QAbstractListModel(other.parent()) {
     _events = other._events;
   }
 
-  int rowCount(const QModelIndex &parent = QModelIndex()) const override {
-    qDebug() << "n" << _events.count();
-    return _events.count();
-  }
+  int rowCount(const QModelIndex &parent = QModelIndex()) const override { return _events.count(); }
 
   QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override {
     if (!checkIndex(index))
@@ -51,6 +44,19 @@ class TextTyperEventList : public QAbstractListModel {
     }
 
     return QVariant();
+  }
+
+  Q_INVOKABLE void addEvent(QString name) {
+    auto enumVal = QMetaEnum::fromType<TypeEvent::State>().keyToValue(name.toLatin1().data());
+    beginInsertRows({}, rowCount(), rowCount());
+    _events.append(TypeEvent{TypeEvent::State(enumVal)});
+    endInsertRows();
+  }
+
+  Q_INVOKABLE void removeEvent(int index) {
+    beginRemoveRows(QModelIndex(), index, index);
+    _events.removeAt(index);
+    endRemoveRows();
   }
 
   Q_INVOKABLE void print() {
