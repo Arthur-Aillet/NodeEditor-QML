@@ -196,14 +196,6 @@ void DataFlowGraphModel::sendConnectionDeletion(ConnectionId const connectionId)
   }
 }
 
-void DataFlowGraphModel::sendComponentLoaded(NodeId nodeId, QObject *object) {
-  auto modeli = _models.find(nodeId);
-  if (modeli != _models.end()) {
-    auto &model = modeli->second;
-    model->embeddedComponentLoaded(object);
-  }
-}
-
 bool DataFlowGraphModel::nodeExists(NodeId const nodeId) const {
   return (_models.find(nodeId) != _models.end());
 }
@@ -259,14 +251,6 @@ QVariant DataFlowGraphModel::nodeData(NodeId nodeId, NodeRole role) const {
   case NodeRole::OutPortCount:
     result = model->nPorts(PortType::Out);
     break;
-
-  case NodeRole::Component: {
-    result = model->embeddedComponent(_engine);
-  } break;
-
-  case NodeRole::ComponentInitialProperties: {
-    result = model->componentInitialProperties();
-  } break;
 
   case NodeRole::ValidationState: {
     auto validationState = model->validationState();
@@ -351,9 +335,6 @@ bool DataFlowGraphModel::setNodeData(NodeId nodeId, NodeRole role, QVariant valu
   case NodeRole::OutPortCount:
     break;
 
-  case NodeRole::Component:
-    break;
-
   case NodeRole::ValidationState: {
     if (value.canConvert<NodeValidationState>()) {
       auto state = value.value<NodeValidationState>();
@@ -390,8 +371,6 @@ bool DataFlowGraphModel::setNodeData(NodeId nodeId, NodeRole role, QVariant valu
     break;
 
   case NodeRole::ProgressValue:
-    break;
-  case NodeEditor::NodeRole::ComponentInitialProperties:
     break;
   }
 
@@ -639,6 +618,10 @@ void DataFlowGraphModel::load(QJsonObject const &jsonDocument) {
     // Restore the connection
     addConnection(connId);
   }
+}
+
+void DataFlowGraphModel::requestComponent(NodeId nodeId, QQuickItem *container) {
+  _models[nodeId]->createComponent(container, _engine);
 }
 
 void DataFlowGraphModel::onOutPortDataUpdated(NodeId const nodeId, PortIndex const portIndex) {

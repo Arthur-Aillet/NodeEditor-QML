@@ -5,8 +5,11 @@
 
 class TextTyperModel : public NodeDelegateModel {
   Q_OBJECT
+  QML_ELEMENT
+  QML_UNCREATABLE("")
 
   public:
+  Q_PROPERTY(bool play MEMBER _playing NOTIFY playChanged)
   TextTyperModel() : eventList(std::make_shared<TextTyperEventList>()) {};
   ~TextTyperModel() = default;
 
@@ -25,15 +28,17 @@ class TextTyperModel : public NodeDelegateModel {
   const NodeDataType &dataType(PortType portType, PortIndex portIndex) const override;
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
-  const QUrl embeddedComponent(QQmlEngine *engine) override;
-  void embeddedComponentLoaded(QObject *loaded) override;
+  QQmlComponent embeddedComponent(QQmlEngine *engine) override;
+  void embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded) override;
   QVariantMap componentInitialProperties() override;
 
+  signals:
+  void playChanged();
+
   private:
-  QObject *_textTyperQml{nullptr};
+  std::shared_ptr<QQuickItem> _textTyperQml{nullptr};
   std::shared_ptr<TextTyperEventList> eventList;
 
+  bool _playing;
   QString _content;
-
-  std::shared_ptr<QQmlComponent> _component{nullptr};
 };

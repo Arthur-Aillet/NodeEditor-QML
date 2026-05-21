@@ -78,6 +78,8 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   // From Serializable
   void load(QJsonObject const &json) override;
 
+  Q_INVOKABLE void requestComponent(NodeId nodeId, QQuickItem *container);
+
   /**
    * Fetches the NodeDelegateModel for the given `nodeId` and tries to cast the
    * stored pointer to the given type
@@ -95,8 +97,6 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
 
   /// Loops do not make any sense in uni-direction data propagation
   bool loopsEnabled() const override { return false; }
-
-  Q_INVOKABLE void sendComponentLoaded(NodeId nodeId, QObject *object);
 
   Q_SIGNALS:
   void inPortDataWasSet(NodeId const, PortType const, PortIndex const);

@@ -21,7 +21,7 @@ AbstractNodePainter {
         }
     }
 
-    override property var embeddedComponentContainer: embedContainer
+    override property Item embeddedComponentContainer: embedContainer
     override property var getPortPosition: (portIndex, portType) => {
         const step = spacing + portSize;
 
@@ -178,7 +178,7 @@ AbstractNodePainter {
             }
 
             // Embedded component
-            Rectangle {
+            Item {
                 id: embedContainer
                 x: content.maxLabelWidthIn + root.spacing
                 anchors.verticalCenter: parent.verticalCenter

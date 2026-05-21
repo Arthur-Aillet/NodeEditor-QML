@@ -10,6 +10,7 @@
 #include <QtWidgets/QWidget>
 #include <qobject.h>
 #include <qqmlengine.h>
+#include <qquickitem.h>
 
 /**
  * Describes whether a node configuration is usable and defines a description message
@@ -127,8 +128,19 @@ class NodeDelegateModel : public QObject, public Serializable {
 
   virtual std::shared_ptr<NodeData> outData(PortIndex const port) = 0;
 
-  virtual const QUrl embeddedComponent(QQmlEngine *engine) { return QUrl(); };
-  virtual QVariantMap componentInitialProperties() { return QVariantMap(); };
+  void createComponent(QQuickItem *container, QQmlEngine *engine) {
+    QQmlComponent component = embeddedComponent(engine);
+    if (component.isNull()) {
+      return;
+    }
+    _embed = std::shared_ptr<QQuickItem>(qobject_cast<QQuickItem *>(
+        component.createWithInitialProperties(componentInitialProperties())));
+    _embed->setParentItem(container);
+    QJSEngine::setObjectOwnership(_embed.get(), QJSEngine::CppOwnership);
+  };
+
+  virtual QQmlComponent embeddedComponent(QQmlEngine *engine) { return QQmlComponent(); };
+  virtual QVariantMap componentInitialProperties() { return QVariantMap(); }
 
   virtual bool resizable() const { return false; }
 
@@ -141,7 +153,7 @@ class NodeDelegateModel : public QObject, public Serializable {
   virtual void inputConnectionDeleted(ConnectionId const &) {}
   virtual void outputConnectionCreated(ConnectionId const &) {}
   virtual void outputConnectionDeleted(ConnectionId const &) {}
-  virtual void embeddedComponentLoaded(QObject *instance) {}
+  virtual void embeddedComponentLoaded(std::shared_ptr<QQuickItem> instance) {}
 
   Q_SIGNALS:
   /// Triggers the updates in the nodes downstream.
@@ -186,6 +198,7 @@ class NodeDelegateModel : public QObject, public Serializable {
   void portsInserted();
 
   private:
+  std::shared_ptr<QQuickItem> _embed{nullptr};
   NodeStyle _nodeStyle;
 
   bool _frozen{false};

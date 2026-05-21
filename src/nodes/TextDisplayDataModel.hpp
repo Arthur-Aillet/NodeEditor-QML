@@ -37,8 +37,8 @@ class TextDisplayDataModel : public NodeDelegateModel {
 
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
-  const QUrl embeddedComponent(QQmlEngine *engine) override;
-  void embeddedComponentLoaded(QObject *loaded) override;
+  QQmlComponent embeddedComponent(QQmlEngine *engine) override;
+  void embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded) override;
 
   void inputConnectionCreated(ConnectionId const &) override {
     _connected = true;
@@ -61,7 +61,7 @@ class TextDisplayDataModel : public NodeDelegateModel {
 
   private:
   bool _connected = false;
-  QObject *_portLabel{nullptr};
+  std::shared_ptr<QQuickItem> _portLabel{nullptr};
 
   QString _content;
 

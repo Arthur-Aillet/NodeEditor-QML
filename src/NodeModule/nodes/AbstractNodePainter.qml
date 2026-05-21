@@ -7,7 +7,7 @@ Shape {
     required property NavigableArea area
     required property DraftConnection draftConnection
 
-    virtual property var embeddedComponentContainer
+    virtual property Item embeddedComponentContainer: null
 
     virtual property var getPortPosition: portIndex => {
         console.error("\"getPortPosition\": Implementation missing");

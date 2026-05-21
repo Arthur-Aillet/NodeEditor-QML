@@ -4,12 +4,17 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import NodeModule
+import CutieDesignerModule
 
 FlexboxLayout {
     id: root
     direction: FlexboxLayout.Column
 
     required property var model
+    //required property bool play
+    //property bool play: true
+    //required property string text
+    required property TextTyperModel textTyper
 
     Item {
         Layout.fillWidth: true
@@ -19,16 +24,15 @@ FlexboxLayout {
         TextArea {
             id: displayArea
             width: parent.width - 20
-            enabled: false
-            text: "Text"
+            placeholderText: "Text"
+            text: "text" //root.text
         }
         Button {
             anchors.left: displayArea.right
             height: parent.height
             width: 20
-            text: play ? "\u25B6" : "\u23F8"
-            property bool play: false
-            onClicked: play = !play
+            text: root.textTyper.play ? "\u25B6" : "\u23F8"
+            //onClicked: root.play = !root.play
         }
     }
 

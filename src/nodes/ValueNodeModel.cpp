@@ -44,17 +44,17 @@ unsigned int ValueNodeModel::nPorts(PortType portType) const {
   }
 }
 
-const QUrl ValueNodeModel::embeddedComponent(QQmlEngine *engine) {
-  return QQmlComponent(engine, "CutieDesignerModule", "PortLabel").url();
+QQmlComponent ValueNodeModel::embeddedComponent(QQmlEngine *engine) {
+  return QQmlComponent(engine, "CutieDesignerModule", "PortLabel");
 }
 
-void ValueNodeModel::embeddedComponentLoaded(QObject *loaded) {
+void ValueNodeModel::embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded) {
   _portLabel = loaded;
   _portLabel->setProperty("placeholderText", "Value");
   if (_number != nullptr) {
     _portLabel->setProperty("text", _number->numberAsText());
   }
-  _portLabel->connect(_portLabel, SIGNAL(textEdited()), this, SLOT(onTextEdited()));
+  _portLabel->connect(_portLabel.get(), SIGNAL(textEdited()), this, SLOT(onTextEdited()));
 }
 
 void ValueNodeModel::onTextEdited() {

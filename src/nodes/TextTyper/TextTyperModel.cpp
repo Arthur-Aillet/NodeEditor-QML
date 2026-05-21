@@ -40,18 +40,17 @@ std::shared_ptr<NodeData> TextTyperModel::outData(PortIndex port) { return nullp
 
 void TextTyperModel::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {};
 
-const QUrl TextTyperModel::embeddedComponent(QQmlEngine *engine) {
-  return QQmlComponent(engine, "CutieDesignerModule", "TextTyper").url();
+QQmlComponent TextTyperModel::embeddedComponent(QQmlEngine *engine) {
+  return QQmlComponent(engine, "CutieDesignerModule", "TextTyper");
 }
 
 QVariantMap TextTyperModel::componentInitialProperties() {
   QVariantMap map;
   map["model"] = QVariant::fromValue(eventList.get());
+  map["textTyper"] = QVariant::fromValue(this);
   return map;
 }
 
-void TextTyperModel::embeddedComponentLoaded(QObject *loaded) {
+void TextTyperModel::embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded) {
   _textTyperQml = loaded;
-
-  _textTyperQml->setProperty("model", QVariant::fromValue(eventList.get()));
 }

@@ -46,16 +46,16 @@ void TextDisplayDataModel::setInData(std::shared_ptr<NodeData> data, PortIndex p
   emit valueUpdated(_content);
 }
 
-const QUrl TextDisplayDataModel::embeddedComponent(QQmlEngine *engine) {
-  return QQmlComponent(engine, "CutieDesignerModule", "PortLabel").url();
+QQmlComponent TextDisplayDataModel::embeddedComponent(QQmlEngine *engine) {
+  return QQmlComponent(engine, "CutieDesignerModule", "PortLabel");
 }
 
-void TextDisplayDataModel::embeddedComponentLoaded(QObject *loaded) {
+void TextDisplayDataModel::embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded) {
   _portLabel = loaded;
   _portLabel->setProperty("placeholderText", "Value");
   _portLabel->setProperty("enabled", !_connected);
   _portLabel->setProperty("text", _content);
-  _portLabel->connect(_portLabel, SIGNAL(textEdited()), this, SLOT(onTextEdited()));
+  _portLabel->connect(_portLabel.get(), SIGNAL(textEdited()), this, SLOT(onTextEdited()));
 }
 
 void TextDisplayDataModel::onTextEdited() {

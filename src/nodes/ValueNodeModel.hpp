@@ -46,9 +46,9 @@ class ValueNodeModel : public NodeDelegateModel {
 
   void setInData(std::shared_ptr<NodeData>, PortIndex) override {}
 
-  const QUrl embeddedComponent(QQmlEngine *engine) override;
+  QQmlComponent embeddedComponent(QQmlEngine *engine) override;
 
-  void embeddedComponentLoaded(QObject *loaded) override;
+  void embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded) override;
 
   public:
   void setNumber(double number);
@@ -58,7 +58,7 @@ class ValueNodeModel : public NodeDelegateModel {
   void onTextEdited();
 
   private:
-  QObject *_portLabel{nullptr};
+  std::shared_ptr<QQuickItem> _portLabel{nullptr};
   std::shared_ptr<DecimalData> _number;
   std::shared_ptr<QQmlComponent> _component{nullptr};
 };
