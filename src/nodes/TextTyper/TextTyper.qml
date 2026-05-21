@@ -85,6 +85,7 @@ FlexboxLayout {
         delegate: Rectangle {
             id: line
             required property string name
+            required property var value
             required property int index
             width: layout.width + nameText.width + close.width + 10
             implicitWidth: layout.implicitWidth + nameText.width + close.width + 10
@@ -139,6 +140,7 @@ FlexboxLayout {
                     placeholderText: "pos"
                     Layout.preferredWidth: Math.max(36, contentWidth + 8)
                     visible: line.name !== "Wait"
+                    text: visible ? line.value.pos : ""
 
                     validator: IntValidator {
                         bottom: 0
@@ -149,6 +151,7 @@ FlexboxLayout {
                     placeholderText: "delay(s)"
                     Layout.preferredWidth: Math.max(70, contentWidth + 8)
                     visible: line.name === "Wait"
+                    text: visible ? line.value.delay : ""
 
                     validator: DoubleValidator {
                         bottom: 0.0
@@ -159,6 +162,7 @@ FlexboxLayout {
                     placeholderText: "amount"
                     Layout.preferredWidth: Math.max(70, contentWidth + 8)
                     visible: line.name === "Erase"
+                    text: visible ? line.value.amount : ""
 
                     validator: DoubleValidator {
                         bottom: 0.0
@@ -168,9 +172,9 @@ FlexboxLayout {
                     id: textBox
                     Layout.preferredWidth: Math.min(Math.max(50, contentWidth + 16), 300)
                     visible: line.name === "Insert" || line.name === "Replace"
-                    placeholderText: {
-                        return "text";
-                    }
+                    text: visible ? line.value.text : ""
+
+                    placeholderText: "text"
                 }
             }
             RoundButton {

@@ -3,16 +3,46 @@
 #include <QAbstractListModel>
 #include <QQmlEngine>
 
-struct TypeEvent {
+struct Wait {
   Q_GADGET
-  QML_VALUE_TYPE(typeEvent)
-  QML_STRUCTURED_VALUE
-
+  QML_VALUE_TYPE(wait)
   public:
-  enum State { Wait, Erase, Replace, Insert };
-  Q_ENUM(State)
+  Q_PROPERTY(uint delay MEMBER delay)
 
-  State state;
+  uint delay;
+};
+
+struct Erase {
+  Q_GADGET
+  QML_VALUE_TYPE(erase)
+  public:
+  Q_PROPERTY(uint pos MEMBER pos)
+  Q_PROPERTY(uint amount MEMBER amount)
+
+  uint pos;
+  uint amount;
+};
+
+struct Replace {
+  Q_GADGET
+  QML_VALUE_TYPE(replace)
+  public:
+  Q_PROPERTY(uint pos MEMBER pos)
+  Q_PROPERTY(QString text MEMBER text)
+
+  uint pos;
+  QString text;
+};
+
+struct Insert {
+  Q_GADGET
+  QML_VALUE_TYPE(insert)
+  public:
+  Q_PROPERTY(uint pos MEMBER pos)
+  Q_PROPERTY(QString text MEMBER text)
+
+  uint pos;
+  QString text;
 };
 
 class TextTyperEventList : public QAbstractListModel {
@@ -20,60 +50,23 @@ class TextTyperEventList : public QAbstractListModel {
   QML_ELEMENT
 
   public:
+  using TypeEvent = std::variant<Wait, Erase, Replace, Insert>;
+
   TextTyperEventList() = default;
 
-  explicit TextTyperEventList(const TextTyperEventList &other)
-      : QAbstractListModel(other.parent()) {
-    _events = other._events;
-  }
+  explicit TextTyperEventList(const TextTyperEventList &other);
+  int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+  QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+  Q_INVOKABLE void addEvent(QString name);
+  Q_INVOKABLE void removeEvent(int index);
+  Q_INVOKABLE void print();
 
-  int rowCount(const QModelIndex &parent = QModelIndex()) const override { return _events.count(); }
-
-  QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override {
-    if (!checkIndex(index))
-      return QVariant();
-
-    const auto &rowData = _events.at(index.row());
-    switch (static_cast<EventRoles>(role)) {
-    case EventRoles::State:
-      return rowData.state;
-      break;
-    case EventRoles::Name:
-      return QMetaEnum::fromType<TypeEvent::State>().valueToKey(rowData.state);
-      break;
-    }
-
-    return QVariant();
-  }
-
-  Q_INVOKABLE void addEvent(QString name) {
-    auto enumVal = QMetaEnum::fromType<TypeEvent::State>().keyToValue(name.toLatin1().data());
-    beginInsertRows({}, rowCount(), rowCount());
-    _events.append(TypeEvent{TypeEvent::State(enumVal)});
-    endInsertRows();
-  }
-
-  Q_INVOKABLE void removeEvent(int index) {
-    beginRemoveRows(QModelIndex(), index, index);
-    _events.removeAt(index);
-    endRemoveRows();
-  }
-
-  Q_INVOKABLE void print() {
-    qDebug() << "\nPrinting from TextTyperEventList::print()";
-    for (const auto &event : _events) {
-      qDebug() << event.state << " state";
-    }
-  }
+  enum class EventRoles { Name = Qt::UserRole + 1, Value };
+  QList<TypeEvent> events;
 
   protected:
   QHash<int, QByteArray> roleNames() const override {
-    return {{static_cast<int>(EventRoles::State), "state"},
-            {static_cast<int>(EventRoles::Name), "name"}};
+    return {{static_cast<int>(EventRoles::Name), "name"},
+            {static_cast<int>(EventRoles::Value), "value"}};
   }
-
-  private:
-  enum class EventRoles { State = Qt::UserRole + 1, Name };
-
-  QList<TypeEvent> _events;
 };
