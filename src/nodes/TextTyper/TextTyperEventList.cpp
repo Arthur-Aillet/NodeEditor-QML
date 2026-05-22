@@ -69,7 +69,7 @@ void TTEL::removeEvent(int index) {
 void TTEL::editValue(int index, QString attribute, QVariant value) {
   auto waitLambda = [attribute, value](Wait &w) {
     if (attribute == "delay") {
-      w.delay = value.toUInt();
+      w.delay = value.toDouble();
     }
   };
 
@@ -102,7 +102,6 @@ void TTEL::editValue(int index, QString attribute, QVariant value) {
           insertLambda,
       },
       events[index]);
-  qDebug() << variantValue(events[index]);
 }
 
 void TTEL::print() {

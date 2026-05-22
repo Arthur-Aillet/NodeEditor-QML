@@ -4,6 +4,8 @@
 #include "TextData.hpp"
 #include "TextTyperEventList.hpp"
 #include <QTimer>
+#include <qnamespace.h>
+#include <qtmetamacros.h>
 
 class TextTyperModel : public NodeDelegateModel {
   Q_OBJECT
@@ -15,13 +17,7 @@ class TextTyperModel : public NodeDelegateModel {
   Q_PROPERTY(QString text READ getText WRITE setText NOTIFY textChanged)
   Q_PROPERTY(TextTyperEventList *model READ getModel CONSTANT)
 
-  TextTyperModel()
-      : _content(std::make_shared<TextData>(QString("..."))),
-        _timer(std::make_unique<QTimer>(this)) {
-    _timer->connect(_timer.get(), SIGNAL(timeout()), this, SLOT(processEvent()));
-    _timer->setInterval(100);
-    //_timer->setSingleShot(true);
-  };
+  TextTyperModel() : _content(std::make_shared<TextData>(QString("..."))), _timer(QTimer()){};
 
   ~TextTyperModel() = default;
 
@@ -44,53 +40,31 @@ class TextTyperModel : public NodeDelegateModel {
   void embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded) override;
   QVariantMap componentInitialProperties() override;
 
-  TextTyperEventList *getModel() { return &_eventList; }
+  TextTyperEventList *getModel();
+  bool getPlay();
+  void setPlay(bool playState);
+  QString getText();
+  void setText(QString newText);
 
-  bool getPlay() { return _playing; }
-  void setPlay(bool playState) {
-    _playing = playState;
-    if (playState == true) {
-      _timer->start();
-    } else {
-      _timer->stop();
-    }
-  }
-
-  QString getText() { return _content->text; }
-  void setText(QString newText) {
-    _content->text = newText;
-    Q_EMIT dataUpdated(0);
-  }
+  void processEvent();
 
   signals:
   void textChanged();
   void playChanged();
 
-  public slots:
-  void processEvent() {
-    if (_eventList.events.length() == 0)
-      return;
-    _currentEvent++;
-
-    if (_currentEvent >= _eventList.events.length())
-      _currentEvent = 0;
-
-    auto visitor = overload{[this](const Wait &w) { qDebug() << "Wait" << w.delay; },
-                            [this](const Erase &e) { qDebug() << "Erase" << e.pos << e.amount; },
-                            [this](const Replace &r) { qDebug() << "Replace" << r.pos << r.text; },
-                            [this](const Insert &i) { qDebug() << "Insert" << i.pos << i.text; }};
-    std::visit(visitor, _eventList.events[_currentEvent]);
-
-    // _content->text.append('.');
-    // Q_EMIT textChanged();
-    // Q_EMIT dataUpdated(0);
-  }
+  protected slots:
+  void processNextEvent();
+  void processWait();
+  void processErase();
+  void processReplace();
+  void processInsert();
 
   private:
-  int _currentEvent = 0;
+  int _currentEventIdx = 0;
+  TextTyperEventList::TypeEvent _currentEvent;
   std::shared_ptr<QQuickItem> _textTyperQml{nullptr};
   TextTyperEventList _eventList;
-  std::unique_ptr<QTimer> _timer;
+  QTimer _timer;
   bool _playing;
   std::shared_ptr<TextData> _content;
 };

@@ -7,9 +7,9 @@ struct Wait {
   Q_GADGET
   QML_VALUE_TYPE(wait)
   public:
-  Q_PROPERTY(uint delay MEMBER delay)
+  Q_PROPERTY(double delay MEMBER delay)
 
-  uint delay;
+  double delay;
 };
 
 struct Erase {
