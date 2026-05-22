@@ -45,6 +45,13 @@ struct Insert {
   QString text;
 };
 
+template <class... Ts>
+struct overload : Ts... {
+  using Ts::operator()...;
+};
+template <class... Ts>
+overload(Ts...) -> overload<Ts...>;
+
 class TextTyperEventList : public QAbstractListModel {
   Q_OBJECT
   QML_ELEMENT
@@ -59,7 +66,10 @@ class TextTyperEventList : public QAbstractListModel {
   QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
   Q_INVOKABLE void addEvent(QString name);
   Q_INVOKABLE void removeEvent(int index);
+  Q_INVOKABLE void editValue(int index, QString attribute, QVariant value);
   Q_INVOKABLE void print();
+  QString variantName(TypeEvent const variant) const;
+  TypeEvent eventFromName(QString const name) const;
 
   enum class EventRoles { Name = Qt::UserRole + 1, Value };
   QList<TypeEvent> events;

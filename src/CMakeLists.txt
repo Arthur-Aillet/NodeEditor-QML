@@ -51,8 +51,8 @@ target_link_directories(CutieDesigner
 target_include_directories(CutieDesigner
   PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
-  nodes/TextTyper
   nodes
+  TextTyper
   objects
 )
 

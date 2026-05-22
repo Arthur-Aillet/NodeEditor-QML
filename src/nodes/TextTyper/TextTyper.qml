@@ -91,6 +91,13 @@ FlexboxLayout {
             implicitWidth: layout.implicitWidth + nameText.width + close.width + 10
             height: layout.height
 
+            function toUInt(text: string): int {
+                let val = parseInt(text);
+                if (isNaN(val) || !isFinite(val) || val < 0)
+                    val = 0;
+                return val;
+            }
+
             border.color: StyleCollection.node.normalBoundaryColor
             border.width: StyleCollection.node.penWidth
             gradient: Gradient {
@@ -141,6 +148,9 @@ FlexboxLayout {
                     Layout.preferredWidth: Math.max(36, contentWidth + 8)
                     visible: line.name !== "Wait"
                     text: visible ? line.value.pos : ""
+                    onTextEdited: {
+                        root.textTyper.model.editValue(line.index, "pos", line.toUInt(text));
+                    }
 
                     validator: IntValidator {
                         bottom: 0
@@ -152,6 +162,9 @@ FlexboxLayout {
                     Layout.preferredWidth: Math.max(70, contentWidth + 8)
                     visible: line.name === "Wait"
                     text: visible ? line.value.delay : ""
+                    onTextEdited: {
+                        root.textTyper.model.editValue(line.index, "delay", Number(text));
+                    }
 
                     validator: DoubleValidator {
                         bottom: 0.0
@@ -163,8 +176,11 @@ FlexboxLayout {
                     Layout.preferredWidth: Math.max(70, contentWidth + 8)
                     visible: line.name === "Erase"
                     text: visible ? line.value.amount : ""
+                    onTextEdited: {
+                        root.textTyper.model.editValue(line.index, "amount", line.toUInt(text));
+                    }
 
-                    validator: DoubleValidator {
+                    validator: IntValidator {
                         bottom: 0.0
                     }
                 }
@@ -173,6 +189,9 @@ FlexboxLayout {
                     Layout.preferredWidth: Math.min(Math.max(50, contentWidth + 16), 300)
                     visible: line.name === "Insert" || line.name === "Replace"
                     text: visible ? line.value.text : ""
+                    onTextEdited: {
+                        root.textTyper.model.editValue(line.index, "text", text);
+                    }
 
                     placeholderText: "text"
                 }

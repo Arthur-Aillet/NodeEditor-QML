@@ -20,7 +20,7 @@ class TextTyperModel : public NodeDelegateModel {
         _timer(std::make_unique<QTimer>(this)) {
     _timer->connect(_timer.get(), SIGNAL(timeout()), this, SLOT(processEvent()));
     _timer->setInterval(100);
-    _timer->setSingleShot(true);
+    //_timer->setSingleShot(true);
   };
 
   ~TextTyperModel() = default;
@@ -51,8 +51,6 @@ class TextTyperModel : public NodeDelegateModel {
     _playing = playState;
     if (playState == true) {
       _timer->start();
-      _currentEvent = 0;
-      // qDebug() << _eventList.events[0];
     } else {
       _timer->stop();
     }
@@ -70,13 +68,26 @@ class TextTyperModel : public NodeDelegateModel {
 
   public slots:
   void processEvent() {
-    _content->text.append('.');
-    Q_EMIT textChanged();
-    Q_EMIT dataUpdated(0);
+    if (_eventList.events.length() == 0)
+      return;
+    _currentEvent++;
+
+    if (_currentEvent >= _eventList.events.length())
+      _currentEvent = 0;
+
+    auto visitor = overload{[this](const Wait &w) { qDebug() << "Wait" << w.delay; },
+                            [this](const Erase &e) { qDebug() << "Erase" << e.pos << e.amount; },
+                            [this](const Replace &r) { qDebug() << "Replace" << r.pos << r.text; },
+                            [this](const Insert &i) { qDebug() << "Insert" << i.pos << i.text; }};
+    std::visit(visitor, _eventList.events[_currentEvent]);
+
+    // _content->text.append('.');
+    // Q_EMIT textChanged();
+    // Q_EMIT dataUpdated(0);
   }
 
   private:
-  int _currentEvent;
+  int _currentEvent = 0;
   std::shared_ptr<QQuickItem> _textTyperQml{nullptr};
   TextTyperEventList _eventList;
   std::unique_ptr<QTimer> _timer;
