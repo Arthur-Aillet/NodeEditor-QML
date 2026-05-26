@@ -29,21 +29,21 @@
                 "vertexCode": [
                     "void main() {",
                     "    texCoord = qt_MultiTexCoord0;",
-                    "    fragCoord = qt_Vertex.xy;",
+                    "    fragCoord = vec2(qt_Vertex.x, iResolution.y - qt_Vertex.y);",
                     "    vec2 vertCoord = qt_Vertex.xy;",
                     "    @nodes",
                     "    gl_Position = qt_Matrix * vec4(vertCoord, 0.0, 1.0);",
                     "}"
                 ],
                 "x": 140,
-                "y": 47.60000228881836
+                "y": 35.5
             },
             {
                 "name": "Output",
                 "nodeId": 1,
                 "type": 1,
                 "x": 140,
-                "y": 824.4000244140625
+                "y": 594.5
             },
             {
                 "fragmentCode": [
@@ -100,10 +100,10 @@
                     "\tvec2 p = (2.0 * fragCoord - iResolution.xy) / iResolution.y;",
                     "",
                     "\tfloat d = sdCircle(p, 1.0);",
-                    "    float point1 = sdCircle(p + point1, scale);",
-                    "    float point2 = sdCircle(p + point2, scale);",
-                    "    float point3 = sdCircle(p + point3, scale);",
-                    "    float point4 = sdCircle(p + point4, scale);",
+                    "    float point1 = sdCircle(p - point1, scale);",
+                    "    float point2 = sdCircle(p - point2, scale);",
+                    "    float point3 = sdCircle(p - point3, scale);",
+                    "    float point4 = sdCircle(p - point4, scale);",
                     "    ",
                     "    d = opSmoothSubtraction(point1, d, k);",
                     "    d = opSmoothSubtraction(point2, d, k);",
@@ -140,7 +140,7 @@
                         "minValue": "-1, -1",
                         "name": "point1",
                         "type": "vec2",
-                        "value": "-0.0795993, 0.50038"
+                        "value": "0.5, 0.5"
                     },
                     {
                         "defaultValue": "0, 0",
@@ -148,7 +148,7 @@
                         "minValue": "-1, -1",
                         "name": "point2",
                         "type": "vec2",
-                        "value": "0.7142, -0.164011"
+                        "value": "-0.5, 0.5"
                     },
                     {
                         "defaultValue": "0, 0",
@@ -156,7 +156,7 @@
                         "minValue": "-1, -1",
                         "name": "point3",
                         "type": "vec2",
-                        "value": "-0.13164, -0.678956"
+                        "value": "0.5, -0.5"
                     },
                     {
                         "defaultValue": "0, 0",
@@ -164,7 +164,7 @@
                         "minValue": "-1, -1",
                         "name": "point4",
                         "type": "vec2",
-                        "value": "-0.669849, 0.0258587"
+                        "value": "-0.5, -0.5"
                     },
                     {
                         "defaultValue": "0",
@@ -172,7 +172,7 @@
                         "minValue": "0",
                         "name": "k",
                         "type": "float",
-                        "value": "0.0549422"
+                        "value": "0.055"
                     },
                     {
                         "defaultValue": "0.1",
@@ -193,7 +193,7 @@
                 ],
                 "type": 2,
                 "x": 105,
-                "y": 451
+                "y": 405.0594177246094
             }
         ],
         "version": 1

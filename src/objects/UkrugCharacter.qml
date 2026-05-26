@@ -4,88 +4,168 @@ import QtQuick.Shapes
 
 import CutieDesignerModule
 
-Shape {
+Item {
     id: root
-    width: 120
-    height: 120
+    width: 250
+    height: 250
 
     required property var char
+    property bool firstCall: true
 
-    preferredRendererType: Shape.CurveRenderer
-
-    ShapePath {
-        fillColor: "transparent"
-        strokeColor: "white"
-        strokeWidth: 5
-
-        PathAngleArc {
-            centerX: 60
-            centerY: 60
-            radiusX: 60
-            radiusY: 60
-            startAngle: -180
-            sweepAngle: 360
-        }
-    }
-
-    function toAbsoluteAngle(angle: real): real {
-        while (angle < 0) {
-            angle += 360;
-        }
-        return angle % 360;
+    UkrugPointsList {
+        id: list
     }
 
     onCharChanged: {
-        pointsModel.setLetter(char);
+        list.assignLetter(char);
     }
 
-    UkrugPointsListModel {
-        id: pointsModel
-    }
+    Ukrug {
+        id: shader
+        anchors.fill: parent
+        source: parent
+        k: 0.02
+        scale: 0.22
+        smoothFactor: 1
 
-    Repeater {
-        id: repeater
-        model: pointsModel
-        delegate: Shape {
-            id: dot
-            required property var modelData
-            property real angle: root.toAbsoluteAngle(modelData.angle)
+        function convertToPoint(angle, distance) {
+            let vec = Qt.vector2d(Math.cos(angle), Math.sin(angle));
+            vec = vec.times(distance * 0.45);
+            return Qt.point(vec.x, vec.y);
+        }
 
-            property real offset: modelData.layer == 1 ? 15 : 45
-
-            x: 60
-            y: 60 - offset
-
-            height: 17
-            width: 17
-
-            transform: [
-                Rotation {
-                    origin.x: 0
-                    origin.y: dot.offset
-                    angle: dot.angle
-                }
-            ]
-
-            Behavior on angle {
-                PropertyAnimation {}
+        property double point1angle: list.point1.angle
+        property double point1distance: list.point1.distance
+        point1: convertToPoint(point1angle, point1distance)
+        Behavior on point1angle {
+            PropertyAnimation {
+                duration: list.point1.animateAngle ? 250 : 0
             }
+        }
+        Behavior on point1distance {
+            PropertyAnimation {}
+        }
 
-            preferredRendererType: Shape.CurveRenderer
-            antialiasing: true
-
-            ShapePath {
-                fillColor: "white"
-
-                PathAngleArc {
-                    centerX: 0
-                    centerY: 0
-                    radiusX: 8.5
-                    radiusY: 8.5
-                    startAngle: -180
-                    sweepAngle: 360
-                }
+        property double point2angle: list.point2.angle
+        property double point2distance: list.point2.distance
+        point2: convertToPoint(point2angle, point2distance)
+        Behavior on point2angle {
+            PropertyAnimation {
+                duration: list.point2.animateAngle ? 250 : 0
             }
+        }
+        Behavior on point2distance {
+            PropertyAnimation {}
+        }
+
+        property double point3angle: list.point3.angle
+        property double point3distance: list.point3.distance
+        point3: convertToPoint(point3angle, point3distance)
+        Behavior on point3angle {
+            PropertyAnimation {
+                duration: list.point3.animateAngle ? 250 : 0
+            }
+        }
+        Behavior on point3distance {
+            PropertyAnimation {}
+        }
+
+        property double point4angle: list.point4.angle
+        property double point4distance: list.point4.distance
+        point4: convertToPoint(point4angle, point4distance)
+        Behavior on point4angle {
+            PropertyAnimation {
+                duration: list.point4.animateAngle ? 250 : 0
+            }
+        }
+        Behavior on point4distance {
+            PropertyAnimation {}
         }
     }
 }
+
+// Shape {
+//     id: root
+//     width: 120
+//     height: 120
+
+//     required property var char
+
+//     preferredRendererType: Shape.CurveRenderer
+
+//     ShapePath {
+//         fillColor: "transparent"
+//         strokeColor: "white"
+//         strokeWidth: 5
+
+//         PathAngleArc {
+//             centerX: 60
+//             centerY: 60
+//             radiusX: 60
+//             radiusY: 60
+//             startAngle: -180
+//             sweepAngle: 360
+//         }
+//     }
+
+//     function toAbsoluteAngle(angle: real): real {
+//         while (angle < 0) {
+//             angle += 360;
+//         }
+//         return angle % 360;
+//     }
+
+//     onCharChanged: {
+//         pointsModel.setLetter(char);
+//     }
+
+//     UkrugPointsListModel {
+//         id: pointsModel
+//     }
+
+//     Repeater {
+//         id: repeater
+//         model: pointsModel
+//         delegate: Shape {
+//             id: dot
+//             required property var modelData
+//             property real angle: root.toAbsoluteAngle(modelData.angle)
+
+//             property real offset: modelData.layer == 1 ? 15 : 45
+
+//             x: 60
+//             y: 60 - offset
+
+//             height: 17
+//             width: 17
+
+//             transform: [
+//                 Rotation {
+//                     origin.x: 0
+//                     origin.y: dot.offset
+//                     angle: dot.angle
+//                 }
+//             ]
+
+//             Behavior on angle {
+//                 PropertyAnimation {}
+//             }
+
+//             preferredRendererType: Shape.CurveRenderer
+//             antialiasing: true
+
+//             ShapePath {
+//                 fillColor: "white"
+
+//                 PathAngleArc {
+//                     centerX: 0
+//                     centerY: 0
+//                     radiusX: 8.5
+//                     radiusY: 8.5
+//                     startAngle: -180
+//                     sweepAngle: 360
+//                 }
+//             }
+//         }
+//     }
+// }

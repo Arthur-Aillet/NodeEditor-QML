@@ -1,4 +1,21 @@
 #include "UkrugPointsList.hpp"
+#include <qdebug.h>
+#include <qmath.h>
+
+UkrugPointsList::UkrugPointsList() {
+  QString fileName = ":/qt/qml/CutieDesignerModule/objects/UkrugPointsData.json";
+  QFile file(fileName);
+
+  if (!file.open(QIODevice::ReadOnly)) {
+    qWarning() << "Couldn't open file" << fileName;
+    return;
+  }
+  _pointsData = QJsonDocument::fromJson(file.readAll()).object();
+  _points.append(UkrugPoint{0, 4, false});
+  _points.append(UkrugPoint{M_PI / 2, 4, false});
+  _points.append(UkrugPoint{M_PI, 4, false});
+  _points.append(UkrugPoint{M_PI * 3 / 2, 4, false});
+}
 
 static float absoluteAngle(float angle) {
   while (angle < 0) {
@@ -35,7 +52,7 @@ static std::pair<int, int> getClosestMatch(QList<UkrugPoint> &first, QList<Ukrug
       if (pairContain(alreadyMatched, j, 1))
         continue;
 
-      if (first[i].layer == second[j].layer) {
+      if (first[i].distance == second[j].distance) {
         auto currentDist = std::abs(absoluteAngle(first[i].angle) - absoluteAngle(second[j].angle));
         if (currentDist < distance) {
           distance = currentDist;
@@ -48,6 +65,35 @@ static std::pair<int, int> getClosestMatch(QList<UkrugPoint> &first, QList<Ukrug
   return pair;
 }
 
+void UkrugPointsList::assignLetter(QString character) {
+  auto find = _pointsData.find(character.toUpper());
+  if (find == _pointsData.end()) {
+    for (int i = 0; i != _points.length(); i++) {
+      _points[i].distance = 4;
+      _points[i].animateAngle = true;
+    }
+  } else {
+    auto points = find.value().toArray();
+    for (int i = 0; i != points.count(); i++) {
+      auto newDist = points[i].toObject()["distance"].toInt();
+      if (newDist != 0) {
+        auto angle = points[i].toObject()["angle"].toDouble();
+        auto prevAngle = qRadiansToDegrees(_points[i].angle);
+        if (abs(prevAngle - (angle + 360)) < abs(prevAngle - angle))
+          angle += 360;
+        _points[i].angle = qDegreesToRadians(angle);
+      }
+      _points[i].distance = newDist;
+      _points[i].animateAngle =
+          _points[i].distance != 4 && _points[i].distance != 0 && newDist != 4 && newDist != 0;
+    }
+    for (int i = points.count(); i != _points.length(); i++) {
+      _points[i].distance = 4;
+      _points[i].animateAngle = true;
+    }
+  }
+  emit pointsChanged();
+}
 // void UkrugPointsListModel::setLetter(QString letter) {
 //   qDebug() << "letter: " << letter;
 //   QList<UkrugPoint> letterData;

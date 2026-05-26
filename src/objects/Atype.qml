@@ -75,20 +75,7 @@ FlexboxLayout {
         UkrugCharacter {
             required property string character
 
-            Component.onCompleted: {
-                console.log(character);
-            }
             char: character
         }
-
-        //  Item {
-        //     width: 250
-        //     height: 250
-        //     Ukrug {
-        //         anchors.fill: parent
-        //         source: parent
-        //         k: 0.01
-        //     }
-        // }
     }
 }

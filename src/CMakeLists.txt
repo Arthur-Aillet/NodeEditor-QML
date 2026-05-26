@@ -18,8 +18,6 @@ qt_add_qml_module(CutieDesigner
 
   SOURCES
 
-  objects/UkrugPointsListModel.hpp
-  objects/UkrugPointsListModel.cpp
   objects/UkrugPointsList.hpp
   objects/UkrugPointsList.cpp
 
@@ -46,6 +44,7 @@ qt_add_qml_module(CutieDesigner
   RESOURCES
   objects/ukrug.vert.qsb
   objects/ukrug.frag.qsb
+  objects/UkrugPointsData.json
 )
 
 target_link_directories(CutieDesigner

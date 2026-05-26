@@ -1,4 +1,4 @@
-// Created with Qt Quick Effect Maker (version 0.44), Fri May 22 15:36:11 2026
+// Created with Qt Quick Effect Maker (version 0.44), Tue May 26 13:14:13 2026
 
 import QtQuick
 
@@ -9,12 +9,12 @@ Item {
     property Item source: null
 
     property color baseColor: Qt.rgba(1, 1, 1, 1)
-    property point point1: Qt.point(-0.0795993, 0.50038)
-    property point point2: Qt.point(0.7142, -0.164011)
-    property point point3: Qt.point(0.052332, -0.678956)
-    property point point4: Qt.point(-0.669849, 0.0258587)
-    property real k: 0
-    property real scale: 0.137074
+    property point point1: Qt.point(0.5, 0.5)
+    property point point2: Qt.point(-0.5, 0.5)
+    property point point3: Qt.point(0.5, -0.5)
+    property point point4: Qt.point(-0.5, -0.5)
+    property real k: 0.055
+    property real scale: 0.243176
     property real smoothFactor: 0.0125699
 
     ShaderEffect {
