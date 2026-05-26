@@ -14,11 +14,14 @@ qt_add_qml_module(CutieDesigner
   objects/Atype.qml
   objects/UkrugCharacter.qml
   nodes/TextTyper/TextTyper.qml
+  objects/Ukrug.qml
 
   SOURCES
 
-  objects/Ukrug.hpp
-  objects/Ukrug.cpp
+  objects/UkrugPointsListModel.hpp
+  objects/UkrugPointsListModel.cpp
+  objects/UkrugPointsList.hpp
+  objects/UkrugPointsList.cpp
 
   nodes/AdditionModel.hpp
   nodes/DivisionModel.hpp
@@ -40,6 +43,9 @@ qt_add_qml_module(CutieDesigner
   nodes/TextTyper/TextTyperEventList.cpp
 
   DEPENDENCIES QtQuick QtQuick.Layout StatsModule NodeModule
+  RESOURCES
+  objects/ukrug.vert.qsb
+  objects/ukrug.frag.qsb
 )
 
 target_link_directories(CutieDesigner
@@ -52,7 +58,7 @@ target_include_directories(CutieDesigner
   PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
   nodes
-  TextTyper
+  nodes/TextTyper
   objects
 )
 

@@ -1,6 +1,7 @@
 #include "TextTyperModel.hpp"
 #include "DecimalData.hpp"
 #include "TextData.hpp"
+#include <qdebug.h>
 
 QString TextTyperModel::portCaption(PortType portType, PortIndex index) const {
   switch (portType) {
@@ -63,6 +64,9 @@ void TextTyperModel::setPlay(bool playState) {
   _playing = playState;
 
   if (playState) {
+    // TODO: Prevent Starting with an eventloop instantanous (ex: Only Insert Text with length 0)
+    // this cause a crash
+    // TODO: Resume the current without starting from scratch the current event
     if (_eventList.events.isEmpty())
       _playing = false;
     else
@@ -128,7 +132,7 @@ void TextTyperModel::processErase() {
 void TextTyperModel::processReplace() {
   auto &r = std::get<Replace>(_currentEvent);
 
-  if (r.text.isEmpty())
+  if (r.text.isEmpty() || _content->text.isEmpty())
     return processNextEvent();
 
   uint pos = std::min((uint)_content->text.length(), r.pos);
@@ -139,7 +143,7 @@ void TextTyperModel::processReplace() {
   r.text.removeFirst();
   r.pos += 1;
 
-  if (r.text.isEmpty())
+  if (r.text.isEmpty() || _content->text.isEmpty())
     return processNextEvent();
 
   _timer.connect(&_timer, SIGNAL(timeout()), this, SLOT(processReplace()),

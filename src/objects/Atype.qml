@@ -1,29 +1,94 @@
 pragma ComponentBehavior: Bound
 import QtQuick
+import CutieDesignerModule
 import QtQuick.Layouts
 
 FlexboxLayout {
     id: root
-    property string text: "A"
+    property string text
 
     anchors.fill: parent
     direction: FlexboxLayout.Row
     justifyContent: FlexboxLayout.JustifyStart
     gap: 15
 
-    Text {
-        color: "white"
-        text: root.text
-        font.bold: true
-        font.pixelSize: 80
+    function sharedStart(fst, snd) {
+        let i = 0;
+
+        while (i != fst.length && i != snd.length && fst.charAt(i) === snd.charAt(i)) {
+            i++;
+        }
+        return fst.substring(0, i);
     }
 
-    // Repeater {
-    //     id: rep
-    //     model: root.text.length
-    //     delegate: UkrugCharacter {
-    //         required property int index
-    //         char: root.text[index]
-    //     }
-    // }
+    function sharedEnd(fst, snd) {
+        let i = 0;
+
+        while (i != fst.length && i != snd.length && fst.charAt(fst.length - i - 1) === snd.charAt(snd.length - i - 1)) {
+            i++;
+        }
+        return fst.substring(fst.length - i, fst.length);
+    }
+
+    onTextChanged: {
+        let currentText = "";
+        for (let i = 0; i != textModel.count; i++) {
+            currentText = currentText.concat(textModel.get(i).character);
+        }
+
+        let commonStart = sharedStart(text, currentText);
+        let remaining = text.substr(commonStart.length, text.length);
+        let cleanedCurrentText = currentText.substr(commonStart.length, currentText.length);
+        let commonEnd = sharedEnd(remaining, cleanedCurrentText);
+        remaining = remaining.substr(0, remaining.length - commonEnd.length);
+        cleanedCurrentText = cleanedCurrentText.substr(0, cleanedCurrentText.length - commonEnd.length);
+
+        for (let i = 0; i != remaining.length; i++) {
+            if (i < cleanedCurrentText.length) {
+                textModel.set(commonStart.length + i, {
+                    character: remaining[i]
+                });
+            } else {
+                textModel.insert(commonStart.length + i, {
+                    character: remaining[i]
+                });
+            }
+        }
+        for (let i = 0; i < cleanedCurrentText.length - remaining.length; i++) {
+            textModel.remove(commonStart.length + remaining.length);
+        }
+    }
+
+    ListModel {
+        id: textModel
+    }
+
+    Repeater {
+        id: rep
+        model: textModel
+        delegate:
+        // Text {
+        //     required property string character
+        //     text: character
+        // }
+
+        UkrugCharacter {
+            required property string character
+
+            Component.onCompleted: {
+                console.log(character);
+            }
+            char: character
+        }
+
+        //  Item {
+        //     width: 250
+        //     height: 250
+        //     Ukrug {
+        //         anchors.fill: parent
+        //         source: parent
+        //         k: 0.01
+        //     }
+        // }
+    }
 }
