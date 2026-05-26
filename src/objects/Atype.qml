@@ -9,6 +9,7 @@ FlexboxLayout {
 
     anchors.fill: parent
     direction: FlexboxLayout.Row
+    wrap: FlexboxLayout.Wrap
     justifyContent: FlexboxLayout.JustifyStart
     gap: 15
 
@@ -66,13 +67,7 @@ FlexboxLayout {
     Repeater {
         id: rep
         model: textModel
-        delegate:
-        // Text {
-        //     required property string character
-        //     text: character
-        // }
-
-        UkrugCharacter {
+        delegate: UkrugCharacter {
             required property string character
 
             char: character

@@ -82,6 +82,7 @@
                     "",
                     "float opSmoothUnion( float d1, float d2, float k )",
                     "{",
+                    "    if (k == 0) return opUnion(d1,d2);",
                     "    k *= 4.0;",
                     "    float h = max(k-abs(d1-d2),0.0);",
                     "    return min(d1, d2) - h*h*0.25/k;",
@@ -89,7 +90,7 @@
                     "",
                     "float opSmoothSubtraction( float d1, float d2, float k )",
                     "{",
-                    "    return k == 0 ? opSubtraction(d1, d2) : -opSmoothUnion(d1,-d2,k);",
+                    "    return -opSmoothUnion(d1,-d2,k);",
                     "",
                     "    //float h = max(4.0*k-abs(d1+d2),0.0);",
                     "    //return max(-d1, d2) + h*h/(16.0*k);",
@@ -105,13 +106,21 @@
                     "    float point3 = sdCircle(p - point3, scale);",
                     "    float point4 = sdCircle(p - point4, scale);",
                     "    ",
-                    "    d = opSmoothSubtraction(point1, d, k);",
-                    "    d = opSmoothSubtraction(point2, d, k);",
-                    "    d = opSmoothSubtraction(point3, d, k);",
-                    "    d = opSmoothSubtraction(point4, d, k);",
+                    "    if (substraction) {",
+                    "        d = opSmoothSubtraction(point1, d, k);",
+                    "        d = opSmoothSubtraction(point2, d, k);",
+                    "        d = opSmoothSubtraction(point3, d, k);",
+                    "        d = opSmoothSubtraction(point4, d, k);   ",
+                    "        d = (d < -fill) ? -d - (fill * 2.0): d; ",
+                    "    } else {",
+                    "        d = (d < -fill) ? -d - (fill * 2.0): d;",
+                    "        d = opSmoothUnion(point1, d, k);",
+                    "        d = opSmoothUnion(point2, d, k);",
+                    "        d = opSmoothUnion(point3, d, k);",
+                    "        d = opSmoothUnion(point4, d, k);    ",
+                    "    }",
                     "",
                     "    float fac = smoothstep(0, smoothFactor, -d);",
-                    "    ",
                     "",
                     "\tfragColor = mix(fragColor, baseColor, fac);",
                     "}",
@@ -140,7 +149,7 @@
                         "minValue": "-1, -1",
                         "name": "point1",
                         "type": "vec2",
-                        "value": "0.5, 0.5"
+                        "value": "0.45, 0.45"
                     },
                     {
                         "defaultValue": "0, 0",
@@ -148,7 +157,7 @@
                         "minValue": "-1, -1",
                         "name": "point2",
                         "type": "vec2",
-                        "value": "-0.5, 0.5"
+                        "value": "-0.45, 0.45"
                     },
                     {
                         "defaultValue": "0, 0",
@@ -156,7 +165,7 @@
                         "minValue": "-1, -1",
                         "name": "point3",
                         "type": "vec2",
-                        "value": "0.5, -0.5"
+                        "value": "0.45, -0.45"
                     },
                     {
                         "defaultValue": "0, 0",
@@ -164,7 +173,7 @@
                         "minValue": "-1, -1",
                         "name": "point4",
                         "type": "vec2",
-                        "value": "-0.5, -0.5"
+                        "value": "-0.45, -0.45"
                     },
                     {
                         "defaultValue": "0",
@@ -172,7 +181,7 @@
                         "minValue": "0",
                         "name": "k",
                         "type": "float",
-                        "value": "0.055"
+                        "value": "0.032333"
                     },
                     {
                         "defaultValue": "0.1",
@@ -180,15 +189,29 @@
                         "minValue": "0",
                         "name": "scale",
                         "type": "float",
-                        "value": "0.243176"
+                        "value": "0.305556"
                     },
                     {
                         "defaultValue": "0.001",
-                        "maxValue": "0.2",
+                        "maxValue": "1",
                         "minValue": "0",
                         "name": "smoothFactor",
                         "type": "float",
-                        "value": "0.0125699"
+                        "value": "0"
+                    },
+                    {
+                        "defaultValue": "1",
+                        "maxValue": "1",
+                        "minValue": "0",
+                        "name": "fill",
+                        "type": "float",
+                        "value": "0.0174829"
+                    },
+                    {
+                        "defaultValue": "true",
+                        "name": "substraction",
+                        "type": "bool",
+                        "value": "true"
                     }
                 ],
                 "type": 2,
