@@ -5,12 +5,11 @@
 #include <qdebug.h>
 #include <qlogging.h>
 
-class TextDataType : public NodeDataType {
-  public:
-  TextDataType(QString id, QString name) : NodeDataType(id, name) {}
+struct TextDataType : public NodeDataType {
+  TextDataType(DataTypeId id, QString name) : NodeDataType(id, name) {}
 
-  QList<QString> compatibleTypes() override {
-    QList<QString> types;
+  QList<DataTypeId> compatibleTypes() const override {
+    QList<DataTypeId> types;
     types.push_front(id);
     types.push_front(DecimalData().type().id);
     return types;

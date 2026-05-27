@@ -33,7 +33,7 @@ class ConnectionStyle : public Style {
 
   QColor constructionColor() const;
   QColor normalColor() const;
-  QColor normalColor(QString typeId) const;
+  Q_INVOKABLE QColor typeColor(QString typeId) const;
   QColor selectedColor() const;
   QColor selectedHaloColor() const;
   QColor hoveredColor() const;

@@ -35,7 +35,6 @@ class ModelInterface : public QObject {
 
   public:
   Q_INVOKABLE QVariant nodeData(NodeId nodeId, NodeRole role);
-  Q_INVOKABLE QVariant portData(NodeId nodeId, PortType portType, PortIndex index, PortRole role);
   Q_INVOKABLE bool setNodeData(NodeId nodeId, NodeRole role, QVariant value);
   Q_INVOKABLE void createConnection(ConnectionId const id);
   Q_INVOKABLE void deleteConnection(ConnectionId const id);

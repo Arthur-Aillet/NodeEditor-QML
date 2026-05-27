@@ -1,5 +1,6 @@
 #include "MathOperationDataModel.hpp"
 #include "DecimalData.hpp"
+#include <qdebug.h>
 
 unsigned int MathOperationDataModel::nPorts(PortType portType) const {
   unsigned int result;
@@ -13,6 +14,7 @@ unsigned int MathOperationDataModel::nPorts(PortType portType) const {
 }
 
 const NodeDataType &MathOperationDataModel::dataType(PortType, PortIndex) const {
+  qDebug() << DecimalData().type().id;
   return DecimalData().type();
 }
 

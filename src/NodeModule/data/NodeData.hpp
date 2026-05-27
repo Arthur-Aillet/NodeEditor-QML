@@ -5,24 +5,22 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 #include <qdebug.h>
+#include <qobject.h>
 #include <qqmlintegration.h>
+#include <qtmetamacros.h>
 
 /**
  * `id` represents an internal unique data type for the given port.
  * `name` is a normal text description.
  */
-class NodeDataType {
-  Q_GADGET
-
-  public:
-  NodeDataType() {}
-  NodeDataType(QString _id, QString _name) : id(_id), name(_name) {}
-  QString id;
+struct NodeDataType {
+  using DataTypeId = QString;
+  NodeDataType(DataTypeId _id, QString _name) : id(_id), name(_name) {}
+  DataTypeId id;
   QString name;
-  Q_PROPERTY(QString id MEMBER id)
-  Q_PROPERTY(QString name MEMBER name)
 
-  virtual QList<QString> compatibleTypes() { return QList<QString>(id); }
+  // By default, each type is only compatible with itself
+  virtual QList<QString> compatibleTypes() const { return QList<DataTypeId>(id); }
 };
 
 /**

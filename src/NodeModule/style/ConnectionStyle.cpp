@@ -8,6 +8,7 @@
 
 #include <QDebug>
 
+#include <qlogging.h>
 #include <random>
 
 // inline void initResources() { Q_INIT_RESOURCE(resources); }
@@ -65,9 +66,7 @@ void ConnectionStyle::setConnectionStyle(QString jsonText) {
   }
 
 #define CONNECTION_STYLE_WRITE_COLOR(values, variable)                                             \
-  {                                                                                                \
-    values[#variable] = variable.name();                                                           \
-  }
+  { values[#variable] = variable.name(); }
 
 #define CONNECTION_STYLE_READ_FLOAT(values, variable)                                              \
   {                                                                                                \
@@ -78,9 +77,7 @@ void ConnectionStyle::setConnectionStyle(QString jsonText) {
   }
 
 #define CONNECTION_STYLE_WRITE_FLOAT(values, variable)                                             \
-  {                                                                                                \
-    values[#variable] = variable;                                                                  \
-  }
+  { values[#variable] = variable; }
 
 #define CONNECTION_STYLE_READ_BOOL(values, variable)                                               \
   {                                                                                                \
@@ -91,9 +88,7 @@ void ConnectionStyle::setConnectionStyle(QString jsonText) {
   }
 
 #define CONNECTION_STYLE_WRITE_BOOL(values, variable)                                              \
-  {                                                                                                \
-    values[#variable] = variable;                                                                  \
-  }
+  { values[#variable] = variable; }
 
 void ConnectionStyle::loadJson(QJsonObject const &json) {
   QJsonValue nodeStyleValues = json["ConnectionStyle"];
@@ -136,12 +131,14 @@ QJsonObject ConnectionStyle::toJson() const {
 QColor ConnectionStyle::constructionColor() const { return ConstructionColor; };
 QColor ConnectionStyle::normalColor() const { return NormalColor; };
 
-QColor ConnectionStyle::normalColor(QString typeId) const {
+QColor ConnectionStyle::typeColor(QString typeId) const {
   std::size_t hash = qHash(typeId);
 
   std::size_t const hue_range = 0xFF;
 
-  std::mt19937 gen(static_cast<unsigned int>(hash));
+  const std::size_t baseless_aesthetic_offset = 30;
+
+  std::mt19937 gen(static_cast<unsigned int>(hash + baseless_aesthetic_offset));
   std::uniform_int_distribution<int> distrib(0, hue_range);
 
   int hue = distrib(gen);

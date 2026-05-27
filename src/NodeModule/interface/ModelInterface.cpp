@@ -33,11 +33,6 @@ QVariant ModelInterface::nodeData(NodeId nodeId, NodeRole role) {
   return graphModel.nodeData(nodeId, role);
 };
 
-QVariant ModelInterface::portData(NodeId nodeId, PortType portType, PortIndex index,
-                                  PortRole role) {
-  return graphModel.portData(nodeId, portType, index, role);
-};
-
 bool ModelInterface::setNodeData(NodeId nodeId, NodeRole role, QVariant value) {
   return graphModel.setNodeData(nodeId, role, value);
 }

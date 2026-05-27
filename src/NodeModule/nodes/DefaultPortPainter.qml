@@ -20,14 +20,15 @@ Item {
     }
 
     property bool connected: ModelInterface.graph.connections(nodePainter.nodeObject.nodeId, side, portId).length != 0
-    property var dataType: ModelInterface.portData(nodePainter.nodeObject.nodeId, side, portId, NodeEditor.PortRole.DataType)
+    property string dataType: ModelInterface.graph.portData(nodePainter.nodeObject.nodeId, side, portId, NodeEditor.PortRole.DataType)
+    property string dataName: ModelInterface.graph.portData(nodePainter.nodeObject.nodeId, side, portId, NodeEditor.PortRole.DataName)
 
     Text {
         id: portLabel
         readonly property real offset: 10
 
-        property bool captionVisible: ModelInterface.portData(port.nodePainter.nodeObject.nodeId, port.side, port.portId, NodeEditor.PortRole.CaptionVisible)
-        property string caption: ModelInterface.portData(port.nodePainter.nodeObject.nodeId, port.side, port.portId, NodeEditor.PortRole.Caption)
+        property bool captionVisible: ModelInterface.graph.portData(port.nodePainter.nodeObject.nodeId, port.side, port.portId, NodeEditor.PortRole.PortCaptionVisible)
+        property string caption: ModelInterface.graph.portData(port.nodePainter.nodeObject.nodeId, port.side, port.portId, NodeEditor.PortRole.PortCaption)
 
         FontMetrics {
             id: portLabelMetrics
@@ -36,7 +37,7 @@ Item {
 
         x: connectionPoint.x + (port.side == NodeEditor.PortType.In ? offset : -width - offset)
         y: connectionPoint.y - portLabelMetrics.ascent / 2.0 - port.style.connectionPointDiameter / 4.0
-        text: captionVisible ? caption : port.dataType.name
+        text: captionVisible ? caption : port.dataName
         color: port.connected ? port.style.fontColor : port.style.fontColorFaded
     }
 
@@ -50,7 +51,17 @@ Item {
         preferredRendererType: Shape.CurveRenderer
 
         ShapePath {
-            fillColor: port.connected ? port.style.filledConnectionPointColor : port.style.connectionPointColor
+            fillColor: {
+                if (StyleCollection.connection.useDataDefinedColors) {
+                    const color = StyleCollection.connection.typeColor(port.dataType);
+                    if (!port.connected) {
+                        color.a = 0.7;
+                    }
+                    return color;
+                } else {
+                    return port.connected ? port.style.filledConnectionPointColor : port.style.connectionPointColor;
+                }
+            }
             strokeWidth: port.nodePainter.strokeWidth
             strokeColor: port.nodePainter.strokeColor
 
