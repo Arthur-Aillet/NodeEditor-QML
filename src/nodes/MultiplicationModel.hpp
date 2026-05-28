@@ -10,6 +10,7 @@
 /// In this example it has no logic.
 class MultiplicationModel : public MathOperationDataModel {
   public:
+  MultiplicationModel(QQmlEngine *engine) : MathOperationDataModel(engine) {}
   virtual ~MultiplicationModel() {}
 
   public:

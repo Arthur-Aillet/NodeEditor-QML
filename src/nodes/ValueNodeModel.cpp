@@ -8,7 +8,8 @@
 #include <qqmlcomponent.h>
 #include <qvalidator.h>
 
-ValueNodeModel::ValueNodeModel() : _number(std::make_shared<DecimalData>(0.0)) {}
+ValueNodeModel::ValueNodeModel(QQmlEngine *engine)
+    : NodeDelegateModel(engine), _number(std::make_shared<DecimalData>(0.0)) {}
 
 QJsonObject ValueNodeModel::save() const {
   QJsonObject modelJson = NodeDelegateModel::save();

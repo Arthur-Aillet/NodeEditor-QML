@@ -15,7 +15,7 @@ class TextDisplayDataModel : public NodeDelegateModel {
   Q_OBJECT
 
   public:
-  TextDisplayDataModel();
+  TextDisplayDataModel(QQmlEngine *engine);
 
   ~TextDisplayDataModel() = default;
 
@@ -24,7 +24,7 @@ class TextDisplayDataModel : public NodeDelegateModel {
 
   bool captionVisible() const override { return false; }
 
-  QString name() const override { return QStringLiteral("Result"); }
+  QString name() const override { return QStringLiteral("TextDisplay"); }
 
   QString portCaption(PortType, PortIndex) const override { return QString(); }
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }

@@ -2,7 +2,7 @@ include(FetchContent)
 
 FetchContent_Declare(vivid
     GIT_REPOSITORY  https://github.com/gurki/vivid
-    GIT_TAG         v3.1.0
+    GIT_TAG         c3476303cc749b241172ed101ec14defee268201
 )
 
 FetchContent_MakeAvailable(vivid)

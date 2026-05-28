@@ -19,7 +19,7 @@ class ValueNodeModel : public NodeDelegateModel {
   Q_OBJECT
 
   public:
-  ValueNodeModel();
+  ValueNodeModel(QQmlEngine *engine);
   ~ValueNodeModel() override = default;
 
   public:

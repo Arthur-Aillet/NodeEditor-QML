@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.16)
-
-project(CutieDesigner VERSION 0.1 LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.10..4.0)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_subdirectory(dependencies)
+
+project(CutieDesigner VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -25,8 +25,6 @@ qt_policy(SET QTP0004 NEW)
 
 option(DEBUG_MODE "Set DEBUG Mode" ON)
 option(RUN "Launch App" OFF)
-
-#add_subdirectory(external/nodeeditor)
 
 add_subdirectory(src)
 

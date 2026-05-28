@@ -14,6 +14,9 @@
 
 /// Class uses map for storing models (name, model)
 class NodeDelegateModelRegistry {
+  private:
+  QQmlEngine *_engine;
+
   public:
   using RegistryItemPtr = std::unique_ptr<NodeDelegateModel>;
   using RegistryItemCreator = std::function<RegistryItemPtr()>;
@@ -21,9 +24,7 @@ class NodeDelegateModelRegistry {
   using RegisteredModelsCategoryMap = std::unordered_map<QString, QString>;
   using CategoriesSet = std::set<QString>;
 
-  // using RegisteredTypeConvertersMap = std::map<TypeConverterId, TypeConverter>;
-
-  NodeDelegateModelRegistry() = default;
+  NodeDelegateModelRegistry(QQmlEngine *engine) : _engine(engine){};
   ~NodeDelegateModelRegistry() = default;
 
   NodeDelegateModelRegistry(NodeDelegateModelRegistry const &) = delete;
@@ -46,7 +47,7 @@ class NodeDelegateModelRegistry {
 
   template <typename ModelType>
   void registerModel(QString const &category = "Nodes") {
-    RegistryItemCreator creator = []() { return std::make_unique<ModelType>(); };
+    RegistryItemCreator creator = [this]() { return std::make_unique<ModelType>(_engine); };
     registerModel<ModelType>(std::move(creator), category);
   }
 

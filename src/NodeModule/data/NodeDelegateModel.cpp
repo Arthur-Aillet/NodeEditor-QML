@@ -4,7 +4,8 @@
 #include "StyleCollection.hpp"
 #include <qdebug.h>
 
-NodeDelegateModel::NodeDelegateModel() : _nodeStyle(StyleCollection::getNodeStyle()) {}
+NodeDelegateModel::NodeDelegateModel(QQmlEngine *engine)
+    : _nodeStyle(StyleCollection::getNodeStyle()) {}
 
 QJsonObject NodeDelegateModel::save() const {
   QJsonObject modelJson;

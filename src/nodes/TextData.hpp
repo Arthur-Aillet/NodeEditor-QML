@@ -2,8 +2,6 @@
 
 #include "DecimalData.hpp"
 #include "NodeData.hpp"
-#include <qdebug.h>
-#include <qlogging.h>
 
 struct TextDataType : public NodeDataType {
   TextDataType(DataTypeId id, QString name) : NodeDataType(id, name) {}

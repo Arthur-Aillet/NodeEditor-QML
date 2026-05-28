@@ -11,10 +11,15 @@ ApplicationWindow {
     visible: true
     title: qsTr("CutieDesigner!")
 
-    signal newDisplayValue(newValue: string)
+    signal newRootComponent(newValue: Component)
+    signal removeComponent
 
-    onNewDisplayValue: newValue => {
-        display.text = newValue;
+    onRemoveComponent: {
+        source.sourceComponent = undefined;
+    }
+
+    onNewRootComponent: newValue => {
+        source.sourceComponent = newValue;
     }
 
     footer: ToolBar {
@@ -29,13 +34,9 @@ ApplicationWindow {
             SplitView.preferredWidth: root.width
             SplitView.preferredHeight: root.height / 2
             color: "blue"
-            Atype {
-                id: display
+            Loader {
+                id: source
             }
-            // TextDisplay {
-            //     id: display
-            //     anchors.centerIn: parent
-            // }
         }
         SplitView {
             id: editView

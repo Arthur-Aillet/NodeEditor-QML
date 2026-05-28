@@ -9,6 +9,7 @@
 /// In this example it has no logic.
 class DivisionModel : public MathOperationDataModel {
   public:
+  DivisionModel(QQmlEngine *engine) : MathOperationDataModel(engine) {}
   virtual ~DivisionModel() {}
 
   public:

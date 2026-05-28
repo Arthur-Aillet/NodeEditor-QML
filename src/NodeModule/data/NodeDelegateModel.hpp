@@ -54,7 +54,7 @@ class NodeDelegateModel : public QObject, public Serializable {
   Q_OBJECT
 
   public:
-  NodeDelegateModel();
+  NodeDelegateModel(QQmlEngine *engine);
 
   virtual ~NodeDelegateModel() = default;
 

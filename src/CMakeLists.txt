@@ -9,9 +9,9 @@ qt_add_qml_module(CutieDesigner
   URI CutieDesignerModule
   QML_FILES
   Main.qml
+  objects/AType.qml
   TextDisplay.qml
   nodes/PortLabel.qml
-  objects/Atype.qml
   objects/UkrugCharacter.qml
   nodes/TextTyper/TextTyper.qml
   objects/Ukrug.qml
@@ -36,6 +36,12 @@ qt_add_qml_module(CutieDesigner
 
   nodes/TextTyper/TextTyperModel.hpp
   nodes/TextTyper/TextTyperModel.cpp
+
+  nodes/Object/ATypeNode.cpp
+  nodes/Object/ATypeNode.hpp
+  nodes/Object/ObjectData.hpp
+  nodes/Object/ObjectDisplayDataModel.cpp
+  nodes/Object/ObjectDisplayDataModel.hpp
 
   nodes/TextTyper/TextTyperEventList.hpp
   nodes/TextTyper/TextTyperEventList.cpp

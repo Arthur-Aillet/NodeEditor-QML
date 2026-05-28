@@ -8,7 +8,6 @@
 #include <qvectornd.h>
 
 #include "Style.hpp"
-#include "vivid/color.h"
 
 class ConnectionStyle : public Style {
   Q_GADGET
@@ -24,12 +23,7 @@ class ConnectionStyle : public Style {
   Q_INVOKABLE QJsonObject toJson() const override;
 
   Q_INVOKABLE QColor lerpOklabColors(const QColor &first, const QColor &second,
-                                     const float amount) const {
-    const auto oklabFirst = vivid::Color(first.rgb()).oklab();
-    const auto oklabSecond = vivid::Color(second.rgb()).oklab();
-    const auto lerped = lerp(oklabFirst, oklabSecond, amount).rgb().value();
-    return QColor::fromRgbF(lerped.x, lerped.y, lerped.z);
-  }
+                                     const float amount) const;
 
   Q_PROPERTY(QColor constructionColor READ constructionColor)
   Q_PROPERTY(QColor normalColor READ normalColor)

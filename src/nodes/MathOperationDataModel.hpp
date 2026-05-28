@@ -17,6 +17,7 @@ class MathOperationDataModel : public NodeDelegateModel {
   Q_OBJECT
 
   public:
+  MathOperationDataModel(QQmlEngine *engine) : NodeDelegateModel(engine) {}
   ~MathOperationDataModel() = default;
 
   public:

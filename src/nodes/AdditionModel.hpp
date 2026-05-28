@@ -9,6 +9,7 @@
 /// In this example it has no logic.
 class AdditionModel : public MathOperationDataModel {
   public:
+  AdditionModel(QQmlEngine *engine) : MathOperationDataModel(engine) {}
   ~AdditionModel() = default;
 
   public:

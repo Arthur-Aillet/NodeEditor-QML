@@ -2,6 +2,8 @@
 
 #include "StyleCollection.hpp"
 
+#include "vivid/color.h"
+
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
 #include <QtCore/QJsonValueRef>
@@ -163,4 +165,12 @@ bool ConnectionStyle::operator==(const ConnectionStyle &other) const {
          HoveredColor == other.HoveredColor && LineWidth == other.LineWidth &&
          ConstructionLineWidth == other.ConstructionLineWidth &&
          PointDiameter == other.PointDiameter && UseDataDefinedColors == other.UseDataDefinedColors;
+}
+
+QColor ConnectionStyle::lerpOklabColors(const QColor &first, const QColor &second,
+                                        const float amount) const {
+  const auto oklabFirst = vivid::Color(first.rgb()).oklab();
+  const auto oklabSecond = vivid::Color(second.rgb()).oklab();
+  const auto lerped = lerp(oklabFirst, oklabSecond, amount).rgb().value();
+  return QColor::fromRgbF(lerped.x, lerped.y, lerped.z);
 }

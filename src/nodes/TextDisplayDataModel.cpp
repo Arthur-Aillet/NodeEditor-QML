@@ -1,15 +1,15 @@
 #include "TextDisplayDataModel.hpp"
 #include "DecimalData.hpp"
+#include "NodeDelegateModel.hpp"
 #include "TextData.hpp"
 
 #include <QtWidgets/QLabel>
-#include <cstdio>
 #include <memory>
-#include <qdebug.h>
 #include <qqmlcomponent.h>
 #include <qtmetamacros.h>
 
-TextDisplayDataModel::TextDisplayDataModel() : _content(std::make_shared<TextData>(QString())) {}
+TextDisplayDataModel::TextDisplayDataModel(QQmlEngine *engine)
+    : NodeDelegateModel(engine), _content(std::make_shared<TextData>(QString())) {}
 
 unsigned int TextDisplayDataModel::nPorts(PortType portType) const {
   switch (portType) {

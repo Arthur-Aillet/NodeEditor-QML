@@ -1,11 +1,17 @@
 pragma ComponentBehavior: Bound
+
 import QtQuick
-import CutieDesignerModule
 import QtQuick.Layouts
+
+import CutieDesignerModule
 
 FlexboxLayout {
     id: root
     property string text
+
+    Component.onCompleted: {
+        text = "test";
+    }
 
     anchors.fill: parent
     direction: FlexboxLayout.Row

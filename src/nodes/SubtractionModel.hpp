@@ -10,6 +10,7 @@
 /// In this example it has no logic.
 class SubtractionModel : public MathOperationDataModel {
   public:
+  SubtractionModel(QQmlEngine *engine) : MathOperationDataModel(engine) {}
   virtual ~SubtractionModel() {}
 
   public:

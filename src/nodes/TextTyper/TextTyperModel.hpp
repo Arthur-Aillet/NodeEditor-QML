@@ -5,6 +5,7 @@
 #include "TextTyperEventList.hpp"
 #include <QTimer>
 #include <qnamespace.h>
+#include <qqmlengine.h>
 #include <qtmetamacros.h>
 
 class TextTyperModel : public NodeDelegateModel {
@@ -17,7 +18,9 @@ class TextTyperModel : public NodeDelegateModel {
   Q_PROPERTY(QString text READ getText WRITE setText NOTIFY textChanged)
   Q_PROPERTY(TextTyperEventList *model READ getModel CONSTANT)
 
-  TextTyperModel() : _content(std::make_shared<TextData>(QString("..."))), _timer(QTimer()){};
+  TextTyperModel(QQmlEngine *engine)
+      : NodeDelegateModel(engine), _content(std::make_shared<TextData>(QString("..."))),
+        _timer(QTimer()){};
 
   ~TextTyperModel() = default;
 
