@@ -66,7 +66,7 @@ Item {
             strokeColor: port.nodePainter.strokeColor
 
             PathAngleArc {
-                property real radius: port.style.connectionPointDiameter * 0.6 // Diameter is used a the radius in the original
+                property real radius: port.style.connectionPointDiameter * 0.6 // Diameter is used as the radius in the original
 
                 Binding on radius {
                     property alias painter: port.nodePainter

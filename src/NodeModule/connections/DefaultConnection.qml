@@ -1,12 +1,11 @@
 import QtQuick
-import QtQuick.Shapes
 import NodeModule
 
-Shape {
+Canvas {
     id: root
-    property point mousePos
 
     required property NodeList nodes
+    required property NavigableArea area
 
     Connections {
         target: ModelInterface
@@ -48,13 +47,27 @@ Shape {
 
     property point inPoint: {
         if (connection.inNodeId === NodeEditorUtils.InvalidNodeId)
-            return mousePos;
+            return area.mousePosition;
         return getPortPosition(NodeEditor.PortType.In);
     }
     property point outPoint: {
         if (connection.outNodeId === NodeEditorUtils.InvalidNodeId)
-            return mousePos;
+            return area.mousePosition;
         return getPortPosition(NodeEditor.PortType.Out);
+    }
+
+    property color inTypeColor: {
+        if (!fullyConnected)
+            return "black";
+        const dataType = ModelInterface.graph.portData(connection.inNodeId, NodeEditor.PortType.In, connection.inPortIndex, NodeEditor.PortRole.DataType);
+        return StyleCollection.connection.typeColor(dataType);
+    }
+
+    property color outTypeColor: {
+        if (!fullyConnected)
+            return "black";
+        const dataType = ModelInterface.graph.portData(connection.outNodeId, NodeEditor.PortType.Out, connection.outPortIndex, NodeEditor.PortRole.DataType);
+        return StyleCollection.connection.typeColor(dataType);
     }
 
     property point c1
@@ -63,8 +76,16 @@ Shape {
     readonly property real defaultOffset: 200
 
     property bool horizontal: true
-    onInPointChanged: horizontal ? pointsC1C2Horizontal() : pointsC1C2Vertical()
-    onOutPointChanged: horizontal ? pointsC1C2Horizontal() : pointsC1C2Vertical()
+    function refreshPoints() {
+        if (horizontal) {
+            pointsC1C2Horizontal();
+        } else {
+            pointsC1C2Vertical();
+        }
+        markDirty(Qt.rect(x, y, width, height));
+    }
+    onInPointChanged: refreshPoints()
+    onOutPointChanged: refreshPoints()
 
     function pointsC1C2Horizontal() {
         const xDistance = inPoint.x - outPoint.x;
@@ -97,15 +118,17 @@ Shape {
         c1 = Qt.point(inPoint.x - horizontalOffset, inPoint.y - verticalOffset);
         c2 = Qt.point(outPoint.x + horizontalOffset, outPoint.y + verticalOffset);
     }
-    preferredRendererType: Shape.CurveRenderer
 
     property bool fullyConnected: connection.inNodeId !== NodeEditorUtils.InvalidNodeId && connection.outNodeId !== NodeEditorUtils.InvalidNodeId
     property bool hovered: false
 
+    onHoveredChanged: markDirty(Qt.rect(x, y, width, height))
+    onFocusChanged: markDirty(Qt.rect(x, y, width, height))
+
     function distanceToCurve(point: point): real {
-        const rect = root.boundingRect;
         const overlapAndCurveFactor = 1.2;
-        const steps = Math.round(Math.sqrt(rect.height * rect.height + rect.width * rect.width) / 10 * overlapAndCurveFactor);
+        const linearLength = Math.sqrt(Math.pow(inPoint.x - outPoint.x, 2) + Math.pow(inPoint.y - outPoint.y, 2));
+        const steps = Math.round(linearLength / 10 * overlapAndCurveFactor);
         let shortestDistance = Infinity;
         for (let i = 0; i != steps; i++) {
             const pointAlong = path.pointAtPercent(1 / steps * i);
@@ -131,59 +154,87 @@ Shape {
         }
     }
 
-    ShapePath {
-        id: outline
+    property bool swap: connection.inNodeId === NodeEditorUtils.InvalidNodeId
 
-        startX: root.inPoint.x
-        startY: root.inPoint.y
-        fillColor: "transparent"
-        strokeWidth: StyleCollection.connection.lineWidth * 2
-        strokeColor: {
-            if (root.focus)
-                return StyleCollection.connection.selectedHaloColor;
-            if (root.hovered)
-                return StyleCollection.connection.hoveredColor;
-            return "transparent";
+    property double scaleFactor: root.area.inner.mat.m11
+
+    x: (Math.min(root.inPoint.x, root.outPoint.x, root.c1.x, root.c2.x)) - StyleCollection.connection.lineWidth
+    y: (Math.min(root.inPoint.y, root.outPoint.y, root.c1.y, root.c2.y)) - StyleCollection.connection.lineWidth
+    width: ((Math.max(root.inPoint.x, root.outPoint.x, root.c1.x, root.c2.x) - x) + StyleCollection.connection.lineWidth * 3) * scaleFactor
+    height: ((Math.max(root.inPoint.y, root.outPoint.y, root.c1.y, root.c2.y) - y) + StyleCollection.connection.lineWidth * 3) * scaleFactor
+
+    transformOrigin: Item.TopLeft
+
+    scale: 1.0 / scaleFactor
+
+    antialiasing: true
+
+    property point scaledStartPoint: Qt.point((path.startX - x) * scaleFactor, (path.startY - y) * scaleFactor)
+    property point scaledEndPoint: Qt.point((pathCubic.x - x) * scaleFactor, (pathCubic.y - y) * scaleFactor)
+
+    function innerStrokeStyle(ctx): color {
+        if (focus)
+            return StyleCollection.connection.selectedColor;
+        if (!StyleCollection.connection.useDataDefinedColors)
+            return StyleCollection.connection.normalColor;
+        if (root.inTypeColor == root.outTypeColor)
+            return root.inTypeColor;
+
+        const gradient = ctx.createLinearGradient(scaledStartPoint.x, scaledStartPoint.y, scaledEndPoint.x, scaledEndPoint.y);
+
+        for (let i = 0; i != 10; i++) {
+            const color = StyleCollection.connection.lerpOklabColors(root.inTypeColor, root.outTypeColor, i / 10);
+            gradient.addColorStop(i / 10, color);
         }
-        strokeStyle: ShapePath.SolidLine
-        PathCubic {
-            x: root.outPoint.x
-            y: root.outPoint.y
-            control1X: root.c1.x
-            control1Y: root.c1.y
-            control2X: root.c2.x
-            control2Y: root.c2.y
+
+        return gradient;
+    }
+    onPaint: {
+        let ctx = getContext('2d');
+        ctx.clearRect(0, 0, width, height);
+
+        const c1 = Qt.point((pathCubic.control1X - x) * scaleFactor, (pathCubic.control1Y - y) * scaleFactor);
+        const c2 = Qt.point((pathCubic.control2X - x) * scaleFactor, (pathCubic.control2Y - y) * scaleFactor);
+
+        ctx.beginPath();
+        ctx.lineCap = "round";
+        ctx.moveTo(scaledStartPoint.x, scaledStartPoint.y);
+        ctx.bezierCurveTo(c1.x, c1.y, c2.x, c2.y, scaledEndPoint.x, scaledEndPoint.y);
+
+        if (fullyConnected) {
+            ctx.setLineDash([]);
+            ctx.lineWidth = StyleCollection.connection.lineWidth * 1.7 * scaleFactor;
+            if (focus) {
+                ctx.strokeStyle = StyleCollection.connection.selectedHaloColor;
+                ctx.stroke();
+            } else if (hovered) {
+                ctx.strokeStyle = StyleCollection.connection.hoveredColor;
+                ctx.stroke();
+            }
+            ctx.strokeStyle = innerStrokeStyle(ctx);
+            ctx.lineWidth = StyleCollection.connection.lineWidth * scaleFactor;
+            ctx.stroke();
+        } else {
+            ctx.setLineDash([6, 2]);
+            ctx.lineWidth = StyleCollection.connection.constructionLineWidth * scaleFactor;
+            ctx.strokeStyle = StyleCollection.connection.constructionColor;
+            ctx.stroke();
         }
     }
 
-    ShapePath {
+    Path {
         id: path
-        property bool swap: root.connection.inNodeId === NodeEditorUtils.InvalidNodeId
 
-        startX: swap ? root.outPoint.x : root.inPoint.x
-        startY: swap ? root.outPoint.y : root.inPoint.y
-        fillColor: "transparent"
-        strokeWidth: {
-            if (root.fullyConnected)
-                return StyleCollection.connection.lineWidth;
-            return StyleCollection.connection.constructionLineWidth;
-        }
-        strokeColor: {
-            if (!root.fullyConnected)
-                return StyleCollection.connection.constructionColor;
-            if (root.focus)
-                return StyleCollection.connection.selectedColor;
-            return StyleCollection.connection.normalColor;
-        }
-        strokeStyle: root.fullyConnected ? ShapePath.SolidLine : ShapePath.DashLine
-        dashPattern: [6, 2]
+        startX: root.swap ? root.outPoint.x : root.inPoint.x
+        startY: root.swap ? root.outPoint.y : root.inPoint.y
         PathCubic {
-            x: path.swap ? root.inPoint.x : root.outPoint.x
-            y: path.swap ? root.inPoint.y : root.outPoint.y
-            control1X: path.swap ? root.c2.x : root.c1.x
-            control1Y: path.swap ? root.c2.y : root.c1.y
-            control2X: path.swap ? root.c1.x : root.c2.x
-            control2Y: path.swap ? root.c1.y : root.c2.y
+            id: pathCubic
+            x: root.swap ? root.inPoint.x : root.outPoint.x
+            y: root.swap ? root.inPoint.y : root.outPoint.y
+            control1X: root.swap ? root.c2.x : root.c1.x
+            control1Y: root.swap ? root.c2.y : root.c1.y
+            control2X: root.swap ? root.c1.x : root.c2.x
+            control2Y: root.swap ? root.c1.y : root.c2.y
         }
     }
 }

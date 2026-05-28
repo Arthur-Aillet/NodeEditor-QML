@@ -76,8 +76,9 @@ target_compile_definitions(CutieDesigner
   PRIVATE $<$<CONFIG:Debug>:QT_QML_DEBUG>)
 
 target_link_libraries(CutieDesigner
-  PRIVATE Qt6::Core Qt6::Gui Qt6::Quick Qt6::QuickWidgets Qt6::Qml NodeModule StatsModule
+  PRIVATE Qt6::Core Qt6::Gui Qt6::Quick Qt6::QuickWidgets Qt6::Qml NodeModule StatsModule vivid
 )
+target_compile_definitions(CutieDesigner PRIVATE GLM_ENABLE_EXPERIMENTAL)
 
 install(TARGETS CutieDesigner
   BUNDLE DESTINATION .

@@ -61,7 +61,7 @@ Item {
 
             connection: inputConnectionId
             nodes: root.nodes
-            mousePos: root.area.mousePosition
+            area: root.area
         }
 
         model: ListModel {

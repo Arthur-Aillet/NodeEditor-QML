@@ -1,10 +1,14 @@
 #pragma once
 
 #include <QtGui/QColor>
+#include <qcolor.h>
+#include <qdebug.h>
 #include <qqmlintegration.h>
 #include <qtmetamacros.h>
+#include <qvectornd.h>
 
 #include "Style.hpp"
+#include "vivid/color.h"
 
 class ConnectionStyle : public Style {
   Q_GADGET
@@ -18,6 +22,14 @@ class ConnectionStyle : public Style {
   Q_INVOKABLE static void setConnectionStyle(QString jsonText);
   Q_INVOKABLE void loadJson(QJsonObject const &json) override;
   Q_INVOKABLE QJsonObject toJson() const override;
+
+  Q_INVOKABLE QColor lerpOklabColors(const QColor &first, const QColor &second,
+                                     const float amount) const {
+    const auto oklabFirst = vivid::Color(first.rgb()).oklab();
+    const auto oklabSecond = vivid::Color(second.rgb()).oklab();
+    const auto lerped = lerp(oklabFirst, oklabSecond, amount).rgb().value();
+    return QColor::fromRgbF(lerped.x, lerped.y, lerped.z);
+  }
 
   Q_PROPERTY(QColor constructionColor READ constructionColor)
   Q_PROPERTY(QColor normalColor READ normalColor)

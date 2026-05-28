@@ -71,5 +71,8 @@ target_include_directories(NodeModule PUBLIC
 )
 
 target_link_libraries(NodeModule
-  PUBLIC Qt6::Quick Qt6::Core
+  PUBLIC Qt6::Quick Qt6::Core vivid
 )
+
+target_compile_definitions(NodeModule PRIVATE GLM_ENABLE_EXPERIMENTAL)
+

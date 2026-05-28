@@ -66,7 +66,7 @@ Loader {
 
         property var p: root.selectedPort
 
-        mousePos: root.area.mousePosition
+        area: root.area
         nodes: root.nodes
 
         connection: ({

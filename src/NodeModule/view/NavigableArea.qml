@@ -15,6 +15,7 @@ Item {
 
     ViewBackground {
         id: background
+
         property real zoom: inner.mat.m11
         property real zoomedScale: (150 * zoom)
         property real offsetX: inner.mat.m14 + inner.x
