@@ -39,12 +39,13 @@ enum class NodeRole {
   ProgressValue = 13,    ///< 'QString' for the progress value
   Label = 14,            ///< `QString` for node label.
   LabelEditable = 15,    ///< `bool` to indicate label editing support.
+  Flags = 16,            ///< `NodeFlag` enum value regulating node features
 };
 
 Q_ENUM_NS(NodeRole)
 
 /**
- * Specific flags regulating node features and appeaarence.
+ * Specific flags regulating node features and appearence.
  */
 enum NodeFlag {
   NoFlags = 0x0,   ///< Default NodeFlag

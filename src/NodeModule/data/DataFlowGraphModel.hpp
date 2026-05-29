@@ -54,8 +54,6 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
 
   Q_INVOKABLE QVariant nodeData(NodeId nodeId, NodeRole role) const override;
 
-  NodeFlags nodeFlags(NodeId nodeId) const override;
-
   bool setNodeData(NodeId nodeId, NodeRole role, QVariant value) override;
 
   QVariant portData(NodeId nodeId, PortType portType, PortIndex portIndex,

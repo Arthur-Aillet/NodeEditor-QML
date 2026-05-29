@@ -41,7 +41,6 @@ ApplicationWindow {
                 SplitView.preferredWidth: editView.width / 6
             }
             GraphicsView {
-                id: graphicsView
                 visible: true
                 SplitView.fillWidth: true
             }

@@ -287,18 +287,13 @@ QVariant DataFlowGraphModel::nodeData(NodeId nodeId, NodeRole role) const {
   case NodeRole::ProgressValue:
     result = model->progressValue();
     break;
+
+  case NodeRole::Flags:
+    result = QVariant::fromValue(model->flags());
+    break;
   }
 
   return result;
-}
-
-NodeFlags DataFlowGraphModel::nodeFlags(NodeId nodeId) const {
-  auto it = _models.find(nodeId);
-
-  if (it != _models.end() && it->second->resizable())
-    return NodeFlag::Resizable;
-
-  return NodeFlag::NoFlags;
 }
 
 bool DataFlowGraphModel::setNodeData(NodeId nodeId, NodeRole role, QVariant value) {
@@ -379,6 +374,17 @@ bool DataFlowGraphModel::setNodeData(NodeId nodeId, NodeRole role, QVariant valu
 
   case NodeRole::ProgressValue:
     break;
+
+  case NodeRole::Flags:
+    if (value.canConvert<NodeFlags>()) {
+      auto flags = value.value<NodeFlags>();
+      if (auto node = delegateModel<NodeDelegateModel>(nodeId); node != nullptr) {
+        node->setFlags(flags);
+      }
+    }
+    Q_EMIT nodeFlagsUpdated(nodeId);
+    result = true;
+    break;
   }
 
   return result;
@@ -445,9 +451,6 @@ bool DataFlowGraphModel::setPortData(NodeId nodeId, PortType portType, PortIndex
   switch (role) {
   case PortRole::Data:
     if (portType == PortType::In) {
-      if (model->frozen())
-        return false;
-
       model->setInData(value.value<std::shared_ptr<NodeData>>(), portIndex);
 
       // Triggers repainting on the scene.

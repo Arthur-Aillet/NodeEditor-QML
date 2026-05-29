@@ -45,8 +45,10 @@ AbstractNodePainter {
         id: rect
         property alias nodeObject: root.nodeObject
 
-        strokeWidth: nodeObject.hovered ? nodeObject.style.hoveredPenWidth : nodeObject.style.penWidth
+        strokeWidth: nodeObject.containsMouse ? nodeObject.style.hoveredPenWidth : nodeObject.style.penWidth
         strokeColor: {
+            if (nodeObject.locked)
+                return Qt.darker(nodeObject.style.normalBoundaryColor, 1.4);
             // if (invalid) {
             //     return errorColor;
             // } else if (warning) {
@@ -89,9 +91,9 @@ AbstractNodePainter {
         }
     }
 
-    property string label: ModelInterface.nodeData(nodeObject.nodeId, NodeEditor.NodeRole.Label)
-    property bool labelEditable: ModelInterface.nodeData(nodeObject.nodeId, NodeEditor.NodeRole.LabelEditable)
-    property string caption: ModelInterface.nodeData(nodeObject.nodeId, NodeEditor.NodeRole.Caption)
+    property string label: ModelInterface.graph.nodeData(nodeObject.nodeId, NodeEditor.NodeRole.Label)
+    property bool labelEditable: ModelInterface.graph.nodeData(nodeObject.nodeId, NodeEditor.NodeRole.LabelEditable)
+    property string caption: ModelInterface.graph.nodeData(nodeObject.nodeId, NodeEditor.NodeRole.Caption)
 
     FlexboxLayout {
         id: column
@@ -101,7 +103,12 @@ AbstractNodePainter {
         Text {
             id: captionText
             text: root.caption
-            color: root.nodeObject.style.fontColor
+            color: {
+                let col = root.nodeObject.style.fontColor;
+                if (root.nodeObject.locked)
+                    col = Qt.darker(col, 1.4);
+                return col;
+            }
             font.bold: true
             // font.bold: root.label == ""
             // font.italic: root.label != ""
@@ -109,15 +116,20 @@ AbstractNodePainter {
             rightPadding: 2
             topPadding: root.spacing
             bottomPadding: labelText.visible ? 0 : root.spacing / 4
-            visible: ModelInterface.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.CaptionVisible)
+            visible: ModelInterface.graph.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.CaptionVisible)
             Layout.maximumHeight: visible ? height : 0
         }
 
         Text {
             id: labelText
             text: root.label
-            color: root.nodeObject.style.fontColor
-            visible: ModelInterface.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.LabelVisible)
+            color: {
+                let col = root.nodeObject.style.fontColor;
+                if (root.nodeObject.locked)
+                    col = Qt.darker(col, 1.4);
+                return col;
+            }
+            visible: ModelInterface.graph.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.LabelVisible)
             padding: 1
             leftPadding: 2
             rightPadding: 2

@@ -1,28 +1,23 @@
 #include "DataFlowModelInterface.hpp"
 
+#include "ATypeNode.hpp"
 #include "AdditionModel.hpp"
 #include "Definitions.hpp"
 #include "DivisionModel.hpp"
+#include "GraphicsViewStyle.hpp"
 #include "MultiplicationModel.hpp"
-#include "Object/ATypeNode.hpp"
-#include "Object/ObjectDisplayDataModel.hpp"
+#include "ObjectDisplayDataModel.hpp"
 #include "ObjectLoader.hpp"
 #include "SubtractionModel.hpp"
-#include "TextDisplayDataModel.hpp"
 #include "TextTyperModel.hpp"
 #include "ValueNodeModel.hpp"
 
-#include <QAction>
-#include <QScreen>
+#include <QQmlApplicationEngine>
+#include <QtQml>
 #include <QtWidgets/QApplication>
 #include <memory>
-#include <qboxlayout.h>
-#include <qlogging.h>
-#include <qobjectdefs.h>
-#include <qqml.h>
-#include <qqmlapplicationengine.h>
-#include <qqmlcontext.h>
-#include <qwidget.h>
+#include <qdebug.h>
+#include <qquickitem.h>
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
@@ -35,7 +30,6 @@ int main(int argc, char *argv[]) {
   ret->registerModel<DivisionModel>("Process");
   ret->registerModel<MultiplicationModel>("Process");
   ret->registerModel<SubtractionModel>("Process");
-  ret->registerModel<TextDisplayDataModel>("Display");
   ret->registerModel<ObjectDisplayDataModel>("Display");
   ret->registerModel<ATypeNode>("Display");
   ret->registerModel<TextTyperModel>("Process");
@@ -63,18 +57,13 @@ int main(int argc, char *argv[]) {
   QObject *item = engine.rootObjects().first();
 
   auto source = model.addNode(ObjectDisplayDataModel(&engine).name());
-  model.setNodeData(source, NodeRole::Position, QPointF(400, 0));
+  model.setNodeData(source, NodeRole::Position, QPointF(400, 150));
   model.setNodeData(source, NodeRole::Type, ObjectDisplayDataModel(&engine).name());
+  model.setNodeData(source, NodeRole::Flags, NodeFlag::Locked);
   auto display = model.delegateModel<ObjectDisplayDataModel>(source);
 
   auto loader = item->property("objectLoader").value<ObjectLoader *>();
   loader->connectFinalNode(display);
-
-  auto text = model.addNode(TextDisplayDataModel(&engine).name());
-  model.setNodeData(text, NodeRole::Position, QPointF(400, 200));
-  model.setNodeData(text, NodeRole::Type, TextDisplayDataModel(&engine).name());
-  auto displayText = model.delegateModel<TextDisplayDataModel>(text);
-  QObject::connect(displayText, SIGNAL(valueUpdated(QString)), item, SIGNAL(valueUpdated(QString)));
 
   return app.exec();
 }

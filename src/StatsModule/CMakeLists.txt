@@ -1,4 +1,5 @@
 qt_add_qml_module(StatsModule
+  STATIC
   URI StatsModule
   QML_FILES
   StatsView.qml

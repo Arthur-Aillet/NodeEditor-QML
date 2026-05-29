@@ -12,10 +12,10 @@ Canvas {
 
         function onNodePositionUpdated(nodeId: real) {
             if (nodeId == root.connection.inNodeId) {
-                root.inNodePos = ModelInterface.nodeData(nodeId, NodeEditor.NodeRole.Position);
+                root.inNodePos = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Position);
             }
             if (nodeId == root.connection.outNodeId) {
-                root.outNodePos = ModelInterface.nodeData(nodeId, NodeEditor.NodeRole.Position);
+                root.outNodePos = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Position);
             }
         }
     }

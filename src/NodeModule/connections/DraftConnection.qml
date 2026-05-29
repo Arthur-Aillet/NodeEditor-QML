@@ -19,7 +19,7 @@ Loader {
         for (let i = 0; i < nodes.nodes.count; ++i) {
             const node = nodes.nodes.itemAt(i) as NodeGraphicalObject;
             if (node.nodeId != selectedPort.nodeId) {
-                const ports = ModelInterface.nodeData(node.nodeId, oppositeCount);
+                const ports = ModelInterface.graph.nodeData(node.nodeId, oppositeCount);
                 if (ports < 1)
                     continue;
                 for (let j = 0; j < ports; j++) {

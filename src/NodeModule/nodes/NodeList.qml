@@ -82,6 +82,14 @@ Item {
     Connections {
         target: ModelInterface
 
+        function onNodeFlagsUpdated(id: real) {
+            for (let i = 0; i < nodes.count; i++) {
+                const current = nodes.itemAt(i) as NodeGraphicalObject;
+                if (current.nodeId == id)
+                    current.loadFlags();
+            }
+        }
+
         function onNodeCreated(id: real) {
             nodeModel.append({
                 "modelId": id,
@@ -98,7 +106,7 @@ Item {
         }
 
         function onNodePositionUpdated(id: real) {
-            const position = ModelInterface.nodeData(id, NodeEditor.NodeRole.Position);
+            const position = ModelInterface.graph.nodeData(id, NodeEditor.NodeRole.Position);
 
             for (let i = 0; i < nodeModel.count; i++) {
                 const current = nodeModel.get(i);

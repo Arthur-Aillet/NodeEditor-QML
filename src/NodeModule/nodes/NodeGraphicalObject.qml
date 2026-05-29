@@ -14,17 +14,24 @@ MouseArea {
     required property NodeList nodes
     required property int nodeId
 
-    property int inPortCount: ModelInterface.nodeData(root.nodeId, NodeEditor.NodeRole.InPortCount)
-    property int outPortCount: ModelInterface.nodeData(root.nodeId, NodeEditor.NodeRole.OutPortCount)
+    property int inPortCount: ModelInterface.graph.nodeData(root.nodeId, NodeEditor.NodeRole.InPortCount)
+    property int outPortCount: ModelInterface.graph.nodeData(root.nodeId, NodeEditor.NodeRole.OutPortCount)
 
     property var getPortPosition: (painter.item as AbstractNodePainter).getPortPosition
 
     property nodeStyle style
+    property int flags
+    property bool locked: flags & NodeEditor.NodeFlags.Locked
+
+    function loadFlags() {
+        flags = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Flags);
+    }
 
     Component.onCompleted: {
-        const json = ModelInterface.nodeData(nodeId, NodeEditor.NodeRole.Style);
+        const json = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Style);
         style.loadJson(json);
         style = style;
+        loadFlags();
     }
 
     property bool selected: false
@@ -49,6 +56,9 @@ MouseArea {
     property bool waitForClick: false
 
     onPressed: mouse => {
+        if (locked)
+            return;
+
         if (mouse.modifiers & Qt.ShiftModifier) {
             if (!selected) {
                 nodes.selectedNodes.add(nodeId);
@@ -80,8 +90,6 @@ MouseArea {
         }
     }
 
-    property bool hovered: root.hovered
-
     // Store movement offset for each frame to apply it to the other selected nodes
     property real xPrev
     property real yPrev
@@ -107,7 +115,8 @@ MouseArea {
     }
     propagateComposedEvents: true
     anchors.fill: root
-    cursorShape: Qt.DragMoveCursor
+    hoverEnabled: true
+    cursorShape: locked ? Qt.ArrowCursor : Qt.DragMoveCursor
 
     width: painter.width
     height: painter.height

@@ -92,6 +92,9 @@ class NodeDelegateModel : public QObject, public Serializable {
   /// Progress is used in GUI
   virtual QString progressValue() const { return _progressValue; }
 
+  virtual NodeFlags flags() const { return _flags; }
+  virtual void setFlags(NodeFlags flags) { _flags = flags; }
+
   public:
   QJsonObject save() const override;
 
@@ -142,12 +145,6 @@ class NodeDelegateModel : public QObject, public Serializable {
 
   virtual QQmlComponent embeddedComponent(QQmlEngine *engine) { return QQmlComponent(); };
   virtual QVariantMap componentInitialProperties() { return QVariantMap(); }
-
-  virtual bool resizable() const { return false; }
-
-  bool frozen() const { return _frozen; }
-
-  void setFrozenState(bool state) { _frozen = state; }
 
   public Q_SLOTS:
   virtual void inputConnectionCreated(ConnectionId const &) {}
@@ -201,8 +198,7 @@ class NodeDelegateModel : public QObject, public Serializable {
   private:
   std::shared_ptr<QQuickItem> _embed{nullptr};
   NodeStyle _nodeStyle;
-
-  bool _frozen{false};
+  NodeFlags _flags;
 
   NodeValidationState _nodeValidationState;
 

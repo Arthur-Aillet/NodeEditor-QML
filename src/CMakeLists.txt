@@ -33,8 +33,6 @@ qt_add_qml_module(CutieDesigner
   nodes/TextData.hpp
   nodes/MathOperationDataModel.cpp
   nodes/MultiplicationModel.hpp
-  nodes/TextDisplayDataModel.cpp
-  nodes/TextDisplayDataModel.hpp
 
   nodes/TextTyper/TextTyperModel.hpp
   nodes/TextTyper/TextTyperModel.cpp

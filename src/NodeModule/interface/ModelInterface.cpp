@@ -29,14 +29,6 @@ ModelInterface *ModelInterface::init(AbstractGraphModel &_graphModel) {
   return instance;
 };
 
-QVariant ModelInterface::nodeData(NodeId nodeId, NodeRole role) {
-  return graphModel.nodeData(nodeId, role);
-};
-
-bool ModelInterface::setNodeData(NodeId nodeId, NodeRole role, QVariant value) {
-  return graphModel.setNodeData(nodeId, role, value);
-}
-
 void ModelInterface::createConnection(ConnectionId id) {
   undoStack.push(new ConnectCommand(this, id));
 }

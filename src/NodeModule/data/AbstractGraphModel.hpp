@@ -106,11 +106,6 @@ class AbstractGraphModel : public QObject {
     return nodeData(nodeId, role).value<T>();
   }
 
-  virtual NodeFlags nodeFlags(NodeId nodeId) const {
-    Q_UNUSED(nodeId);
-    return NodeFlag::NoFlags;
-  }
-
   /**
    * @brief Sets node properties.
    *
