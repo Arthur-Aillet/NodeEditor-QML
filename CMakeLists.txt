@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.10..4.0)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 17)
+
+set(FETCHCONTENT_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_subdirectory(dependencies)
 
@@ -11,7 +16,6 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_PREFIX_PATH "~/Qt/6.11.0/gcc_64/")
 set(LD_LIBRARY_PATH "~/Qt/6.11.0/gcc_64/lib")
 set(QT_QML_GENERATE_QMLLS_INI ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Quick Core Gui QuickWidgets QuickControls2 Qml Core5Compat)
 
@@ -25,6 +29,13 @@ qt_policy(SET QTP0004 NEW)
 
 option(DEBUG_MODE "Set DEBUG Mode" ON)
 option(RUN "Launch App" OFF)
+
+
+set(QML_IMPORT_PATH
+    ${CMAKE_BINARY_DIR}/qml
+    CACHE STRING "" FORCE
+)
+set(QT_QML_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/qml)
 
 add_subdirectory(src)
 

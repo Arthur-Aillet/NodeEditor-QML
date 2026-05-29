@@ -2,6 +2,7 @@
 
 #include "NodeDelegateModel.hpp"
 #include "ObjectData.hpp"
+#include "TextData.hpp"
 
 #include <QQmlComponent>
 #include <QtCore/QObject>
@@ -13,6 +14,10 @@
 
 class ATypeNode : public NodeDelegateModel {
   Q_OBJECT
+  QML_ELEMENT
+  QML_UNCREATABLE("")
+
+  Q_PROPERTY(QString text READ getText NOTIFY textChanged)
 
   public:
   ATypeNode(QQmlEngine *engine);
@@ -35,11 +40,17 @@ class ATypeNode : public NodeDelegateModel {
 
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
+  std::shared_ptr<ObjectData> createATypeObjectData(QQmlEngine *engine);
+
+  QString getText() { return _text->text; }
+
   signals:
   void valueUpdated(QQmlComponent *component);
+  QString *textChanged();
 
   private:
   bool _connected = false;
 
+  std::shared_ptr<TextData> _text;
   std::shared_ptr<ObjectData> _content;
 };

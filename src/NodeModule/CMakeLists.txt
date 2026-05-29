@@ -41,8 +41,6 @@ qt_add_qml_module(NodeModule
   style/GraphicsViewStyle.cpp
   style/GraphicsViewStyle.hpp
 
-  #nodes/QmlDefinition.hpp
-
   data/AbstractGraphModel.cpp
   data/AbstractGraphModel.hpp
   data/ConnectionIdHash.hpp
@@ -57,6 +55,7 @@ qt_add_qml_module(NodeModule
   data/NodeDelegateModelRegistry.hpp
   data/QStringStdHash.hpp
   data/Serializable.hpp
+
   RESOURCES
   resources/resources.qrc
 )

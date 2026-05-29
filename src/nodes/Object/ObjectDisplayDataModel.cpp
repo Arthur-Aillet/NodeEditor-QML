@@ -29,9 +29,9 @@ std::shared_ptr<NodeData> ObjectDisplayDataModel::outData(PortIndex) { return nu
 void ObjectDisplayDataModel::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
   if (data == nullptr) {
     _content = nullptr;
-    emit objectRemoved();
+    emit componentRemoved();
   } else {
     _content = std::dynamic_pointer_cast<ObjectData>(data);
-    emit objectSet(_content->object.get());
+    emit componentSet(_content.get());
   }
 }

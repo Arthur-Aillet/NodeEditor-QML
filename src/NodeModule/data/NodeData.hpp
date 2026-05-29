@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include <QtCore/QObject>
 #include <QtCore/QString>
 #include <qdebug.h>
@@ -28,7 +26,10 @@ struct NodeDataType {
  * @param type is used for comparing the types
  * The actual data is stored in subtypes
  */
-class NodeData {
+class NodeData : public QObject {
+  Q_OBJECT
+  QML_INTERFACE
+
   public:
   virtual ~NodeData() = default;
 
@@ -40,5 +41,4 @@ class NodeData {
   virtual const NodeDataType &type() const = 0;
 };
 
-Q_DECLARE_METATYPE(NodeDataType)
-Q_DECLARE_METATYPE(std::shared_ptr<NodeData>)
+Q_DECLARE_INTERFACE(NodeData, "NodeData")

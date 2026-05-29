@@ -20,6 +20,8 @@ qt_add_qml_module(CutieDesigner
 
   objects/UkrugPointsList.hpp
   objects/UkrugPointsList.cpp
+  objects/ObjectLoader.cpp
+  objects/ObjectLoader.cpp
 
   nodes/AdditionModel.hpp
   nodes/DivisionModel.hpp
@@ -40,6 +42,7 @@ qt_add_qml_module(CutieDesigner
   nodes/Object/ATypeNode.cpp
   nodes/Object/ATypeNode.hpp
   nodes/Object/ObjectData.hpp
+  nodes/Object/ObjectData.cpp
   nodes/Object/ObjectDisplayDataModel.cpp
   nodes/Object/ObjectDisplayDataModel.hpp
 
@@ -63,6 +66,7 @@ target_include_directories(CutieDesigner
   PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
   nodes
+  nodes/Object
   nodes/TextTyper
   objects
 )
@@ -82,7 +86,7 @@ target_compile_definitions(CutieDesigner
   PRIVATE $<$<CONFIG:Debug>:QT_QML_DEBUG>)
 
 target_link_libraries(CutieDesigner
-  PRIVATE Qt6::Core Qt6::Gui Qt6::Quick Qt6::QuickWidgets Qt6::Qml NodeModule StatsModule vivid
+  PRIVATE Qt6::Core Qt6::Gui Qt6::Quick Qt6::QuickWidgets Qt6::Qml StatsModule NodeModule vivid
 )
 target_compile_definitions(CutieDesigner PRIVATE GLM_ENABLE_EXPERIMENTAL)
 

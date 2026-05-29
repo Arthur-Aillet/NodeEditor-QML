@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import NodeModule
+import CutieDesignerModule
 import StatsModule
 
 ApplicationWindow {
@@ -11,16 +12,8 @@ ApplicationWindow {
     visible: true
     title: qsTr("CutieDesigner!")
 
-    signal newRootComponent(newValue: Component)
-    signal removeComponent
-
-    onRemoveComponent: {
-        source.sourceComponent = undefined;
-    }
-
-    onNewRootComponent: newValue => {
-        source.sourceComponent = newValue;
-    }
+    signal valueUpdated(newValue: string)
+    property alias objectLoader: objectLoader
 
     footer: ToolBar {
         RowLayout {
@@ -34,8 +27,9 @@ ApplicationWindow {
             SplitView.preferredWidth: root.width
             SplitView.preferredHeight: root.height / 2
             color: "blue"
-            Loader {
-                id: source
+
+            ObjectLoader {
+                id: objectLoader
             }
         }
         SplitView {

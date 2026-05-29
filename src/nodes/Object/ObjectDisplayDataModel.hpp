@@ -36,8 +36,8 @@ class ObjectDisplayDataModel : public NodeDelegateModel {
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
   signals:
-  void objectSet(QQmlComponent *component);
-  void objectRemoved();
+  void componentSet(ObjectData *component);
+  void componentRemoved();
 
   private:
   bool _connected = false;

@@ -22,7 +22,6 @@ debug:
 
 run:
 	cmake -DRUN=on -DDEBUG_MODE=on -S . -B ./build -G "Unix Makefiles" 
-	make --no-print-directory -C build
 	make --no-print-directory -C build run
 
 run_release:
@@ -44,6 +43,6 @@ fclean: clean
 	rm -rf ./lib/
 	rm -rf ./bin/
 
-re: fclean build
+re: clean build
 
 .PHONY: all build release run run_release format clean fclean re

@@ -6,6 +6,7 @@
 #include "MultiplicationModel.hpp"
 #include "Object/ATypeNode.hpp"
 #include "Object/ObjectDisplayDataModel.hpp"
+#include "ObjectLoader.hpp"
 #include "SubtractionModel.hpp"
 #include "TextDisplayDataModel.hpp"
 #include "TextTyperModel.hpp"
@@ -65,10 +66,15 @@ int main(int argc, char *argv[]) {
   model.setNodeData(source, NodeRole::Position, QPointF(400, 0));
   model.setNodeData(source, NodeRole::Type, ObjectDisplayDataModel(&engine).name());
   auto display = model.delegateModel<ObjectDisplayDataModel>(source);
-  QObject::connect(display, SIGNAL(objectSet(QQmlComponent *)), item,
-                   SIGNAL(newRootComponent(QQmlComponent *)));
 
-  QObject::connect(display, SIGNAL(objectRemoved()), item, SIGNAL(removeComponent()));
+  auto loader = item->property("objectLoader").value<ObjectLoader *>();
+  loader->connectFinalNode(display);
+
+  auto text = model.addNode(TextDisplayDataModel(&engine).name());
+  model.setNodeData(text, NodeRole::Position, QPointF(400, 200));
+  model.setNodeData(text, NodeRole::Type, TextDisplayDataModel(&engine).name());
+  auto displayText = model.delegateModel<TextDisplayDataModel>(text);
+  QObject::connect(displayText, SIGNAL(valueUpdated(QString)), item, SIGNAL(valueUpdated(QString)));
 
   return app.exec();
 }
