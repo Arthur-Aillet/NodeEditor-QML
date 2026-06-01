@@ -1,7 +1,7 @@
 #pragma once
 
 #include "NodeDelegateModel.hpp"
-#include "ObjectData.hpp"
+#include "SurfaceData.hpp"
 
 #include <QQmlComponent>
 #include <QtCore/QObject>
@@ -11,13 +11,13 @@
 #include <qqmlengine.h>
 #include <qtmetamacros.h>
 
-class ObjectDisplayDataModel : public NodeDelegateModel {
+class SurfaceDisplayDataModel : public NodeDelegateModel {
   Q_OBJECT
 
   public:
-  ObjectDisplayDataModel(QQmlEngine *engine);
+  SurfaceDisplayDataModel(QQmlEngine *engine);
 
-  ~ObjectDisplayDataModel() = default;
+  ~SurfaceDisplayDataModel() = default;
 
   public:
   QString caption() const override { return QStringLiteral("Result"); }
@@ -30,11 +30,11 @@ class ObjectDisplayDataModel : public NodeDelegateModel {
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
   signals:
-  void componentSet(ObjectData *component);
+  void componentSet(SurfaceData *component);
   void componentRemoved();
 
   private:
   bool _connected = false;
 
-  std::shared_ptr<ObjectData> _content;
+  std::shared_ptr<SurfaceData> _content;
 };

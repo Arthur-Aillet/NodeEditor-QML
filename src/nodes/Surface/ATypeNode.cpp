@@ -1,5 +1,5 @@
 #include "ATypeNode.hpp"
-#include "ObjectData.hpp"
+#include "SurfaceData.hpp"
 #include "TextData.hpp"
 
 #include <QtWidgets/QLabel>
@@ -9,15 +9,15 @@
 #include <qtmetamacros.h>
 #include <qvariant.h>
 
-std::shared_ptr<ObjectData> ATypeNode::createATypeObjectData(QQmlEngine *engine) {
+std::shared_ptr<SurfaceData> ATypeNode::createATypeSurfaceData(QQmlEngine *engine) {
   auto comp = std::make_unique<QQmlComponent>(engine, "CutieDesignerModule", "AType");
   QVariantMap map;
   map["node"] = QVariant::fromValue(this);
-  return std::make_shared<ObjectData>(std::move(comp), map);
+  return std::make_shared<SurfaceData>(std::move(comp), map);
 }
 
 ATypeNode::ATypeNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
-  _content = createATypeObjectData(engine);
+  _content = createATypeSurfaceData(engine);
 }
 
 unsigned int ATypeNode::nPorts(PortType portType) const {

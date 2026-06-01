@@ -1,19 +1,19 @@
-#include "ObjectLoader.hpp"
-#include <memory>
+#include "SurfaceLoader.hpp"
+
+#include <qjsengine.h>
 #include <qlogging.h>
 #include <qquickitem.h>
 
-ObjectLoader::ObjectLoader(QObject *parent) : QObject(parent) {}
-ObjectLoader::~ObjectLoader() { _surface->deleteLater(); }
+SurfaceLoader::SurfaceLoader(QObject *parent) : QObject(parent) {}
 
-void ObjectLoader::connectFinalNode(ObjectDisplayDataModel *node) {
-  QObject::connect(node, SIGNAL(componentSet(ObjectData *)), this,
-                   SLOT(componentSet(ObjectData *)));
+void SurfaceLoader::connectFinalNode(SurfaceDisplayDataModel *node) {
+  QObject::connect(node, SIGNAL(componentSet(SurfaceData *)), this,
+                   SLOT(componentSet(SurfaceData *)));
 
   QObject::connect(node, SIGNAL(componentRemoved()), this, SLOT(componentRemoved()));
 }
 
-void ObjectLoader::componentSet(ObjectData *object) {
+void SurfaceLoader::componentSet(SurfaceData *object) {
   if (object->component->isNull()) {
     return;
   }
@@ -24,4 +24,4 @@ void ObjectLoader::componentSet(ObjectData *object) {
   emit object->componentLoaded(_surface);
 }
 
-void ObjectLoader::componentRemoved() { _surface->deleteLater(); }
+void SurfaceLoader::componentRemoved() { _surface->deleteLater(); }

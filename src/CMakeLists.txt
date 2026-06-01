@@ -9,19 +9,19 @@ qt_add_qml_module(CutieDesigner
   URI CutieDesignerModule
   QML_FILES
   Main.qml
-  objects/AType.qml
+  surfaces/AType.qml
   TextDisplay.qml
   nodes/PortLabel.qml
-  objects/UkrugCharacter.qml
+  surfaces/UkrugCharacter.qml
   nodes/TextTyper/TextTyper.qml
-  objects/Ukrug.qml
+  surfaces/Ukrug.qml
 
   SOURCES
 
-  objects/UkrugPointsList.hpp
-  objects/UkrugPointsList.cpp
-  objects/ObjectLoader.cpp
-  objects/ObjectLoader.cpp
+  surfaces/UkrugPointsList.hpp
+  surfaces/UkrugPointsList.cpp
+  surfaces/SurfaceLoader.cpp
+  surfaces/SurfaceLoader.cpp
 
   nodes/AdditionModel.hpp
   nodes/DivisionModel.hpp
@@ -37,21 +37,21 @@ qt_add_qml_module(CutieDesigner
   nodes/TextTyper/TextTyperModel.hpp
   nodes/TextTyper/TextTyperModel.cpp
 
-  nodes/Object/ATypeNode.cpp
-  nodes/Object/ATypeNode.hpp
-  nodes/Object/ObjectData.hpp
-  nodes/Object/ObjectData.cpp
-  nodes/Object/ObjectDisplayDataModel.cpp
-  nodes/Object/ObjectDisplayDataModel.hpp
+  nodes/Surface/ATypeNode.cpp
+  nodes/Surface/ATypeNode.hpp
+  nodes/Surface/SurfaceData.hpp
+  nodes/Surface/SurfaceData.cpp
+  nodes/Surface/SurfaceDisplayDataModel.cpp
+  nodes/Surface/SurfaceDisplayDataModel.hpp
 
   nodes/TextTyper/TextTyperEventList.hpp
   nodes/TextTyper/TextTyperEventList.cpp
 
   DEPENDENCIES QtQuick QtQuick.Layout StatsModule NodeModule
   RESOURCES
-  objects/ukrug.vert.qsb
-  objects/ukrug.frag.qsb
-  objects/UkrugPointsData.json
+  surfaces/ukrug.vert.qsb
+  surfaces/ukrug.frag.qsb
+  surfaces/UkrugPointsData.json
 )
 
 target_link_directories(CutieDesigner
@@ -64,9 +64,9 @@ target_include_directories(CutieDesigner
   PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
   nodes
-  nodes/Object
+  nodes/Surface
   nodes/TextTyper
-  objects
+  surfaces
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

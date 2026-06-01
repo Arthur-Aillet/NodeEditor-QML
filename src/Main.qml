@@ -28,7 +28,7 @@ ApplicationWindow {
             SplitView.preferredHeight: root.height / 2
             color: "blue"
 
-            ObjectLoader {
+            SurfaceLoader {
                 id: objectLoader
             }
         }

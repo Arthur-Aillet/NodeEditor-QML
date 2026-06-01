@@ -4,11 +4,10 @@
 #include "AdditionModel.hpp"
 #include "Definitions.hpp"
 #include "DivisionModel.hpp"
-#include "GraphicsViewStyle.hpp"
 #include "MultiplicationModel.hpp"
-#include "ObjectDisplayDataModel.hpp"
-#include "ObjectLoader.hpp"
 #include "SubtractionModel.hpp"
+#include "SurfaceDisplayDataModel.hpp"
+#include "SurfaceLoader.hpp"
 #include "TextTyperModel.hpp"
 #include "ValueNodeModel.hpp"
 
@@ -30,7 +29,7 @@ int main(int argc, char *argv[]) {
   ret->registerModel<DivisionModel>("Process");
   ret->registerModel<MultiplicationModel>("Process");
   ret->registerModel<SubtractionModel>("Process");
-  ret->registerModel<ObjectDisplayDataModel>("Display");
+  ret->registerModel<SurfaceDisplayDataModel>("Display");
   ret->registerModel<ATypeNode>("Display");
   ret->registerModel<TextTyperModel>("Process");
 
@@ -56,13 +55,13 @@ int main(int argc, char *argv[]) {
 
   QObject *item = engine.rootObjects().first();
 
-  auto source = model.addNode(ObjectDisplayDataModel(&engine).name());
+  auto source = model.addNode(SurfaceDisplayDataModel(&engine).name());
   model.setNodeData(source, NodeRole::Position, QPointF(400, 150));
-  model.setNodeData(source, NodeRole::Type, ObjectDisplayDataModel(&engine).name());
+  model.setNodeData(source, NodeRole::Type, SurfaceDisplayDataModel(&engine).name());
   model.setNodeData(source, NodeRole::Flags, NodeFlag::Locked);
-  auto display = model.delegateModel<ObjectDisplayDataModel>(source);
+  auto display = model.delegateModel<SurfaceDisplayDataModel>(source);
 
-  auto loader = item->property("objectLoader").value<ObjectLoader *>();
+  auto loader = item->property("objectLoader").value<SurfaceLoader *>();
   loader->connectFinalNode(display);
 
   return app.exec();

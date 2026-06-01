@@ -9,17 +9,17 @@
 #include <qtmetamacros.h>
 #include <qvariant.h>
 
-class ObjectData : public NodeData {
+class SurfaceData : public NodeData {
   Q_OBJECT
   QML_IMPLEMENTS_INTERFACES(NodeData)
   QML_ELEMENT
   QML_UNCREATABLE("")
 
   public:
-  ObjectData() {}
-  ObjectData(std::unique_ptr<QQmlComponent> &&_object, QVariantMap _initialProps = {});
+  SurfaceData() {}
+  SurfaceData(std::unique_ptr<QQmlComponent> &&_object, QVariantMap _initialProps = {});
 
-  static inline const NodeDataType dataType = NodeDataType("object", "2D Object");
+  static inline const NodeDataType dataType = NodeDataType("object", "2D Surface");
 
   const NodeDataType &type() const override { return dataType; }
 

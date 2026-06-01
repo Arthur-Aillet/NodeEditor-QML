@@ -1,7 +1,7 @@
 #pragma once
 
 #include "NodeDelegateModel.hpp"
-#include "ObjectData.hpp"
+#include "SurfaceData.hpp"
 #include "TextData.hpp"
 
 #include <QQmlComponent>
@@ -40,7 +40,7 @@ class ATypeNode : public NodeDelegateModel {
 
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
-  std::shared_ptr<ObjectData> createATypeObjectData(QQmlEngine *engine);
+  std::shared_ptr<SurfaceData> createATypeSurfaceData(QQmlEngine *engine);
 
   QString getText() {
     if (_text == nullptr) {
@@ -57,5 +57,5 @@ class ATypeNode : public NodeDelegateModel {
   bool _connected = false;
 
   std::shared_ptr<TextData> _text = nullptr;
-  std::shared_ptr<ObjectData> _content;
+  std::shared_ptr<SurfaceData> _content;
 };
