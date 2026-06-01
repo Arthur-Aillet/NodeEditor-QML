@@ -1,7 +1,7 @@
 #pragma once
 
+#include "DecimalData.hpp"
 #include "NodeDelegateModel.hpp"
-#include "nodes/DecimalData.hpp"
 
 #include <QQuickItem>
 #include <QtCore/QObject>

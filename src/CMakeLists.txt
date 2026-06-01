@@ -9,49 +9,46 @@ qt_add_qml_module(CutieDesigner
   URI CutieDesignerModule
   QML_FILES
   Main.qml
-  surfaces/AType.qml
-  TextDisplay.qml
-  nodes/PortLabel.qml
-  surfaces/UkrugCharacter.qml
-  nodes/TextTyper/TextTyper.qml
-  surfaces/Ukrug.qml
+
+  nodes/input/PortLabel.qml
+  nodes/display/AType/Ukrug/Ukrug.qml
+  nodes/display/AType/Ukrug/UkrugCharacter.qml
+  nodes/display/AType/AType.qml
+  nodes/process/TextTyper/TextTyper.qml
 
   SOURCES
 
-  surfaces/UkrugPointsList.hpp
-  surfaces/UkrugPointsList.cpp
-  surfaces/SurfaceLoader.cpp
-  surfaces/SurfaceLoader.cpp
+  datatypes/SurfaceData.cpp
+  datatypes/SurfaceData.hpp
+  datatypes/DecimalData.hpp
+  datatypes/TextData.hpp
 
-  nodes/AdditionNode.hpp
-  nodes/DivisionNode.hpp
-  nodes/MathOperationNodeModel.cpp
-  nodes/MathOperationNodeModel.hpp
-  nodes/SubtractionNode.hpp
-  nodes/NumberInputNode.cpp
-  nodes/NumberInputNode.hpp
-  nodes/DecimalData.hpp
-  nodes/TextData.hpp
-  nodes/MultiplicationNode.hpp
-
-  nodes/TextTyper/TextTyperNode.hpp
-  nodes/TextTyper/TextTyperNode.cpp
-
-  nodes/Surface/ATypeNode.cpp
-  nodes/Surface/ATypeNode.hpp
-  nodes/Surface/SurfaceData.hpp
-  nodes/Surface/SurfaceData.cpp
-  nodes/Surface/SurfaceDisplayNode.cpp
-  nodes/Surface/SurfaceDisplayNode.hpp
-
-  nodes/TextTyper/TextTyperEventList.hpp
-  nodes/TextTyper/TextTyperEventList.cpp
+  nodes/input/NumberInputNode.hpp
+  nodes/input/NumberInputNode.cpp
+  nodes/display/AType/Ukrug/UkrugPointsList.hpp
+  nodes/display/AType/Ukrug/UkrugPointsList.cpp
+  nodes/display/AType/ATypeNode.hpp
+  nodes/display/AType/ATypeNode.cpp
+  nodes/display/surface/SurfaceDisplayNode.cpp
+  nodes/display/surface/SurfaceDisplayNode.hpp
+  nodes/display/surface/SurfaceLoader.hpp
+  nodes/display/surface/SurfaceLoader.cpp
+  nodes/process/math/SubtractionNode.hpp
+  nodes/process/math/AdditionNode.hpp
+  nodes/process/math/MathOperationNodeModel.cpp
+  nodes/process/math/DivisionNode.hpp
+  nodes/process/math/MathOperationNodeModel.hpp
+  nodes/process/math/MultiplicationNode.hpp
+  nodes/process/TextTyper/TextTyperNode.hpp
+  nodes/process/TextTyper/TextTyperNode.cpp
+  nodes/process/TextTyper/TextTyperEventList.hpp
+  nodes/process/TextTyper/TextTyperEventList.cpp
 
   DEPENDENCIES QtQuick QtQuick.Layout StatsModule NodeModule
   RESOURCES
-  surfaces/ukrug.vert.qsb
-  surfaces/ukrug.frag.qsb
-  surfaces/UkrugPointsData.json
+  nodes/display/AType/Ukrug/UkrugPointsData.json
+  nodes/display/AType/Ukrug/ukrug.vert.qsb
+  nodes/display/AType/Ukrug/ukrug.frag.qsb
 )
 
 target_link_directories(CutieDesigner
@@ -63,10 +60,16 @@ target_link_directories(CutieDesigner
 target_include_directories(CutieDesigner
   PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
+  datatypes
   nodes
-  nodes/Surface
-  nodes/TextTyper
-  surfaces
+  nodes/display
+  nodes/display/AType
+  nodes/display/AType/Ukrug
+  nodes/display/surface
+  nodes/input
+  nodes/process
+  nodes/process/math
+  nodes/process/TextTyper
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

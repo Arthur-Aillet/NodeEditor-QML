@@ -3,7 +3,7 @@
 #include <qmath.h>
 
 UkrugPointsList::UkrugPointsList() {
-  QString fileName = ":/qt/qml/CutieDesignerModule/surfaces/UkrugPointsData.json";
+  QString fileName = ":/qt/qml/CutieDesignerModule/nodes/display/AType/Ukrug/UkrugPointsData.json";
   QFile file(fileName);
 
   if (!file.open(QIODevice::ReadOnly)) {
