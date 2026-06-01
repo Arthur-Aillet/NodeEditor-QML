@@ -1,16 +1,16 @@
 #pragma once
 
 #include "DecimalData.hpp"
-#include "MathOperationDataModel.hpp"
+#include "MathOperationNodeModel.hpp"
 
 #include <QtCore/QObject>
 
 /// The model dictates the number of inputs and outputs for the Node.
 /// In this example it has no logic.
-class AdditionModel : public MathOperationDataModel {
+class AdditionNode : public MathOperationNodeModel {
   public:
-  AdditionModel(QQmlEngine *engine) : MathOperationDataModel(engine) {}
-  ~AdditionModel() = default;
+  AdditionNode(QQmlEngine *engine) : MathOperationNodeModel(engine) {}
+  ~AdditionNode() = default;
 
   public:
   QString caption() const override { return QStringLiteral("Addition"); }

@@ -13,12 +13,12 @@ class DecimalData;
 
 /// The model dictates the number of inputs and outputs for the Node.
 /// In this example it has no logic.
-class MathOperationDataModel : public NodeDelegateModel {
+class MathOperationNodeModel : public NodeDelegateModel {
   Q_OBJECT
 
   public:
-  MathOperationDataModel(QQmlEngine *engine) : NodeDelegateModel(engine) {}
-  ~MathOperationDataModel() = default;
+  MathOperationNodeModel(QQmlEngine *engine) : NodeDelegateModel(engine) {}
+  ~MathOperationNodeModel() = default;
 
   public:
   unsigned int nPorts(PortType portType) const override;

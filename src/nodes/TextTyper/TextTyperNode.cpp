@@ -1,9 +1,9 @@
-#include "TextTyperModel.hpp"
+#include "TextTyperNode.hpp"
 #include "DecimalData.hpp"
 #include "TextData.hpp"
 #include <qdebug.h>
 
-QString TextTyperModel::portCaption(PortType portType, PortIndex index) const {
+QString TextTyperNode::portCaption(PortType portType, PortIndex index) const {
   switch (portType) {
   case NodeEditor::PortType::In:
     if (index == 0)
@@ -17,7 +17,7 @@ QString TextTyperModel::portCaption(PortType portType, PortIndex index) const {
   }
 }
 
-unsigned int TextTyperModel::nPorts(PortType portType) const {
+unsigned int TextTyperNode::nPorts(PortType portType) const {
   switch (portType) {
   case PortType::In:
     return 2;
@@ -28,7 +28,7 @@ unsigned int TextTyperModel::nPorts(PortType portType) const {
   }
 }
 
-const NodeDataType &TextTyperModel::dataType(PortType portType, PortIndex portIndex) const {
+const NodeDataType &TextTyperNode::dataType(PortType portType, PortIndex portIndex) const {
   switch (portType) {
   case PortType::In:
     return DecimalData().type();
@@ -37,30 +37,30 @@ const NodeDataType &TextTyperModel::dataType(PortType portType, PortIndex portIn
   }
 }
 
-std::shared_ptr<NodeData> TextTyperModel::outData(PortIndex port) { return _content; };
+std::shared_ptr<NodeData> TextTyperNode::outData(PortIndex port) { return _content; };
 
-void TextTyperModel::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
+void TextTyperNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
   qDebug() << data.get();
 };
 
-QQmlComponent TextTyperModel::embeddedComponent(QQmlEngine *engine) {
+QQmlComponent TextTyperNode::embeddedComponent(QQmlEngine *engine) {
   return QQmlComponent(engine, "CutieDesignerModule", "TextTyper");
 }
 
-QVariantMap TextTyperModel::componentInitialProperties() {
+QVariantMap TextTyperNode::componentInitialProperties() {
   QVariantMap map;
   map["textTyper"] = QVariant::fromValue(this);
   return map;
 }
 
-void TextTyperModel::embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded) {
+void TextTyperNode::embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded) {
   _textTyperQml = loaded;
 }
 
-TextTyperEventList *TextTyperModel::getModel() { return &_eventList; }
+TextTyperEventList *TextTyperNode::getModel() { return &_eventList; }
 
-bool TextTyperModel::getPlay() { return _playing; }
-void TextTyperModel::setPlay(bool playState) {
+bool TextTyperNode::getPlay() { return _playing; }
+void TextTyperNode::setPlay(bool playState) {
   _playing = playState;
 
   if (playState) {
@@ -78,13 +78,13 @@ void TextTyperModel::setPlay(bool playState) {
   Q_EMIT playChanged();
 }
 
-QString TextTyperModel::getText() { return _content->text; }
-void TextTyperModel::setText(QString newText) {
+QString TextTyperNode::getText() { return _content->text; }
+void TextTyperNode::setText(QString newText) {
   _content->text = newText;
   Q_EMIT dataUpdated(0);
 }
 
-void TextTyperModel::processEvent() {
+void TextTyperNode::processEvent() {
   _currentEvent = _eventList.events[_currentEventIdx];
 
   auto visitor = overload{
@@ -93,7 +93,7 @@ void TextTyperModel::processEvent() {
   std::visit(visitor, _eventList.events[_currentEventIdx]);
 }
 
-void TextTyperModel::processNextEvent() {
+void TextTyperNode::processNextEvent() {
   _currentEventIdx++;
 
   if (_currentEventIdx >= _eventList.events.length())
@@ -101,14 +101,14 @@ void TextTyperModel::processNextEvent() {
   processEvent();
 }
 
-void TextTyperModel::processWait() {
+void TextTyperNode::processWait() {
   const auto &w = std::get<Wait>(_currentEvent);
   _timer.connect(&_timer, SIGNAL(timeout()), this, SLOT(processNextEvent()),
                  Qt::ConnectionType::SingleShotConnection);
   _timer.start(w.delay * 1000);
 }
 
-void TextTyperModel::processErase() {
+void TextTyperNode::processErase() {
   auto &e = std::get<Erase>(_currentEvent);
 
   if (e.amount == 0 || _content->text.isEmpty())
@@ -129,7 +129,7 @@ void TextTyperModel::processErase() {
   _timer.start(100);
 }
 
-void TextTyperModel::processReplace() {
+void TextTyperNode::processReplace() {
   auto &r = std::get<Replace>(_currentEvent);
 
   if (r.text.isEmpty() || _content->text.isEmpty())
@@ -151,7 +151,7 @@ void TextTyperModel::processReplace() {
   _timer.start(100);
 }
 
-void TextTyperModel::processInsert() {
+void TextTyperNode::processInsert() {
   auto &i = std::get<Insert>(_currentEvent);
 
   if (i.text.isEmpty())

@@ -1,16 +1,16 @@
 #pragma once
 
 #include "DecimalData.hpp"
-#include "MathOperationDataModel.hpp"
+#include "MathOperationNodeModel.hpp"
 
 #include <QtCore/QObject>
 
 /// The model dictates the number of inputs and outputs for the Node.
 /// In this example it has no logic.
-class DivisionModel : public MathOperationDataModel {
+class DivisionNode : public MathOperationNodeModel {
   public:
-  DivisionModel(QQmlEngine *engine) : MathOperationDataModel(engine) {}
-  virtual ~DivisionModel() {}
+  DivisionNode(QQmlEngine *engine) : MathOperationNodeModel(engine) {}
+  virtual ~DivisionNode() {}
 
   public:
   QString caption() const override { return QStringLiteral("Division"); }

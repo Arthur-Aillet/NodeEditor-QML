@@ -23,26 +23,26 @@ qt_add_qml_module(CutieDesigner
   surfaces/SurfaceLoader.cpp
   surfaces/SurfaceLoader.cpp
 
-  nodes/AdditionModel.hpp
-  nodes/DivisionModel.hpp
-  nodes/MathOperationDataModel.hpp
-  nodes/SubtractionModel.hpp
-  nodes/ValueNodeModel.cpp
-  nodes/ValueNodeModel.hpp
+  nodes/AdditionNode.hpp
+  nodes/DivisionNode.hpp
+  nodes/MathOperationNodeModel.cpp
+  nodes/MathOperationNodeModel.hpp
+  nodes/SubtractionNode.hpp
+  nodes/NumberInputNode.cpp
+  nodes/NumberInputNode.hpp
   nodes/DecimalData.hpp
   nodes/TextData.hpp
-  nodes/MathOperationDataModel.cpp
-  nodes/MultiplicationModel.hpp
+  nodes/MultiplicationNode.hpp
 
-  nodes/TextTyper/TextTyperModel.hpp
-  nodes/TextTyper/TextTyperModel.cpp
+  nodes/TextTyper/TextTyperNode.hpp
+  nodes/TextTyper/TextTyperNode.cpp
 
   nodes/Surface/ATypeNode.cpp
   nodes/Surface/ATypeNode.hpp
   nodes/Surface/SurfaceData.hpp
   nodes/Surface/SurfaceData.cpp
-  nodes/Surface/SurfaceDisplayDataModel.cpp
-  nodes/Surface/SurfaceDisplayDataModel.hpp
+  nodes/Surface/SurfaceDisplayNode.cpp
+  nodes/Surface/SurfaceDisplayNode.hpp
 
   nodes/TextTyper/TextTyperEventList.hpp
   nodes/TextTyper/TextTyperEventList.cpp

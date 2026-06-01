@@ -6,7 +6,7 @@
 
 SurfaceLoader::SurfaceLoader(QObject *parent) : QObject(parent) {}
 
-void SurfaceLoader::connectFinalNode(SurfaceDisplayDataModel *node) {
+void SurfaceLoader::connectFinalNode(SurfaceDisplayNode *node) {
   QObject::connect(node, SIGNAL(componentSet(SurfaceData *)), this,
                    SLOT(componentSet(SurfaceData *)));
 

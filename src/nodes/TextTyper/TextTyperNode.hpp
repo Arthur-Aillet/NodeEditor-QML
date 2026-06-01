@@ -8,7 +8,7 @@
 #include <qqmlengine.h>
 #include <qtmetamacros.h>
 
-class TextTyperModel : public NodeDelegateModel {
+class TextTyperNode : public NodeDelegateModel {
   Q_OBJECT
   QML_ELEMENT
   QML_UNCREATABLE("")
@@ -18,11 +18,11 @@ class TextTyperModel : public NodeDelegateModel {
   Q_PROPERTY(QString text READ getText WRITE setText NOTIFY textChanged)
   Q_PROPERTY(TextTyperEventList *model READ getModel CONSTANT)
 
-  TextTyperModel(QQmlEngine *engine)
+  TextTyperNode(QQmlEngine *engine)
       : NodeDelegateModel(engine), _content(std::make_shared<TextData>(QString("..."))),
         _timer(QTimer()){};
 
-  ~TextTyperModel() = default;
+  ~TextTyperNode() = default;
 
   QString caption() const override { return QStringLiteral("Text Typer"); }
 

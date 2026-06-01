@@ -11,13 +11,13 @@
 #include <qqmlengine.h>
 #include <qtmetamacros.h>
 
-class SurfaceDisplayDataModel : public NodeDelegateModel {
+class SurfaceDisplayNode : public NodeDelegateModel {
   Q_OBJECT
 
   public:
-  SurfaceDisplayDataModel(QQmlEngine *engine);
+  SurfaceDisplayNode(QQmlEngine *engine);
 
-  ~SurfaceDisplayDataModel() = default;
+  ~SurfaceDisplayNode() = default;
 
   public:
   QString caption() const override { return QStringLiteral("Result"); }

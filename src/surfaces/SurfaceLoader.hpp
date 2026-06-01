@@ -1,7 +1,7 @@
 #pragma once
 
-#include "SurfaceDisplayDataModel.hpp"
-#include <qobject.h>
+#include "SurfaceDisplayNode.hpp"
+#include <QtCore/QObject>
 #include <qqmlintegration.h>
 #include <qquickitem.h>
 #include <qtmetamacros.h>
@@ -13,7 +13,7 @@ class SurfaceLoader : public QObject {
   public:
   SurfaceLoader(QObject *parent = nullptr);
 
-  void connectFinalNode(SurfaceDisplayDataModel *node);
+  void connectFinalNode(SurfaceDisplayNode *node);
 
   private:
   QQuickItem *_surface;

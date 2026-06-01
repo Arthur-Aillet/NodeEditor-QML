@@ -15,12 +15,12 @@ class QLineEdit;
 
 /// The model dictates the number of inputs and outputs for the Node.
 /// In this example it has no logic.
-class ValueNodeModel : public NodeDelegateModel {
+class NumberInputNode : public NodeDelegateModel {
   Q_OBJECT
 
   public:
-  ValueNodeModel(QQmlEngine *engine);
-  ~ValueNodeModel() override = default;
+  NumberInputNode(QQmlEngine *engine);
+  ~NumberInputNode() override = default;
 
   public:
   QString caption() const override { return QStringLiteral("Number Source"); }

@@ -4,14 +4,14 @@
 #include <QtWidgets/QLabel>
 
 #include "DecimalData.hpp"
-#include "MathOperationDataModel.hpp"
+#include "MathOperationNodeModel.hpp"
 
 /// The model dictates the number of inputs and outputs for the Node.
 /// In this example it has no logic.
-class SubtractionModel : public MathOperationDataModel {
+class SubtractionNode : public MathOperationNodeModel {
   public:
-  SubtractionModel(QQmlEngine *engine) : MathOperationDataModel(engine) {}
-  virtual ~SubtractionModel() {}
+  SubtractionNode(QQmlEngine *engine) : MathOperationNodeModel(engine) {}
+  virtual ~SubtractionNode() {}
 
   public:
   QString caption() const override { return QStringLiteral("Subtraction"); }

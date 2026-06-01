@@ -2,16 +2,16 @@
 
 #include <QtCore/QObject>
 
-#include "MathOperationDataModel.hpp"
+#include "MathOperationNodeModel.hpp"
 
 #include "DecimalData.hpp"
 
 /// The model dictates the number of inputs and outputs for the Node.
 /// In this example it has no logic.
-class MultiplicationModel : public MathOperationDataModel {
+class MultiplicationNode : public MathOperationNodeModel {
   public:
-  MultiplicationModel(QQmlEngine *engine) : MathOperationDataModel(engine) {}
-  virtual ~MultiplicationModel() {}
+  MultiplicationNode(QQmlEngine *engine) : MathOperationNodeModel(engine) {}
+  virtual ~MultiplicationNode() {}
 
   public:
   QString caption() const override { return QStringLiteral("Multiplication"); }

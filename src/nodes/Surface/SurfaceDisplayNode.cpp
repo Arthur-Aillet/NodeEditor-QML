@@ -1,4 +1,4 @@
-#include "SurfaceDisplayDataModel.hpp"
+#include "SurfaceDisplayNode.hpp"
 #include "NodeDelegateModel.hpp"
 #include "SurfaceData.hpp"
 
@@ -9,10 +9,10 @@
 #include <qtimer.h>
 #include <qtmetamacros.h>
 
-SurfaceDisplayDataModel::SurfaceDisplayDataModel(QQmlEngine *engine)
+SurfaceDisplayNode::SurfaceDisplayNode(QQmlEngine *engine)
     : NodeDelegateModel(engine), _content(nullptr) {}
 
-unsigned int SurfaceDisplayDataModel::nPorts(PortType portType) const {
+unsigned int SurfaceDisplayNode::nPorts(PortType portType) const {
   switch (portType) {
   case PortType::In:
     return 1;
@@ -21,13 +21,13 @@ unsigned int SurfaceDisplayDataModel::nPorts(PortType portType) const {
   }
 }
 
-const NodeDataType &SurfaceDisplayDataModel::dataType(PortType, PortIndex) const {
+const NodeDataType &SurfaceDisplayNode::dataType(PortType, PortIndex) const {
   return SurfaceData().type();
 }
 
-std::shared_ptr<NodeData> SurfaceDisplayDataModel::outData(PortIndex) { return nullptr; }
+std::shared_ptr<NodeData> SurfaceDisplayNode::outData(PortIndex) { return nullptr; }
 
-void SurfaceDisplayDataModel::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
+void SurfaceDisplayNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
   if (data == nullptr) {
     _content = nullptr;
     emit componentRemoved();

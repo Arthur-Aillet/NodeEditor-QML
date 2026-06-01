@@ -1,4 +1,4 @@
-#include "ValueNodeModel.hpp"
+#include "NumberInputNode.hpp"
 #include "DecimalData.hpp"
 #include "NodeDelegateModel.hpp"
 
@@ -8,10 +8,10 @@
 #include <qqmlcomponent.h>
 #include <qvalidator.h>
 
-ValueNodeModel::ValueNodeModel(QQmlEngine *engine)
+NumberInputNode::NumberInputNode(QQmlEngine *engine)
     : NodeDelegateModel(engine), _number(std::make_shared<DecimalData>(0.0)) {}
 
-QJsonObject ValueNodeModel::save() const {
+QJsonObject NumberInputNode::save() const {
   QJsonObject modelJson = NodeDelegateModel::save();
 
   modelJson["number"] = QString::number(_number->number());
@@ -19,7 +19,7 @@ QJsonObject ValueNodeModel::save() const {
   return modelJson;
 }
 
-void ValueNodeModel::load(QJsonObject const &p) {
+void NumberInputNode::load(QJsonObject const &p) {
   QJsonValue v = p["number"];
 
   if (!v.isUndefined()) {
@@ -36,7 +36,7 @@ void ValueNodeModel::load(QJsonObject const &p) {
   }
 }
 
-unsigned int ValueNodeModel::nPorts(PortType portType) const {
+unsigned int NumberInputNode::nPorts(PortType portType) const {
   switch (portType) {
   case PortType::Out:
     return 1;
@@ -45,11 +45,11 @@ unsigned int ValueNodeModel::nPorts(PortType portType) const {
   }
 }
 
-QQmlComponent ValueNodeModel::embeddedComponent(QQmlEngine *engine) {
+QQmlComponent NumberInputNode::embeddedComponent(QQmlEngine *engine) {
   return QQmlComponent(engine, "CutieDesignerModule", "PortLabel");
 }
 
-void ValueNodeModel::embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded) {
+void NumberInputNode::embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded) {
   _portLabel = loaded;
   _portLabel->setProperty("placeholderText", "Value");
   if (_number != nullptr) {
@@ -58,7 +58,7 @@ void ValueNodeModel::embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded)
   _portLabel->connect(_portLabel.get(), SIGNAL(textEdited()), this, SLOT(onTextEdited()));
 }
 
-void ValueNodeModel::onTextEdited() {
+void NumberInputNode::onTextEdited() {
   auto str = _portLabel->property("text");
   bool ok = false;
 
@@ -74,13 +74,13 @@ void ValueNodeModel::onTextEdited() {
   }
 }
 
-const NodeDataType &ValueNodeModel::dataType(PortType, PortIndex id) const {
+const NodeDataType &NumberInputNode::dataType(PortType, PortIndex id) const {
   return DecimalData().type();
 }
 
-std::shared_ptr<NodeData> ValueNodeModel::outData(PortIndex) { return _number; }
+std::shared_ptr<NodeData> NumberInputNode::outData(PortIndex) { return _number; }
 
-void ValueNodeModel::setNumber(double n) {
+void NumberInputNode::setNumber(double n) {
   _number = std::make_shared<DecimalData>(n);
 
   Q_EMIT dataUpdated(0);

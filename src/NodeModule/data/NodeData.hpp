@@ -3,7 +3,6 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 #include <qdebug.h>
-#include <qobject.h>
 #include <qqmlintegration.h>
 #include <qtmetamacros.h>
 

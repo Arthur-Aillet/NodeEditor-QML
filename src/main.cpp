@@ -1,15 +1,14 @@
-#include "DataFlowModelInterface.hpp"
-
 #include "ATypeNode.hpp"
-#include "AdditionModel.hpp"
+#include "AdditionNode.hpp"
+#include "DataFlowModelInterface.hpp"
 #include "Definitions.hpp"
-#include "DivisionModel.hpp"
-#include "MultiplicationModel.hpp"
-#include "SubtractionModel.hpp"
-#include "SurfaceDisplayDataModel.hpp"
+#include "DivisionNode.hpp"
+#include "MultiplicationNode.hpp"
+#include "NumberInputNode.hpp"
+#include "SubtractionNode.hpp"
+#include "SurfaceDisplayNode.hpp"
 #include "SurfaceLoader.hpp"
-#include "TextTyperModel.hpp"
-#include "ValueNodeModel.hpp"
+#include "TextTyperNode.hpp"
 
 #include <QQmlApplicationEngine>
 #include <QtQml>
@@ -24,14 +23,14 @@ int main(int argc, char *argv[]) {
 
   auto ret = std::make_shared<NodeDelegateModelRegistry>(&engine);
 
-  ret->registerModel<ValueNodeModel>("Input");
-  ret->registerModel<AdditionModel>("Process");
-  ret->registerModel<DivisionModel>("Process");
-  ret->registerModel<MultiplicationModel>("Process");
-  ret->registerModel<SubtractionModel>("Process");
-  ret->registerModel<SurfaceDisplayDataModel>("Display");
+  ret->registerModel<NumberInputNode>("Input");
+  ret->registerModel<AdditionNode>("Process");
+  ret->registerModel<DivisionNode>("Process");
+  ret->registerModel<MultiplicationNode>("Process");
+  ret->registerModel<SubtractionNode>("Process");
+  ret->registerModel<SurfaceDisplayNode>("Display");
   ret->registerModel<ATypeNode>("Display");
-  ret->registerModel<TextTyperModel>("Process");
+  ret->registerModel<TextTyperNode>("Process");
 
   auto model = DataFlowGraphModel(ret, &engine);
 
@@ -42,24 +41,24 @@ int main(int argc, char *argv[]) {
 
   engine.loadFromModule("CutieDesignerModule", "Main");
   {
-    auto source = model.addNode(ValueNodeModel(&engine).name());
+    auto source = model.addNode(NumberInputNode(&engine).name());
     model.setNodeData(source, NodeRole::Position, QPointF(0, 0));
-    model.setNodeData(source, NodeRole::Type, ValueNodeModel(&engine).name());
+    model.setNodeData(source, NodeRole::Type, NumberInputNode(&engine).name());
   }
 
   {
-    auto source = model.addNode(TextTyperModel(&engine).name());
+    auto source = model.addNode(TextTyperNode(&engine).name());
     model.setNodeData(source, NodeRole::Position, QPointF(100, 100));
-    model.setNodeData(source, NodeRole::Type, TextTyperModel(&engine).name());
+    model.setNodeData(source, NodeRole::Type, TextTyperNode(&engine).name());
   }
 
   QObject *item = engine.rootObjects().first();
 
-  auto source = model.addNode(SurfaceDisplayDataModel(&engine).name());
+  auto source = model.addNode(SurfaceDisplayNode(&engine).name());
   model.setNodeData(source, NodeRole::Position, QPointF(400, 150));
-  model.setNodeData(source, NodeRole::Type, SurfaceDisplayDataModel(&engine).name());
+  model.setNodeData(source, NodeRole::Type, SurfaceDisplayNode(&engine).name());
   model.setNodeData(source, NodeRole::Flags, NodeFlag::Locked);
-  auto display = model.delegateModel<SurfaceDisplayDataModel>(source);
+  auto display = model.delegateModel<SurfaceDisplayNode>(source);
 
   auto loader = item->property("objectLoader").value<SurfaceLoader *>();
   loader->connectFinalNode(display);

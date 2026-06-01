@@ -10,7 +10,7 @@ FlexboxLayout {
     id: root
     direction: FlexboxLayout.Column
 
-    required property TextTyperModel textTyper
+    required property TextTyperNode textTyper
 
     Item {
         Layout.fillWidth: true
