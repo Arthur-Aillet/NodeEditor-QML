@@ -42,15 +42,20 @@ class ATypeNode : public NodeDelegateModel {
 
   std::shared_ptr<ObjectData> createATypeObjectData(QQmlEngine *engine);
 
-  QString getText() { return _text->text; }
+  QString getText() {
+    if (_text == nullptr) {
+      return "";
+    }
+    return _text->text;
+  }
 
   signals:
   void valueUpdated(QQmlComponent *component);
-  QString *textChanged();
+  void textChanged();
 
   private:
   bool _connected = false;
 
-  std::shared_ptr<TextData> _text;
+  std::shared_ptr<TextData> _text = nullptr;
   std::shared_ptr<ObjectData> _content;
 };

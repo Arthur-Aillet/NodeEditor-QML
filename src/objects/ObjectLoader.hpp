@@ -11,11 +11,12 @@ class ObjectLoader : public QObject {
 
   public:
   ObjectLoader(QObject *parent = nullptr);
+  ~ObjectLoader();
 
   void connectFinalNode(ObjectDisplayDataModel *node);
 
   private:
-  std::shared_ptr<QQuickItem> _surface{nullptr};
+  QQuickItem *_surface;
 
   public slots:
   void componentSet(ObjectData *object);

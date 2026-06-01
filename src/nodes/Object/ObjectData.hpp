@@ -27,5 +27,5 @@ class ObjectData : public NodeData {
   QVariantMap initialProps;
 
   signals:
-  void componentLoaded(std::shared_ptr<QQuickItem> object);
+  void componentLoaded(QQuickItem *object);
 };

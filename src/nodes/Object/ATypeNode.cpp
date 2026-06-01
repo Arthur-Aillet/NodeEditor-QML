@@ -43,6 +43,7 @@ std::shared_ptr<NodeData> ATypeNode::outData(PortIndex) { return _content; }
 void ATypeNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
   if (data == nullptr) {
     _text = nullptr;
+    emit textChanged();
     return;
   }
 
