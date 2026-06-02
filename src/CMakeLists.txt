@@ -18,26 +18,32 @@ qt_add_qml_module(CutieDesigner
 
   SOURCES
 
-  datatypes/SurfaceData.cpp
+  datatypes/ATypeCharacterData.hpp
   datatypes/SurfaceData.hpp
+  datatypes/SurfaceData.cpp
   datatypes/DecimalData.hpp
   datatypes/TextData.hpp
+  datatypes/TextData.cpp
 
   nodes/input/NumberInputNode.hpp
   nodes/input/NumberInputNode.cpp
+  nodes/display/AType/Ukrug/UkrugNode.hpp
+  nodes/display/AType/Ukrug/UkrugNode.cpp
   nodes/display/AType/Ukrug/UkrugPointsList.hpp
   nodes/display/AType/Ukrug/UkrugPointsList.cpp
+  nodes/display/AType/ATypeCharacterNodeModel.hpp
+  nodes/display/AType/ATypeCharacterNodeModel.cpp
   nodes/display/AType/ATypeNode.hpp
   nodes/display/AType/ATypeNode.cpp
-  nodes/display/surface/SurfaceDisplayNode.cpp
   nodes/display/surface/SurfaceDisplayNode.hpp
+  nodes/display/surface/SurfaceDisplayNode.cpp
   nodes/display/surface/SurfaceLoader.hpp
   nodes/display/surface/SurfaceLoader.cpp
   nodes/process/math/SubtractionNode.hpp
   nodes/process/math/AdditionNode.hpp
-  nodes/process/math/MathOperationNodeModel.cpp
   nodes/process/math/DivisionNode.hpp
   nodes/process/math/MathOperationNodeModel.hpp
+  nodes/process/math/MathOperationNodeModel.cpp
   nodes/process/math/MultiplicationNode.hpp
   nodes/process/TextTyper/TextTyperNode.hpp
   nodes/process/TextTyper/TextTyperNode.cpp

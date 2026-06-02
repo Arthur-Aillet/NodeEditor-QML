@@ -14,7 +14,11 @@ FlexboxLayout {
     justifyContent: FlexboxLayout.JustifyStart
     gap: 15
 
-    Component.onCompleted: applyText(node.text)
+    Component.onCompleted: {
+        if (node.character)
+            node.character.setContainer(root);
+        applyText(node.text);
+    }
 
     function sharedStart(fst, snd) {
         let i = 0;
@@ -35,11 +39,10 @@ FlexboxLayout {
     }
 
     function applyText(text: string) {
-        let currentText = "";
-        for (let i = 0; i != textModel.count; i++) {
-            currentText = currentText.concat(textModel.get(i).character);
-        }
+        if (!node.character)
+            return;
 
+        let currentText = node.character.getString();
         let commonStart = sharedStart(text, currentText);
         let remaining = text.substr(commonStart.length, text.length);
         let cleanedCurrentText = currentText.substr(commonStart.length, currentText.length);
@@ -49,17 +52,13 @@ FlexboxLayout {
 
         for (let i = 0; i != remaining.length; i++) {
             if (i < cleanedCurrentText.length) {
-                textModel.set(commonStart.length + i, {
-                    character: remaining[i]
-                });
+                node.character.setChar(commonStart.length + i, remaining[i]);
             } else {
-                textModel.insert(commonStart.length + i, {
-                    character: remaining[i]
-                });
+                node.character.createCharacterObject(remaining[i], commonStart.length + i);
             }
         }
         for (let i = 0; i < cleanedCurrentText.length - remaining.length; i++) {
-            textModel.remove(commonStart.length + remaining.length);
+            node.character.destroyItem(commonStart.length + remaining.length + i);
         }
     }
 
@@ -68,19 +67,17 @@ FlexboxLayout {
         function onTextChanged() {
             root.applyText(root.node.text);
         }
-    }
 
-    ListModel {
-        id: textModel
-    }
-
-    Repeater {
-        id: rep
-        model: textModel
-        delegate: UkrugCharacter {
-            required property string character
-
-            char: character
+        function onCharChanged() {
+            if (!root.node.character) {
+                for (let i = root.node.character.getString().length; i > 0; i--) {
+                    root.node.character.destroyItem(i - 1);
+                    //textModel.remove(i - 1);
+                }
+            } else {
+                root.node.character.setContainer(root);
+                root.applyText(root.node.text);
+            }
         }
     }
 }

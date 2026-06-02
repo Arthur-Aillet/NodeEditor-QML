@@ -96,6 +96,14 @@
                     "    //return max(-d1, d2) + h*h/(16.0*k);",
                     "}",
                     "",
+                    "float sdRoundedBox( in vec2 p, in vec2 b, in vec4 r )",
+                    "{",
+                    "    r.xy = (p.x>0.0)?r.xy : r.zw;",
+                    "    r.x  = (p.y>0.0)?r.x  : r.y;",
+                    "    vec2 q = abs(p)-b+r.x;",
+                    "    return min(max(q.x,q.y),0.0) + length(max(q,0.0)) - r.x;",
+                    "}",
+                    "",
                     "@main",
                     "{",
                     "\tvec2 p = (2.0 * fragCoord - iResolution.xy) / iResolution.y;",
@@ -105,19 +113,24 @@
                     "    float point2 = sdCircle(p - point2, scale);",
                     "    float point3 = sdCircle(p - point3, scale);",
                     "    float point4 = sdCircle(p - point4, scale);",
-                    "    ",
+                    "    float squareZone = sdRoundedBox(p, boxArea, vec4(boxRadius));",
+                    "",
                     "    if (substraction) {",
                     "        d = opSmoothSubtraction(point1, d, k);",
                     "        d = opSmoothSubtraction(point2, d, k);",
                     "        d = opSmoothSubtraction(point3, d, k);",
-                    "        d = opSmoothSubtraction(point4, d, k);   ",
+                    "        d = opSmoothSubtraction(point4, d, k);",
+                    "        d = opSmoothSubtraction(-squareZone, d, k/3);",
                     "        d = (d < -fill) ? -d - (fill * 2.0): d; ",
-                    "    } else {",
+                    "    } else {        ",
+                    "        d = opSmoothSubtraction(-squareZone, d, k/3);",
                     "        d = (d < -fill) ? -d - (fill * 2.0): d;",
-                    "        d = opSmoothUnion(point1, d, k);",
-                    "        d = opSmoothUnion(point2, d, k);",
-                    "        d = opSmoothUnion(point3, d, k);",
-                    "        d = opSmoothUnion(point4, d, k);    ",
+                    "",
+                    "        float points = opSmoothUnion(point2, point1, k);",
+                    "        points = opSmoothUnion(point3, points, k);",
+                    "        points = opSmoothUnion(point4, points, k);",
+                    "        points = opSmoothSubtraction(-squareZone, points, k/3);",
+                    "        d = opSmoothUnion(points, d, k);    ",
                     "    }",
                     "",
                     "    float fac = smoothstep(0, smoothFactor, -d);",
@@ -149,7 +162,7 @@
                         "minValue": "-1, -1",
                         "name": "point1",
                         "type": "vec2",
-                        "value": "0.45, 0.45"
+                        "value": "0, 0"
                     },
                     {
                         "defaultValue": "0, 0",
@@ -157,7 +170,7 @@
                         "minValue": "-1, -1",
                         "name": "point2",
                         "type": "vec2",
-                        "value": "-0.45, 0.45"
+                        "value": "0, 0"
                     },
                     {
                         "defaultValue": "0, 0",
@@ -165,7 +178,7 @@
                         "minValue": "-1, -1",
                         "name": "point3",
                         "type": "vec2",
-                        "value": "0.45, -0.45"
+                        "value": "0, 0"
                     },
                     {
                         "defaultValue": "0, 0",
@@ -173,7 +186,7 @@
                         "minValue": "-1, -1",
                         "name": "point4",
                         "type": "vec2",
-                        "value": "-0.45, -0.45"
+                        "value": "0, 0"
                     },
                     {
                         "defaultValue": "0",
@@ -181,15 +194,15 @@
                         "minValue": "0",
                         "name": "k",
                         "type": "float",
-                        "value": "0.032333"
+                        "value": "0"
                     },
                     {
-                        "defaultValue": "0.1",
+                        "defaultValue": "0.25",
                         "maxValue": "1",
                         "minValue": "0",
                         "name": "scale",
                         "type": "float",
-                        "value": "0.305556"
+                        "value": "0.25"
                     },
                     {
                         "defaultValue": "0.001",
@@ -197,7 +210,7 @@
                         "minValue": "0",
                         "name": "smoothFactor",
                         "type": "float",
-                        "value": "0"
+                        "value": "0.001"
                     },
                     {
                         "defaultValue": "1",
@@ -205,13 +218,29 @@
                         "minValue": "0",
                         "name": "fill",
                         "type": "float",
-                        "value": "0.0174829"
+                        "value": "1"
                     },
                     {
                         "defaultValue": "true",
                         "name": "substraction",
                         "type": "bool",
                         "value": "true"
+                    },
+                    {
+                        "defaultValue": "1, 1",
+                        "maxValue": "1, 1",
+                        "minValue": "0, 0",
+                        "name": "boxArea",
+                        "type": "vec2",
+                        "value": "1, 1"
+                    },
+                    {
+                        "defaultValue": "0.1",
+                        "maxValue": "1",
+                        "minValue": "0",
+                        "name": "boxRadius",
+                        "type": "float",
+                        "value": "0.1"
                     }
                 ],
                 "type": 2,

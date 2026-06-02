@@ -1,17 +1,11 @@
 #pragma once
 
-#include "DecimalData.hpp"
 #include "NodeData.hpp"
 
 struct TextDataType : public NodeDataType {
   TextDataType(DataTypeId id, QString name) : NodeDataType(id, name) {}
 
-  QList<DataTypeId> compatibleTypes() const override {
-    QList<DataTypeId> types;
-    types.push_front(id);
-    types.push_front(DecimalData().type().id);
-    return types;
-  }
+  QList<DataTypeId> compatibleTypes() const override;
 };
 
 class TextData : public NodeData {

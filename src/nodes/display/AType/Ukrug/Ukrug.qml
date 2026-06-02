@@ -1,4 +1,4 @@
-// Created with Qt Quick Effect Maker (version 0.44), Tue May 26 17:59:36 2026
+// Created with Qt Quick Effect Maker (version 0.44), Tue Jun 2 14:17:11 2026
 
 import QtQuick
 
@@ -9,15 +9,17 @@ Item {
     property Item source: null
 
     property color baseColor: Qt.rgba(1, 1, 1, 1)
-    property point point1: Qt.point(0.45, 0.45)
-    property point point2: Qt.point(-0.45, 0.45)
-    property point point3: Qt.point(0.45, -0.45)
-    property point point4: Qt.point(-0.45, -0.45)
-    property real k: 0.032333
-    property real scale: 0.305556
-    property real smoothFactor: 0
-    property real fill: 0.0174829
+    property point point1: Qt.point(0, 0)
+    property point point2: Qt.point(0, 0)
+    property point point3: Qt.point(0, 0)
+    property point point4: Qt.point(0, 0)
+    property real k: 0
+    property real scale: 0.25
+    property real smoothFactor: 0.001
+    property real fill: 1
     property bool substraction: true
+    property point boxArea: Qt.point(1, 1)
+    property real boxRadius: 0.1
 
     ShaderEffect {
         readonly property alias iSource: rootItem.source
@@ -32,6 +34,8 @@ Item {
         readonly property alias smoothFactor: rootItem.smoothFactor
         readonly property alias fill: rootItem.fill
         readonly property alias substraction: rootItem.substraction
+        readonly property alias boxArea: rootItem.boxArea
+        readonly property alias boxRadius: rootItem.boxRadius
 
         vertexShader: 'ukrug.vert.qsb'
         fragmentShader: 'ukrug.frag.qsb'

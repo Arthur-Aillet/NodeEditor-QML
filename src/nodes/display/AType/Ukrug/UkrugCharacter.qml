@@ -1,32 +1,58 @@
 pragma ComponentBehavior: Bound
 import QtQuick
+import QtQuick.Layouts
 
 import CutieDesignerModule
 
 Item {
     id: root
-    width: 150
+    Layout.preferredWidth: 0
     height: 150
 
+    Behavior on Layout.preferredWidth {
+        NumberAnimation {
+            duration: 250
+        }
+    }
+
     required property var char
-    property bool firstCall: true
+    required property bool goingToGetDestroyed
+    required property UkrugNode node
 
     UkrugPointsList {
         id: list
     }
 
-    onCharChanged: {
-        list.assignLetter(char);
+    onCharChanged: list.assignLetter(char)
+
+    Component.onCompleted: {
+        Layout.preferredWidth = 150;
+        shader.baseColor = root.node.baseColor;
+    }
+
+    onGoingToGetDestroyedChanged: {
+        Layout.preferredWidth = 0;
+        shader.baseColor = "transparent";
     }
 
     Ukrug {
         id: shader
         anchors.fill: parent
         source: parent
-        k: 0.02
-        scale: 0.22
-        smoothFactor: 0.01
 
+        baseColor: "transparent"
+        Behavior on baseColor {
+            PropertyAnimation {
+                duration: 250
+            }
+        }
+
+        k: root.node.k
+        scale: root.node.scale
+        smoothFactor: root.node.smoothFactor
+        fill: root.node.fill
+        substraction: root.node.substraction
+        boxArea: Qt.point(root.Layout.preferredWidth / 150, 1)
         function convertToPoint(angle, distance) {
             let vec = Qt.vector2d(Math.cos(angle), Math.sin(angle));
             vec = vec.times(distance * 0.45);

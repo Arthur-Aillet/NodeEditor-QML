@@ -53,7 +53,7 @@ void NumberInputNode::embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded
   _portLabel = loaded;
   _portLabel->setProperty("placeholderText", "Value");
   if (_number != nullptr) {
-    _portLabel->setProperty("text", _number->numberAsText());
+    _portLabel->setProperty("text", _number->numberAsText()->text);
   }
   _portLabel->connect(_portLabel.get(), SIGNAL(textEdited()), this, SLOT(onTextEdited()));
 }

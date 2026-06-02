@@ -9,6 +9,7 @@
 #include "SurfaceDisplayNode.hpp"
 #include "SurfaceLoader.hpp"
 #include "TextTyperNode.hpp"
+#include "UkrugNode.hpp"
 
 #include <QQmlApplicationEngine>
 #include <QtQml>
@@ -29,6 +30,7 @@ int main(int argc, char *argv[]) {
   ret->registerModel<MultiplicationNode>("Process");
   ret->registerModel<SubtractionNode>("Process");
   ret->registerModel<SurfaceDisplayNode>("Display");
+  ret->registerModel<UkrugNode>("Display");
   ret->registerModel<ATypeNode>("Display");
   ret->registerModel<TextTyperNode>("Process");
 
@@ -40,18 +42,6 @@ int main(int argc, char *argv[]) {
   DataFlowModelInterface::init(model);
 
   engine.loadFromModule("CutieDesignerModule", "Main");
-  {
-    auto source = model.addNode(NumberInputNode(&engine).name());
-    model.setNodeData(source, NodeRole::Position, QPointF(0, 0));
-    model.setNodeData(source, NodeRole::Type, NumberInputNode(&engine).name());
-  }
-
-  {
-    auto source = model.addNode(TextTyperNode(&engine).name());
-    model.setNodeData(source, NodeRole::Position, QPointF(100, 100));
-    model.setNodeData(source, NodeRole::Type, TextTyperNode(&engine).name());
-  }
-
   QObject *item = engine.rootObjects().first();
 
   auto source = model.addNode(SurfaceDisplayNode(&engine).name());
