@@ -1,4 +1,5 @@
 add_subdirectory(NodeModule)
+add_subdirectory(CutieUiModule)
 add_subdirectory(StatsModule)
 
 qt_add_executable(CutieDesigner
@@ -12,6 +13,7 @@ qt_add_qml_module(CutieDesigner
 
   nodes/input/PortLabel.qml
   nodes/display/AType/Ukrug/Ukrug.qml
+  nodes/display/AType/Ukrug/UkrugControl.qml
   nodes/display/AType/Ukrug/UkrugCharacter.qml
   nodes/display/AType/AType.qml
   nodes/process/TextTyper/TextTyper.qml
@@ -50,7 +52,7 @@ qt_add_qml_module(CutieDesigner
   nodes/process/TextTyper/TextTyperEventList.hpp
   nodes/process/TextTyper/TextTyperEventList.cpp
 
-  DEPENDENCIES QtQuick QtQuick.Layout StatsModule NodeModule
+  DEPENDENCIES QtQuick QtQuick.Layout StatsModule NodeModule CutieUiModule
   RESOURCES
   nodes/display/AType/Ukrug/UkrugPointsData.json
   nodes/display/AType/Ukrug/ukrug.vert.qsb
@@ -93,7 +95,7 @@ target_compile_definitions(CutieDesigner
   PRIVATE $<$<CONFIG:Debug>:QT_QML_DEBUG>)
 
 target_link_libraries(CutieDesigner
-  PRIVATE Qt6::Core Qt6::Gui Qt6::Quick Qt6::QuickWidgets Qt6::Qml StatsModule NodeModule vivid
+  PRIVATE Qt6::Core Qt6::Gui Qt6::Quick Qt6::QuickWidgets Qt6::Qml StatsModule NodeModule CutieUiModule vivid
 )
 target_compile_definitions(CutieDesigner PRIVATE GLM_ENABLE_EXPERIMENTAL)
 

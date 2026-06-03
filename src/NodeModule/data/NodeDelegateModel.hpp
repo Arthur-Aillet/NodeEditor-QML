@@ -8,6 +8,7 @@
 #include <QQmlComponent>
 #include <QtGui/QColor>
 #include <QtWidgets/QWidget>
+#include <qlogging.h>
 #include <qobject.h>
 #include <qqmlengine.h>
 #include <qquickitem.h>
@@ -134,6 +135,10 @@ class NodeDelegateModel : public QObject, public Serializable {
   void createComponent(QQuickItem *container, QQmlEngine *engine) {
     QQmlComponent component = embeddedComponent(engine);
     if (component.isNull()) {
+      return;
+    }
+    if (component.isError()) {
+      qCritical() << "Embedded Node Componenent failed to load: \n" << component.errorString();
       return;
     }
     _embed = std::shared_ptr<QQuickItem>(qobject_cast<QQuickItem *>(

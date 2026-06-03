@@ -53,5 +53,17 @@ int main(int argc, char *argv[]) {
   auto loader = item->property("objectLoader").value<SurfaceLoader *>();
   loader->connectFinalNode(display);
 
+  auto id1 = model.addNode(ATypeNode(&engine).name());
+  model.setNodeData(id1, NodeRole::Position, QPointF(220, 40));
+  model.setNodeData(id1, NodeRole::Type, ATypeNode(&engine).name());
+
+  auto id2 = model.addNode(TextTyperNode(&engine).name());
+  model.setNodeData(id2, NodeRole::Position, QPointF(0, 0));
+  model.setNodeData(id2, NodeRole::Type, TextTyperNode(&engine).name());
+
+  auto ukr = model.addNode(UkrugNode(&engine).name());
+  model.setNodeData(ukr, NodeRole::Position, QPointF(100, 150));
+  model.setNodeData(ukr, NodeRole::Type, UkrugNode(&engine).name());
+
   return app.exec();
 }

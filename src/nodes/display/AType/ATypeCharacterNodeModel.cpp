@@ -7,7 +7,16 @@ void ATypeCharacterNodeModel::createCharacterObject(QString initialChar, int ind
   auto component = getComponent();
 
   if (component->isNull()) {
-    qWarning() << "AType: CharacterObject is null";
+    qWarning() << "AType letter componenent is null";
+    return;
+  }
+  if (component->isError()) {
+    qCritical() << "AType letter componenent:" << component->errorString();
+    return;
+  }
+  if (!component->isReady()) {
+    qCritical() << "AType letter componenent: Not Ready to be created";
+    return;
   }
   auto props = getAdditionalProperties();
   props["char"] = initialChar;

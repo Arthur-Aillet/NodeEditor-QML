@@ -15,6 +15,7 @@ unsigned int UkrugNode::nPorts(PortType portType) const {
   case NodeEditor::PortType::Out:
     return 1;
   case NodeEditor::PortType::In:
+    return 4;
   default:
     return 0;
   }

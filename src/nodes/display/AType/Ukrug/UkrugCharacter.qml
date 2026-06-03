@@ -27,7 +27,9 @@ Item {
 
     Component.onCompleted: {
         Layout.preferredWidth = 150;
-        shader.baseColor = root.node.baseColor;
+        shader.baseColor = Qt.binding(function () {
+            return root.node.baseColor;
+        });
     }
 
     onGoingToGetDestroyedChanged: {
