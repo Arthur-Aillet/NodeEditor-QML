@@ -17,7 +17,7 @@ set(CMAKE_PREFIX_PATH "~/Qt/6.11.0/gcc_64/")
 set(LD_LIBRARY_PATH "~/Qt/6.11.0/gcc_64/lib")
 set(QT_QML_GENERATE_QMLLS_INI ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick Core Gui QuickWidgets QuickControls2 Qml Core5Compat)
+find_package(Qt6 REQUIRED COMPONENTS Quick Core Gui QuickWidgets QuickControls2 Qml Core5Compat ShaderTools)
 
 cmake_policy(SET CMP0071 NEW)
 

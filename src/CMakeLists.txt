@@ -13,13 +13,14 @@ qt_add_qml_module(CutieDesigner
 
   nodes/input/PortLabel.qml
   nodes/display/AType/Ukrug/Ukrug.qml
+  nodes/display/AType/Ukrug/UkrugShader.qml
   nodes/display/AType/Ukrug/UkrugControl.qml
   nodes/display/AType/Ukrug/UkrugCharacter.qml
   nodes/display/AType/AType.qml
+  nodes/display/shaderEffects/Blend.qml
   nodes/process/TextTyper/TextTyper.qml
 
   SOURCES
-
   datatypes/ATypeCharacterData.hpp
   datatypes/SurfaceData.hpp
   datatypes/SurfaceData.cpp
@@ -59,6 +60,14 @@ qt_add_qml_module(CutieDesigner
   nodes/display/AType/Ukrug/ukrug.frag.qsb
 )
 
+
+qt6_add_shaders(CutieDesigner "CutieDesigner_shaders"
+  PREFIX
+    "/qt/qml/CutieDesignerModule"
+  FILES
+  nodes/display/shaderEffects/blend.vert
+  nodes/display/shaderEffects/blend.frag
+)
 target_link_directories(CutieDesigner
   PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}

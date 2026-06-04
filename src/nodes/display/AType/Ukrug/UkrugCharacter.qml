@@ -68,7 +68,7 @@ Item {
         timer.running = true;
     }
 
-    Ukrug {
+    UkrugShader {
         id: shader
         anchors.fill: parent
         source: parent

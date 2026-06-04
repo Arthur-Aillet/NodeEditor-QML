@@ -1,6 +1,8 @@
+pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+
 import NodeModule
 import CutieDesignerModule
 import StatsModule
@@ -30,6 +32,59 @@ ApplicationWindow {
 
             SurfaceLoader {
                 id: objectLoader
+            }
+
+            Rectangle {
+                id: a
+                x: 100
+                y: 100
+                width: 100
+                height: 100
+
+                gradient: Gradient {
+                    GradientStop {
+                        position: 0.0
+                        color: "lightgreen"
+                    }
+                    GradientStop {
+                        position: 1.0
+                        color: "green"
+                    }
+                }
+                layer.enabled: true
+            }
+
+            Rectangle {
+                id: b
+                y: 150
+                width: 100
+                height: 100
+
+                NumberAnimation on x {
+                    loops: Animation.Infinite
+                    duration: 2000
+                    from: 100
+                    to: 200
+                }
+                gradient: Gradient {
+                    orientation: Gradient.Horizontal
+                    GradientStop {
+                        position: 0.0
+                        color: "pink"
+                    }
+                    GradientStop {
+                        position: 1.0
+                        color: "red"
+                    }
+                }
+
+                visible: false
+                layer.enabled: true
+            }
+            Blend {
+                anchors.fill: b
+                source: b
+                target: a
             }
         }
         SplitView {
