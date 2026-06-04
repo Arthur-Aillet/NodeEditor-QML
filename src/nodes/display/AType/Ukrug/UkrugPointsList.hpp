@@ -1,5 +1,6 @@
 #pragma once
 
+#include "UkrugNode.hpp"
 #include <QAbstractListModel>
 #include <QQmlEngine>
 #include <qdebug.h>
@@ -18,10 +19,10 @@ struct UkrugPoint {
 
   public:
   Q_PROPERTY(double angle MEMBER angle)
-  Q_PROPERTY(int distance MEMBER distance)
+  Q_PROPERTY(double distance MEMBER distance)
   Q_PROPERTY(bool animateAngle MEMBER animateAngle)
   double angle;
-  int distance;
+  double distance;
   bool animateAngle = true;
 };
 
@@ -35,6 +36,8 @@ class UkrugPointsList : public QObject {
   Q_PROPERTY(UkrugPoint point3 READ getPoint3 NOTIFY pointsChanged)
   Q_PROPERTY(UkrugPoint point4 READ getPoint4 NOTIFY pointsChanged)
 
+  Q_PROPERTY(double defaultOutsideDist MEMBER defaultOutsideDist CONSTANT)
+
   UkrugPoint getPoint1() { return _points[0]; }
   UkrugPoint getPoint2() { return _points[1]; }
   UkrugPoint getPoint3() { return _points[2]; }
@@ -47,6 +50,15 @@ class UkrugPointsList : public QObject {
   QJsonObject _pointsData;
   QList<UkrugPoint> _points;
 
+  double defaultOutsideDist = 4.2;
+
+  private:
+  QColor _baseColor = "white";
+  double _fontSize = 150;
+  double _animationOpacitySpeed = 250;
+  double _animationWidthSpeed = 100;
+
+  public:
   signals:
   void pointsChanged();
 };

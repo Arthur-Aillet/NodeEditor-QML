@@ -47,7 +47,9 @@ void ATypeCharacterNodeModel::destroyItem(int index) {
     }
   }
 
-  QTimer::singleShot(250, this, [this, ptr, index]() {
+  auto animationDuration = std::max(_animationOpacitySpeed, _animationWidthSpeed);
+
+  QTimer::singleShot(animationDuration, this, [this, ptr, index]() {
     auto children = _container->childItems();
 
     if (ptr.isNull())

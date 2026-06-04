@@ -1,4 +1,4 @@
-// Created with Qt Quick Effect Maker (version 0.44), Tue Jun 2 14:17:11 2026
+// Created with Qt Quick Effect Maker (version 0.44), Thu Jun 4 10:19:57 2026
 
 import QtQuick
 
@@ -13,9 +13,9 @@ Item {
     property point point2: Qt.point(0, 0)
     property point point3: Qt.point(0, 0)
     property point point4: Qt.point(0, 0)
-    property real k: 0
-    property real scale: 0.25
-    property real smoothFactor: 0.001
+    property real k: 0.02
+    property real pointsScale: 0.25
+    property real smoothFactor: 0.04
     property real fill: 1
     property bool substraction: true
     property point boxArea: Qt.point(1, 1)
@@ -30,7 +30,7 @@ Item {
         readonly property alias point3: rootItem.point3
         readonly property alias point4: rootItem.point4
         readonly property alias k: rootItem.k
-        readonly property alias scale: rootItem.scale
+        readonly property alias pointsScale: rootItem.pointsScale
         readonly property alias smoothFactor: rootItem.smoothFactor
         readonly property alias fill: rootItem.fill
         readonly property alias substraction: rootItem.substraction

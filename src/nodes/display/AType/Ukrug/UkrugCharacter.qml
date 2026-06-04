@@ -7,13 +7,17 @@ import CutieDesignerModule
 Item {
     id: root
     Layout.preferredWidth: 0
-    height: 150
+    Layout.preferredHeight: root.node.fontSize
 
     Behavior on Layout.preferredWidth {
+        id: widthAnimation
+        enabled: true
         NumberAnimation {
-            duration: 250
+            duration: root.node.animationWidthSpeed
         }
     }
+
+    antialiasing: true
 
     required property var char
     required property bool goingToGetDestroyed
@@ -26,15 +30,42 @@ Item {
     onCharChanged: list.assignLetter(char)
 
     Component.onCompleted: {
-        Layout.preferredWidth = 150;
+        widthAnimation.enabled = false;
+        Layout.preferredWidth = Qt.binding(function () {
+            return root.node.fontSize;
+        });
         shader.baseColor = Qt.binding(function () {
             return root.node.baseColor;
         });
     }
 
+    Timer {
+        id: timer
+        running: false
+        repeat: false
+
+        property var callback
+
+        onTriggered: callback()
+    }
+
     onGoingToGetDestroyedChanged: {
-        Layout.preferredWidth = 0;
-        shader.baseColor = "transparent";
+        if (node.animationWidthSpeed > node.animationOpacitySpeed) {
+            timer.interval = node.animationWidthSpeed - node.animationOpacitySpeed;
+            widthAnimation.enabled = true;
+            Layout.preferredWidth = 0;
+            timer.callback = () => {
+                shader.baseColor = "transparent";
+            };
+        } else {
+            timer.interval = node.animationOpacitySpeed - node.animationWidthSpeed;
+            shader.baseColor = "transparent";
+            timer.callback = () => {
+                widthAnimation.enabled = true;
+                Layout.preferredWidth = 0;
+            };
+        }
+        timer.running = true;
     }
 
     Ukrug {
@@ -45,19 +76,20 @@ Item {
         baseColor: "transparent"
         Behavior on baseColor {
             PropertyAnimation {
-                duration: 250
+                duration: root.node.animationOpacitySpeed
             }
         }
 
         k: root.node.k
-        scale: root.node.scale
+        pointsScale: root.node.pointsScale
         smoothFactor: root.node.smoothFactor
         fill: root.node.fill
         substraction: root.node.substraction
-        boxArea: Qt.point(root.Layout.preferredWidth / 150, 1)
+        boxArea: Qt.point((root.Layout.preferredWidth / root.node.fontSize) * root.node.boxLimitX, root.node.boxLimitY)
+        boxRadius: root.node.boxRadius
         function convertToPoint(angle, distance) {
             let vec = Qt.vector2d(Math.cos(angle), Math.sin(angle));
-            vec = vec.times(distance * 0.45);
+            vec = vec.times(distance * root.node.pointsDistance);
             return Qt.point(vec.x, vec.y);
         }
 

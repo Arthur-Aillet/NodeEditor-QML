@@ -14,6 +14,8 @@
 #include <qqmlengine.h>
 #include <qtmetamacros.h>
 
+class UkrugPointsList;
+
 class UkrugNode : public ATypeCharacterNodeModel {
   Q_OBJECT
   QML_IMPLEMENTS_INTERFACES(ATypeCharacterNodeModel)
@@ -21,14 +23,16 @@ class UkrugNode : public ATypeCharacterNodeModel {
   QML_UNCREATABLE("")
 
   public:
-  Q_PROPERTY(QColor baseColor READ getBaseColor WRITE setBaseColor NOTIFY baseColorChanged)
-  Q_PROPERTY(double k READ getK WRITE setK NOTIFY kChanged)
-  Q_PROPERTY(double scale READ getScale WRITE setScale NOTIFY scaleChanged)
-  Q_PROPERTY(
-      double smoothFactor READ getSmoothFactor WRITE setSmoothFactor NOTIFY smoothFactorChanged)
-  Q_PROPERTY(double fill READ getFill WRITE setFill NOTIFY fillChanged)
-  Q_PROPERTY(
-      bool substraction READ getSubstraction WRITE setSubstraction NOTIFY substractionChanged)
+  Q_PROPERTY(double k MEMBER _k NOTIFY kChanged)
+  Q_PROPERTY(double pointsScale MEMBER _pointsScale NOTIFY pointsScaleChanged)
+  Q_PROPERTY(double pointsDistance MEMBER _pointsDistance NOTIFY pointsDistanceChanged)
+  Q_PROPERTY(double smoothFactor MEMBER _smoothFactor NOTIFY smoothFactorChanged)
+  Q_PROPERTY(double fill MEMBER _fill NOTIFY fillChanged)
+  Q_PROPERTY(bool substraction MEMBER _substraction NOTIFY substractionChanged)
+
+  Q_PROPERTY(double boxLimitX MEMBER _boxLimitX NOTIFY boxLimitXChanged)
+  Q_PROPERTY(double boxLimitY MEMBER _boxLimitY NOTIFY boxLimitYChanged)
+  Q_PROPERTY(double boxRadius MEMBER _boxRadius NOTIFY boxRadiusChanged)
 
   UkrugNode(QQmlEngine *engine);
   ~UkrugNode() = default;
@@ -56,53 +60,29 @@ class UkrugNode : public ATypeCharacterNodeModel {
   QQmlComponent *getComponent() override;
   QVariantMap getAdditionalProperties() override;
 
-  QColor getBaseColor() { return _baseColor; }
-  double getK() { return _k; }
-  double getScale() { return _scale; }
-  double getSmoothFactor() { return _smoothFactor; }
-  double getFill() { return _fill; }
-  bool getSubstraction() { return _substraction; }
-
-  void setBaseColor(QColor baseColor) {
-    _baseColor = baseColor;
-    emit baseColorChanged();
-  }
-  void setK(double k) {
-    _k = k;
-    emit kChanged();
-  }
-  void setScale(double scale) {
-    _scale = scale;
-    emit scaleChanged();
-  }
-  void setSmoothFactor(double smoothFactor) {
-    _smoothFactor = smoothFactor;
-    emit smoothFactorChanged();
-  }
-  void setFill(double fill) {
-    _fill = fill;
-    emit fillChanged();
-  }
-  void setSubstraction(bool substraction) {
-    _substraction = substraction;
-    emit substractionChanged();
-  }
-
   signals:
-  void baseColorChanged();
   void kChanged();
-  void scaleChanged();
+  void pointsDistanceChanged();
+  void pointsScaleChanged();
   void smoothFactorChanged();
   void fillChanged();
   void substractionChanged();
+  void boxLimitXChanged();
+  void boxLimitYChanged();
+  void boxRadiusChanged();
+
+  friend UkrugPointsList;
 
   private:
-  QColor _baseColor = "white";
   double _k = 0.02;
-  double _scale = 0.22;
+  double _pointsScale = 0.22;
   double _smoothFactor = 0.01;
   double _fill = 0.018;
   bool _substraction = true;
+  double _pointsDistance = 0.45;
+  double _boxLimitX = 1;
+  double _boxLimitY = 1;
+  double _boxRadius = 0.1;
 
   std::unique_ptr<QQmlComponent> _component;
   std::shared_ptr<ATypeCharacterData> _modelData;

@@ -1,8 +1,8 @@
 pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 import CutieUiModule as Cute
-import QtQuick.Shapes
 
 Cute.TextField {
     id: root
@@ -11,6 +11,8 @@ Cute.TextField {
     property double max: 1
     property int ease: SliderField.Linear
 
+    property bool set: false
+
     enum Type {
         Linear,
         Sine,
@@ -18,6 +20,14 @@ Cute.TextField {
         Cubic,
         Quart,
         Exp
+    }
+
+    onValueChanged: {
+        if (!set) {
+            slider.value = root.value / root.max;
+            value = Number(value).toFixed(2);
+            set = true;
+        }
     }
 
     textField.onEditingFinished: {
@@ -33,11 +43,7 @@ Cute.TextField {
         id: slider
         x: 0
         from: 0
-        value: {
-            value = root.value;
-        }
         to: 1
-
         stepSize: 0.01
 
         function lerp(factor: double): double {

@@ -1,4 +1,5 @@
 #include "UkrugPointsList.hpp"
+#include "UkrugNode.hpp"
 #include <qdebug.h>
 #include <qmath.h>
 
@@ -11,10 +12,10 @@ UkrugPointsList::UkrugPointsList() {
     return;
   }
   _pointsData = QJsonDocument::fromJson(file.readAll()).object();
-  _points.append(UkrugPoint{0, 4, false});
-  _points.append(UkrugPoint{M_PI / 2, 4, false});
-  _points.append(UkrugPoint{M_PI, 4, false});
-  _points.append(UkrugPoint{M_PI * 3 / 2, 4, false});
+  _points.append(UkrugPoint{0, defaultOutsideDist, false});
+  _points.append(UkrugPoint{M_PI / 2, defaultOutsideDist, false});
+  _points.append(UkrugPoint{M_PI, defaultOutsideDist, false});
+  _points.append(UkrugPoint{M_PI * 3 / 2, defaultOutsideDist, false});
 }
 
 static float absoluteAngle(float angle) {
@@ -69,13 +70,13 @@ void UkrugPointsList::assignLetter(QString character) {
   auto find = _pointsData.find(character.toUpper());
   if (find == _pointsData.end()) {
     for (int i = 0; i != _points.length(); i++) {
-      _points[i].distance = 4;
+      _points[i].distance = defaultOutsideDist;
       _points[i].animateAngle = true;
     }
   } else {
     auto points = find.value().toArray();
     for (int i = 0; i != points.count(); i++) {
-      auto newDist = points[i].toObject()["distance"].toInt();
+      auto newDist = points[i].toObject()["distance"].toDouble();
       if (newDist != 0) {
         auto angle = points[i].toObject()["angle"].toDouble();
         auto prevAngle = qRadiansToDegrees(_points[i].angle);
@@ -84,11 +85,12 @@ void UkrugPointsList::assignLetter(QString character) {
         _points[i].angle = qDegreesToRadians(angle);
       }
       _points[i].distance = newDist;
-      _points[i].animateAngle =
-          _points[i].distance != 4 && _points[i].distance != 0 && newDist != 4 && newDist != 0;
+      _points[i].animateAngle = _points[i].distance != defaultOutsideDist &&
+                                _points[i].distance != 0 && newDist != defaultOutsideDist &&
+                                newDist != 0;
     }
     for (int i = points.count(); i != _points.length(); i++) {
-      _points[i].distance = 4;
+      _points[i].distance = defaultOutsideDist;
       _points[i].animateAngle = true;
     }
   }

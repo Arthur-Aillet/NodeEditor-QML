@@ -20,6 +20,14 @@ class ATypeCharacterNodeModel : public NodeDelegateModel {
   QML_INTERFACE
 
   public:
+  Q_PROPERTY(QColor baseColor MEMBER _baseColor NOTIFY baseColorChanged)
+  Q_PROPERTY(double fontSize MEMBER _fontSize NOTIFY fontSizeChanged)
+
+  Q_PROPERTY(double animationOpacitySpeed MEMBER _animationOpacitySpeed NOTIFY
+                 animationOpacitySpeedChanged)
+  Q_PROPERTY(
+      double animationWidthSpeed MEMBER _animationWidthSpeed NOTIFY animationWidthSpeedChanged)
+
   virtual QQmlComponent *getComponent() = 0;
   virtual QVariantMap getAdditionalProperties() = 0;
   ATypeCharacterNodeModel(QQmlEngine *engine) : NodeDelegateModel(engine) {}
@@ -34,6 +42,17 @@ class ATypeCharacterNodeModel : public NodeDelegateModel {
   protected:
   QQuickItem *_container;
   QVector<QSharedPointer<QQuickItem>> _characters{};
+  QColor _baseColor = "white";
+  double _fontSize = 150;
+  double _animationOpacitySpeed = 250;
+  double _animationWidthSpeed = 100;
+
+  public:
+  signals:
+  void baseColorChanged();
+  void fontSizeChanged();
+  void animationOpacitySpeedChanged();
+  void animationWidthSpeedChanged();
 };
 
 Q_DECLARE_INTERFACE(ATypeCharacterNodeModel, "ATypeCharacterNodeModel")

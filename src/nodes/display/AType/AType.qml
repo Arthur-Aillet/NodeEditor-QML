@@ -70,10 +70,7 @@ FlexboxLayout {
 
         function onCharChanged() {
             if (!root.node.character) {
-                for (let i = root.node.character.getString().length; i > 0; i--) {
-                    root.node.character.destroyItem(i - 1);
-                    //textModel.remove(i - 1);
-                }
+                root.children = "";
             } else {
                 root.node.character.setContainer(root);
                 root.applyText(root.node.text);
