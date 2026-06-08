@@ -1,5 +1,6 @@
 #include "ATypeNode.hpp"
 #include "AdditionNode.hpp"
+#include "BlendNode.hpp"
 #include "DataFlowModelInterface.hpp"
 #include "Definitions.hpp"
 #include "DivisionNode.hpp"
@@ -33,6 +34,7 @@ int main(int argc, char *argv[]) {
   ret->registerModel<UkrugNode>("Display");
   ret->registerModel<ATypeNode>("Display");
   ret->registerModel<TextTyperNode>("Process");
+  ret->registerModel<BlendNode>("Process");
 
   auto model = DataFlowGraphModel(ret, &engine);
 
@@ -51,7 +53,8 @@ int main(int argc, char *argv[]) {
   auto display = model.delegateModel<SurfaceDisplayNode>(source);
 
   auto loader = item->property("objectLoader").value<SurfaceLoader *>();
-  loader->connectFinalNode(display);
+  QObject::connect(display, SIGNAL(contentChanged(SurfaceData *)), loader,
+                   SLOT(setSurfaceData(SurfaceData *)));
 
   auto id1 = model.addNode(ATypeNode(&engine).name());
   model.setNodeData(id1, NodeRole::Position, QPointF(220, 40));
@@ -64,6 +67,10 @@ int main(int argc, char *argv[]) {
   auto ukr = model.addNode(UkrugNode(&engine).name());
   model.setNodeData(ukr, NodeRole::Position, QPointF(100, 150));
   model.setNodeData(ukr, NodeRole::Type, UkrugNode(&engine).name());
+
+  auto id3 = model.addNode(BlendNode(&engine).name());
+  model.setNodeData(id3, NodeRole::Position, QPointF(200, 150));
+  model.setNodeData(id3, NodeRole::Type, BlendNode(&engine).name());
 
   return app.exec();
 }

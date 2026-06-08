@@ -42,6 +42,8 @@ qt_add_qml_module(CutieDesigner
   nodes/display/surface/SurfaceDisplayNode.cpp
   nodes/display/surface/SurfaceLoader.hpp
   nodes/display/surface/SurfaceLoader.cpp
+  nodes/display/shaderEffects/BlendNode.cpp
+  nodes/display/shaderEffects/BlendNode.hpp
   nodes/process/math/SubtractionNode.hpp
   nodes/process/math/AdditionNode.hpp
   nodes/process/math/DivisionNode.hpp
@@ -83,6 +85,7 @@ target_include_directories(CutieDesigner
   nodes/display/AType
   nodes/display/AType/Ukrug
   nodes/display/surface
+  nodes/display/shaderEffects
   nodes/input
   nodes/process
   nodes/process/math

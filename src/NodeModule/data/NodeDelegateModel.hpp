@@ -163,6 +163,7 @@ class NodeDelegateModel : public QObject, public Serializable {
   void dataUpdated(PortIndex const index);
 
   /// Triggers the propagation of the empty data downstream.
+  // Currently acts just like dataUpdated
   void dataInvalidated(PortIndex const index);
 
   void computingStarted();

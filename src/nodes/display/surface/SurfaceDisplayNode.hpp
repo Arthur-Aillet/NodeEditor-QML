@@ -5,6 +5,7 @@
 
 #include <QQmlComponent>
 #include <QtCore/QObject>
+#include <memory>
 #include <qdebug.h>
 #include <qjsvalue.h>
 #include <qqmlcomponent.h>
@@ -16,6 +17,7 @@ class SurfaceDisplayNode : public NodeDelegateModel {
 
   public:
   SurfaceDisplayNode(QQmlEngine *engine);
+  Q_PROPERTY(SurfaceData *content READ getContent NOTIFY contentChanged)
 
   ~SurfaceDisplayNode() = default;
 
@@ -29,12 +31,11 @@ class SurfaceDisplayNode : public NodeDelegateModel {
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
+  SurfaceData *getContent() { return _content.lock().get(); }
+
   signals:
-  void componentSet(SurfaceData *component);
-  void componentRemoved();
+  void contentChanged(SurfaceData *);
 
   private:
-  bool _connected = false;
-
-  std::shared_ptr<SurfaceData> _content;
+  std::weak_ptr<SurfaceData> _content;
 };

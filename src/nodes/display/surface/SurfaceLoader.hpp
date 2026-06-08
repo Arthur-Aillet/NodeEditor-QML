@@ -1,7 +1,8 @@
 #pragma once
 
-#include "SurfaceDisplayNode.hpp"
+#include "SurfaceData.hpp"
 #include <QtCore/QObject>
+#include <qdebug.h>
 #include <qqmlintegration.h>
 #include <qquickitem.h>
 #include <qtmetamacros.h>
@@ -10,15 +11,22 @@ class SurfaceLoader : public QObject {
   Q_OBJECT
   QML_ELEMENT
 
+  Q_PROPERTY(
+      SurfaceData *surfaceData READ surfaceData WRITE setSurfaceData NOTIFY surfaceDataChanged)
+
   public:
   SurfaceLoader(QObject *parent = nullptr);
+  SurfaceData *surfaceData() { return _surfaceData; }
 
-  void connectFinalNode(SurfaceDisplayNode *node);
+  signals:
+  void surfaceDataChanged();
 
   private:
-  QQuickItem *_surface;
+  SurfaceData *_surfaceData = nullptr;
+  QQuickItem *_surface = nullptr;
+  void createComponent(SurfaceData *surface);
+  void removeComponent();
 
   public slots:
-  void componentSet(SurfaceData *surface);
-  void componentRemoved();
+  void setSurfaceData(SurfaceData *surfaceData);
 };

@@ -56,6 +56,9 @@ NodeId DataFlowGraphModel::addNode(QString const nodeType) {
     connect(model.get(), &NodeDelegateModel::dataUpdated,
             [newId, this](PortIndex const portIndex) { onOutPortDataUpdated(newId, portIndex); });
 
+    connect(model.get(), &NodeDelegateModel::dataInvalidated,
+            [newId, this](PortIndex const portIndex) { onOutPortDataUpdated(newId, portIndex); });
+
     connect(model.get(), &NodeDelegateModel::portsAboutToBeDeleted, this,
             [newId, this](PortType const portType, PortIndex const first, PortIndex const last) {
               portsAboutToBeDeleted(newId, portType, first, last);
@@ -573,6 +576,11 @@ void DataFlowGraphModel::loadNode(QJsonObject const &nodeJson) {
 
   if (model) {
     connect(model.get(), &NodeDelegateModel::dataUpdated,
+            [restoredNodeId, this](PortIndex const portIndex) {
+              onOutPortDataUpdated(restoredNodeId, portIndex);
+            });
+
+    connect(model.get(), &NodeDelegateModel::dataInvalidated,
             [restoredNodeId, this](PortIndex const portIndex) {
               onOutPortDataUpdated(restoredNodeId, portIndex);
             });
