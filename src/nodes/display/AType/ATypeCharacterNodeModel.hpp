@@ -27,6 +27,8 @@ class ATypeCharacterNodeModel : public NodeDelegateModel {
                  animationOpacitySpeedChanged)
   Q_PROPERTY(
       double animationWidthSpeed MEMBER _animationWidthSpeed NOTIFY animationWidthSpeedChanged)
+  Q_PROPERTY(double animationTransformSpeed MEMBER _animationTransformSpeed NOTIFY
+                 animationTransformSpeedChanged)
 
   virtual QQmlComponent *getComponent() = 0;
   virtual QVariantMap getAdditionalProperties() = 0;
@@ -46,6 +48,7 @@ class ATypeCharacterNodeModel : public NodeDelegateModel {
   double _fontSize = 150;
   double _animationOpacitySpeed = 250;
   double _animationWidthSpeed = 100;
+  double _animationTransformSpeed = 250;
 
   public:
   signals:
@@ -53,6 +56,7 @@ class ATypeCharacterNodeModel : public NodeDelegateModel {
   void fontSizeChanged();
   void animationOpacitySpeedChanged();
   void animationWidthSpeedChanged();
+  void animationTransformSpeedChanged();
 };
 
 Q_DECLARE_INTERFACE(ATypeCharacterNodeModel, "ATypeCharacterNodeModel")

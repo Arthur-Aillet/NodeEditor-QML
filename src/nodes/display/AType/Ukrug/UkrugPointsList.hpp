@@ -43,7 +43,7 @@ class UkrugPointsList : public QObject {
   UkrugPoint getPoint3() { return _points[2]; }
   UkrugPoint getPoint4() { return _points[3]; }
 
-  Q_INVOKABLE void assignLetter(QString character);
+  Q_INVOKABLE bool assignLetter(QString character);
 
   UkrugPointsList();
 

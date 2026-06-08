@@ -24,6 +24,7 @@ class UkrugNode : public ATypeCharacterNodeModel {
 
   public:
   Q_PROPERTY(double k MEMBER _k NOTIFY kChanged)
+  Q_PROPERTY(double circleScale MEMBER _circleScale NOTIFY circleScaleChanged)
   Q_PROPERTY(double pointsScale MEMBER _pointsScale NOTIFY pointsScaleChanged)
   Q_PROPERTY(double pointsDistance MEMBER _pointsDistance NOTIFY pointsDistanceChanged)
   Q_PROPERTY(double smoothFactor MEMBER _smoothFactor NOTIFY smoothFactorChanged)
@@ -62,6 +63,7 @@ class UkrugNode : public ATypeCharacterNodeModel {
 
   signals:
   void kChanged();
+  void circleScaleChanged();
   void pointsDistanceChanged();
   void pointsScaleChanged();
   void smoothFactorChanged();
@@ -75,6 +77,7 @@ class UkrugNode : public ATypeCharacterNodeModel {
 
   private:
   double _k = 0.02;
+  double _circleScale = 1.0;
   double _pointsScale = 0.22;
   double _smoothFactor = 0.01;
   double _fill = 0.018;

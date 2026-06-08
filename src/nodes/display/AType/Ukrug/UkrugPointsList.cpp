@@ -66,7 +66,8 @@ static std::pair<int, int> getClosestMatch(QList<UkrugPoint> &first, QList<Ukrug
   return pair;
 }
 
-void UkrugPointsList::assignLetter(QString character) {
+bool UkrugPointsList::assignLetter(QString character) {
+  bool validLetterFound = false;
   auto find = _pointsData.find(character.toUpper());
   if (find == _pointsData.end()) {
     for (int i = 0; i != _points.length(); i++) {
@@ -74,6 +75,7 @@ void UkrugPointsList::assignLetter(QString character) {
       _points[i].animateAngle = true;
     }
   } else {
+    validLetterFound = true;
     auto points = find.value().toArray();
     for (int i = 0; i != points.count(); i++) {
       auto newDist = points[i].toObject()["distance"].toDouble();
@@ -95,6 +97,7 @@ void UkrugPointsList::assignLetter(QString character) {
     }
   }
   emit pointsChanged();
+  return validLetterFound;
 }
 // void UkrugPointsListModel::setLetter(QString letter) {
 //   qDebug() << "letter: " << letter;

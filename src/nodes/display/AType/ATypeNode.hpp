@@ -19,7 +19,7 @@
 class ATypeNode : public NodeDelegateModel {
   Q_OBJECT
   QML_ELEMENT
-  QML_UNCREATABLE("")
+  QML_UNCREATABLE("NodeDelegateModel")
 
   Q_PROPERTY(QString text READ getText NOTIFY textChanged)
   Q_PROPERTY(ATypeCharacterNodeModel *character MEMBER _charModel NOTIFY charChanged)

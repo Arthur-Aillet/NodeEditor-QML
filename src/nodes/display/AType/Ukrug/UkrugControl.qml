@@ -29,6 +29,12 @@ GridController {
             ease: SliderField.Cubic
         },
         {
+            name: "Circle Scale",
+            type: GridController.Slider,
+            property: "circleScale",
+            ease: SliderField.Quad
+        },
+        {
             name: "Smooth Factor",
             type: GridController.Slider,
             property: "smoothFactor",
@@ -82,6 +88,12 @@ GridController {
             name: "Close Speed (ms)",
             type: GridController.Number,
             property: "animationWidthSpeed",
+            min: 0
+        },
+        {
+            name: "Change Speed (ms)",
+            type: GridController.Number,
+            property: "animationTransformSpeed",
             min: 0
         },
     ]

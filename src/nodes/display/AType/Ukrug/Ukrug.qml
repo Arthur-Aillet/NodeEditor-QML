@@ -1,4 +1,4 @@
-// Created with Qt Quick Effect Maker (version 0.44), Thu Jun 4 10:19:57 2026
+// Created with Qt Quick Effect Maker (version 0.44), Thu Jun 4 17:23:51 2026
 
 import QtQuick
 
@@ -13,13 +13,14 @@ Item {
     property point point2: Qt.point(0, 0)
     property point point3: Qt.point(0, 0)
     property point point4: Qt.point(0, 0)
-    property real k: 0.02
+    property real k: 0
     property real pointsScale: 0.25
-    property real smoothFactor: 0.04
+    property real smoothFactor: 0.001
     property real fill: 1
     property bool substraction: true
     property point boxArea: Qt.point(1, 1)
     property real boxRadius: 0.1
+    property real circleScale: 1
 
     ShaderEffect {
         readonly property alias iSource: rootItem.source
@@ -36,6 +37,7 @@ Item {
         readonly property alias substraction: rootItem.substraction
         readonly property alias boxArea: rootItem.boxArea
         readonly property alias boxRadius: rootItem.boxRadius
+        readonly property alias circleScale: rootItem.circleScale
 
         vertexShader: 'ukrug.vert.qsb'
         fragmentShader: 'ukrug.frag.qsb'

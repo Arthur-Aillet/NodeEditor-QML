@@ -108,7 +108,7 @@
                     "{",
                     "\tvec2 p = (2.0 * fragCoord - iResolution.xy) / iResolution.y;",
                     "",
-                    "\tfloat d = sdCircle(p, 1.0);",
+                    "\tfloat d = sdCircle(p, circleScale);",
                     "    float point1 = sdCircle(p - point1, pointsScale);",
                     "    float point2 = sdCircle(p - point2, pointsScale);",
                     "    float point3 = sdCircle(p - point3, pointsScale);",
@@ -195,7 +195,7 @@
                         "minValue": "0",
                         "name": "k",
                         "type": "float",
-                        "value": "0.02"
+                        "value": "0"
                     },
                     {
                         "defaultValue": "0.25",
@@ -211,7 +211,7 @@
                         "minValue": "0",
                         "name": "smoothFactor",
                         "type": "float",
-                        "value": "0.04"
+                        "value": "0.001"
                     },
                     {
                         "defaultValue": "1",
@@ -242,11 +242,19 @@
                         "name": "boxRadius",
                         "type": "float",
                         "value": "0.1"
+                    },
+                    {
+                        "defaultValue": "1",
+                        "maxValue": "1",
+                        "minValue": "0",
+                        "name": "circleScale",
+                        "type": "float",
+                        "value": "1"
                     }
                 ],
                 "type": 2,
                 "x": 105,
-                "y": 405.0594177246094
+                "y": 317.0633239746094
             }
         ],
         "version": 1

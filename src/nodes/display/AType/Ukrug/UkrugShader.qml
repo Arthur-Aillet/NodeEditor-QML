@@ -20,6 +20,7 @@ ShaderEffect {
     property bool substraction: true
     property point boxArea: Qt.point(1, 1)
     property real boxRadius: 0.1
+    property real circleScale: 1.0
 
     cullMode: ShaderEffect.BackFaceCulling
     vertexShader: 'ukrug.vert.qsb'
