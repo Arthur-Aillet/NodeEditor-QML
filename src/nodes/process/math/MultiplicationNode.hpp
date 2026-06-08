@@ -6,15 +6,13 @@
 
 #include "DecimalData.hpp"
 
-/// The model dictates the number of inputs and outputs for the Node.
-/// In this example it has no logic.
 class MultiplicationNode : public MathOperationNodeModel {
   public:
   MultiplicationNode(QQmlEngine *engine) : MathOperationNodeModel(engine) {}
   virtual ~MultiplicationNode() {}
 
   public:
-  QString caption() const override { return QStringLiteral("Multiplication"); }
+  QString caption() const override { return QStringLiteral("mult"); }
 
   QString name() const override { return QStringLiteral("Multiplication"); }
 
@@ -22,8 +20,8 @@ class MultiplicationNode : public MathOperationNodeModel {
   void compute() override {
     PortIndex const outPortIndex = 0;
 
-    auto n1 = _number1.lock();
-    auto n2 = _number2.lock();
+    auto n1 = _inputNumbers[0].lock();
+    auto n2 = _inputNumbers[1].lock();
 
     if (n1 && n2) {
       // modelValidationState = NodeValidationState::Valid;

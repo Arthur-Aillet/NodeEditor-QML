@@ -1,11 +1,13 @@
 #include "ATypeNode.hpp"
 #include "AdditionNode.hpp"
 #include "BlendNode.hpp"
+#include "CosNode.hpp"
 #include "DataFlowModelInterface.hpp"
 #include "Definitions.hpp"
 #include "DivisionNode.hpp"
 #include "MultiplicationNode.hpp"
 #include "NumberInputNode.hpp"
+#include "SinNode.hpp"
 #include "SubtractionNode.hpp"
 #include "SurfaceDisplayNode.hpp"
 #include "SurfaceLoader.hpp"
@@ -30,6 +32,8 @@ int main(int argc, char *argv[]) {
   ret->registerModel<DivisionNode>("Process");
   ret->registerModel<MultiplicationNode>("Process");
   ret->registerModel<SubtractionNode>("Process");
+  ret->registerModel<SinNode>("Process");
+  ret->registerModel<CosNode>("Process");
   ret->registerModel<SurfaceDisplayNode>("Display");
   ret->registerModel<UkrugNode>("Display");
   ret->registerModel<ATypeNode>("Display");

@@ -51,6 +51,8 @@ qt_add_qml_module(CutieDesigner
   nodes/process/math/MathOperationNodeModel.hpp
   nodes/process/math/MathOperationNodeModel.cpp
   nodes/process/math/MultiplicationNode.hpp
+  nodes/process/math/SinNode.hpp
+  nodes/process/math/CosNode.hpp
   nodes/process/TextTyper/TextTyperNode.hpp
   nodes/process/TextTyper/TextTyperNode.cpp
   nodes/process/TextTyper/TextTyperEventList.hpp

@@ -5,39 +5,18 @@
 
 #include <QtCore/QObject>
 
-/// The model dictates the number of inputs and outputs for the Node.
-/// In this example it has no logic.
 class DivisionNode : public MathOperationNodeModel {
   public:
   DivisionNode(QQmlEngine *engine) : MathOperationNodeModel(engine) {}
   virtual ~DivisionNode() {}
 
   public:
-  QString caption() const override { return QStringLiteral("Division"); }
+  QString caption() const override { return QStringLiteral("div"); }
 
   bool portCaptionVisible(PortType portType, PortIndex portIndex) const override {
     Q_UNUSED(portType);
     Q_UNUSED(portIndex);
     return true;
-  }
-
-  QString portCaption(PortType portType, PortIndex portIndex) const override {
-    switch (portType) {
-    case PortType::In:
-      if (portIndex == 0)
-        return QStringLiteral("Dividend");
-      else if (portIndex == 1)
-        return QStringLiteral("Divisor");
-
-      break;
-
-    case PortType::Out:
-      return QStringLiteral("Result");
-
-    default:
-      break;
-    }
-    return QString();
   }
 
   QString name() const override { return QStringLiteral("Division"); }
@@ -46,8 +25,8 @@ class DivisionNode : public MathOperationNodeModel {
   void compute() override {
     PortIndex const outPortIndex = 0;
 
-    auto n1 = _number1.lock();
-    auto n2 = _number2.lock();
+    auto n1 = _inputNumbers[0].lock();
+    auto n2 = _inputNumbers[1].lock();
 
     NodeValidationState state;
     if (n2 && (n2->number() == 0.0)) {

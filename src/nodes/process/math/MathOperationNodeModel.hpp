@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Definitions.hpp"
 #include "NodeDelegateModel.hpp"
 
 #include <QQmlComponent>
@@ -17,13 +18,23 @@ class MathOperationNodeModel : public NodeDelegateModel {
   Q_OBJECT
 
   public:
-  MathOperationNodeModel(QQmlEngine *engine) : NodeDelegateModel(engine) {}
+  MathOperationNodeModel(QQmlEngine *engine)
+      : NodeDelegateModel(engine), _inputNumbers(nbInputs()) {}
   ~MathOperationNodeModel() = default;
 
   public:
+  virtual unsigned int nbInputs() const { return 2; };
   unsigned int nPorts(PortType portType) const override;
 
   const NodeDataType &dataType(PortType portType, PortIndex portIndex) const override;
+  virtual bool portCaptionVisible(PortType, PortIndex) const override { return true; }
+  virtual QString portCaption(PortType portType, PortIndex portIndex) const override {
+    if (portType == PortType::Out)
+      return "out";
+    if (nbInputs() == 1)
+      return "in";
+    return QString((char)('a' + portIndex));
+  }
 
   std::shared_ptr<NodeData> outData(PortIndex port) override;
 
@@ -33,8 +44,7 @@ class MathOperationNodeModel : public NodeDelegateModel {
   virtual void compute() = 0;
 
   protected:
-  std::weak_ptr<DecimalData> _number1;
-  std::weak_ptr<DecimalData> _number2;
+  std::vector<std::weak_ptr<DecimalData>> _inputNumbers;
 
   std::shared_ptr<DecimalData> _result;
 };

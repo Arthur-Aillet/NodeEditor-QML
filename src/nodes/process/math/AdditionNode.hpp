@@ -5,16 +5,13 @@
 
 #include <QtCore/QObject>
 
-/// The model dictates the number of inputs and outputs for the Node.
-/// In this example it has no logic.
 class AdditionNode : public MathOperationNodeModel {
   public:
   AdditionNode(QQmlEngine *engine) : MathOperationNodeModel(engine) {}
   ~AdditionNode() = default;
 
   public:
-  QString caption() const override { return QStringLiteral("Addition"); }
-  QString label() const override { return QStringLiteral("Adds two numbers together"); }
+  QString caption() const override { return QStringLiteral("add"); }
   bool labelVisible() const override { return true; }
 
   QString name() const override { return QStringLiteral("Addition"); }
@@ -23,8 +20,8 @@ class AdditionNode : public MathOperationNodeModel {
   void compute() override {
     PortIndex const outPortIndex = 0;
 
-    auto n1 = _number1.lock();
-    auto n2 = _number2.lock();
+    auto n1 = _inputNumbers[0].lock();
+    auto n2 = _inputNumbers[1].lock();
 
     if (n1 && n2) {
       _result = std::make_shared<DecimalData>(n1->number() + n2->number());

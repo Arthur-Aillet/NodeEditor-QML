@@ -2,6 +2,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtMultimedia
 
 import NodeModule
 import CutieDesignerModule
@@ -33,6 +34,29 @@ ApplicationWindow {
             SurfaceLoader {
                 id: objectLoader
             }
+
+            // VideoOutput {
+            //     id: preview
+            //     anchors.fill: parent
+            // }
+            // CaptureSession {
+            //     id: captureSession
+            //     camera: Camera {
+            //         id: cam
+            //     }
+            //     imageCapture: ImageCapture {
+            //         id: imageCapture
+            //     }
+
+            //     recorder: MediaRecorder {
+            //         id: recorder
+            //     }
+            //     videoOutput: preview
+
+            //     Component.onCompleted: {
+            //         cam.start();
+            //     }
+            // }
 
             // Rectangle {
             //     id: a
