@@ -17,8 +17,8 @@ qt_add_qml_module(CutieDesigner
   nodes/display/AType/Ukrug/UkrugControl.qml
   nodes/display/AType/Ukrug/UkrugCharacter.qml
   nodes/display/AType/AType.qml
-  nodes/display/shaderEffects/Blend.qml
-  nodes/display/shaderEffects/BlendControl.qml
+  nodes/display/shaderEffects/Blend/Blend.qml
+  nodes/display/shaderEffects/Blend/BlendControl.qml
   nodes/process/TextTyper/TextTyper.qml
 
   SOURCES
@@ -43,8 +43,8 @@ qt_add_qml_module(CutieDesigner
   nodes/display/surface/SurfaceDisplayNode.cpp
   nodes/display/surface/SurfaceLoader.hpp
   nodes/display/surface/SurfaceLoader.cpp
-  nodes/display/shaderEffects/BlendNode.cpp
-  nodes/display/shaderEffects/BlendNode.hpp
+  nodes/display/shaderEffects/Blend/BlendNode.cpp
+  nodes/display/shaderEffects/Blend/BlendNode.hpp
   nodes/process/math/SubtractionNode.hpp
   nodes/process/math/AdditionNode.hpp
   nodes/process/math/DivisionNode.hpp
@@ -68,8 +68,8 @@ qt6_add_shaders(CutieDesigner "CutieDesigner_shaders"
   PREFIX
     "/qt/qml/CutieDesignerModule"
   FILES
-  nodes/display/shaderEffects/blend.vert
-  nodes/display/shaderEffects/blend.frag
+  nodes/display/shaderEffects/Blend/blend.vert
+  nodes/display/shaderEffects/Blend/blend.frag
 )
 target_link_directories(CutieDesigner
   PRIVATE
@@ -87,6 +87,7 @@ target_include_directories(CutieDesigner
   nodes/display/AType/Ukrug
   nodes/display/surface
   nodes/display/shaderEffects
+  nodes/display/shaderEffects/Blend
   nodes/input
   nodes/process
   nodes/process/math

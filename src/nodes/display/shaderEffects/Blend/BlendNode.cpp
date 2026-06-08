@@ -1,4 +1,3 @@
-#include "shaderEffects/BlendNode.hpp"
 #include "BlendNode.hpp"
 #include "NodeDelegateModel.hpp"
 #include "SurfaceData.hpp"
