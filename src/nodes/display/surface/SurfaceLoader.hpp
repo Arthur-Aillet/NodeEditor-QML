@@ -13,6 +13,7 @@ class SurfaceLoader : public QObject {
 
   Q_PROPERTY(
       SurfaceData *surfaceData READ surfaceData WRITE setSurfaceData NOTIFY surfaceDataChanged)
+  Q_PROPERTY(QQuickItem *surface MEMBER _surface NOTIFY surfaceChanged)
 
   public:
   SurfaceLoader(QObject *parent = nullptr);
@@ -20,6 +21,7 @@ class SurfaceLoader : public QObject {
 
   signals:
   void surfaceDataChanged();
+  void surfaceChanged();
 
   private:
   SurfaceData *_surfaceData = nullptr;

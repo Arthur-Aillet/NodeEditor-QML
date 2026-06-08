@@ -35,14 +35,12 @@ class ATypeCharacterNodeModel : public NodeDelegateModel {
   ATypeCharacterNodeModel(QQmlEngine *engine) : NodeDelegateModel(engine) {}
   ~ATypeCharacterNodeModel() = default;
 
-  Q_INVOKABLE void setContainer(QQuickItem *container) { _container = container; }
-  Q_INVOKABLE void createCharacterObject(QString initialChar, int index);
-  Q_INVOKABLE void destroyItem(int index);
-  Q_INVOKABLE void setChar(int index, QString character);
-  Q_INVOKABLE QString getString();
+  Q_INVOKABLE void createCharacterObject(QQuickItem *instance, QString initialChar, int index);
+  Q_INVOKABLE void destroyItem(QQuickItem *instance, int index);
+  Q_INVOKABLE void setChar(QQuickItem *instance, int index, QString character);
+  Q_INVOKABLE QString getString(QQuickItem *instance);
 
   protected:
-  QQuickItem *_container;
   QVector<QSharedPointer<QQuickItem>> _characters{};
   QColor _baseColor = "white";
   double _fontSize = 150;

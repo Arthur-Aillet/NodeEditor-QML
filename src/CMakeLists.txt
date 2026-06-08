@@ -18,6 +18,7 @@ qt_add_qml_module(CutieDesigner
   nodes/display/AType/Ukrug/UkrugCharacter.qml
   nodes/display/AType/AType.qml
   nodes/display/shaderEffects/Blend.qml
+  nodes/display/shaderEffects/BlendControl.qml
   nodes/process/TextTyper/TextTyper.qml
 
   SOURCES

@@ -31,8 +31,6 @@ const NodeDataType &BlendNode::dataType(PortType _portType, PortIndex _portIndex
 }
 
 std::shared_ptr<NodeData> BlendNode::outData(PortIndex _portIndex) {
-  qDebug() << "C";
-
   if (!_a.expired() && !_b.expired())
     return _content;
   return nullptr;

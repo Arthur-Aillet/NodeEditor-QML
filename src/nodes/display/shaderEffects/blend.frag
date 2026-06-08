@@ -145,9 +145,9 @@ vec3 applyBlend(vec3 rgb1, vec3 rgb2) {
 
 void main() {
   vec2 mappedCoord = fragCoord + (sourceRect.xy - targetRect.xy);
-  vec4 color1 = texture(target, mappedCoord / sourceRect.wz);
+  vec4 color1 = texture(target, mappedCoord / sourceRect.zw);
 
-  bool inside = mappedCoord.x < targetRect.w && mappedCoord.y < targetRect.z;
+  bool inside = mappedCoord.x < targetRect.z && mappedCoord.y < targetRect.w;
   color1 *= (inside ? 1 : 0);
 
   vec4 color2 = texture(source, texCoord);

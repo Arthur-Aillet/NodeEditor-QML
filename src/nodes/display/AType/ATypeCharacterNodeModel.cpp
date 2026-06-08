@@ -3,7 +3,8 @@
 #include <qlogging.h>
 #include <qtimer.h>
 
-void ATypeCharacterNodeModel::createCharacterObject(QString initialChar, int index) {
+void ATypeCharacterNodeModel::createCharacterObject(QQuickItem *instance, QString initialChar,
+                                                    int index) {
   auto component = getComponent();
 
   if (component->isNull()) {
@@ -23,8 +24,8 @@ void ATypeCharacterNodeModel::createCharacterObject(QString initialChar, int ind
 
   auto newPtr = QSharedPointer<QQuickItem>(
       qobject_cast<QQuickItem *>(component->createWithInitialProperties(props)));
-  newPtr->setParentItem(_container);
-  auto children = _container->childItems();
+  newPtr->setParentItem(instance);
+  auto children = instance->childItems();
   if (index < children.size() - 1) {
     newPtr->stackBefore(children.at(index));
   }
@@ -32,8 +33,8 @@ void ATypeCharacterNodeModel::createCharacterObject(QString initialChar, int ind
   _characters.push_back(newPtr);
 }
 
-void ATypeCharacterNodeModel::destroyItem(int index) {
-  auto children = _container->childItems();
+void ATypeCharacterNodeModel::destroyItem(QQuickItem *instance, int index) {
+  auto children = instance->childItems();
 
   children.at(index)->setProperty("goingToGetDestroyed", true);
 
@@ -49,8 +50,8 @@ void ATypeCharacterNodeModel::destroyItem(int index) {
 
   auto animationDuration = std::max(_animationOpacitySpeed, _animationWidthSpeed);
 
-  QTimer::singleShot(animationDuration, this, [this, ptr, index]() {
-    auto children = _container->childItems();
+  QTimer::singleShot(animationDuration, this, [this, ptr, index, instance]() {
+    auto children = instance->childItems();
 
     if (ptr.isNull())
       return;
@@ -63,15 +64,15 @@ void ATypeCharacterNodeModel::destroyItem(int index) {
   });
 }
 
-void ATypeCharacterNodeModel::setChar(int index, QString character) {
-  auto children = _container->childItems();
+void ATypeCharacterNodeModel::setChar(QQuickItem *instance, int index, QString character) {
+  auto children = instance->childItems();
 
   children[index]->setProperty("char", character);
 }
 
-QString ATypeCharacterNodeModel::getString() {
+QString ATypeCharacterNodeModel::getString(QQuickItem *instance) {
   QString result = "";
-  auto children = _container->childItems();
+  auto children = instance->childItems();
 
   for (auto charac : children) {
     if (charac->property("goingToGetDestroyed") == false)

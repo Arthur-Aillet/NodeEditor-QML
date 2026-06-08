@@ -15,8 +15,6 @@ FlexboxLayout {
     gap: 15
 
     Component.onCompleted: {
-        if (node.character)
-            node.character.setContainer(root);
         applyText(node.text);
     }
 
@@ -42,7 +40,7 @@ FlexboxLayout {
         if (!node.character)
             return;
 
-        let currentText = node.character.getString();
+        let currentText = node.character.getString(root);
         let commonStart = sharedStart(text, currentText);
         let remaining = text.substr(commonStart.length, text.length);
         let cleanedCurrentText = currentText.substr(commonStart.length, currentText.length);
@@ -52,13 +50,13 @@ FlexboxLayout {
 
         for (let i = 0; i != remaining.length; i++) {
             if (i < cleanedCurrentText.length) {
-                node.character.setChar(commonStart.length + i, remaining[i]);
+                node.character.setChar(root, commonStart.length + i, remaining[i]);
             } else {
-                node.character.createCharacterObject(remaining[i], commonStart.length + i);
+                node.character.createCharacterObject(root, remaining[i], commonStart.length + i);
             }
         }
         for (let i = 0; i < cleanedCurrentText.length - remaining.length; i++) {
-            node.character.destroyItem(commonStart.length + remaining.length + i);
+            node.character.destroyItem(root, commonStart.length + remaining.length + i);
         }
     }
 
@@ -72,7 +70,6 @@ FlexboxLayout {
             if (!root.node.character) {
                 root.children = "";
             } else {
-                root.node.character.setContainer(root);
                 root.applyText(root.node.text);
             }
         }
