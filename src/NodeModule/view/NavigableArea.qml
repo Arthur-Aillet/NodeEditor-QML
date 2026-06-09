@@ -11,6 +11,7 @@ Item {
 
     default property alias subdata: inner.data
     property alias inner: inner
+    property alias background: background
     property alias dragArea: dragArea
 
     ViewBackground {

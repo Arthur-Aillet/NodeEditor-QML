@@ -9,8 +9,8 @@ import StatsModule
 
 ApplicationWindow {
     id: root
-    width: 1000
-    height: 800
+    width: 1400
+    height: 1000
     visible: true
     color: "black"
     title: qsTr("CutieDesigner!")
@@ -23,31 +23,126 @@ ApplicationWindow {
             anchors.fill: parent
         }
     }
-    SplitView {
+    Item {
+        id: rootItem
         anchors.fill: parent
-        orientation: Qt.Vertical
-        Item {
-            SplitView.preferredWidth: root.width
-            SplitView.preferredHeight: root.height / 2
 
-            SurfaceLoader {
-                id: objectLoader
+        states: [
+            State {
+                name: ""
+                StateChangeScript {
+                    script: {
+                        // not very maintainable but it can do for now
+                        view.area.inner.x -= leftPanel.width + 2;
+                        view.area.inner.y -= topView.height + 2;
+                    }
+                }
+            },
+            State {
+                name: "NodesFocus"
+                ParentChange {
+                    target: sceneContent
+                    parent: rootItem
+                }
+                ParentChange {
+                    target: view
+                    parent: rootItem
+                }
+                PropertyChanges {
+                    view {
+                        SplitView.preferredWidth: undefined
+                        area.background.opacity: 0.5
+                        anchors.fill: rootItem
+                    }
+                    layout {
+                        visible: false
+                    }
+                }
+                StateChangeScript {
+                    script: {
+                        view.area.inner.x += view.x;
+                        view.area.inner.y += view.y;
+                    }
+                }
+            },
+            State {
+                name: "SurfaceFocus"
+                ParentChange {
+                    target: sceneContent
+                    parent: rootItem
+                }
+                PropertyChanges {
+                    layout {
+                        visible: false
+                    }
+                }
             }
-        }
+        ]
+
         SplitView {
-            id: editView
-            SplitView.preferredWidth: root.width
-            SplitView.preferredHeight: root.height / 2
-            orientation: Qt.Horizontal
-            PaneBackground {
-                SplitView.preferredWidth: editView.width / 6
+            id: layout
+
+            anchors.fill: parent
+            orientation: Qt.Vertical
+            Item {
+                id: topView
+                SplitView.preferredWidth: root.width
+                SplitView.preferredHeight: root.height / 2
+                Item {
+                    id: sceneContent
+                    anchors.fill: parent
+                    focus: sceneHoverHandler.hovered
+
+                    Keys.onPressed: event => {
+                        if ((event.key == Qt.Key_Space) && (event.modifiers & Qt.ControlModifier)) {
+                            if (rootItem.state != "SurfaceFocus")
+                                rootItem.state = "SurfaceFocus";
+                            else
+                                rootItem.state = "";
+                        }
+                    }
+
+                    HoverHandler {
+                        id: sceneHoverHandler
+                    }
+
+                    SurfaceLoader {
+                        id: objectLoader
+                    }
+                }
             }
-            GraphicsView {
-                visible: true
-                SplitView.fillWidth: true
-            }
-            StatsView {
-                SplitView.preferredWidth: editView.width / 6
+            SplitView {
+                id: editView
+                SplitView.preferredWidth: root.width
+                SplitView.preferredHeight: root.height / 2
+                orientation: Qt.Horizontal
+                PaneBackground {
+                    id: leftPanel
+                    SplitView.preferredWidth: editView.width / 6
+                }
+                GraphicsView {
+                    id: view
+
+                    focus: viewHoverHandler.hovered
+
+                    Keys.onPressed: event => {
+                        if ((event.key == Qt.Key_Space) && (event.modifiers & Qt.ControlModifier)) {
+                            if (rootItem.state != "NodesFocus")
+                                rootItem.state = "NodesFocus";
+                            else
+                                rootItem.state = "";
+                        }
+                    }
+
+                    HoverHandler {
+                        id: viewHoverHandler
+                    }
+
+                    SplitView.fillWidth: true
+                }
+                StatsView {
+                    SplitView.preferredWidth: editView.width / 6
+                }
             }
         }
     }
