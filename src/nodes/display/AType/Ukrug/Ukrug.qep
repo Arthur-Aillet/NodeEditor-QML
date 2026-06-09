@@ -1,0 +1,262 @@
+{
+    "QEP": {
+        "QQEM": "0.44",
+        "connections": [
+            {
+                "fromId": 0,
+                "toId": 2
+            },
+            {
+                "fromId": 2,
+                "toId": 1
+            }
+        ],
+        "exportDirectory": ".",
+        "exportFlags": 3,
+        "exportName": "Ukrug",
+        "nodes": [
+            {
+                "fragmentCode": [
+                    "void main() {",
+                    "    fragColor = texture(iSource, texCoord);",
+                    "    @nodes",
+                    "    fragColor = fragColor * qt_Opacity;",
+                    "}"
+                ],
+                "name": "Main",
+                "nodeId": 0,
+                "type": 0,
+                "vertexCode": [
+                    "void main() {",
+                    "    texCoord = qt_MultiTexCoord0;",
+                    "    fragCoord = vec2(qt_Vertex.x, iResolution.y - qt_Vertex.y);",
+                    "    vec2 vertCoord = qt_Vertex.xy;",
+                    "    @nodes",
+                    "    gl_Position = qt_Matrix * vec4(vertCoord, 0.0, 1.0);",
+                    "}"
+                ],
+                "x": 140,
+                "y": 35.5
+            },
+            {
+                "name": "Output",
+                "nodeId": 1,
+                "type": 1,
+                "x": 140,
+                "y": 594.5
+            },
+            {
+                "fragmentCode": [
+                    "// The MIT License",
+                    "// Copyright © 2020 Inigo Quilez",
+                    "// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.",
+                    "",
+                    "",
+                    "// Signed distance to a disk",
+                    "",
+                    "// List of some other 2D distances: https://www.shadertoy.com/playlist/MXdSRf",
+                    "//",
+                    "// and iquilezles.org/articles/distfunctions2d",
+                    "",
+                    "",
+                    "float sdCircle( in vec2 p, in float r ) ",
+                    "{",
+                    "    return length(p)-r;",
+                    "}",
+                    "",
+                    "",
+                    "float opUnion( float d1, float d2 )",
+                    "{",
+                    "    return min(d1,d2);",
+                    "}",
+                    "",
+                    "float opSubtraction( float d1, float d2 )",
+                    "{",
+                    "    return max(-d1,d2);",
+                    "}",
+                    "",
+                    "float opIntersection( float d1, float d2 )",
+                    "{",
+                    "    return max(d1,d2);",
+                    "}",
+                    "",
+                    "float opSmoothUnion( float d1, float d2, float k )",
+                    "{",
+                    "    if (k == 0) return opUnion(d1,d2);",
+                    "    k *= 4.0;",
+                    "    float h = max(k-abs(d1-d2),0.0);",
+                    "    return min(d1, d2) - h*h*0.25/k;",
+                    "}",
+                    "",
+                    "float opSmoothSubtraction( float d1, float d2, float k )",
+                    "{",
+                    "    return -opSmoothUnion(d1,-d2,k);",
+                    "",
+                    "    //float h = max(4.0*k-abs(d1+d2),0.0);",
+                    "    //return max(-d1, d2) + h*h/(16.0*k);",
+                    "}",
+                    "",
+                    "float sdRoundedBox( in vec2 p, in vec2 b, in vec4 r )",
+                    "{",
+                    "    r.xy = (p.x>0.0)?r.xy : r.zw;",
+                    "    r.x  = (p.y>0.0)?r.x  : r.y;",
+                    "    vec2 q = abs(p)-b+r.x;",
+                    "    return min(max(q.x,q.y),0.0) + length(max(q,0.0)) - r.x;",
+                    "}",
+                    "",
+                    "@main",
+                    "{",
+                    "\tvec2 p = (2.0 * fragCoord - iResolution.xy) / iResolution.y;",
+                    "",
+                    "\tfloat d = sdCircle(p, circleScale);",
+                    "    float point1 = sdCircle(p - point1, pointsScale);",
+                    "    float point2 = sdCircle(p - point2, pointsScale);",
+                    "    float point3 = sdCircle(p - point3, pointsScale);",
+                    "    float point4 = sdCircle(p - point4, pointsScale);",
+                    "    float squareZone = sdRoundedBox(p, boxArea, vec4(boxRadius));",
+                    "",
+                    "    if (substraction) {",
+                    "        d = opSmoothSubtraction(point1, d, k);",
+                    "        d = opSmoothSubtraction(point2, d, k);",
+                    "        d = opSmoothSubtraction(point3, d, k);",
+                    "        d = opSmoothSubtraction(point4, d, k);",
+                    "        d = opSmoothSubtraction(-squareZone, d, k);",
+                    "        d = (d < -fill) ? -d - (fill * 2.0): d; ",
+                    "    } else {",
+                    "        d = opSmoothSubtraction(-squareZone, d, k);",
+                    "        d = (d < -fill) ? -d - (fill * 2.0): d;",
+                    "        //d = 1.0;",
+                    "        float points = opSmoothUnion(point2, point1, k);",
+                    "        points = opSmoothUnion(point3, points, k);",
+                    "        points = opSmoothUnion(point4, points, k);",
+                    "        points = opSmoothSubtraction(-squareZone, points, k);",
+                    "        d = opSmoothUnion(points, d, k);",
+                    "        d = opSubtraction(-squareZone, d);",
+                    "    }",
+                    "",
+                    "    float fac = smoothstep(0, smoothFactor, -d);",
+                    "",
+                    "\tfragColor = mix(fragColor, baseColor, fac);",
+                    "}",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                ],
+                "name": "SDF Circle",
+                "nodeId": 2,
+                "properties": [
+                    {
+                        "defaultValue": "1, 1, 1, 1",
+                        "name": "baseColor",
+                        "type": "color",
+                        "value": "1, 1, 1, 1"
+                    },
+                    {
+                        "defaultValue": "0, 0",
+                        "maxValue": "1, 1",
+                        "minValue": "-1, -1",
+                        "name": "point1",
+                        "type": "vec2",
+                        "value": "0, 0"
+                    },
+                    {
+                        "defaultValue": "0, 0",
+                        "maxValue": "1, 1",
+                        "minValue": "-1, -1",
+                        "name": "point2",
+                        "type": "vec2",
+                        "value": "0, 0"
+                    },
+                    {
+                        "defaultValue": "0, 0",
+                        "maxValue": "1, 1",
+                        "minValue": "-1, -1",
+                        "name": "point3",
+                        "type": "vec2",
+                        "value": "0, 0"
+                    },
+                    {
+                        "defaultValue": "0, 0",
+                        "maxValue": "1, 1",
+                        "minValue": "-1, -1",
+                        "name": "point4",
+                        "type": "vec2",
+                        "value": "0, 0"
+                    },
+                    {
+                        "defaultValue": "0",
+                        "maxValue": "0.2",
+                        "minValue": "0",
+                        "name": "k",
+                        "type": "float",
+                        "value": "0"
+                    },
+                    {
+                        "defaultValue": "0.25",
+                        "maxValue": "1",
+                        "minValue": "0",
+                        "name": "pointsScale",
+                        "type": "float",
+                        "value": "0.25"
+                    },
+                    {
+                        "defaultValue": "0.001",
+                        "maxValue": "1",
+                        "minValue": "0",
+                        "name": "smoothFactor",
+                        "type": "float",
+                        "value": "0.001"
+                    },
+                    {
+                        "defaultValue": "1",
+                        "maxValue": "1",
+                        "minValue": "0",
+                        "name": "fill",
+                        "type": "float",
+                        "value": "1"
+                    },
+                    {
+                        "defaultValue": "true",
+                        "name": "substraction",
+                        "type": "bool",
+                        "value": "true"
+                    },
+                    {
+                        "defaultValue": "1, 1",
+                        "maxValue": "1, 1",
+                        "minValue": "0, 0",
+                        "name": "boxArea",
+                        "type": "vec2",
+                        "value": "1, 1"
+                    },
+                    {
+                        "defaultValue": "0.1",
+                        "maxValue": "1",
+                        "minValue": "0",
+                        "name": "boxRadius",
+                        "type": "float",
+                        "value": "0.1"
+                    },
+                    {
+                        "defaultValue": "1",
+                        "maxValue": "1",
+                        "minValue": "0",
+                        "name": "circleScale",
+                        "type": "float",
+                        "value": "1"
+                    }
+                ],
+                "type": 2,
+                "x": 105,
+                "y": 317.0633239746094
+            }
+        ],
+        "version": 1
+    }
+}

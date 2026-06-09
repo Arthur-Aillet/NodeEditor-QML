@@ -9,24 +9,23 @@ SRC_DIR	=	src
 all:	build
 
 build:
-	cmake -DDEBUG_MODE=on -S . -B ./build
+	cmake -DDEBUG_MODE=on -S . -B ./build -G "Unix Makefiles" 
 	make --no-print-directory -C build
 
 release:
-	cmake -DDEBUG_MODE=off -S . -B ./build
+	cmake -DDEBUG_MODE=off -S . -B ./build -G "Unix Makefiles" 
 	make --no-print-directory -C build
 
 debug:
-	cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Debug
+	cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles" 
 	make --no-print-directory -C build
 
 run:
-	cmake -DRUN=on -DDEBUG_MODE=on -S . -B ./build
-	make --no-print-directory -C build
+	cmake -DRUN=on -DDEBUG_MODE=on -S . -B ./build -G "Unix Makefiles" 
 	make --no-print-directory -C build run
 
 run_release:
-	cmake -DRUN=on -DDEBUG_MODE=off -S . -B ./build
+	cmake -DRUN=on -DDEBUG_MODE=off -S . -B ./build -G "Unix Makefiles" 
 	make --no-print-directory -C build
 	make --no-print-directory -C build run
 
@@ -44,6 +43,6 @@ fclean: clean
 	rm -rf ./lib/
 	rm -rf ./bin/
 
-re: fclean build
+re: clean build
 
 .PHONY: all build release run run_release format clean fclean re

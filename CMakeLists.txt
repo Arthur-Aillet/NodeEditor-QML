@@ -1,87 +1,48 @@
-cmake_minimum_required(VERSION 3.16)
-
-project(appSandbox VERSION 0.1 LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.10..4.0)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_PREFIX_PATH "~/Qt/6.11.0/gcc_64/")
-set(QML_IMPORT_PATH "~/Qt/6.11.0/gcc_64/qml/")
-set(QT_QML_GENERATE_QMLLS_INI ON)
+set(FETCHCONTENT_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_CXX_CLANG_TIDY clang-tidy -header-filter=. -config-file=../.clang-tidy)
+add_subdirectory(dependencies)
 
-option(RUN "Launch App" OFF)
-if(RUN)
-    add_custom_target(run
-        COMMENT "Launching binary"
-        COMMAND ./build/appSandbox
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    )
-endif()
+project(CutieDesigner VERSION 0.1 LANGUAGES CXX)
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_PREFIX_PATH "~/Qt/6.11.0/gcc_64/")
+set(LD_LIBRARY_PATH "~/Qt/6.11.0/gcc_64/lib")
+set(QT_QML_GENERATE_QMLLS_INI ON)
+
+find_package(Qt6 REQUIRED COMPONENTS Quick Core Gui QuickWidgets QuickControls2 Qml Core5Compat ShaderTools)
+
+cmake_policy(SET CMP0071 NEW)
+
+qt_standard_project_setup()
+qt_policy(SET QTP0001 NEW)
+qt_policy(SET QTP0004 NEW)
+
+#set(CMAKE_CXX_CLANG_TIDY clang-tidy-19 -config-file=${CMAKE_SOURCE_DIR}/.clang-tidy)
 
 option(DEBUG_MODE "Set DEBUG Mode" ON)
+option(RUN "Launch App" OFF)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick Core)
 
-qt_standard_project_setup(REQUIRES 6.10)
-
-qt_add_executable(appSandbox
-    src/main.cpp
-    src/EngineAccess.hpp
-    src/Receiver.hpp
-    src/Receiver.cpp
-    src/observers/IncrementalObserver.cpp
-    src/observers/IncrementalObserver.hpp
-    src/receivers/ColorSceneReceiver.hpp
-    src/Orchestrator.cpp
-    src/Orchestrator.hpp
-    src/Observer.hpp
+set(QML_IMPORT_PATH
+    ${CMAKE_BINARY_DIR}/qml
+    CACHE STRING "" FORCE
 )
+set(QT_QML_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/qml)
 
-qt_add_qml_module(appSandbox
-    URI Sandbox
-    QML_FILES
-    src/Main.qml
-    src/scenes/ColorScene.qml
-    DEPENDENCIES QtQuick
-)
+add_subdirectory(src)
 
-target_link_directories(appSandbox
-    PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/receivers
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/observers
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/scenes
-    ${LIB_TARGET_LINK_DIRECTORIES}
-)
-
-target_include_directories(appSandbox
-    PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/observers
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/receivers
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/scenes
-)
-
-# Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
-# If you are developing for iOS or macOS you should consider setting an
-# explicit, fixed bundle identifier manually though.
-set_target_properties(appSandbox PROPERTIES
-    #    MACOSX_BUNDLE_GUI_IDENTIFIER com.example.appSandbox
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    MACOSX_BUNDLE TRUE
-    WIN32_EXECUTABLE TRUE
-)
-
-target_link_libraries(appSandbox
-    PRIVATE Qt6::Quick
-)
-
-install(TARGETS appSandbox
-    BUNDLE DESTINATION .
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
+if(RUN)
+  add_custom_target(run
+    COMMENT "Launching binary"
+    COMMAND CutieDesigner
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  )
+endif()
