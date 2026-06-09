@@ -46,21 +46,21 @@ void SurfaceLoader::removeComponent() {
   if (_surface == nullptr)
     return;
 
-  _surface->deleteLater();
+  // Delete _surface with delete instead of deleteLater()
+  // to delete the QQuickItem as soon as possible, before the nodes they depend on are destroyed
+  delete _surface;
+  _surface = nullptr;
 }
 
 void SurfaceLoader::setSurfaceData(SurfaceData *surfaceData) {
   if (surfaceData == _surfaceData)
     return;
 
-  if (surfaceData == nullptr) {
-    _surfaceData = surfaceData;
-    removeComponent();
-    emit surfaceDataChanged();
-    return;
-  }
-
   _surfaceData = surfaceData;
-  createComponent(_surfaceData);
+  if (surfaceData == nullptr) {
+    removeComponent();
+  } else {
+    createComponent(_surfaceData);
+  }
   emit surfaceDataChanged();
 }

@@ -1,8 +1,10 @@
 import QtQuick
 import QtMultimedia
+import CutieDesignerModule
 
 Item {
     required property VideoDisplayNode node
+
     VideoOutput {
         id: preview2
 

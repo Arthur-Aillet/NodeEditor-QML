@@ -1,12 +1,14 @@
 #include "ATypeNode.hpp"
 #include "AdditionNode.hpp"
 #include "BlendNode.hpp"
+#include "ColorInput/ColorInputNode.hpp"
 #include "CosNode.hpp"
 #include "DataFlowModelInterface.hpp"
 #include "Definitions.hpp"
 #include "DivisionNode.hpp"
 #include "MultiplicationNode.hpp"
 #include "NumberInputNode.hpp"
+#include "RectangleNode.hpp"
 #include "SinNode.hpp"
 #include "SubtractionNode.hpp"
 #include "SurfaceDisplayNode.hpp"
@@ -32,6 +34,7 @@ int main(int argc, char *argv[]) {
   auto ret = std::make_shared<NodeDelegateModelRegistry>(&engine);
 
   ret->registerModel<NumberInputNode>("Input");
+  ret->registerModel<ColorInputNode>("Input");
   ret->registerModel<AdditionNode>("Process");
   ret->registerModel<DivisionNode>("Process");
   ret->registerModel<MultiplicationNode>("Process");
@@ -44,12 +47,14 @@ int main(int argc, char *argv[]) {
   ret->registerModel<TextTyperNode>("Process");
   ret->registerModel<BlendNode>("Process");
   ret->registerModel<VideoDisplayNode>("Display");
+  ret->registerModel<RectangleNode>("Display");
 
   auto model = DataFlowGraphModel(ret, &engine);
 
   QObject::connect(
       &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
       []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
+
   DataFlowModelInterface::init(model);
 
   engine.loadFromModule("CutieDesignerModule", "Main");
@@ -81,5 +86,10 @@ int main(int argc, char *argv[]) {
   model.setNodeData(id3, NodeRole::Position, QPointF(200, 150));
   model.setNodeData(id3, NodeRole::Type, BlendNode(&engine).name());
 
-  return app.exec();
+  int status = app.exec();
+
+  // Delete first surface loader to unload the visual tree
+  // before the node tree to prevent missing properties
+  delete loader;
+  return status;
 }

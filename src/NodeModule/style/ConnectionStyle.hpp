@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QtGui/QColor>
-#include <qcolor.h>
 #include <qdebug.h>
 #include <qqmlintegration.h>
 #include <qtmetamacros.h>

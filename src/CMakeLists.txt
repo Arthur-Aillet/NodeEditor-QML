@@ -12,11 +12,13 @@ qt_add_qml_module(CutieDesigner
   Main.qml
 
   nodes/input/PortLabel.qml
+  nodes/input/ColorInput/ColorInputControl.qml
   nodes/display/AType/Ukrug/Ukrug.qml
   nodes/display/AType/Ukrug/UkrugShader.qml
   nodes/display/AType/Ukrug/UkrugControl.qml
   nodes/display/AType/Ukrug/UkrugCharacter.qml
   nodes/display/AType/AType.qml
+  nodes/display/Rectangle/RectangleDisplay.qml
   nodes/display/shaderEffects/Blend/Blend.qml
   nodes/display/shaderEffects/Blend/BlendControl.qml
   nodes/display/video/VideoDisplay.qml
@@ -24,6 +26,7 @@ qt_add_qml_module(CutieDesigner
 
   SOURCES
   datatypes/ATypeCharacterData.hpp
+  datatypes/ColorData.hpp
   datatypes/SurfaceData.hpp
   datatypes/SurfaceData.cpp
   datatypes/DecimalData.hpp
@@ -32,6 +35,8 @@ qt_add_qml_module(CutieDesigner
 
   nodes/input/NumberInputNode.hpp
   nodes/input/NumberInputNode.cpp
+  nodes/input/ColorInput/ColorInputNode.hpp
+  nodes/input/ColorInput/ColorInputNode.cpp
   nodes/display/AType/Ukrug/UkrugNode.hpp
   nodes/display/AType/Ukrug/UkrugNode.cpp
   nodes/display/AType/Ukrug/UkrugPointsList.hpp
@@ -40,6 +45,8 @@ qt_add_qml_module(CutieDesigner
   nodes/display/AType/ATypeCharacterNodeModel.cpp
   nodes/display/AType/ATypeNode.hpp
   nodes/display/AType/ATypeNode.cpp
+  nodes/display/Rectangle/RectangleNode.hpp
+  nodes/display/Rectangle/RectangleNode.cpp
   nodes/display/surface/SurfaceDisplayNode.hpp
   nodes/display/surface/SurfaceDisplayNode.cpp
   nodes/display/surface/SurfaceLoader.hpp
@@ -93,10 +100,12 @@ target_include_directories(CutieDesigner
   nodes/display/AType
   nodes/display/AType/Ukrug
   nodes/display/surface
+  nodes/display/Rectangle
   nodes/display/shaderEffects
   nodes/display/shaderEffects/Blend
   nodes/display/video
   nodes/input
+  nodes/input/ColorInput/
   nodes/process
   nodes/process/math
   nodes/process/TextTyper

@@ -9,7 +9,7 @@ Item {
 
     SurfaceLoader {
         id: aLoader
-        surfaceData: blend.node?.a ?? null
+        surfaceData: blend.node.a
         onSurfaceChanged: {
             surface.visible = false;
             surface.layer.enabled = true;
@@ -18,7 +18,7 @@ Item {
 
     SurfaceLoader {
         id: bLoader
-        surfaceData: blend.node?.b ?? null
+        surfaceData: blend.node.b
 
         onSurfaceChanged: {
             surface.layer.enabled = true;
@@ -35,7 +35,7 @@ Item {
 
         property rect targetRect: Qt.rect(target.x, target.y, target.width, target.height)
         property rect sourceRect: Qt.rect(source.x, source.y, source.width, source.height)
-        property int mode: blend.node?.mode ?? 0
+        property int mode: blend.node.mode
 
         vertexShader: 'blend.vert.qsb'
         fragmentShader: 'blend.frag.qsb'

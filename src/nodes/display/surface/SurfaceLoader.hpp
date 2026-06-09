@@ -18,6 +18,10 @@ class SurfaceLoader : public QObject {
   public:
   SurfaceLoader(QObject *parent = nullptr);
   SurfaceData *surfaceData() { return _surfaceData; }
+  ~SurfaceLoader() {
+    if (_surface != nullptr)
+      delete _surface;
+  };
 
   signals:
   void surfaceDataChanged();

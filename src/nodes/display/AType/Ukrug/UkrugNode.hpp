@@ -5,8 +5,9 @@
 
 #include <QQmlComponent>
 #include <QtCore/QObject>
+#include <QtGui/QColor>
 #include <memory>
-#include <qcolor.h>
+
 #include <qcontainerfwd.h>
 #include <qdebug.h>
 #include <qjsvalue.h>
