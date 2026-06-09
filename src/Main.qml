@@ -32,9 +32,11 @@ ApplicationWindow {
                 name: ""
                 StateChangeScript {
                     script: {
-                        // not very maintainable but it can do for now
-                        view.area.inner.x -= leftPanel.width + 2;
-                        view.area.inner.y -= topView.height + 2;
+                        if (view.needRevert) {
+                            view.area.inner.x -= leftPanel.width + 2;
+                            view.area.inner.y -= topView.height + 2;
+                            view.needRevert = false;
+                        }
                     }
                 }
             },
@@ -56,6 +58,12 @@ ApplicationWindow {
                     }
                     layout {
                         visible: false
+                    }
+                }
+                PropertyChanges {
+                    restoreEntryValues: false
+                    view {
+                        needRevert: true
                     }
                 }
                 StateChangeScript {
@@ -124,6 +132,8 @@ ApplicationWindow {
                     id: view
 
                     focus: viewHoverHandler.hovered
+
+                    property bool needRevert: false
 
                     Keys.onPressed: event => {
                         if ((event.key == Qt.Key_Space) && (event.modifiers & Qt.ControlModifier)) {
