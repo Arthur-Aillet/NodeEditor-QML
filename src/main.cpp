@@ -13,15 +13,19 @@
 #include "SurfaceLoader.hpp"
 #include "TextTyperNode.hpp"
 #include "UkrugNode.hpp"
+#include "video/VideoDisplayNode.hpp"
 
 #include <QQmlApplicationEngine>
 #include <QtQml>
 #include <QtWidgets/QApplication>
+#include <gst/gst.h>
 #include <memory>
 #include <qdebug.h>
 #include <qquickitem.h>
 
 int main(int argc, char *argv[]) {
+  gst_init(nullptr, nullptr);
+
   QApplication app(argc, argv);
   QQmlApplicationEngine engine;
 
@@ -39,6 +43,7 @@ int main(int argc, char *argv[]) {
   ret->registerModel<ATypeNode>("Display");
   ret->registerModel<TextTyperNode>("Process");
   ret->registerModel<BlendNode>("Process");
+  ret->registerModel<VideoDisplayNode>("Display");
 
   auto model = DataFlowGraphModel(ret, &engine);
 

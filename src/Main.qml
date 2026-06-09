@@ -2,7 +2,6 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtMultimedia
 
 import NodeModule
 import CutieDesignerModule
@@ -34,82 +33,6 @@ ApplicationWindow {
             SurfaceLoader {
                 id: objectLoader
             }
-
-            // VideoOutput {
-            //     id: preview
-            //     anchors.fill: parent
-            // }
-            // CaptureSession {
-            //     id: captureSession
-            //     camera: Camera {
-            //         id: cam
-            //     }
-            //     imageCapture: ImageCapture {
-            //         id: imageCapture
-            //     }
-
-            //     recorder: MediaRecorder {
-            //         id: recorder
-            //     }
-            //     videoOutput: preview
-
-            //     Component.onCompleted: {
-            //         cam.start();
-            //     }
-            // }
-
-            // Rectangle {
-            //     id: a
-            //     x: 100
-            //     y: 100
-            //     width: 100
-            //     height: 100
-
-            //     gradient: Gradient {
-            //         GradientStop {
-            //             position: 0.0
-            //             color: "lightgreen"
-            //         }
-            //         GradientStop {
-            //             position: 1.0
-            //             color: "green"
-            //         }
-            //     }
-            //     layer.enabled: true
-            // }
-
-            // Rectangle {
-            //     id: b
-            //     y: 150
-            //     width: 100
-            //     height: 100
-
-            //     NumberAnimation on x {
-            //         loops: Animation.Infinite
-            //         duration: 2000
-            //         from: 100
-            //         to: 200
-            //     }
-            //     gradient: Gradient {
-            //         orientation: Gradient.Horizontal
-            //         GradientStop {
-            //             position: 0.0
-            //             color: "pink"
-            //         }
-            //         GradientStop {
-            //             position: 1.0
-            //             color: "red"
-            //         }
-            //     }
-
-            //     visible: false
-            //     layer.enabled: true
-            // }
-            // Blend {
-            //     anchors.fill: b
-            //     source: b
-            //     target: a
-            // }
         }
         SplitView {
             id: editView

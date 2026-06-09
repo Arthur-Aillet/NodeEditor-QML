@@ -19,6 +19,7 @@ qt_add_qml_module(CutieDesigner
   nodes/display/AType/AType.qml
   nodes/display/shaderEffects/Blend/Blend.qml
   nodes/display/shaderEffects/Blend/BlendControl.qml
+  nodes/display/video/VideoDisplay.qml
   nodes/process/TextTyper/TextTyper.qml
 
   SOURCES
@@ -45,6 +46,8 @@ qt_add_qml_module(CutieDesigner
   nodes/display/surface/SurfaceLoader.cpp
   nodes/display/shaderEffects/Blend/BlendNode.cpp
   nodes/display/shaderEffects/Blend/BlendNode.hpp
+  nodes/display/video/VideoDisplayNode.hpp
+  nodes/display/video/VideoDisplayNode.cpp
   nodes/process/math/SubtractionNode.hpp
   nodes/process/math/AdditionNode.hpp
   nodes/process/math/DivisionNode.hpp
@@ -77,11 +80,13 @@ target_link_directories(CutieDesigner
   PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${LIB_TARGET_LINK_DIRECTORIES}
+  ${GSTREAMER_LIBRARY_DIRS}
 )
 
 target_include_directories(CutieDesigner
   PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
+  ${GSTREAMER_INCLUDE_DIRS}
   datatypes
   nodes
   nodes/display
@@ -90,6 +95,7 @@ target_include_directories(CutieDesigner
   nodes/display/surface
   nodes/display/shaderEffects
   nodes/display/shaderEffects/Blend
+  nodes/display/video
   nodes/input
   nodes/process
   nodes/process/math
@@ -110,8 +116,17 @@ set_target_properties(CutieDesigner PROPERTIES
 target_compile_definitions(CutieDesigner
   PRIVATE $<$<CONFIG:Debug>:QT_QML_DEBUG>)
 
-target_link_libraries(CutieDesigner
-  PRIVATE Qt6::Core Qt6::Gui Qt6::Quick Qt6::QuickWidgets Qt6::Qml StatsModule NodeModule CutieUiModule vivid
+target_link_libraries(CutieDesigner PRIVATE
+  Qt6::Core
+  Qt6::Gui
+  Qt6::Quick
+  Qt6::QuickWidgets
+  Qt6::Qml
+  StatsModule
+  NodeModule
+  CutieUiModule
+  vivid
+  ${GSTREAMER_LIBRARIES}
 )
 target_compile_definitions(CutieDesigner PRIVATE GLM_ENABLE_EXPERIMENTAL)
 
