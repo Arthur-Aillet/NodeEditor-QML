@@ -10,13 +10,10 @@
 #include <qqmlengine.h>
 
 class NumberInputNode : public NodeDelegateModel {
-  Q_OBJECT
-
   public:
   NumberInputNode(QQmlEngine *engine);
   ~NumberInputNode() override = default;
 
-  public:
   bool captionVisible() const override { return false; }
   QString name() const override { return "Number Input"; }
 

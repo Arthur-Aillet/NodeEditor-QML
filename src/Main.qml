@@ -12,6 +12,7 @@ ApplicationWindow {
     width: 1000
     height: 800
     visible: true
+    color: "black"
     title: qsTr("CutieDesigner!")
 
     signal valueUpdated(newValue: string)
@@ -25,10 +26,9 @@ ApplicationWindow {
     SplitView {
         anchors.fill: parent
         orientation: Qt.Vertical
-        Rectangle {
+        Item {
             SplitView.preferredWidth: root.width
             SplitView.preferredHeight: root.height / 2
-            color: "blue"
 
             SurfaceLoader {
                 id: objectLoader
