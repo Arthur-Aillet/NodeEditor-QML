@@ -112,12 +112,14 @@ AbstractNodePainter {
             font.bold: true
             // font.bold: root.label == ""
             // font.italic: root.label != ""
+            property bool active: ModelInterface.graph.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.CaptionVisible)
+
             leftPadding: 2
             rightPadding: 2
             topPadding: root.spacing
-            bottomPadding: labelText.visible ? 0 : root.spacing / 4
-            visible: ModelInterface.graph.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.CaptionVisible)
-            Layout.maximumHeight: visible ? height : 0
+            bottomPadding: labelText.active ? 0 : root.spacing / 4
+            visible: active
+            Layout.maximumHeight: active ? height : 0
         }
 
         Text {
@@ -129,12 +131,14 @@ AbstractNodePainter {
                     col = Qt.darker(col, 1.4);
                 return col;
             }
-            visible: ModelInterface.graph.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.LabelVisible)
+            property bool active: ModelInterface.graph.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.LabelVisible)
+
+            visible: active
             padding: 1
             leftPadding: 2
             rightPadding: 2
             font.pixelSize: 10
-            Layout.maximumHeight: visible ? height : 0
+            Layout.maximumHeight: active ? height : 0
         }
 
         Item {
