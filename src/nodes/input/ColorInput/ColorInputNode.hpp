@@ -23,11 +23,10 @@ class ColorInputNode : public NodeDelegateModel {
   ~ColorInputNode() = default;
 
   public:
-  QString caption() const override { return QStringLiteral("Color Input"); }
-  bool captionVisible() const override { return true; }
+  bool captionVisible() const override { return false; }
   QString name() const override { return QStringLiteral("Color Input"); }
 
-  QString portCaption(PortType portType, PortIndex portIndex) const override;
+  QString portCaption(PortType portType, PortIndex portIndex) const override { return QString(); };
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }
 
   QQmlComponent embeddedComponent(QQmlEngine *engine) override {
@@ -43,7 +42,7 @@ class ColorInputNode : public NodeDelegateModel {
   unsigned int nPorts(PortType portType) const override;
   const NodeDataType &dataType(PortType portType, PortIndex portIndex) const override;
   std::shared_ptr<NodeData> outData(PortIndex port) override;
-  void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
+  void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override {};
 
   QColor color() { return _content->color; }
 

@@ -29,9 +29,6 @@ void NumberInputNode::load(QJsonObject const &p) {
     double d = strNum.toDouble(&ok);
     if (ok) {
       _number = std::make_shared<DecimalData>(d);
-
-      // if (_lineEdit)
-      //   _lineEdit->setText(strNum);
     }
   }
 }
@@ -46,7 +43,7 @@ unsigned int NumberInputNode::nPorts(PortType portType) const {
 }
 
 QQmlComponent NumberInputNode::embeddedComponent(QQmlEngine *engine) {
-  return QQmlComponent(engine, "CutieDesignerModule", "PortLabel");
+  return QQmlComponent(engine, "CutieDesignerModule", "NumberInputControl");
 }
 
 void NumberInputNode::embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded) {
@@ -83,8 +80,5 @@ std::shared_ptr<NodeData> NumberInputNode::outData(PortIndex) { return _number; 
 void NumberInputNode::setNumber(double n) {
   _number = std::make_shared<DecimalData>(n);
 
-  Q_EMIT dataUpdated(0);
-
-  // if (_lineEdit)
-  //   _lineEdit->setText(QString::number(_number->number()));
+  emit dataUpdated(0);
 }

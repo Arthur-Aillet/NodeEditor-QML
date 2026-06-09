@@ -3,6 +3,10 @@
 #include "TextData.hpp"
 #include <qdebug.h>
 
+TextTyperNode::TextTyperNode(QQmlEngine *engine)
+    : NodeDelegateModel(engine), _content(std::make_shared<TextData>(QString("..."))),
+      _timer(QTimer()){};
+
 QString TextTyperNode::portCaption(PortType portType, PortIndex index) const {
   switch (portType) {
   case NodeEditor::PortType::In:

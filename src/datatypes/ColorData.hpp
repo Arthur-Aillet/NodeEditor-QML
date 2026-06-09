@@ -8,7 +8,7 @@ class ColorData : public NodeData {
   public:
   ColorData(QColor color = "red") : color(color) {}
 
-  inline static const NodeDataType dataType = NodeDataType("color", "Color");
+  inline static const NodeDataType dataType = NodeDataType("col", "Color");
 
   const NodeDataType &type() const override { return dataType; }
 

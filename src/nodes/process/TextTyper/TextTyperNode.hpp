@@ -11,30 +11,22 @@
 class TextTyperNode : public NodeDelegateModel {
   Q_OBJECT
   QML_ELEMENT
-  QML_UNCREATABLE("")
+  QML_UNCREATABLE("NodeDelegateModel")
 
   public:
   Q_PROPERTY(bool play READ getPlay WRITE setPlay NOTIFY playChanged)
   Q_PROPERTY(QString text READ getText WRITE setText NOTIFY textChanged)
   Q_PROPERTY(TextTyperEventList *model READ getModel CONSTANT)
 
-  TextTyperNode(QQmlEngine *engine)
-      : NodeDelegateModel(engine), _content(std::make_shared<TextData>(QString("..."))),
-        _timer(QTimer()){};
-
+  TextTyperNode(QQmlEngine *engine);
   ~TextTyperNode() = default;
 
-  QString caption() const override { return QStringLiteral("Text Typer"); }
-
   bool captionVisible() const override { return true; }
-
   QString name() const override { return QStringLiteral("Text Typer"); }
 
   QString portCaption(PortType type, PortIndex index) const override;
-
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }
 
-  public:
   unsigned int nPorts(PortType portType) const override;
   const NodeDataType &dataType(PortType portType, PortIndex portIndex) const override;
   std::shared_ptr<NodeData> outData(PortIndex port) override;

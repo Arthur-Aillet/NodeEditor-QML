@@ -63,7 +63,7 @@ class NodeDelegateModel : public QObject, public Serializable {
   virtual QString name() const = 0;
 
   /// Caption is used in GUI
-  virtual QString caption() const = 0;
+  virtual QString caption() const { return name(); };
 
   /// It is possible to hide caption in GUI
   virtual bool captionVisible() const { return true; }

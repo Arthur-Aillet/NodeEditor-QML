@@ -11,8 +11,8 @@ qt_add_qml_module(CutieDesigner
   QML_FILES
   Main.qml
 
-  nodes/input/PortLabel.qml
   nodes/input/ColorInput/ColorInputControl.qml
+  nodes/input/NumberInput/NumberInputControl.qml
   nodes/display/AType/Ukrug/Ukrug.qml
   nodes/display/AType/Ukrug/UkrugShader.qml
   nodes/display/AType/Ukrug/UkrugControl.qml
@@ -33,10 +33,10 @@ qt_add_qml_module(CutieDesigner
   datatypes/TextData.hpp
   datatypes/TextData.cpp
 
-  nodes/input/NumberInputNode.hpp
-  nodes/input/NumberInputNode.cpp
   nodes/input/ColorInput/ColorInputNode.hpp
   nodes/input/ColorInput/ColorInputNode.cpp
+  nodes/input/NumberInput/NumberInputNode.hpp
+  nodes/input/NumberInput/NumberInputNode.cpp
   nodes/display/AType/Ukrug/UkrugNode.hpp
   nodes/display/AType/Ukrug/UkrugNode.cpp
   nodes/display/AType/Ukrug/UkrugPointsList.hpp
@@ -106,6 +106,7 @@ target_include_directories(CutieDesigner
   nodes/display/video
   nodes/input
   nodes/input/ColorInput/
+  nodes/input/NumberInput/
   nodes/process
   nodes/process/math
   nodes/process/TextTyper

@@ -9,12 +9,6 @@
 #include <qobject.h>
 #include <qqmlengine.h>
 
-class NumberData;
-
-class QLineEdit;
-
-/// The model dictates the number of inputs and outputs for the Node.
-/// In this example it has no logic.
 class NumberInputNode : public NodeDelegateModel {
   Q_OBJECT
 
@@ -23,22 +17,14 @@ class NumberInputNode : public NodeDelegateModel {
   ~NumberInputNode() override = default;
 
   public:
-  QString caption() const override { return QStringLiteral("Number Source"); }
-
   bool captionVisible() const override { return false; }
+  QString name() const override { return "Number Input"; }
 
-  QString name() const override { return QStringLiteral("Number Source"); }
-
-  public:
   QJsonObject save() const override;
-
   void load(QJsonObject const &p) override;
 
-  public:
   unsigned int nPorts(PortType portType) const override;
-
   const NodeDataType &dataType(PortType portType, PortIndex portIndex) const override;
-
   std::shared_ptr<NodeData> outData(PortIndex port) override;
 
   QString portCaption(PortType portType, PortIndex portIndex) const override { return QString(); }

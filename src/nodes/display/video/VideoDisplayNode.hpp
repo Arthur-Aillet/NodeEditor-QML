@@ -22,7 +22,6 @@ class VideoDisplayNode : public NodeDelegateModel {
   ~VideoDisplayNode() = default;
 
   public:
-  QString caption() const override { return QStringLiteral("Video"); }
   bool captionVisible() const override { return true; }
   QString name() const override { return QStringLiteral("Video"); }
 

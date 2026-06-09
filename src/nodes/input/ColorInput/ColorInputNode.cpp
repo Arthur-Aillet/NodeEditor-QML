@@ -25,14 +25,3 @@ const NodeDataType &ColorInputNode::dataType(PortType _portType, PortIndex _port
 }
 
 std::shared_ptr<NodeData> ColorInputNode::outData(PortIndex _portIndex) { return _content; }
-
-void ColorInputNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {}
-
-QString ColorInputNode::portCaption(PortType portType, PortIndex portIndex) const {
-  switch (portType) {
-  case PortType::In:
-    return QString();
-  default:
-    return QString("out");
-  }
-}

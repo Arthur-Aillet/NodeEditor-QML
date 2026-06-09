@@ -26,7 +26,6 @@ class BlendNode : public NodeDelegateModel {
   ~BlendNode() = default;
 
   public:
-  QString caption() const override { return QStringLiteral("Blend"); }
   bool captionVisible() const override { return true; }
   QString name() const override { return QStringLiteral("Blend"); }
 
