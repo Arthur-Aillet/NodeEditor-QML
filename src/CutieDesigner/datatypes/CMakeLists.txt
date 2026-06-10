@@ -1,5 +1,5 @@
 add_library(datatypes
-STATIC
+  SHARED
   SurfaceData.cpp
   TextData.cpp
 )

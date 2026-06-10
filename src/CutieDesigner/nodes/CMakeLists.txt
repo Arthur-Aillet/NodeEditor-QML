@@ -1,5 +1,4 @@
 qt_add_qml_module(nodes
-  STATIC
   URI CutieDesigner.Nodes
   QML_FILES
 
@@ -66,7 +65,7 @@ qt_add_qml_module(nodes
 
 qt6_add_shaders(nodes "nodes_shaders"
   PREFIX
-    "/qt/qml"
+    "/qt/qml/CutieDesigner/Nodes"
   FILES
   display/shaderEffects/Blend/blend.vert
   display/shaderEffects/Blend/blend.frag

@@ -1,6 +1,7 @@
 add_subdirectory(datatypes)
 add_subdirectory(nodes)
 add_subdirectory(stats)
+add_subdirectory(app)
 
 qt_add_executable(CutieDesigner
   main.cpp
@@ -11,7 +12,7 @@ qt_add_qml_module(CutieDesigner
   QML_FILES
   Main.qml
 
-  DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieUiModule CutieDesigner.Stats CutieDesigner.Nodes
+  DEPENDENCIES QtQuick CutieDesigner.App
 )
 
 target_link_directories(CutieDesigner
@@ -41,6 +42,7 @@ target_link_libraries(CutieDesigner PRIVATE
   Qt6::Core
   Qt6::Gui
   Qt6::Quick
+  Qt6::QuickWidgets
   Qt6::Qml
   NodeEditor
   datatypes
