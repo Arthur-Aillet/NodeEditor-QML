@@ -131,8 +131,6 @@ ApplicationWindow {
                 GraphicsView {
                     id: view
 
-                    focus: viewHoverHandler.hovered
-
                     property bool needRevert: false
 
                     Keys.onPressed: event => {
@@ -146,6 +144,10 @@ ApplicationWindow {
 
                     HoverHandler {
                         id: viewHoverHandler
+                        onHoveredChanged: {
+                            if (view.focus == false)
+                                view.focus = true;
+                        }
                     }
 
                     SplitView.fillWidth: true
