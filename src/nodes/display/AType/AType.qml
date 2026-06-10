@@ -2,7 +2,7 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Layouts
-import CutieDesignerModule
+import CutieDesigner
 
 FlexboxLayout {
     id: root

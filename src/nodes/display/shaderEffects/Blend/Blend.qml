@@ -1,5 +1,5 @@
 import QtQuick
-import CutieDesignerModule
+import CutieDesigner
 
 Item {
     id: blend

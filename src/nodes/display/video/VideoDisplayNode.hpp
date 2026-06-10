@@ -29,7 +29,7 @@ class VideoDisplayNode : public NodeDelegateModel {
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }
 
   // QQmlComponent embeddedComponent(QQmlEngine *engine) override {
-  //   return QQmlComponent(engine, "CutieDesignerModule", "BlendControl");
+  //   return QQmlComponent(engine, "CutieDesigner", "BlendControl");
   // }
 
   // QVariantMap componentInitialProperties() override {

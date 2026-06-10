@@ -48,7 +48,7 @@ void TextTyperNode::setInData(std::shared_ptr<NodeData> data, PortIndex portInde
 };
 
 QQmlComponent TextTyperNode::embeddedComponent(QQmlEngine *engine) {
-  return QQmlComponent(engine, "CutieDesignerModule", "TextTyper");
+  return QQmlComponent(engine, "CutieDesigner", "TextTyper");
 }
 
 QVariantMap TextTyperNode::componentInitialProperties() {

@@ -4,7 +4,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import NodeModule
-import CutieDesignerModule
+import CutieDesigner
 import StatsModule
 
 ApplicationWindow {

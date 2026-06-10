@@ -7,7 +7,7 @@ qt_add_executable(CutieDesigner
 )
 
 qt_add_qml_module(CutieDesigner
-  URI CutieDesignerModule
+  URI CutieDesigner
   QML_FILES
   Main.qml
 
@@ -82,7 +82,7 @@ qt_add_qml_module(CutieDesigner
 
 qt6_add_shaders(CutieDesigner "CutieDesigner_shaders"
   PREFIX
-    "/qt/qml/CutieDesignerModule"
+    "/qt/qml/CutieDesigner"
   FILES
   nodes/display/shaderEffects/Blend/blend.vert
   nodes/display/shaderEffects/Blend/blend.frag

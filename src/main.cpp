@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
 
   DataFlowModelInterface::init(model);
 
-  engine.loadFromModule("CutieDesignerModule", "Main");
+  engine.loadFromModule("CutieDesigner", "Main");
   QObject *item = engine.rootObjects().first();
 
   auto source = model.addNode(SurfaceDisplayNode(&engine).name());

@@ -10,7 +10,7 @@
 #include <qtmetamacros.h>
 
 BlendNode::BlendNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
-  auto comp = std::make_unique<QQmlComponent>(engine, "CutieDesignerModule", "Blend");
+  auto comp = std::make_unique<QQmlComponent>(engine, "CutieDesigner", "Blend");
   QVariantMap map;
   map["node"] = QVariant::fromValue(this);
   _content = std::make_shared<SurfaceData>(std::move(comp), map);

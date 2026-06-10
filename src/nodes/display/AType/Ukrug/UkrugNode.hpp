@@ -50,7 +50,7 @@ class UkrugNode : public ATypeCharacterNodeModel {
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
   QQmlComponent embeddedComponent(QQmlEngine *engine) override {
-    return QQmlComponent(engine, "CutieDesignerModule", "UkrugControl");
+    return QQmlComponent(engine, "CutieDesigner", "UkrugControl");
   }
 
   QVariantMap componentInitialProperties() override {
