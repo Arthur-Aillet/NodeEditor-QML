@@ -27,11 +27,7 @@ const NodeDataType &FillNode::dataType(PortType portType, PortIndex _portIndex) 
   }
 }
 
-std::shared_ptr<NodeData> FillNode::outData(PortIndex _portIndex) {
-  if (_color.expired())
-    return nullptr;
-  return _content;
-}
+std::shared_ptr<NodeData> FillNode::outData(PortIndex _portIndex) { return _content; }
 
 void FillNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
   auto colorData = std::dynamic_pointer_cast<ColorData>(data);

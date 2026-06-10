@@ -1,4 +1,5 @@
 import QtQuick
+import CutieDesignerModule
 
 Rectangle {
     required property StackNode node

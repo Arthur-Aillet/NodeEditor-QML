@@ -30,23 +30,29 @@ const NodeDataType &BlendNode::dataType(PortType _portType, PortIndex _portIndex
 }
 
 std::shared_ptr<NodeData> BlendNode::outData(PortIndex _portIndex) {
-  if (!_a.expired() && !_b.expired())
-    return _content;
-  return nullptr;
+  if (_a.expired() && _b.expired())
+    return nullptr;
+  return _content;
 }
 
 void BlendNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
   if (data == nullptr) {
-    if (portIndex == 0)
+    if (portIndex == 0) {
       _a.reset();
-    else
+      emit aChanged();
+    } else {
       _b.reset();
+      emit bChanged();
+    }
     emit dataInvalidated(0);
   } else {
-    if (portIndex == 0)
+    if (portIndex == 0) {
       _a = std::dynamic_pointer_cast<SurfaceData>(data);
-    else
+      emit aChanged();
+    } else {
       _b = std::dynamic_pointer_cast<SurfaceData>(data);
+      emit bChanged();
+    }
     emit dataUpdated(0);
   }
 }

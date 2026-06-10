@@ -23,7 +23,7 @@ class StackNode : public NodeDelegateModel {
 
   public:
   bool captionVisible() const override { return true; }
-  QString name() const override { return QStringLiteral("Stack"); }
+  QString name() const override { return "Stack"; }
 
   QString portCaption(PortType portType, PortIndex portIndex) const override;
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }

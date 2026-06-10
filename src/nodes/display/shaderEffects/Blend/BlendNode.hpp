@@ -27,7 +27,7 @@ class BlendNode : public NodeDelegateModel {
 
   public:
   bool captionVisible() const override { return true; }
-  QString name() const override { return QStringLiteral("Blend"); }
+  QString name() const override { return "Blend"; }
 
   QString portCaption(PortType portType, PortIndex portIndex) const override;
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }

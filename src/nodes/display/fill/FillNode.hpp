@@ -36,7 +36,11 @@ class FillNode : public NodeDelegateModel {
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
-  QColor getColor() { return _color.lock()->color; }
+  QColor getColor() {
+    if (_color.expired())
+      return QColor("red");
+    return _color.lock()->color;
+  }
 
   signals:
   void colorChanged();
