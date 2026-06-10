@@ -24,7 +24,7 @@ class ColorInputNode : public NodeDelegateModel {
 
   public:
   bool captionVisible() const override { return false; }
-  QString name() const override { return QStringLiteral("Color Input"); }
+  QString name() const override { return "Color Input"; }
 
   QString portCaption(PortType portType, PortIndex portIndex) const override { return QString(); };
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }

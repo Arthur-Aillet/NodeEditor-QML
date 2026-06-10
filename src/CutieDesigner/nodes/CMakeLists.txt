@@ -22,6 +22,7 @@ qt_add_qml_module(nodes
   input/ColorInput/ColorInputNode.cpp
   input/NumberInput/NumberInputNode.hpp
   input/NumberInput/NumberInputNode.cpp
+
   display/AType/Ukrug/UkrugNode.hpp
   display/AType/Ukrug/UkrugNode.cpp
   display/AType/Ukrug/UkrugPointsList.hpp
@@ -42,6 +43,11 @@ qt_add_qml_module(nodes
   display/shaderEffects/Blend/BlendNode.hpp
   display/video/VideoDisplayNode.hpp
   display/video/VideoDisplayNode.cpp
+
+  process/color/CombineRGBA.cpp
+  process/color/CombineRGBA.hpp
+  process/color/SplitRGBA.cpp
+  process/color/SplitRGBA.hpp
   process/math/SubtractionNode.hpp
   process/math/AdditionNode.hpp
   process/math/DivisionNode.hpp
@@ -95,6 +101,7 @@ target_include_directories(nodes
   input/ColorInput/
   input/NumberInput/
   process
+  process/color
   process/math
   process/TextTyper
 )

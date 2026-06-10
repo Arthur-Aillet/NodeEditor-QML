@@ -14,7 +14,7 @@ NumberInputNode::NumberInputNode(QQmlEngine *engine)
 QJsonObject NumberInputNode::save() const {
   QJsonObject modelJson = NodeDelegateModel::save();
 
-  modelJson["number"] = QString::number(_number->number());
+  modelJson["number"] = QString::number(_number->number);
 
   return modelJson;
 }

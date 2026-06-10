@@ -8,8 +8,11 @@
 #include <qforeach.h>
 #include <qobject.h>
 #include <qqmlengine.h>
+#include <qtmetamacros.h>
 
 class NumberInputNode : public NodeDelegateModel {
+  Q_OBJECT
+
   public:
   NumberInputNode(QQmlEngine *engine);
   ~NumberInputNode() override = default;
@@ -30,14 +33,12 @@ class NumberInputNode : public NodeDelegateModel {
   void setInData(std::shared_ptr<NodeData>, PortIndex) override {}
 
   QQmlComponent embeddedComponent(QQmlEngine *engine) override;
-
   void embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded) override;
 
   public:
   void setNumber(double number);
 
-  private Q_SLOTS:
-
+  public slots:
   void onTextEdited();
 
   private:

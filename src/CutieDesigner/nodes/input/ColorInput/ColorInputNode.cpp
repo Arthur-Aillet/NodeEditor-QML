@@ -1,13 +1,6 @@
 #include "ColorInputNode.hpp"
 #include "ColorData.hpp"
 
-#include <QtWidgets/QLabel>
-#include <memory>
-#include <qdebug.h>
-#include <qqmlcomponent.h>
-#include <qtimer.h>
-#include <qtmetamacros.h>
-
 ColorInputNode::ColorInputNode(QQmlEngine *engine)
     : NodeDelegateModel(engine), _content(std::make_shared<ColorData>()) {}
 

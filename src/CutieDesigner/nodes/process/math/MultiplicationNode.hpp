@@ -26,7 +26,7 @@ class MultiplicationNode : public MathOperationNodeModel {
     if (n1 && n2) {
       // modelValidationState = NodeValidationState::Valid;
       // modelValidationError = QString();
-      _result = std::make_shared<DecimalData>(n1->number() * n2->number());
+      _result = std::make_shared<DecimalData>(n1->number * n2->number);
     } else {
       // modelValidationState = NodeValidationState::Warning;
       // modelValidationError = QStringLiteral("Missing or incorrect inputs");

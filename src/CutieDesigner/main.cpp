@@ -2,6 +2,7 @@
 #include "AdditionNode.hpp"
 #include "BlendNode.hpp"
 #include "ColorInputNode.hpp"
+#include "CombineRGBA.hpp"
 #include "CosNode.hpp"
 #include "DataFlowModelInterface.hpp"
 #include "Definitions.hpp"
@@ -10,6 +11,7 @@
 #include "MultiplicationNode.hpp"
 #include "NumberInputNode.hpp"
 #include "SinNode.hpp"
+#include "SplitRGBA.hpp"
 #include "StackNode.hpp"
 #include "SubtractionNode.hpp"
 #include "SurfaceDisplayNode.hpp"
@@ -42,6 +44,8 @@ int main(int argc, char *argv[]) {
   ret->registerModel<SubtractionNode>("Process");
   ret->registerModel<SinNode>("Process");
   ret->registerModel<CosNode>("Process");
+  ret->registerModel<CombineRGBA>("Process");
+  ret->registerModel<SplitRGBA>("Process");
   ret->registerModel<SurfaceDisplayNode>("Display");
   ret->registerModel<UkrugNode>("Display");
   ret->registerModel<ATypeNode>("Display");
