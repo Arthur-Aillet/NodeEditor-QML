@@ -6,10 +6,11 @@
 #include "DataFlowModelInterface.hpp"
 #include "Definitions.hpp"
 #include "DivisionNode.hpp"
+#include "FillNode.hpp"
 #include "MultiplicationNode.hpp"
 #include "NumberInputNode.hpp"
-#include "RectangleNode.hpp"
 #include "SinNode.hpp"
+#include "StackNode.hpp"
 #include "SubtractionNode.hpp"
 #include "SurfaceDisplayNode.hpp"
 #include "SurfaceLoader.hpp"
@@ -47,7 +48,8 @@ int main(int argc, char *argv[]) {
   ret->registerModel<TextTyperNode>("Process");
   ret->registerModel<BlendNode>("Process");
   ret->registerModel<VideoDisplayNode>("Display");
-  ret->registerModel<RectangleNode>("Display");
+  ret->registerModel<FillNode>("Display");
+  ret->registerModel<StackNode>("Display");
 
   auto model = DataFlowGraphModel(ret, &engine);
 

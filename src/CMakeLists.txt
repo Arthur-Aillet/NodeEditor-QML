@@ -18,10 +18,12 @@ qt_add_qml_module(CutieDesigner
   nodes/display/AType/Ukrug/UkrugControl.qml
   nodes/display/AType/Ukrug/UkrugCharacter.qml
   nodes/display/AType/AType.qml
-  nodes/display/Rectangle/RectangleDisplay.qml
+  nodes/display/fill/FillSurface.qml
   nodes/display/shaderEffects/Blend/Blend.qml
   nodes/display/shaderEffects/Blend/BlendControl.qml
   nodes/display/video/VideoDisplay.qml
+  nodes/display/Stack/Stack.qml
+  nodes/display/Stack/StackControl.qml
   nodes/process/TextTyper/TextTyper.qml
 
   SOURCES
@@ -45,8 +47,10 @@ qt_add_qml_module(CutieDesigner
   nodes/display/AType/ATypeCharacterNodeModel.cpp
   nodes/display/AType/ATypeNode.hpp
   nodes/display/AType/ATypeNode.cpp
-  nodes/display/Rectangle/RectangleNode.hpp
-  nodes/display/Rectangle/RectangleNode.cpp
+  nodes/display/fill/FillNode.hpp
+  nodes/display/fill/FillNode.cpp
+  nodes/display/Stack/StackNode.cpp
+  nodes/display/Stack/StackNode.cpp
   nodes/display/surface/SurfaceDisplayNode.hpp
   nodes/display/surface/SurfaceDisplayNode.cpp
   nodes/display/surface/SurfaceLoader.hpp
@@ -100,7 +104,8 @@ target_include_directories(CutieDesigner
   nodes/display/AType
   nodes/display/AType/Ukrug
   nodes/display/surface
-  nodes/display/Rectangle
+  nodes/display/fill
+  nodes/display/Stack
   nodes/display/shaderEffects
   nodes/display/shaderEffects/Blend
   nodes/display/video

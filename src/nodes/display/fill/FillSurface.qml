@@ -2,7 +2,7 @@ import QtQuick
 import CutieDesignerModule
 
 Rectangle {
-    required property RectangleNode node
+    required property FillNode node
 
     anchors.fill: parent
     color: node.color
