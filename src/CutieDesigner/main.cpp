@@ -1,7 +1,7 @@
 #include "ATypeNode.hpp"
 #include "AdditionNode.hpp"
 #include "BlendNode.hpp"
-#include "ColorInput/ColorInputNode.hpp"
+#include "ColorInputNode.hpp"
 #include "CosNode.hpp"
 #include "DataFlowModelInterface.hpp"
 #include "Definitions.hpp"
