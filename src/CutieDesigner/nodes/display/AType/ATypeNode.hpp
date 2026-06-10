@@ -42,7 +42,7 @@ class ATypeNode : public NodeDelegateModel {
     if (_text.expired()) {
       return "";
     }
-    return _text.lock()->text;
+    return _text.lock()->text();
   }
 
   signals:

@@ -3,11 +3,11 @@ qt_add_qml_module(datatypes
   SHARED
   SOURCES
   ColorData.hpp
+  DecimalData.cpp
   DecimalData.hpp
   ATypeCharacterData.hpp
   SurfaceData.cpp
   SurfaceData.hpp
-  TextData.cpp
   TextData.hpp
 )
 

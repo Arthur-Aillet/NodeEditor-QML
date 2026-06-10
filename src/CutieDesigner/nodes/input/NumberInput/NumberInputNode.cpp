@@ -14,7 +14,7 @@ NumberInputNode::NumberInputNode(QQmlEngine *engine)
 QJsonObject NumberInputNode::save() const {
   QJsonObject modelJson = NodeDelegateModel::save();
 
-  modelJson["number"] = QString::number(_number->number);
+  modelJson["number"] = _number->text();
 
   return modelJson;
 }
@@ -50,7 +50,7 @@ void NumberInputNode::embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded
   _portLabel = loaded;
   _portLabel->setProperty("placeholderText", "Value");
   if (_number != nullptr) {
-    _portLabel->setProperty("text", _number->numberAsText()->text);
+    _portLabel->setProperty("text", _number->text());
   }
   _portLabel->connect(_portLabel.get(), SIGNAL(textEdited()), this, SLOT(onTextEdited()));
 }
@@ -76,9 +76,3 @@ const NodeDataType &NumberInputNode::dataType(PortType, PortIndex id) const {
 }
 
 std::shared_ptr<NodeData> NumberInputNode::outData(PortIndex) { return _number; }
-
-void NumberInputNode::setNumber(double n) {
-  _number = std::make_shared<DecimalData>(n);
-
-  emit dataUpdated(0);
-}

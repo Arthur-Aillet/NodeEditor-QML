@@ -35,9 +35,6 @@ class NumberInputNode : public NodeDelegateModel {
   QQmlComponent embeddedComponent(QQmlEngine *engine) override;
   void embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded) override;
 
-  public:
-  void setNumber(double number);
-
   public slots:
   void onTextEdited();
 

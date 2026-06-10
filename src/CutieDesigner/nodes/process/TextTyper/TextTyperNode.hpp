@@ -61,5 +61,6 @@ class TextTyperNode : public NodeDelegateModel {
   TextTyperEventList _eventList;
   QTimer _timer;
   bool _playing;
+  QString _text = "...";
   std::shared_ptr<TextData> _content;
 };

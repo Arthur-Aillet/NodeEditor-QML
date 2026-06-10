@@ -5,7 +5,7 @@
 #include <qcolor.h>
 
 CombineRGBA::CombineRGBA(QQmlEngine *engine)
-    : NodeDelegateModel(engine), _outColor(std::make_shared<ColorData>("black")) {}
+    : NodeDelegateModel(engine), _outColorPtr(std::make_shared<ColorData>(_outColor)) {}
 
 unsigned int CombineRGBA::nPorts(PortType portType) const {
   switch (portType) {
@@ -43,7 +43,7 @@ const NodeDataType &CombineRGBA::dataType(PortType portType, PortIndex _portInde
   }
 }
 
-std::shared_ptr<NodeData> CombineRGBA::outData(PortIndex portIndex) { return _outColor; }
+std::shared_ptr<NodeData> CombineRGBA::outData(PortIndex portIndex) { return _outColorPtr; }
 
 void CombineRGBA::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
   if (!data) {
@@ -79,11 +79,11 @@ void CombineRGBA::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex)
     }
   }
 
-  auto r = _r.expired() ? 0 : std::clamp(_r.lock()->number, 0.0, 1.0);
-  auto g = _g.expired() ? 0 : std::clamp(_g.lock()->number, 0.0, 1.0);
-  auto b = _b.expired() ? 0 : std::clamp(_b.lock()->number, 0.0, 1.0);
-  auto a = _a.expired() ? 1 : std::clamp(_a.lock()->number, 0.0, 1.0);
+  auto r = _r.expired() ? 0 : std::clamp(_r.lock()->number(), 0.0, 1.0);
+  auto g = _g.expired() ? 0 : std::clamp(_g.lock()->number(), 0.0, 1.0);
+  auto b = _b.expired() ? 0 : std::clamp(_b.lock()->number(), 0.0, 1.0);
+  auto a = _a.expired() ? 1 : std::clamp(_a.lock()->number(), 0.0, 1.0);
 
-  _outColor->color = QColor::fromRgbF(r, g, b, a);
+  _outColor = QColor::fromRgbF(r, g, b, a);
   emit dataUpdated(0);
 };

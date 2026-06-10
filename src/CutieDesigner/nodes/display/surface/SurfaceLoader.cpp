@@ -8,14 +8,14 @@
 SurfaceLoader::SurfaceLoader(QObject *parent) : QObject(parent) {}
 
 void SurfaceLoader::createComponent(SurfaceData *surfaceDescription) {
-  if (surfaceDescription->component->isNull())
+  if (surfaceDescription->component()->isNull())
     return;
 
-  if (surfaceDescription->component->isError()) {
-    qCritical() << "AType letter componenent:" << surfaceDescription->component->errorString();
+  if (surfaceDescription->component()->isError()) {
+    qCritical() << "AType letter componenent:" << surfaceDescription->component()->errorString();
     return;
   }
-  if (!surfaceDescription->component->isReady()) {
+  if (!surfaceDescription->component()->isReady()) {
     qCritical() << "AType letter componenent: Not Ready to be created";
     return;
   }
@@ -31,8 +31,9 @@ void SurfaceLoader::createComponent(SurfaceData *surfaceDescription) {
       break;
     }
   }
-  _surface = qobject_cast<QQuickItem *>(
-      surfaceDescription->component->createWithInitialProperties(surfaceDescription->initialProps));
+  _surface =
+      qobject_cast<QQuickItem *>(surfaceDescription->component()->createWithInitialProperties(
+          surfaceDescription->initialProps()));
   _surface->setParentItem(static_cast<QQuickItem *>(parent()));
   if (nextItem != nullptr) {
     _surface->stackBefore(nextItem);

@@ -21,7 +21,7 @@ class CosNode : public MathOperationNodeModel {
     auto n1 = _inputNumbers[0].lock();
 
     if (n1) {
-      _result = std::make_shared<DecimalData>(cos(n1->number));
+      _result = std::make_shared<DecimalData>(cos(n1->number()));
     } else {
       _result.reset();
     }

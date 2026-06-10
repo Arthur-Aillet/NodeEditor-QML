@@ -130,7 +130,7 @@ bool DataFlowGraphModel::connectionPossible(ConnectionId const connectionId) con
     return connected.empty() || (policy == ConnectionPolicy::Many);
   };
 
-  bool const basicChecks = getDataCompatible(PortType::In).contains(getDataType(PortType::Out)) &&
+  bool const basicChecks = getDataCompatible(PortType::Out).contains(getDataType(PortType::In)) &&
                            portVacant(PortType::Out) && portVacant(PortType::In) &&
                            checkPortBounds(PortType::Out) && checkPortBounds(PortType::In);
 

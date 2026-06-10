@@ -17,14 +17,18 @@ class SurfaceData : public NodeData {
 
   public:
   SurfaceData() {}
-  SurfaceData(std::unique_ptr<QQmlComponent> &&_object, QVariantMap _initialProps = {});
+  SurfaceData(std::unique_ptr<QQmlComponent> &&object, QVariantMap initialProps = {});
 
   static inline const NodeDataType dataType = NodeDataType("object", "2D Surface");
 
   const NodeDataType &type() const override { return dataType; }
 
-  std::unique_ptr<QQmlComponent> component;
-  QVariantMap initialProps;
+  const std::unique_ptr<QQmlComponent> &component() { return _component; };
+  const QVariantMap &initialProps() { return _initialProps; };
+
+  protected:
+  std::unique_ptr<QQmlComponent> _component;
+  QVariantMap _initialProps;
 
   signals:
   void componentLoaded(QQuickItem *object);

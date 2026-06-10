@@ -1,6 +1,5 @@
 #include "ATypeNode.hpp"
 #include "ATypeCharacterData.hpp"
-#include "DecimalData.hpp"
 #include "SurfaceData.hpp"
 #include "TextData.hpp"
 
@@ -56,9 +55,6 @@ void ATypeNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
   if (portIndex == 0) {
     if (data == nullptr) {
       _text.reset();
-    } else if (data->type().id == DecimalData().type().id) {
-      auto numberData = std::dynamic_pointer_cast<DecimalData>(data);
-      _text = numberData->numberAsText();
     } else {
       _text = std::dynamic_pointer_cast<TextData>(data);
     }

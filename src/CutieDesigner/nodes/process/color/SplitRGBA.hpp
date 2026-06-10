@@ -25,8 +25,12 @@ class SplitRGBA : public NodeDelegateModel {
 
   private:
   std::weak_ptr<ColorData> _inColor;
-  std::shared_ptr<DecimalData> _r;
-  std::shared_ptr<DecimalData> _g;
-  std::shared_ptr<DecimalData> _b;
-  std::shared_ptr<DecimalData> _a;
+  double _r = 0.0;
+  double _g = 0.0;
+  double _b = 0.0;
+  double _a = 1.0;
+  std::shared_ptr<DecimalData> _rPtr;
+  std::shared_ptr<DecimalData> _gPtr;
+  std::shared_ptr<DecimalData> _bPtr;
+  std::shared_ptr<DecimalData> _aPtr;
 };

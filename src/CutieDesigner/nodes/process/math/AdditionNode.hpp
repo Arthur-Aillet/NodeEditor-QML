@@ -24,7 +24,7 @@ class AdditionNode : public MathOperationNodeModel {
     auto n2 = _inputNumbers[1].lock();
 
     if (n1 && n2) {
-      _result = std::make_shared<DecimalData>(n1->number + n2->number);
+      _result = std::make_shared<DecimalData>(n1->number() + n2->number());
     } else {
       _result.reset();
     }

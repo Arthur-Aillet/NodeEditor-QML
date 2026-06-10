@@ -2,23 +2,24 @@
 
 #include "NodeData.hpp"
 #include "TextData.hpp"
-#include <memory>
 
-/// The class can potentially incapsulate any user data which
-/// need to be transferred within the Node Editor graph
-class DecimalData : public NodeData {
+struct DecimalDataType : public NodeDataType {
+  DecimalDataType(DataTypeId id, QString name) : NodeDataType(id, name) {}
+
+  QList<DataTypeId> compatibleTypes() const override;
+};
+
+class DecimalData : public TextData {
   public:
-  DecimalData(double const number = 0.0)
-      : number(number), _textRepr(std::make_shared<TextData>(QString::number(number, 'f', 2))) {}
+  DecimalData(const double &number = 0.0)
+      : _number(number), TextData(QString::number(number, 'f', 2)) {}
 
-  inline static const NodeDataType dataType = NodeDataType("decimal", "Decimal");
+  inline static const DecimalDataType dataType = DecimalDataType("decimal", "Decimal");
 
-  const NodeDataType &type() const override { return dataType; }
+  const DecimalDataType &type() const override { return dataType; }
 
-  std::shared_ptr<TextData> numberAsText() const { return _textRepr; }
+  double number() const { return _number; }
 
-  double number;
-
-  private:
-  std::shared_ptr<TextData> _textRepr;
+  protected:
+  const double &_number;
 };

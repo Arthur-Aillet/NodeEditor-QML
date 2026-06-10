@@ -4,6 +4,7 @@
 #include "DecimalData.hpp"
 #include "NodeDelegateModel.hpp"
 #include <memory>
+#include <qcolor.h>
 
 class CombineRGBA : public NodeDelegateModel {
   public:
@@ -27,5 +28,6 @@ class CombineRGBA : public NodeDelegateModel {
   std::weak_ptr<DecimalData> _g;
   std::weak_ptr<DecimalData> _b;
   std::weak_ptr<DecimalData> _a;
-  std::shared_ptr<ColorData> _outColor;
+  QColor _outColor = "black";
+  std::shared_ptr<ColorData> _outColorPtr;
 };
