@@ -1,6 +1,6 @@
 pragma ComponentBehavior: Bound
 import QtQuick
-import NodeModule
+import NodeEditor
 
 Item {
     id: root

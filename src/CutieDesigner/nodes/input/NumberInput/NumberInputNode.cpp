@@ -43,7 +43,7 @@ unsigned int NumberInputNode::nPorts(PortType portType) const {
 }
 
 QQmlComponent NumberInputNode::embeddedComponent(QQmlEngine *engine) {
-  return QQmlComponent(engine, "CutieDesigner", "NumberInputControl");
+  return QQmlComponent(engine, "CutieDesigner.Nodes", "NumberInputControl");
 }
 
 void NumberInputNode::embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded) {

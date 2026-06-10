@@ -1,7 +1,7 @@
 pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
-import NodeModule
+import NodeEditor
 
 Menu {
     id: root

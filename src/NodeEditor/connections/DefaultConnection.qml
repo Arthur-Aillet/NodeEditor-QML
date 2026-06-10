@@ -1,5 +1,5 @@
 import QtQuick
-import NodeModule
+import NodeEditor
 
 Canvas {
     id: root

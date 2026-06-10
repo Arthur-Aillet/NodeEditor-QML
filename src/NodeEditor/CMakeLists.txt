@@ -1,5 +1,5 @@
-qt_add_qml_module(NodeModule
-  URI NodeModule
+qt_add_qml_module(NodeEditor
+  URI NodeEditor
   QML_FILES
   nodes/DefaultNodePainter.qml
   nodes/NodeGraphicalObject.qml
@@ -60,7 +60,7 @@ qt_add_qml_module(NodeModule
   resources/resources.qrc
 )
 
-target_include_directories(NodeModule PUBLIC
+target_include_directories(NodeEditor PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
   nodes
   view
@@ -69,9 +69,9 @@ target_include_directories(NodeModule PUBLIC
   data
 )
 
-target_link_libraries(NodeModule
+target_link_libraries(NodeEditor
   PUBLIC Qt6::Quick Qt6::Core vivid
 )
 
-target_compile_definitions(NodeModule PRIVATE GLM_ENABLE_EXPERIMENTAL)
+target_compile_definitions(NodeEditor PRIVATE GLM_ENABLE_EXPERIMENTAL)
 

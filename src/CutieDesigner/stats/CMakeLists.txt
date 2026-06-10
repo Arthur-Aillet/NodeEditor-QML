@@ -1,6 +1,6 @@
-qt_add_qml_module(StatsModule
+qt_add_qml_module(stats
   STATIC
-  URI StatsModule
+  URI CutieDesigner.Stats
   QML_FILES
   StatsView.qml
   SimpleFpsCounter.qml
@@ -19,12 +19,12 @@ qt_add_qml_module(StatsModule
   ./loading.svg
 )
 
-target_include_directories(StatsModule PUBLIC
+target_include_directories(stats PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${LIB_TARGET_LINK_DIRECTORIES}
   ./FrequencyMonitor
 )
 
-target_link_libraries(StatsModule
-  PUBLIC Qt::Core Qt::Gui Qt::Qml Qt::Quick Qt::QuickControls2 NodeModule
+target_link_libraries(stats
+  PUBLIC Qt::Core Qt::Gui Qt::Qml Qt::Quick Qt::QuickControls2 NodeEditor
 )

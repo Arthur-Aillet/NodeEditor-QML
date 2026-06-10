@@ -3,9 +3,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import NodeModule
-import CutieDesigner
-import StatsModule
+import NodeEditor
+import CutieDesigner.Nodes
+import CutieDesigner.Stats
 
 ApplicationWindow {
     id: root

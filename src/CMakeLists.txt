@@ -1,4 +1,3 @@
-add_subdirectory(NodeModule)
+add_subdirectory(NodeEditor)
 add_subdirectory(CutieUiModule)
-add_subdirectory(StatsModule)
 add_subdirectory(CutieDesigner)

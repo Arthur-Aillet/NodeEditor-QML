@@ -3,8 +3,8 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import NodeModule
-import CutieDesigner
+import NodeEditor
+import CutieDesigner.Nodes
 
 FlexboxLayout {
     id: root

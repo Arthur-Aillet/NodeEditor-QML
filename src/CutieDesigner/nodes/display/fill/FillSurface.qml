@@ -1,5 +1,5 @@
 import QtQuick
-import CutieDesigner
+import CutieDesigner.Nodes
 
 Rectangle {
     required property FillNode node

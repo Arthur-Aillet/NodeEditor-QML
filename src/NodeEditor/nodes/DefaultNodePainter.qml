@@ -3,7 +3,7 @@ import QtQuick
 import QtQuick.Shapes
 import QtQuick.Layouts
 
-import NodeModule
+import NodeEditor
 
 AbstractNodePainter {
     id: root

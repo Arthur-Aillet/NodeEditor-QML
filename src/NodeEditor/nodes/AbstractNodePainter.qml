@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Shapes
-import NodeModule
+import NodeEditor
 
 Shape {
     required property NodeGraphicalObject nodeObject

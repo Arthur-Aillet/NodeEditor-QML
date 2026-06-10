@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Controls
-import StatsModule
+import CutieDesigner.Stats
 
 PaneBackground {
     Item {

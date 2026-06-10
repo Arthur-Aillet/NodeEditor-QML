@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Shapes
-import NodeModule
+import NodeEditor
 
 Item {
     id: port

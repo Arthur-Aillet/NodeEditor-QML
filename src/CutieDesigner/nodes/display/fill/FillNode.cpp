@@ -10,7 +10,7 @@
 #include <qtmetamacros.h>
 
 FillNode::FillNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
-  auto comp = std::make_unique<QQmlComponent>(engine, "CutieDesigner", "FillSurface");
+  auto comp = std::make_unique<QQmlComponent>(engine, "CutieDesigner.Nodes", "FillSurface");
   QVariantMap map;
   map["node"] = QVariant::fromValue(this);
   _content = std::make_shared<SurfaceData>(std::move(comp), map);

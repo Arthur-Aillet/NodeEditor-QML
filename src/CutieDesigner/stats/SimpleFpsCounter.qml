@@ -1,5 +1,5 @@
 import QtQuick
-import StatsModule
+import CutieDesigner.Stats
 
 Text {
     width: parent.width

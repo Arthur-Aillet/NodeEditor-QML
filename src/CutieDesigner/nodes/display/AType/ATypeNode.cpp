@@ -13,7 +13,7 @@
 #include <qvariant.h>
 
 std::shared_ptr<SurfaceData> ATypeNode::createATypeSurfaceData(QQmlEngine *engine) {
-  auto comp = std::make_unique<QQmlComponent>(engine, "CutieDesigner", "AType");
+  auto comp = std::make_unique<QQmlComponent>(engine, "CutieDesigner.Nodes", "AType");
   QVariantMap map;
   map["node"] = QVariant::fromValue(this);
   return std::make_shared<SurfaceData>(std::move(comp), map);
