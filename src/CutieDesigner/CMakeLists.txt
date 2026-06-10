@@ -1,3 +1,5 @@
+add_subdirectory(datatypes)
+
 qt_add_executable(CutieDesigner
   main.cpp
 )
@@ -23,14 +25,6 @@ qt_add_qml_module(CutieDesigner
   nodes/process/TextTyper/TextTyper.qml
 
   SOURCES
-  datatypes/ATypeCharacterData.hpp
-  datatypes/ColorData.hpp
-  datatypes/SurfaceData.hpp
-  datatypes/SurfaceData.cpp
-  datatypes/DecimalData.hpp
-  datatypes/TextData.hpp
-  datatypes/TextData.cpp
-
   nodes/input/ColorInput/ColorInputNode.hpp
   nodes/input/ColorInput/ColorInputNode.cpp
   nodes/input/NumberInput/NumberInputNode.hpp
@@ -94,7 +88,6 @@ target_include_directories(CutieDesigner
   PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${GSTREAMER_INCLUDE_DIRS}
-  datatypes
   nodes
   nodes/display
   nodes/display/AType
@@ -137,6 +130,7 @@ target_link_libraries(CutieDesigner PRIVATE
   NodeModule
   CutieUiModule
   vivid
+  datatypes
   ${GSTREAMER_LIBRARIES}
 )
 target_compile_definitions(CutieDesigner PRIVATE GLM_ENABLE_EXPERIMENTAL)
