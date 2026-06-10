@@ -55,7 +55,7 @@ qt_add_qml_module(nodes
   process/TextTyper/TextTyperEventList.hpp
   process/TextTyper/TextTyperEventList.cpp
 
-  DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieUiModule
+  DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieUiModule CutieDesigner.Datatypes
   RESOURCES
   display/AType/Ukrug/UkrugPointsData.json
   display/AType/Ukrug/ukrug.vert.qsb

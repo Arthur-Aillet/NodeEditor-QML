@@ -1,8 +1,8 @@
 #pragma once
 
 #include "SurfaceData.hpp"
+
 #include <QtCore/QObject>
-#include <qdebug.h>
 #include <qqmlintegration.h>
 #include <qquickitem.h>
 #include <qtmetamacros.h>
