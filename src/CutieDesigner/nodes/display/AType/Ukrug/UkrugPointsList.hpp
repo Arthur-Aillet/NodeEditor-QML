@@ -1,7 +1,6 @@
 #pragma once
 
 #include "UkrugNode.hpp"
-#include <QAbstractListModel>
 #include <QQmlEngine>
 #include <qdebug.h>
 #include <qdir.h>

@@ -7,11 +7,29 @@
 #include <QQmlComponent>
 #include <QtCore/QObject>
 #include <memory>
+#include <qabstractitemmodel.h>
 #include <qdebug.h>
 #include <qjsvalue.h>
 #include <qqmlcomponent.h>
 #include <qqmlengine.h>
+#include <qqmlintegration.h>
 #include <qtmetamacros.h>
+#include <qvariant.h>
+#include <vector>
+
+class SurfaceList : public QAbstractListModel {
+  Q_OBJECT
+  QML_ELEMENT
+
+  public:
+  int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+  QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+  void setPort(std::shared_ptr<SurfaceData> surface, int nodeIndex);
+  void addEmptyPort();
+  void removeLastPort();
+
+  std::vector<std::weak_ptr<SurfaceData>> _surfaces = {{}};
+};
 
 class StackNode : public NodeDelegateModel {
   Q_OBJECT
@@ -19,7 +37,7 @@ class StackNode : public NodeDelegateModel {
   QML_UNCREATABLE("NodeDelegateModel")
 
   public:
-  Q_PROPERTY(int portCount READ portCount WRITE setPortCount NOTIFY portCountChanged)
+  Q_PROPERTY(SurfaceList *surfaceList READ getSurfaceList CONSTANT)
 
   StackNode(QQmlEngine *engine);
   ~StackNode() = default;
@@ -45,26 +63,13 @@ class StackNode : public NodeDelegateModel {
   const NodeDataType &dataType(PortType portType, PortIndex portIndex) const override;
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
-  int portCount() { return _portCount; }
-  void setPortCount(int portCount) {
-    if (_portCount == portCount || portCount < 1)
-      return;
-    if (_portCount > portCount) {
-      emit portsAboutToBeDeleted(PortType::In, portCount, _portCount);
-      _portCount = portCount;
-      emit portsDeleted(PortType::In);
-    } else {
-      emit portsAboutToBeInserted(PortType::In, _portCount, portCount);
-      _portCount = portCount;
-      emit portsInserted(PortType::In);
-    }
-    emit portCountChanged();
-  }
 
-  signals:
-  void portCountChanged();
+  Q_INVOKABLE void addEmptyPort();
+  Q_INVOKABLE void removeLastPort();
+
+  SurfaceList *getSurfaceList() { return &surfaceList; }
 
   private:
-  uint _portCount = 1;
+  SurfaceList surfaceList;
   std::shared_ptr<SurfaceData> _content;
 };

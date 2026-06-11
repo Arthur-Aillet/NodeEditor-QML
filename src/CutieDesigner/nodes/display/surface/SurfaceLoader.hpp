@@ -7,7 +7,7 @@
 #include <qquickitem.h>
 #include <qtmetamacros.h>
 
-class SurfaceLoader : public QObject {
+class SurfaceLoader : public QQuickItem {
   Q_OBJECT
   QML_ELEMENT
 
@@ -16,7 +16,7 @@ class SurfaceLoader : public QObject {
   Q_PROPERTY(QQuickItem *surface MEMBER _surface NOTIFY surfaceChanged)
 
   public:
-  SurfaceLoader(QObject *parent = nullptr);
+  SurfaceLoader(QQuickItem *parent = nullptr);
   SurfaceData *surfaceData() { return _surfaceData; }
   ~SurfaceLoader() {
     if (_surface != nullptr)

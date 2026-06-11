@@ -1,10 +1,18 @@
 import QtQuick
 import CutieDesigner.Nodes
+import CutieDesigner.Datatypes
 
-Rectangle {
+Item {
+    id: stack
     required property StackNode node
 
-    width: 100
-    height: 100
-    color: "red"
+    anchors.fill: parent
+
+    Repeater {
+        model: stack.node.surfaceList
+        SurfaceLoader {
+            required property SurfaceData display
+            surfaceData: display
+        }
+    }
 }

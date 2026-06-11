@@ -5,7 +5,7 @@
 #include <qlogging.h>
 #include <qquickitem.h>
 
-SurfaceLoader::SurfaceLoader(QObject *parent) : QObject(parent) {}
+SurfaceLoader::SurfaceLoader(QQuickItem *parent) : QQuickItem(parent) {}
 
 void SurfaceLoader::createComponent(SurfaceData *surfaceDescription) {
   if (surfaceDescription->component()->isNull())
@@ -23,18 +23,19 @@ void SurfaceLoader::createComponent(SurfaceData *surfaceDescription) {
   QQuickItem *nextItem = nullptr;
   bool loaderReached = false;
 
-  for (auto sibling : parent()->children()) {
-    if (sibling == this) {
-      loaderReached = true;
-    } else if (sibling->isQuickItemType() && loaderReached) {
-      nextItem = qobject_cast<QQuickItem *>(sibling);
-      break;
+  if (parentItem() != nullptr)
+    for (auto sibling : parentItem()->children()) {
+      if (sibling == this) {
+        loaderReached = true;
+      } else if (sibling->isQuickItemType() && loaderReached) {
+        nextItem = qobject_cast<QQuickItem *>(sibling);
+        break;
+      }
     }
-  }
   _surface =
       qobject_cast<QQuickItem *>(surfaceDescription->component()->createWithInitialProperties(
           surfaceDescription->initialProps()));
-  _surface->setParentItem(static_cast<QQuickItem *>(parent()));
+  _surface->setParentItem(static_cast<QQuickItem *>(parentItem()));
   if (nextItem != nullptr) {
     _surface->stackBefore(nextItem);
   }
