@@ -1,12 +1,15 @@
 #pragma once
 
+#include "ColorData.hpp"
 #include "NodeDelegateModel.hpp"
 
 #include <QQmlComponent>
 #include <QtCore/QJsonObject>
 #include <QtCore/QObject>
 #include <QtWidgets/QLabel>
+#include <memory>
 #include <qabstractitemmodel.h>
+#include <qcolor.h>
 #include <qlogging.h>
 #include <qobject.h>
 #include <qqmlcomponent.h>
@@ -20,7 +23,8 @@ class ATypeCharacterNodeModel : public NodeDelegateModel {
   QML_INTERFACE
 
   public:
-  Q_PROPERTY(QColor baseColor MEMBER _baseColor NOTIFY baseColorChanged)
+  Q_PROPERTY(QColor baseColor READ baseColor WRITE setBaseColor NOTIFY baseColorChanged)
+  Q_PROPERTY(bool baseColorEditable READ baseColorEditable NOTIFY baseColorEditableChanged)
   Q_PROPERTY(double fontSize MEMBER _fontSize NOTIFY fontSizeChanged)
 
   Q_PROPERTY(double animationOpacitySpeed MEMBER _animationOpacitySpeed NOTIFY
@@ -40,9 +44,27 @@ class ATypeCharacterNodeModel : public NodeDelegateModel {
   Q_INVOKABLE void setChar(QQuickItem *instance, int index, QString character);
   Q_INVOKABLE QString getString(QQuickItem *instance);
 
+  QColor baseColor() {
+    if (baseColorEditable()) {
+      return _baseColor;
+    } else {
+      return _baseColorPtr.lock()->color();
+    }
+  }
+
+  void setBaseColor(QColor color) {
+    if (_baseColor == color)
+      return;
+    _baseColor = color;
+    emit baseColorChanged();
+  }
+
+  bool baseColorEditable() { return _baseColorPtr.expired(); }
+
   protected:
   QVector<QSharedPointer<QQuickItem>> _characters{};
   QColor _baseColor = "white";
+  std::weak_ptr<ColorData> _baseColorPtr;
   double _fontSize = 150;
   double _animationOpacitySpeed = 250;
   double _animationWidthSpeed = 100;
@@ -51,6 +73,7 @@ class ATypeCharacterNodeModel : public NodeDelegateModel {
   public:
   signals:
   void baseColorChanged();
+  void baseColorEditableChanged();
   void fontSizeChanged();
   void animationOpacitySpeedChanged();
   void animationWidthSpeedChanged();

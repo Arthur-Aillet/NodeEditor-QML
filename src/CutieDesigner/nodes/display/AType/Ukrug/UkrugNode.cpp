@@ -37,7 +37,24 @@ const NodeDataType &UkrugNode::dataType(PortType portType, PortIndex portIndex) 
 
 std::shared_ptr<NodeData> UkrugNode::outData(PortIndex port) { return _modelData; };
 
-void UkrugNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {};
+void UkrugNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
+  switch (portIndex) {
+  case 0:
+    if (!data) {
+      _baseColorPtr.reset();
+      emit baseColorChanged();
+      emit baseColorEditableChanged();
+    } else {
+      auto color = std::dynamic_pointer_cast<ColorData>(data);
+
+      _baseColorPtr = color;
+      emit baseColorChanged();
+      emit baseColorEditableChanged();
+    }
+  default:
+    return;
+  }
+};
 
 QQmlComponent *UkrugNode::getComponent() { return _component.get(); };
 

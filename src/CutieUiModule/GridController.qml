@@ -34,13 +34,34 @@ GridLayout {
 
     Repeater {
         model: grid.model
+
+        function test() {
+            console.log("Binding");
+        }
+
         Component.onCompleted: {
             for (let i = 0; i != count; i++) {
                 const current = itemAt(i);
                 current.Layout.column = 1;
                 current.Layout.row = i;
                 current.value = grid.object[grid.model[i].property];
-                grid.object[grid.model[i].property] = Qt.binding(() => current.value);
+
+                if (grid.model[i].enabledProperty) {
+                    const changeSignal = String(grid.model[i].enabledProperty).charAt(0).toUpperCase() + String(grid.model[i].enabledProperty).slice(1);
+                    grid.object["on" + changeSignal + "Changed"].connect(() => {
+                        if (grid.object[grid.model[i].enabledProperty]) {
+                            current.enabled = true;
+                            current.value = current.value;
+                            grid.object[grid.model[i].property] = Qt.binding(() => current.value);
+                        } else {
+                            current.enabled = false;
+                            grid.object[grid.model[i].property] = grid.object[grid.model[i].property];
+                            current.value = Qt.binding(() => grid.object[grid.model[i].property]);
+                        }
+                    });
+                } else {
+                    grid.object[grid.model[i].property] = Qt.binding(() => current.value);
+                }
             }
         }
         delegate: DelegateChooser {

@@ -71,10 +71,10 @@ void SplitRGBA::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
   } else {
     auto colorData = std::dynamic_pointer_cast<ColorData>(data);
     _inColor = colorData;
-    _r = colorData->color.redF();
-    _g = colorData->color.greenF();
-    _b = colorData->color.blueF();
-    _a = colorData->color.alphaF();
+    _r = colorData->color().redF();
+    _g = colorData->color().greenF();
+    _b = colorData->color().blueF();
+    _a = colorData->color().alphaF();
     emit dataUpdated(0);
     emit dataUpdated(1);
     emit dataUpdated(2);

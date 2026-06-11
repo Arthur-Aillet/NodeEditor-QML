@@ -28,5 +28,6 @@ class CombineRGBA : public NodeDelegateModel {
   std::weak_ptr<DecimalData> _g;
   std::weak_ptr<DecimalData> _b;
   std::weak_ptr<DecimalData> _a;
+  QProperty<QColor> _color;
   std::shared_ptr<ColorData> _outColorPtr;
 };
