@@ -18,7 +18,7 @@ class NumberInputNode : public NodeDelegateModel {
   ~NumberInputNode() override = default;
 
   bool captionVisible() const override { return false; }
-  QString name() const override { return "Number Input"; }
+  QString name() const override { return "Number"; }
 
   QJsonObject save() const override;
   void load(QJsonObject const &p) override;
