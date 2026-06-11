@@ -17,6 +17,8 @@ int SurfaceList::rowCount(const QModelIndex &parent) const {
   return i;
 }
 
+int SurfaceList::portsCount() const { return _surfaces.size(); }
+
 QVariant SurfaceList::data(const QModelIndex &index, int role) const {
   int i = 0;
   for (auto &currentSurface : _surfaces) {
@@ -55,10 +57,10 @@ void SurfaceList::setPort(std::shared_ptr<SurfaceData> surface, int nodeIndex) {
 void SurfaceList::addEmptyPort() { _surfaces.push_back({}); }
 
 void SurfaceList::removeLastPort() {
-  if (_surfaces.size() <= 1)
+  if (portsCount() <= 1)
     return;
 
-  if (!_surfaces[_surfaces.size() - 1].expired()) {
+  if (!_surfaces[portsCount() - 1].expired()) {
     beginRemoveRows(QModelIndex(), rowCount(), rowCount());
     _surfaces.pop_back();
     endRemoveRows();
@@ -76,26 +78,25 @@ StackNode::StackNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
 }
 
 void StackNode::addEmptyPort() {
-  emit portsAboutToBeInserted(PortType::In, surfaceList._surfaces.size(),
-                              surfaceList._surfaces.size());
-  surfaceList.addEmptyPort();
+  emit portsAboutToBeInserted(PortType::In, _surfaceList.portsCount(), _surfaceList.portsCount());
+  _surfaceList.addEmptyPort();
   emit portsInserted(PortType::In);
 }
 
 void StackNode::removeLastPort() {
-  if (surfaceList._surfaces.size() <= 1)
+  if (_surfaceList.portsCount() <= 1)
     return;
 
-  emit portsAboutToBeDeleted(PortType::In, surfaceList._surfaces.size() - 1,
-                             surfaceList._surfaces.size() - 1);
-  surfaceList.removeLastPort();
+  emit portsAboutToBeDeleted(PortType::In, _surfaceList.portsCount() - 1,
+                             _surfaceList.portsCount() - 1);
+  _surfaceList.removeLastPort();
   emit portsDeleted(PortType::In);
 }
 
 unsigned int StackNode::nPorts(PortType portType) const {
   switch (portType) {
   case PortType::In:
-    return surfaceList._surfaces.size();
+    return _surfaceList.portsCount();
   default:
     return 1;
   }
@@ -109,11 +110,11 @@ std::shared_ptr<NodeData> StackNode::outData(PortIndex _portIndex) { return _con
 
 void StackNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
   if (!data) {
-    surfaceList.setPort(nullptr, portIndex);
+    _surfaceList.setPort(nullptr, portIndex);
     emit dataUpdated(0);
   } else {
     auto surface = std::dynamic_pointer_cast<SurfaceData>(data);
-    surfaceList.setPort(surface, portIndex);
+    _surfaceList.setPort(surface, portIndex);
     emit dataUpdated(0);
   }
 }

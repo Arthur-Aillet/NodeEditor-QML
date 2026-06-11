@@ -23,11 +23,13 @@ class SurfaceList : public QAbstractListModel {
 
   public:
   int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+  int portsCount() const;
   QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
   void setPort(std::shared_ptr<SurfaceData> surface, int nodeIndex);
   void addEmptyPort();
   void removeLastPort();
 
+  protected:
   std::vector<std::weak_ptr<SurfaceData>> _surfaces = {{}};
 };
 
@@ -67,9 +69,9 @@ class StackNode : public NodeDelegateModel {
   Q_INVOKABLE void addEmptyPort();
   Q_INVOKABLE void removeLastPort();
 
-  SurfaceList *getSurfaceList() { return &surfaceList; }
+  SurfaceList *getSurfaceList() { return &_surfaceList; }
 
   private:
-  SurfaceList surfaceList;
+  SurfaceList _surfaceList;
   std::shared_ptr<SurfaceData> _content;
 };

@@ -10,12 +10,12 @@ FlexboxLayout {
     Button {
         text: "+"
         height: 20
-        onClicked: root.node.addEmptyNode()
+        onClicked: root.node.addEmptyPort()
     }
 
     Button {
         text: "-"
         height: 20
-        onClicked: root.node.removeLastNode()
+        onClicked: root.node.removeLastPort()
     }
 }
