@@ -1,17 +1,19 @@
 #pragma once
 
-#include "ColorData.hpp"
+#include "GradientData.hpp"
 #include "NodeDelegateModel.hpp"
 #include "SurfaceData.hpp"
 
 #include <QQmlComponent>
 #include <QtCore/QObject>
 #include <memory>
+#include <qbrush.h>
 #include <qcolor.h>
 #include <qjsvalue.h>
 #include <qqmlcomponent.h>
 #include <qqmlengine.h>
 #include <qtmetamacros.h>
+#include <qvariant.h>
 
 class FillNode : public NodeDelegateModel {
   Q_OBJECT
@@ -19,7 +21,7 @@ class FillNode : public NodeDelegateModel {
   QML_UNCREATABLE("NodeDelegateModel")
 
   public:
-  Q_PROPERTY(QColor color READ getColor NOTIFY colorChanged)
+  Q_PROPERTY(QList<QList<QVariant>> gradient READ getGradient NOTIFY gradientChanged)
 
   FillNode(QQmlEngine *engine);
   ~FillNode() = default;
@@ -36,16 +38,25 @@ class FillNode : public NodeDelegateModel {
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
-  QColor getColor() {
-    if (_color.expired())
-      return QColor("red");
-    return _color.lock()->color;
+  QList<QList<QVariant>> getGradient() {
+    auto gradient = _gradient.expired() ? _defaultGradient : _gradient.lock()->gradient();
+    QList<QList<QVariant>> newList;
+
+    for (auto &stop : gradient.stops()) {
+      QList<QVariant> newStop;
+      newStop.append(QVariant::fromValue(stop.first));
+      newStop.append(QVariant::fromValue(stop.second));
+      newList.append(newStop);
+    }
+
+    return newList;
   }
 
   signals:
-  void colorChanged();
+  void gradientChanged();
 
   private:
-  std::weak_ptr<ColorData> _color;
+  QGradient _defaultGradient;
+  std::weak_ptr<GradientData> _gradient;
   std::shared_ptr<SurfaceData> _content;
 };

@@ -1,16 +1,31 @@
 #pragma once
 
+#include "GradientData.hpp"
 #include "NodeData.hpp"
 #include <QtGui/QColor>
-#include <qtmetamacros.h>
+#include <qbrush.h>
 
-class ColorData : public NodeData {
+struct ColorDataType : public NodeDataType {
+  ColorDataType(DataTypeId id, QString name) : NodeDataType(id, name) {}
+
+  QList<DataTypeId> compatibleTypes() const override {
+    QList<NodeDataType::DataTypeId> types;
+    types.push_front(id);
+    types.push_front(GradientData().type().id);
+    return types;
+  }
+};
+
+class ColorData : public GradientData {
   public:
-  ColorData(const QColor &color = "red") : color(color) {}
+  ColorData(QColor color = "blue") : color(color), GradientData(QLinearGradient()) {
+    _gradient.setColorAt(0, color);
+    _gradient.setColorAt(1, color);
+  }
 
-  inline static const NodeDataType dataType = NodeDataType("col", "Color");
+  inline static const ColorDataType dataType = ColorDataType("col", "Color");
 
-  const NodeDataType &type() const override { return dataType; }
+  const ColorDataType &type() const override { return dataType; }
 
-  const QColor &color;
+  QColor color;
 };

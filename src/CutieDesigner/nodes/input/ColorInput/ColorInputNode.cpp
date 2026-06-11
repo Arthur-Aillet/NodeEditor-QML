@@ -2,7 +2,7 @@
 #include "ColorData.hpp"
 
 ColorInputNode::ColorInputNode(QQmlEngine *engine)
-    : NodeDelegateModel(engine), _content(std::make_shared<ColorData>(_color)) {}
+    : NodeDelegateModel(engine), _content(std::make_shared<ColorData>("red")) {}
 
 unsigned int ColorInputNode::nPorts(PortType portType) const {
   switch (portType) {

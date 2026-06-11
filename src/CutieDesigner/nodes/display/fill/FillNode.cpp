@@ -1,9 +1,10 @@
 #include "FillNode.hpp"
-#include "ColorData.hpp"
+#include "GradientData.hpp"
 #include "SurfaceData.hpp"
 
 #include <QtWidgets/QLabel>
 #include <memory>
+#include <qbrush.h>
 #include <qdebug.h>
 #include <qqmlcomponent.h>
 #include <qtimer.h>
@@ -14,6 +15,9 @@ FillNode::FillNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
   QVariantMap map;
   map["node"] = QVariant::fromValue(this);
   _content = std::make_shared<SurfaceData>(std::move(comp), map);
+  _defaultGradient = QLinearGradient();
+  _defaultGradient.setColorAt(0, "red");
+  _defaultGradient.setColorAt(1, "red");
 }
 
 unsigned int FillNode::nPorts(PortType portType) const { return 1; }
@@ -21,7 +25,7 @@ unsigned int FillNode::nPorts(PortType portType) const { return 1; }
 const NodeDataType &FillNode::dataType(PortType portType, PortIndex _portIndex) const {
   switch (portType) {
   case PortType::In:
-    return ColorData().type();
+    return GradientData().type();
   default:
     return SurfaceData().type();
   }
@@ -30,14 +34,14 @@ const NodeDataType &FillNode::dataType(PortType portType, PortIndex _portIndex) 
 std::shared_ptr<NodeData> FillNode::outData(PortIndex _portIndex) { return _content; }
 
 void FillNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
-  auto colorData = std::dynamic_pointer_cast<ColorData>(data);
+  auto gradientData = std::dynamic_pointer_cast<GradientData>(data);
 
   if (!data) {
-    _color.reset();
+    _gradient.reset();
     emit dataInvalidated(0);
   } else {
-    _color = colorData;
-    emit colorChanged();
+    _gradient = gradientData;
+    emit gradientChanged();
     emit dataUpdated(0);
   }
 }
@@ -45,7 +49,7 @@ void FillNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
 QString FillNode::portCaption(PortType portType, PortIndex portIndex) const {
   switch (portType) {
   case PortType::In:
-    return QString("color");
+    return QString("gradient");
   default:
     return QString("out");
   }

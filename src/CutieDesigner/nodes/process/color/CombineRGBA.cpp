@@ -5,7 +5,7 @@
 #include <qcolor.h>
 
 CombineRGBA::CombineRGBA(QQmlEngine *engine)
-    : NodeDelegateModel(engine), _outColorPtr(std::make_shared<ColorData>(_outColor)) {}
+    : NodeDelegateModel(engine), _outColorPtr(std::make_shared<ColorData>("black")) {}
 
 unsigned int CombineRGBA::nPorts(PortType portType) const {
   switch (portType) {
@@ -84,6 +84,6 @@ void CombineRGBA::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex)
   auto b = _b.expired() ? 0 : std::clamp(_b.lock()->number(), 0.0, 1.0);
   auto a = _a.expired() ? 1 : std::clamp(_a.lock()->number(), 0.0, 1.0);
 
-  _outColor = QColor::fromRgbF(r, g, b, a);
+  _outColorPtr = std::make_shared<ColorData>(QColor::fromRgbF(r, g, b, a));
   emit dataUpdated(0);
 };

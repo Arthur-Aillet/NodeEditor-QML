@@ -6,7 +6,12 @@
 struct DecimalDataType : public NodeDataType {
   DecimalDataType(DataTypeId id, QString name) : NodeDataType(id, name) {}
 
-  QList<DataTypeId> compatibleTypes() const override;
+  QList<DataTypeId> compatibleTypes() const override {
+    QList<NodeDataType::DataTypeId> types;
+    types.push_front(id);
+    types.push_front(TextData().type().id);
+    return types;
+  }
 };
 
 class DecimalData : public TextData {

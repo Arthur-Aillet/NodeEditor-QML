@@ -2,10 +2,10 @@ qt_add_qml_module(datatypes
   URI CutieDesigner.Datatypes
   SHARED
   SOURCES
-  ColorData.hpp
-  DecimalData.cpp
-  DecimalData.hpp
   ATypeCharacterData.hpp
+  ColorData.hpp
+  DecimalData.hpp
+  GradientData.hpp
   SurfaceData.cpp
   SurfaceData.hpp
   TextData.hpp
