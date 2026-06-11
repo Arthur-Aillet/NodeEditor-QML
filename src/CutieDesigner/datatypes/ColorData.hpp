@@ -20,7 +20,6 @@ class ColorData : public GradientData {
   public:
   ColorData(QColor color = "blue") : color(color), GradientData(QLinearGradient()) {
     _gradient.setColorAt(0, color);
-    _gradient.setColorAt(1, color);
   }
 
   inline static const ColorDataType dataType = ColorDataType("col", "Color");

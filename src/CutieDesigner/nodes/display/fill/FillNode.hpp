@@ -21,14 +21,14 @@ class FillNode : public NodeDelegateModel {
   QML_UNCREATABLE("NodeDelegateModel")
 
   public:
-  Q_PROPERTY(QList<QList<QVariant>> gradient READ getGradient NOTIFY gradientChanged)
+  Q_PROPERTY(QList<QVariant> gradient READ getGradient NOTIFY gradientChanged)
 
   FillNode(QQmlEngine *engine);
   ~FillNode() = default;
 
   public:
   bool captionVisible() const override { return true; }
-  QString name() const override { return QStringLiteral("Fill"); }
+  QString name() const override { return "Fill"; }
 
   QString portCaption(PortType portType, PortIndex portIndex) const override;
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }
@@ -38,15 +38,15 @@ class FillNode : public NodeDelegateModel {
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
-  QList<QList<QVariant>> getGradient() {
+  QList<QVariant> getGradient() {
     auto gradient = _gradient.expired() ? _defaultGradient : _gradient.lock()->gradient();
-    QList<QList<QVariant>> newList;
+    QList<QVariant> newList;
 
     for (auto &stop : gradient.stops()) {
       QList<QVariant> newStop;
       newStop.append(QVariant::fromValue(stop.first));
       newStop.append(QVariant::fromValue(stop.second));
-      newList.append(newStop);
+      newList.append(QVariant::fromValue(newStop));
     }
 
     return newList;

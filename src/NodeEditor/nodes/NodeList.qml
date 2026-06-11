@@ -77,10 +77,10 @@ Item {
             nodes.nodeAt(connection.inNodeId).connectionChanged(connection.inPortIndex, NodeEditor.PortType.In, connection.outNodeId, connection.outPortIndex);
             nodes.nodeAt(connection.outNodeId).connectionChanged(connection.outPortIndex, NodeEditor.PortType.Out, connection.inNodeId, connection.inPortIndex);
         }
-    }
 
-    Connections {
-        target: ModelInterface
+        function onNodePortsUpdated(nodeId: int, portType: int) {
+            nodes.nodeAt(nodeId).portsChanged(portType);
+        }
 
         function onNodeFlagsUpdated(id: real) {
             for (let i = 0; i < nodes.count; i++) {

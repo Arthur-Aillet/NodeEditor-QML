@@ -151,14 +151,14 @@ class NodeDelegateModel : public QObject, public Serializable {
   virtual QQmlComponent embeddedComponent(QQmlEngine *engine) { return QQmlComponent(); };
   virtual QVariantMap componentInitialProperties() { return QVariantMap(); }
 
-  public Q_SLOTS:
+  public slots:
   virtual void inputConnectionCreated(ConnectionId const &) {}
   virtual void inputConnectionDeleted(ConnectionId const &) {}
   virtual void outputConnectionCreated(ConnectionId const &) {}
   virtual void outputConnectionDeleted(ConnectionId const &) {}
   virtual void embeddedComponentLoaded(std::shared_ptr<QQuickItem> instance) {}
 
-  Q_SIGNALS:
+  signals:
   /// Triggers the updates in the nodes downstream.
   void dataUpdated(PortIndex const index);
 
@@ -168,16 +168,6 @@ class NodeDelegateModel : public QObject, public Serializable {
 
   void computingStarted();
   void computingFinished();
-
-  void embeddedComponentSizeUpdated();
-
-  /// Request an update of the node's UI.
-  /**
-   * Emit this signal whenever some internal state change requires
-   * the node to be repainted. The containing graph model will
-   * propagate the update to the scene.
-   */
-  void requestNodeUpdate();
 
   /// Call this function before deleting the data associated with ports.
 
@@ -189,7 +179,7 @@ class NodeDelegateModel : public QObject, public Serializable {
   void portsAboutToBeDeleted(PortType const portType, PortIndex const first, PortIndex const last);
 
   /// Call this function when data and port moditications are finished.
-  void portsDeleted();
+  void portsDeleted(PortType const portType);
 
   /**
    * @brief Call this function before inserting the data associated with ports.
@@ -199,7 +189,7 @@ class NodeDelegateModel : public QObject, public Serializable {
   void portsAboutToBeInserted(PortType const portType, PortIndex const first, PortIndex const last);
 
   /// Call this function when data and port moditications are finished.
-  void portsInserted();
+  void portsInserted(PortType const portType);
 
   private:
   std::shared_ptr<QQuickItem> _embed{nullptr};

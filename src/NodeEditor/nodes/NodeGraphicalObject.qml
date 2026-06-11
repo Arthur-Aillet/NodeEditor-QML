@@ -23,6 +23,14 @@ MouseArea {
     property int flags
     property bool locked: flags & NodeEditor.NodeFlags.Locked
 
+    function portsChanged(type: int) {
+        if (type == NodeEditor.PortType.In) {
+            inPortCount = ModelInterface.graph.nodeData(root.nodeId, NodeEditor.NodeRole.InPortCount);
+        }
+        if (type == NodeEditor.PortType.Out)
+            outPortCount = ModelInterface.graph.nodeData(root.nodeId, NodeEditor.NodeRole.OutPortCount);
+    }
+
     function loadFlags() {
         flags = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Flags);
     }

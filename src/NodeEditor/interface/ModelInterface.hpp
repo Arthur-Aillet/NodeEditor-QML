@@ -38,14 +38,4 @@ class ModelInterface : public QObject {
   Q_INVOKABLE void deleteConnection(ConnectionId const id);
   Q_INVOKABLE void createNode(QString const nodeType, QPoint const &scenePos);
   Q_INVOKABLE bool deleteNode(const NodeId nodeId);
-
-  Q_SIGNALS:
-  void connectionCreated(ConnectionId const id);
-  void connectionDeleted(ConnectionId const id);
-  void nodeCreated(NodeId const nodeId);
-  void nodeDeleted(NodeId const nodeId);
-  void nodeUpdated(NodeId const nodeId);
-  void nodeFlagsUpdated(NodeId const nodeId);
-  void nodePositionUpdated(NodeId const nodeId);
-  void modelReset();
 };

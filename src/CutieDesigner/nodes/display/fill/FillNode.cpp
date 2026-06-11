@@ -17,7 +17,6 @@ FillNode::FillNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
   _content = std::make_shared<SurfaceData>(std::move(comp), map);
   _defaultGradient = QLinearGradient();
   _defaultGradient.setColorAt(0, "red");
-  _defaultGradient.setColorAt(1, "red");
 }
 
 unsigned int FillNode::nPorts(PortType portType) const { return 1; }

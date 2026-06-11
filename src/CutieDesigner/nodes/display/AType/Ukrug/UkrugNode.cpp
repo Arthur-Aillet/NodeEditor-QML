@@ -1,5 +1,7 @@
 #include "UkrugNode.hpp"
 #include "ATypeCharacterData.hpp"
+#include "ColorData.hpp"
+#include "DecimalData.hpp"
 #include <memory>
 #include <qcontainerfwd.h>
 #include <qdebug.h>
@@ -14,22 +16,28 @@ unsigned int UkrugNode::nPorts(PortType portType) const {
   switch (portType) {
   case NodeEditor::PortType::Out:
     return 1;
-  case NodeEditor::PortType::In:
-    return 0;
   default:
-    return 0;
+    return 1;
   }
 };
 
 const NodeDataType &UkrugNode::dataType(PortType portType, PortIndex portIndex) const {
-  return ATypeCharacterData().type();
+  switch (portType) {
+  case NodeEditor::PortType::Out:
+    return ATypeCharacterData().type();
+  default:
+    switch (portIndex) {
+    case 0:
+      return ColorData().type();
+    default:
+      return DecimalData().type();
+    }
+  }
 };
 
 std::shared_ptr<NodeData> UkrugNode::outData(PortIndex port) { return _modelData; };
 
-void UkrugNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
-
-};
+void UkrugNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {};
 
 QQmlComponent *UkrugNode::getComponent() { return _component.get(); };
 

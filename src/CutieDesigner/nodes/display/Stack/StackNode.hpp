@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Definitions.hpp"
 #include "NodeDelegateModel.hpp"
 #include "SurfaceData.hpp"
 
@@ -18,6 +19,8 @@ class StackNode : public NodeDelegateModel {
   QML_UNCREATABLE("NodeDelegateModel")
 
   public:
+  Q_PROPERTY(int portCount READ portCount WRITE setPortCount NOTIFY portCountChanged)
+
   StackNode(QQmlEngine *engine);
   ~StackNode() = default;
 
@@ -42,7 +45,26 @@ class StackNode : public NodeDelegateModel {
   const NodeDataType &dataType(PortType portType, PortIndex portIndex) const override;
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
+  int portCount() { return _portCount; }
+  void setPortCount(int portCount) {
+    if (_portCount == portCount || portCount < 1)
+      return;
+    if (_portCount > portCount) {
+      emit portsAboutToBeDeleted(PortType::In, portCount, _portCount);
+      _portCount = portCount;
+      emit portsDeleted(PortType::In);
+    } else {
+      emit portsAboutToBeInserted(PortType::In, _portCount, portCount);
+      _portCount = portCount;
+      emit portsInserted(PortType::In);
+    }
+    emit portCountChanged();
+  }
+
+  signals:
+  void portCountChanged();
 
   private:
+  uint _portCount = 1;
   std::shared_ptr<SurfaceData> _content;
 };

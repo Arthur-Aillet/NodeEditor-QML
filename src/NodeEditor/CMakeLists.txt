@@ -1,4 +1,5 @@
 qt_add_qml_module(NodeEditor
+  SHARED
   URI NodeEditor
   QML_FILES
   nodes/DefaultNodePainter.qml

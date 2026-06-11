@@ -172,7 +172,7 @@ class AbstractGraphModel : public QObject {
 
   virtual bool loopsEnabled() const { return true; }
 
-  public:
+  public slots:
   /**
    * Function clears connections attached to the ports that are scheduled to be
    * deleted. It must be called right before the model removes its old port data.
@@ -189,7 +189,7 @@ class AbstractGraphModel : public QObject {
    * Signal emitted when model no longer has the old data associated with the
    * given port indices and when the node must be repainted.
    */
-  void portsDeleted();
+  void portsDeleted(NodeId const nodeId, PortType const portType);
 
   /**
    * Signal emitted when model is about to create new ports on the given node.
@@ -207,23 +207,17 @@ class AbstractGraphModel : public QObject {
    * Function re-creates the connections that were shifted during the port
    * insertion. After that the node is updated.
    */
-  void portsInserted();
+  void portsInserted(NodeId const nodeId, PortType const portType);
 
-  Q_SIGNALS:
+  signals:
   void connectionCreated(ConnectionId const connectionId);
-
   void connectionDeleted(ConnectionId const connectionId);
-
   void nodeCreated(NodeId const nodeId);
-
   void nodeDeleted(NodeId const nodeId);
-
   void nodeUpdated(NodeId const nodeId);
-
+  void nodePortsUpdated(NodeId const nodeId, PortType const portType);
   void nodeFlagsUpdated(NodeId const nodeId);
-
   void nodePositionUpdated(NodeId const nodeId);
-
   void modelReset();
 
   private:

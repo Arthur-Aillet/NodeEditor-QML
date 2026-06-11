@@ -96,17 +96,16 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   /// Loops do not make any sense in uni-direction data propagation
   bool loopsEnabled() const override { return false; }
 
-  Q_SIGNALS:
+  signals:
   void inPortDataWasSet(NodeId const, PortType const, PortIndex const);
 
   private:
   NodeId newNodeId() override { return _nextNodeId++; }
 
   void sendConnectionCreation(ConnectionId const connectionId);
-
   void sendConnectionDeletion(ConnectionId const connectionId);
 
-  private Q_SLOTS:
+  private slots:
   /**
    * Fuction is called in three cases:
    *

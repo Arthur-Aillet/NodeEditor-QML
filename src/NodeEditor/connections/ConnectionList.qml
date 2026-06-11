@@ -30,7 +30,7 @@ Item {
     }
 
     Connections {
-        target: ModelInterface
+        target: ModelInterface.graph
 
         function equal(fst: connectionId, snd: connectionId): bool {
             return fst.outNodeId == snd.outNodeId && fst.outPortIndex == snd.outPortIndex && fst.inNodeId == snd.inNodeId && fst.inPortIndex == snd.inPortIndex;

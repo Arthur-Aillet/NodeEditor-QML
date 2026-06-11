@@ -8,7 +8,7 @@ Canvas {
     required property NavigableArea area
 
     Connections {
-        target: ModelInterface
+        target: ModelInterface.graph
 
         function onNodePositionUpdated(nodeId: real) {
             if (nodeId == root.connection.inNodeId) {

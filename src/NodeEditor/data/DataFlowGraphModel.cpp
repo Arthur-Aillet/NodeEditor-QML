@@ -59,23 +59,21 @@ NodeId DataFlowGraphModel::addNode(QString const nodeType) {
     connect(model.get(), &NodeDelegateModel::dataInvalidated,
             [newId, this](PortIndex const portIndex) { onOutPortDataUpdated(newId, portIndex); });
 
-    connect(model.get(), &NodeDelegateModel::portsAboutToBeDeleted, this,
+    connect(model.get(), &NodeDelegateModel::portsAboutToBeDeleted,
             [newId, this](PortType const portType, PortIndex const first, PortIndex const last) {
               portsAboutToBeDeleted(newId, portType, first, last);
             });
 
-    connect(model.get(), &NodeDelegateModel::portsDeleted, this, &DataFlowGraphModel::portsDeleted);
+    connect(model.get(), &NodeDelegateModel::portsDeleted,
+            [newId, this](PortType const portType) { portsDeleted(newId, portType); });
 
-    connect(model.get(), &NodeDelegateModel::portsAboutToBeInserted, this,
+    connect(model.get(), &NodeDelegateModel::portsAboutToBeInserted,
             [newId, this](PortType const portType, PortIndex const first, PortIndex const last) {
               portsAboutToBeInserted(newId, portType, first, last);
             });
 
-    connect(model.get(), &NodeDelegateModel::portsInserted, this,
-            &DataFlowGraphModel::portsInserted);
-
-    connect(model.get(), &NodeDelegateModel::requestNodeUpdate, this,
-            [newId, this]() { Q_EMIT nodeUpdated(newId); });
+    connect(model.get(), &NodeDelegateModel::portsInserted,
+            [newId, this](PortType const portType) { portsInserted(newId, portType); });
 
     _models[newId] = std::move(model);
 
@@ -585,25 +583,27 @@ void DataFlowGraphModel::loadNode(QJsonObject const &nodeJson) {
               onOutPortDataUpdated(restoredNodeId, portIndex);
             });
 
-    connect(model.get(), &NodeDelegateModel::portsAboutToBeDeleted, this,
+    connect(model.get(), &NodeDelegateModel::portsAboutToBeDeleted,
             [restoredNodeId, this](PortType const portType, PortIndex const first,
                                    PortIndex const last) {
               portsAboutToBeDeleted(restoredNodeId, portType, first, last);
             });
 
-    connect(model.get(), &NodeDelegateModel::portsDeleted, this, &DataFlowGraphModel::portsDeleted);
+    connect(model.get(), &NodeDelegateModel::portsDeleted,
+            [restoredNodeId, this](PortType const portType) {
+              portsDeleted(restoredNodeId, portType);
+            });
 
-    connect(model.get(), &NodeDelegateModel::portsAboutToBeInserted, this,
+    connect(model.get(), &NodeDelegateModel::portsAboutToBeInserted,
             [restoredNodeId, this](PortType const portType, PortIndex const first,
                                    PortIndex const last) {
               portsAboutToBeInserted(restoredNodeId, portType, first, last);
             });
 
-    connect(model.get(), &NodeDelegateModel::portsInserted, this,
-            &DataFlowGraphModel::portsInserted);
-
-    connect(model.get(), &NodeDelegateModel::requestNodeUpdate, this,
-            [restoredNodeId, this]() { Q_EMIT nodeUpdated(restoredNodeId); });
+    connect(model.get(), &NodeDelegateModel::portsInserted,
+            [restoredNodeId, this](PortType const portType) {
+              portsInserted(restoredNodeId, portType);
+            });
 
     _models[restoredNodeId] = std::move(model);
 

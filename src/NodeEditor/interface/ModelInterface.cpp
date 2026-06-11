@@ -1,19 +1,7 @@
 #include "ModelInterface.hpp"
 
 ModelInterface::ModelInterface(AbstractGraphModel &_graphModel)
-    : QObject(nullptr), graphModel(_graphModel), undoStack(QUndoStack(this)) {
-  connect(&graphModel, SIGNAL(connectionCreated(ConnectionId)), this,
-          SIGNAL(connectionCreated(ConnectionId)));
-  connect(&graphModel, SIGNAL(connectionDeleted(ConnectionId)), this,
-          SIGNAL(connectionDeleted(ConnectionId)));
-  connect(&graphModel, SIGNAL(nodeCreated(NodeId)), this, SIGNAL(nodeCreated(NodeId)));
-  connect(&graphModel, SIGNAL(nodeDeleted(NodeId)), this, SIGNAL(nodeDeleted(NodeId)));
-  connect(&graphModel, SIGNAL(nodeUpdated(NodeId)), this, SIGNAL(nodeUpdated(NodeId)));
-  connect(&graphModel, SIGNAL(nodeFlagsUpdated(NodeId)), this, SIGNAL(nodeFlagsUpdated(NodeId)));
-  connect(&graphModel, SIGNAL(nodePositionUpdated(NodeId)), this,
-          SIGNAL(nodePositionUpdated(NodeId)));
-  connect(&graphModel, SIGNAL(modelReset()), this, SIGNAL(modelReset()));
-}
+    : QObject(nullptr), graphModel(_graphModel), undoStack(QUndoStack(this)) {}
 
 ModelInterface *ModelInterface::create(QQmlEngine *, QJSEngine *engine) {
   if (instance == nullptr) {

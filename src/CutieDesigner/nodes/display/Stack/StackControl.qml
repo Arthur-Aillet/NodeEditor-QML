@@ -1,10 +1,25 @@
 import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 import CutieDesigner.Nodes
 
-Rectangle {
+FlexboxLayout {
+    id: root
     required property StackNode node
 
-    width: 100
-    height: 10
-    color: "red"
+    Button {
+        text: "+"
+        height: 20
+        onClicked: {
+            root.node.portCount += 1;
+        }
+    }
+
+    Button {
+        text: "-"
+        height: 20
+        onClicked: {
+            root.node.portCount -= 1;
+        }
+    }
 }

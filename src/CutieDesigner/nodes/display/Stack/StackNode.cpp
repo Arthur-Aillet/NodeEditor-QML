@@ -18,7 +18,7 @@ StackNode::StackNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
 unsigned int StackNode::nPorts(PortType portType) const {
   switch (portType) {
   case PortType::In:
-    return 0;
+    return _portCount;
   default:
     return 1;
   }
