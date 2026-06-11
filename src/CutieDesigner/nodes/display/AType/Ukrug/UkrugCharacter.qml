@@ -34,6 +34,7 @@ Item {
         Layout.preferredWidth = Qt.binding(function () {
             return root.node.fontSize;
         });
+        colorAnimation.duration = 0;
         shader.baseColor = Qt.binding(function () {
             return root.node.baseColor;
         });
@@ -54,10 +55,12 @@ Item {
             timer.interval = node.animationWidthSpeed - node.animationOpacitySpeed;
             Layout.preferredWidth = 0;
             timer.callback = () => {
+                colorAnimation.duration = node.animationOpacitySpeed;
                 shader.baseColor = "transparent";
             };
         } else {
             timer.interval = node.animationOpacitySpeed - node.animationWidthSpeed;
+            colorAnimation.duration = node.animationOpacitySpeed;
             shader.baseColor = "transparent";
             timer.callback = () => {
                 Layout.preferredWidth = 0;
@@ -74,6 +77,7 @@ Item {
         baseColor: "transparent"
         Behavior on baseColor {
             PropertyAnimation {
+                id: colorAnimation
                 duration: root.node.animationOpacitySpeed
             }
         }
