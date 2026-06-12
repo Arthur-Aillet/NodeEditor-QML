@@ -3,7 +3,9 @@
 #include <qdebug.h>
 #include <qjsengine.h>
 #include <qlogging.h>
+#include <qobject.h>
 #include <qquickitem.h>
+#include <qvariant.h>
 
 SurfaceLoader::SurfaceLoader(QQuickItem *parent) : QQuickItem(parent) {}
 
@@ -23,22 +25,24 @@ void SurfaceLoader::createComponent(SurfaceData *surfaceDescription) {
   QQuickItem *nextItem = nullptr;
   bool loaderReached = false;
 
-  if (parentItem() != nullptr)
-    for (auto sibling : parentItem()->children()) {
-      if (sibling == this) {
-        loaderReached = true;
-      } else if (sibling->isQuickItemType() && loaderReached) {
-        nextItem = qobject_cast<QQuickItem *>(sibling);
-        break;
-      }
-    }
+  // if (parentItem() != nullptr)
+  //   for (auto sibling : parentItem()->children()) {
+  //     if (sibling == this) {
+  //       loaderReached = true;
+  //     } else if (sibling->isQuickItemType() && loaderReached) {
+  //       nextItem = qobject_cast<QQuickItem *>(sibling);
+  //       break;
+  //     }
+  //   }
   _surface =
       qobject_cast<QQuickItem *>(surfaceDescription->component()->createWithInitialProperties(
           surfaceDescription->initialProps()));
-  _surface->setParentItem(static_cast<QQuickItem *>(parentItem()));
-  if (nextItem != nullptr) {
-    _surface->stackBefore(nextItem);
-  }
+  _surface->setParentItem(static_cast<QQuickItem *>(this));
+  qvariant_cast<QObject *>(this->property("anchors"))
+      ->setProperty("fill", QVariant::fromValue(parentItem()));
+  //_surface->stackAfter(this);
+  // if (nextItem != nullptr) {
+  // }
   QJSEngine::setObjectOwnership(_surface, QJSEngine::CppOwnership);
   emit surfaceDescription->componentLoaded(_surface);
   emit surfaceChanged();
