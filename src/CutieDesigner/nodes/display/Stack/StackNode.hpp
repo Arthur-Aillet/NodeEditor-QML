@@ -25,7 +25,7 @@ class SurfaceList : public QAbstractListModel {
   int rowCount(const QModelIndex &parent = QModelIndex()) const override;
   int portsCount() const;
   QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-  void setPort(std::shared_ptr<SurfaceData> surface, int nodeIndex);
+  void setPort(std::shared_ptr<SurfaceData> surface, int portIndex);
   void addEmptyPort();
   void removeLastPort();
 

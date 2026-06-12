@@ -8,6 +8,7 @@
 #include "Definitions.hpp"
 #include "DivisionNode.hpp"
 #include "FillNode.hpp"
+#include "GradientInputNode.hpp"
 #include "MultiplicationNode.hpp"
 #include "NumberInputNode.hpp"
 #include "SinNode.hpp"
@@ -36,8 +37,9 @@ int main(int argc, char *argv[]) {
 
   auto ret = std::make_shared<NodeDelegateModelRegistry>(&engine);
 
-  ret->registerModel<NumberInputNode>("Input");
   ret->registerModel<ColorInputNode>("Input");
+  ret->registerModel<NumberInputNode>("Input");
+  ret->registerModel<GradientInputNode>("Input");
   ret->registerModel<AdditionNode>("Process");
   ret->registerModel<DivisionNode>("Process");
   ret->registerModel<MultiplicationNode>("Process");

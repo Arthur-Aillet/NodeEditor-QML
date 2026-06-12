@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ColorData.hpp"
 #include "NodeDelegateModel.hpp"
 
 #include <QQmlComponent>
@@ -48,7 +47,7 @@ class ATypeCharacterNodeModel : public NodeDelegateModel {
     if (baseColorEditable()) {
       return _baseColor;
     } else {
-      return _baseColorPtr.lock()->color();
+      return _baseColorPtr.lock()->get<QColor>();
     }
   }
 
@@ -64,7 +63,7 @@ class ATypeCharacterNodeModel : public NodeDelegateModel {
   protected:
   QVector<QSharedPointer<QQuickItem>> _characters{};
   QColor _baseColor = "white";
-  std::weak_ptr<ColorData> _baseColorPtr;
+  std::weak_ptr<NodeData> _baseColorPtr;
   double _fontSize = 150;
   double _animationOpacitySpeed = 250;
   double _animationWidthSpeed = 100;

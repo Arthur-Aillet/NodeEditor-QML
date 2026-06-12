@@ -2,6 +2,7 @@
 #include "ColorData.hpp"
 #include "DecimalData.hpp"
 #include <memory>
+#include <qcolor.h>
 
 SplitRGBA::SplitRGBA(QQmlEngine *engine)
     : NodeDelegateModel(engine), _rPtr(std::make_shared<DecimalData>(_r)),
@@ -69,12 +70,12 @@ void SplitRGBA::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
     emit dataInvalidated(2);
     emit dataInvalidated(3);
   } else {
-    auto colorData = std::dynamic_pointer_cast<ColorData>(data);
-    _inColor = colorData;
-    _r = colorData->color().redF();
-    _g = colorData->color().greenF();
-    _b = colorData->color().blueF();
-    _a = colorData->color().alphaF();
+    _inColor = data;
+    const auto &color = _inColor.lock()->get<QColor>();
+    _r = color.redF();
+    _g = color.greenF();
+    _b = color.blueF();
+    _a = color.alphaF();
     emit dataUpdated(0);
     emit dataUpdated(1);
     emit dataUpdated(2);

@@ -45,9 +45,7 @@ void UkrugNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
       emit baseColorChanged();
       emit baseColorEditableChanged();
     } else {
-      auto color = std::dynamic_pointer_cast<ColorData>(data);
-
-      _baseColorPtr = color;
+      _baseColorPtr = data;
       emit baseColorChanged();
       emit baseColorEditableChanged();
     }

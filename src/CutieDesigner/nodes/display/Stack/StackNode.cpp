@@ -31,24 +31,24 @@ QVariant SurfaceList::data(const QModelIndex &index, int role) const {
   return QVariant::fromValue(nullptr);
 }
 
-void SurfaceList::setPort(std::shared_ptr<SurfaceData> surface, int nodeIndex) {
+void SurfaceList::setPort(std::shared_ptr<SurfaceData> surface, int portIndex) {
   int count = 0;
 
-  for (int i = 0; i != nodeIndex + 1; i++) {
+  for (int i = 0; i != portIndex + 1; i++) {
     if (!_surfaces[i].expired())
       count++;
   }
 
   if (surface == nullptr) {
     beginRemoveRows({}, count - 1, count - 1);
-    _surfaces[nodeIndex].reset();
+    _surfaces[portIndex].reset();
     endRemoveRows();
-  } else if (_surfaces[nodeIndex].expired()) {
+  } else if (_surfaces[portIndex].expired()) {
     beginInsertRows({}, count, count);
-    _surfaces[nodeIndex] = surface;
+    _surfaces[portIndex] = surface;
     endInsertRows();
   } else {
-    _surfaces[nodeIndex] = surface;
+    _surfaces[portIndex] = surface;
     emit dataChanged(QAbstractItemModel::createIndex(count - 1, 0),
                      QAbstractItemModel::createIndex(count - 1, 0));
   }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ColorData.hpp"
+#include "GradientInputList.hpp"
 #include "NodeDelegateModel.hpp"
 
 #include <QQmlComponent>
@@ -13,26 +14,27 @@
 #include <qtmetamacros.h>
 #include <qvariant.h>
 
-class ColorInputNode : public NodeDelegateModel {
+class GradientInputNode : public NodeDelegateModel {
   Q_OBJECT
   QML_ELEMENT
   QML_UNCREATABLE("NodeDelegateModel")
 
   Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
+  Q_PROPERTY(GradientInputList *colorList READ colorList CONSTANT)
 
   public:
-  ColorInputNode(QQmlEngine *engine);
-  ~ColorInputNode() = default;
+  GradientInputNode(QQmlEngine *engine);
+  ~GradientInputNode() = default;
 
   public:
   bool captionVisible() const override { return false; }
-  QString name() const override { return "Color"; }
+  QString name() const override { return "Gradient"; }
 
   QString portCaption(PortType portType, PortIndex portIndex) const override { return QString(); };
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }
 
   QQmlComponent embeddedComponent(QQmlEngine *engine) override {
-    return QQmlComponent(engine, "CutieDesigner.Nodes", "ColorInputControl");
+    return QQmlComponent(engine, "CutieDesigner.Nodes", "GradientInputControl");
   }
 
   QVariantMap componentInitialProperties() override {
@@ -46,7 +48,9 @@ class ColorInputNode : public NodeDelegateModel {
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override {};
 
-  QColor color() { return _color.value().value<QColor>(); }
+  GradientInputList *colorList() { return nullptr; }
+
+  QColor color() { return qvariant_cast<QColor>(_color.value()); }
 
   void setColor(QColor color) {
     _color = color;

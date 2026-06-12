@@ -3,8 +3,11 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 #include <qdebug.h>
+#include <qproperty.h>
 #include <qqmlintegration.h>
 #include <qtmetamacros.h>
+#include <qvariant.h>
+#include <vector>
 
 /**
  * `id` represents an internal unique data type for the given port.
@@ -36,8 +39,23 @@ class NodeData : public QObject {
     return (this->type().id == nodeData.type().id);
   }
 
+  template <typename T>
+  const T &get() const {
+    const QVariant &variant = get(QMetaType::fromType<T>());
+    return *reinterpret_cast<const T *>(variant.constData());
+  }
+
   /// Type for inner use
   virtual const NodeDataType &type() const = 0;
+
+  protected:
+  virtual const QVariant &get(QMetaType type) const { return err; }
+
+  typedef std::function<void(void)> BindingFn;
+  typedef QPropertyChangeHandler<BindingFn> BindingFnHandler;
+
+  std::vector<BindingFnHandler> _registeredBindings;
+  QVariant err = QVariant::fromMetaType(QMetaType(QMetaType::UnknownType));
 };
 
 Q_DECLARE_INTERFACE(NodeData, "NodeData")

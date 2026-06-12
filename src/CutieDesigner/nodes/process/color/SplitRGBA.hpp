@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ColorData.hpp"
 #include "DecimalData.hpp"
 #include "NodeDelegateModel.hpp"
 
@@ -24,7 +23,7 @@ class SplitRGBA : public NodeDelegateModel {
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
   private:
-  std::weak_ptr<ColorData> _inColor;
+  std::weak_ptr<NodeData> _inColor;
   double _r = 0.0;
   double _g = 0.0;
   double _b = 0.0;

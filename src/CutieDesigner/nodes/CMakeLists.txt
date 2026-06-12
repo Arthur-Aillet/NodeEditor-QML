@@ -3,6 +3,7 @@ qt_add_qml_module(nodes
   QML_FILES
 
   input/ColorInput/ColorInputControl.qml
+  input/GradientInput/GradientInputControl.qml
   input/NumberInput/NumberInputControl.qml
   display/AType/Ukrug/Ukrug.qml
   display/AType/Ukrug/UkrugShader.qml
@@ -20,6 +21,10 @@ qt_add_qml_module(nodes
   SOURCES
   input/ColorInput/ColorInputNode.hpp
   input/ColorInput/ColorInputNode.cpp
+  input/GradientInput/GradientInputNode.hpp
+  input/GradientInput/GradientInputNode.cpp
+  input/GradientInput/GradientInputList.hpp
+  input/GradientInput/GradientInputList.cpp
   input/NumberInput/NumberInputNode.hpp
   input/NumberInput/NumberInputNode.cpp
 
@@ -99,6 +104,7 @@ target_include_directories(nodes
   display/video
   input
   input/ColorInput/
+  input/GradientInput/
   input/NumberInput/
   process
   process/color
