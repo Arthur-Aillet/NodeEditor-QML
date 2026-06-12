@@ -33,13 +33,12 @@ const NodeDataType &FillNode::dataType(PortType portType, PortIndex _portIndex) 
 std::shared_ptr<NodeData> FillNode::outData(PortIndex _portIndex) { return _content; }
 
 void FillNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
-  auto gradientData = std::dynamic_pointer_cast<GradientData>(data);
 
   if (!data) {
     _gradient.reset();
     emit dataInvalidated(0);
   } else {
-    _gradient = gradientData;
+    _gradient = data;
     emit gradientChanged();
     emit dataUpdated(0);
   }

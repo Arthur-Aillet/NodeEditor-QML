@@ -22,7 +22,7 @@ class SinNode : public MathOperationNodeModel {
 
     if (n1) {
       _result = sin(n1->repr<double>());
-      _resultPtr = std::make_shared<DecimalData>(&_result);
+      _resultPtr = std::make_shared<DecimalData>(_result);
     } else {
       _resultPtr.reset();
     }

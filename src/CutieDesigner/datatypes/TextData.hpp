@@ -5,19 +5,13 @@
 class TextData : public NodeData {
   public:
   TextData() {}
-  TextData(QProperty<QVariant> *textProp) : _textProp(textProp) {}
+  TextData(QProperty<QString> &textProp) {
+    _registeredBindings.push_back(textProp.subscribe(BindingFn([this, &textProp]() {
+      _map.insert_or_assign(QMetaType::fromType<QString>(), textProp.value());
+    })));
+  }
 
   static inline const NodeDataType dataType = NodeDataType("text", "Text");
 
   const NodeDataType &type() const override { return dataType; }
-
-  protected:
-  const QVariant &get(QMetaType type) const override {
-    if (type == QMetaType::fromType<QString>())
-      return _textProp->value();
-    return err;
-  }
-
-  protected:
-  QProperty<QVariant> *_textProp;
 };

@@ -40,14 +40,14 @@ class DivisionNode : public MathOperationNodeModel {
       setValidationState(state);
       if (n1) {
         _result = n1->repr<double>() / n2->repr<double>();
-        _resultPtr = std::make_shared<DecimalData>(&_result);
+        _resultPtr = std::make_shared<DecimalData>(_result);
       } else {
         _resultPtr.reset();
       }
     } else if (n1 && n2) {
       setValidationState(state);
       _result = n1->repr<double>() / n2->repr<double>();
-      _resultPtr = std::make_shared<DecimalData>(&_result);
+      _resultPtr = std::make_shared<DecimalData>(_result);
     } else {
       NodeValidationState state;
       setValidationState(state);

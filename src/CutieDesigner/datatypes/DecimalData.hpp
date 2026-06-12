@@ -2,6 +2,7 @@
 
 #include "NodeData.hpp"
 #include "TextData.hpp"
+#include <qvariant.h>
 
 struct DecimalDataType : public NodeDataType {
   DecimalDataType(DataTypeId id, QString name) : NodeDataType(id, name) {}
@@ -17,26 +18,15 @@ struct DecimalDataType : public NodeDataType {
 class DecimalData : public NodeData {
   public:
   DecimalData() {}
-  DecimalData(QProperty<QVariant> *doubleProp) : _doubleProp(doubleProp) {
-    _textRepr = QString::number(_doubleProp->value().value<double>(), 'f', 2);
-
-    _registeredBindings.push_back(doubleProp->subscribe(BindingFn(
-        [this]() { _textRepr = QString::number(_doubleProp->value().value<double>(), 'f', 2); })));
+  DecimalData(QProperty<double> &doubleProp) {
+    _registeredBindings.push_back(doubleProp.subscribe(BindingFn([this, &doubleProp]() {
+      _map.insert_or_assign(QMetaType::fromType<double>(), QVariant::fromValue(doubleProp.value()));
+      _map.insert_or_assign(QMetaType::fromType<QString>(),
+                            QVariant::fromValue(QString::number(doubleProp.value(), 'f', 2)));
+    })));
   }
 
   inline static const DecimalDataType dataType = DecimalDataType("decimal", "Decimal");
 
   const DecimalDataType &type() const override { return dataType; }
-
-  protected:
-  const QVariant &get(QMetaType type) const override {
-    if (type == QMetaType::fromType<double>())
-      return _doubleProp->value();
-    if (type == QMetaType::fromType<QString>())
-      return _textRepr;
-    return err;
-  }
-
-  QProperty<QVariant> *_doubleProp;
-  QVariant _textRepr;
 };

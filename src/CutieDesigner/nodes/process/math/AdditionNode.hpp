@@ -26,7 +26,7 @@ class AdditionNode : public MathOperationNodeModel {
 
     if (n1 && n2) {
       _result = n1->repr<double>() + n2->repr<double>();
-      _resultPtr = std::make_shared<DecimalData>(&_result);
+      _resultPtr = std::make_shared<DecimalData>(_result);
     } else {
       _resultPtr.reset();
     }

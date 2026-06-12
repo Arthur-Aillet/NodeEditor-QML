@@ -1,6 +1,5 @@
 #pragma once
 
-#include "GradientData.hpp"
 #include "NodeDelegateModel.hpp"
 #include "SurfaceData.hpp"
 
@@ -39,7 +38,7 @@ class FillNode : public NodeDelegateModel {
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
   QList<QVariant> getGradient() {
-    auto gradient = _gradient.expired() ? _defaultGradient : _gradient.lock()->gradient();
+    auto gradient = _gradient.expired() ? _defaultGradient : _gradient.lock()->repr<QGradient>();
     QList<QVariant> newList;
 
     for (auto &stop : gradient.stops()) {
@@ -57,6 +56,6 @@ class FillNode : public NodeDelegateModel {
 
   private:
   QGradient _defaultGradient;
-  std::weak_ptr<GradientData> _gradient;
+  std::weak_ptr<NodeData> _gradient;
   std::shared_ptr<SurfaceData> _content;
 };

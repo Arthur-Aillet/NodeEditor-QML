@@ -9,7 +9,7 @@
 #include <qvalidator.h>
 
 NumberInputNode::NumberInputNode(QQmlEngine *engine)
-    : NodeDelegateModel(engine), _numberPtr(std::make_shared<DecimalData>(&_number)) {}
+    : NodeDelegateModel(engine), _numberPtr(std::make_shared<DecimalData>(_number)) {}
 
 QJsonObject NumberInputNode::save() const {
   QJsonObject modelJson = NodeDelegateModel::save();
@@ -29,7 +29,7 @@ void NumberInputNode::load(QJsonObject const &p) {
     bool ok = false;
     _number = strNum.toDouble(&ok);
     if (ok) {
-      _numberPtr = std::make_shared<DecimalData>(&_number);
+      _numberPtr = std::make_shared<DecimalData>(_number);
     }
   }
 }

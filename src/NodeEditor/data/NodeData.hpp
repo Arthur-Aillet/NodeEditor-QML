@@ -37,7 +37,7 @@ class NodeData : public QObject {
 
   template <typename T>
   const T &repr() const {
-    const QVariant &variant = get(QMetaType::fromType<T>());
+    const QVariant &variant = _map.find(QMetaType::fromType<T>()).value();
     return *reinterpret_cast<const T *>(variant.constData());
   }
 
@@ -45,11 +45,10 @@ class NodeData : public QObject {
   virtual const NodeDataType &type() const = 0;
 
   protected:
-  virtual const QVariant &get(QMetaType type) const { return err; }
-
   typedef std::function<void(void)> BindingFn;
   typedef QPropertyChangeHandler<BindingFn> BindingFnHandler;
 
+  QHash<QMetaType, QVariant> _map;
   std::vector<BindingFnHandler> _registeredBindings;
   QVariant err = QVariant::fromMetaType(QMetaType(QMetaType::UnknownType));
 };

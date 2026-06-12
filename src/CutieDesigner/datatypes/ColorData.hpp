@@ -23,28 +23,16 @@ class ColorData : public NodeData {
 
   public:
   ColorData() {}
-  ColorData(QProperty<QVariant> *colorProp) : _colorProp(colorProp) {
-    QGradient gradient = QLinearGradient();
-    gradient.setColorAt(0, qvariant_cast<QColor>(_colorProp->value()));
-    _gradient = QVariant::fromValue(gradient);
+  ColorData(QProperty<QColor> &colorProp) {
+    _map.insert(QMetaType::fromType<QGradient>(), QVariant::fromValue(QLinearGradient()));
 
-    _registeredBindings.push_back(_colorProp->subscribe(BindingFn([this]() {
-      _gradient.value<QGradient>().setColorAt(0, _colorProp->value().value<QColor>());
+    _registeredBindings.push_back(colorProp.subscribe(BindingFn([this, &colorProp]() {
+      QGradient &gradient =
+          *reinterpret_cast<QGradient *>(_map[QMetaType::fromType<QGradient>()].data());
+      gradient.setColorAt(0, colorProp.value());
     })));
   }
 
   inline static const ColorDataType dataType = ColorDataType("col", "Color");
   const ColorDataType &type() const override { return dataType; }
-
-  const QVariant &get(QMetaType type) const override {
-    if (type == QMetaType::fromType<QColor>())
-      return _colorProp->value();
-    if (type == QMetaType::fromType<QGradient>())
-      return _gradient;
-    return err;
-  }
-
-  protected:
-  QProperty<QVariant> *_colorProp;
-  QVariant _gradient;
 };

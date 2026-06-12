@@ -6,7 +6,7 @@
 #include <qcolor.h>
 
 CombineRGBA::CombineRGBA(QQmlEngine *engine)
-    : NodeDelegateModel(engine), _outColorPtr(std::make_shared<ColorData>(&_color)) {}
+    : NodeDelegateModel(engine), _outColorPtr(std::make_shared<ColorData>(_color)) {}
 
 unsigned int CombineRGBA::nPorts(PortType portType) const {
   switch (portType) {

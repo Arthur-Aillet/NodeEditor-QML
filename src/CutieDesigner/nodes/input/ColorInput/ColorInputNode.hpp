@@ -46,7 +46,7 @@ class ColorInputNode : public NodeDelegateModel {
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override {};
 
-  QColor color() { return _color.value().value<QColor>(); }
+  QColor color() { return _color.value(); }
 
   void setColor(QColor color) {
     _color = color;
@@ -58,6 +58,6 @@ class ColorInputNode : public NodeDelegateModel {
   void colorChanged();
 
   private:
-  QProperty<QVariant> _color = QProperty<QVariant>(QColor("red"));
+  QProperty<QColor> _color = QProperty<QColor>(QColor("red"));
   std::shared_ptr<ColorData> _content;
 };

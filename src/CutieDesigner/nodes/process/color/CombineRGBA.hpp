@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ColorData.hpp"
-#include "DecimalData.hpp"
 #include "NodeDelegateModel.hpp"
 #include <memory>
 #include <qcolor.h>
@@ -29,6 +28,6 @@ class CombineRGBA : public NodeDelegateModel {
   std::weak_ptr<NodeData> _g;
   std::weak_ptr<NodeData> _b;
   std::weak_ptr<NodeData> _a;
-  QProperty<QVariant> _color = QProperty<QVariant>(QColor("black"));
+  QProperty<QColor> _color = QProperty<QColor>(QColor("black"));
   std::shared_ptr<ColorData> _outColorPtr;
 };

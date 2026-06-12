@@ -7,6 +7,7 @@
 #include <QtCore/QObject>
 #include <qforeach.h>
 #include <qobject.h>
+#include <qproperty.h>
 #include <qqmlengine.h>
 #include <qtmetamacros.h>
 #include <qvariant.h>
@@ -40,7 +41,7 @@ class NumberInputNode : public NodeDelegateModel {
   void onTextEdited();
 
   private:
-  QProperty<QVariant> _number = QProperty<QVariant>(double(0.0));
+  QProperty<double> _number = QProperty<double>(0.0);
   std::shared_ptr<QQuickItem> _portLabel{nullptr};
   std::shared_ptr<DecimalData> _numberPtr;
   std::shared_ptr<QQmlComponent> _component{nullptr};

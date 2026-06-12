@@ -3,7 +3,7 @@
 #include <memory>
 
 GradientInputNode::GradientInputNode(QQmlEngine *engine)
-    : NodeDelegateModel(engine), _content(std::make_shared<ColorData>(&_color)) {}
+    : NodeDelegateModel(engine), _content(std::make_shared<ColorData>(_color)) {}
 
 unsigned int GradientInputNode::nPorts(PortType portType) const {
   switch (portType) {
