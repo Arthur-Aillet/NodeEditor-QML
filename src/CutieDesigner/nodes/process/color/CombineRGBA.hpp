@@ -25,10 +25,10 @@ class CombineRGBA : public NodeDelegateModel {
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
   private:
-  std::weak_ptr<DecimalData> _r;
-  std::weak_ptr<DecimalData> _g;
-  std::weak_ptr<DecimalData> _b;
-  std::weak_ptr<DecimalData> _a;
+  std::weak_ptr<NodeData> _r;
+  std::weak_ptr<NodeData> _g;
+  std::weak_ptr<NodeData> _b;
+  std::weak_ptr<NodeData> _a;
   QProperty<QVariant> _color = QProperty<QVariant>(QColor("black"));
   std::shared_ptr<ColorData> _outColorPtr;
 };

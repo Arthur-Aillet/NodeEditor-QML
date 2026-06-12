@@ -2,9 +2,10 @@
 #include "DecimalData.hpp"
 #include "TextData.hpp"
 #include <qdebug.h>
+#include <qjsvalue.h>
 
 TextTyperNode::TextTyperNode(QQmlEngine *engine)
-    : NodeDelegateModel(engine), _content(std::make_shared<TextData>(_text)), _timer(QTimer()){};
+    : NodeDelegateModel(engine), _content(std::make_shared<TextData>(&_text)), _timer(QTimer()){};
 
 QString TextTyperNode::portCaption(PortType portType, PortIndex index) const {
   switch (portType) {
@@ -81,7 +82,7 @@ void TextTyperNode::setPlay(bool playState) {
   Q_EMIT playChanged();
 }
 
-QString TextTyperNode::getText() { return _text; }
+QString TextTyperNode::getText() { return _text.value().value<QString>(); }
 void TextTyperNode::setText(QString newText) {
   _text = newText;
   Q_EMIT dataUpdated(0);
@@ -114,17 +115,17 @@ void TextTyperNode::processWait() {
 void TextTyperNode::processErase() {
   auto &e = std::get<Erase>(_currentEvent);
 
-  if (e.amount == 0 || _text.isEmpty())
+  if (e.amount == 0 || _text.value().value<QString>().isEmpty())
     return processNextEvent();
 
-  uint pos = std::min((uint)_text.length(), e.pos);
-  _text.removeAt(pos);
+  uint pos = std::min((uint)_text.value().value<QString>().length(), e.pos);
+  _text.value().value<QString>().removeAt(pos);
   Q_EMIT textChanged();
   Q_EMIT dataUpdated(0);
 
   e.amount -= 1;
 
-  if (e.amount == 0 || _text.isEmpty())
+  if (e.amount == 0 || _text.value().value<QString>().isEmpty())
     return processNextEvent();
 
   _timer.connect(&_timer, SIGNAL(timeout()), this, SLOT(processErase()),
@@ -135,18 +136,18 @@ void TextTyperNode::processErase() {
 void TextTyperNode::processReplace() {
   auto &r = std::get<Replace>(_currentEvent);
 
-  if (r.text.isEmpty() || _text.isEmpty())
+  if (r.text.isEmpty() || _text.value().value<QString>().isEmpty())
     return processNextEvent();
 
-  uint pos = std::min((uint)_text.length(), r.pos);
-  _text[pos] = r.text[0];
+  uint pos = std::min((uint)_text.value().value<QString>().length(), r.pos);
+  _text.value().value<QString>()[pos] = r.text[0];
   Q_EMIT textChanged();
   Q_EMIT dataUpdated(0);
 
   r.text.removeFirst();
   r.pos += 1;
 
-  if (r.text.isEmpty() || _text.isEmpty())
+  if (r.text.isEmpty() || _text.value().value<QString>().isEmpty())
     return processNextEvent();
 
   _timer.connect(&_timer, SIGNAL(timeout()), this, SLOT(processReplace()),
@@ -160,8 +161,8 @@ void TextTyperNode::processInsert() {
   if (i.text.isEmpty())
     return processNextEvent();
 
-  uint pos = std::min((uint)_text.length(), i.pos);
-  _text.insert(pos, i.text[0]);
+  uint pos = std::min((uint)_text.value().value<QString>().length(), i.pos);
+  _text.value().value<QString>().insert(pos, i.text[0]);
   Q_EMIT textChanged();
   Q_EMIT dataUpdated(0);
 

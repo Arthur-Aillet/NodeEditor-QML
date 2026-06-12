@@ -1,6 +1,7 @@
 #include "CombineRGBA.hpp"
 #include "ColorData.hpp"
 #include "DecimalData.hpp"
+#include "NodeData.hpp"
 #include <algorithm>
 #include <qcolor.h>
 
@@ -62,27 +63,26 @@ void CombineRGBA::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex)
       break;
     }
   } else {
-    auto numberData = std::dynamic_pointer_cast<DecimalData>(data);
     switch (portIndex) {
     case 0:
-      _r = numberData;
+      _r = data;
       break;
     case 1:
-      _g = numberData;
+      _g = data;
       break;
     case 2:
-      _b = numberData;
+      _b = data;
       break;
     default:
-      _a = numberData;
+      _a = data;
       break;
     }
   }
 
-  auto r = _r.expired() ? 0 : std::clamp(_r.lock()->number(), 0.0, 1.0);
-  auto g = _g.expired() ? 0 : std::clamp(_g.lock()->number(), 0.0, 1.0);
-  auto b = _b.expired() ? 0 : std::clamp(_b.lock()->number(), 0.0, 1.0);
-  auto a = _a.expired() ? 1 : std::clamp(_a.lock()->number(), 0.0, 1.0);
+  auto r = _r.expired() ? 0 : std::clamp(_r.lock()->repr<double>(), 0.0, 1.0);
+  auto g = _g.expired() ? 0 : std::clamp(_g.lock()->repr<double>(), 0.0, 1.0);
+  auto b = _b.expired() ? 0 : std::clamp(_b.lock()->repr<double>(), 0.0, 1.0);
+  auto a = _a.expired() ? 1 : std::clamp(_a.lock()->repr<double>(), 0.0, 1.0);
 
   _color = QColor::fromRgbF(r, g, b, a);
   emit dataUpdated(0);

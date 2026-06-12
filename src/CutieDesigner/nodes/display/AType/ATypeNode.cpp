@@ -56,9 +56,8 @@ void ATypeNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
     if (data == nullptr) {
       _text.reset();
     } else {
-      _text = std::dynamic_pointer_cast<TextData>(data);
+      _text = data;
     }
-
     emit textChanged();
   } else {
     if (data == nullptr) {

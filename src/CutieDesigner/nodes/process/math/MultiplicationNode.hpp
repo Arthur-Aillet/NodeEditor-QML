@@ -26,11 +26,12 @@ class MultiplicationNode : public MathOperationNodeModel {
     if (n1 && n2) {
       // modelValidationState = NodeValidationState::Valid;
       // modelValidationError = QString();
-      _result = std::make_shared<DecimalData>(n1->number() * n2->number());
+      _result = n1->repr<double>() * n2->repr<double>();
+      _resultPtr = std::make_shared<DecimalData>(&_result);
     } else {
       // modelValidationState = NodeValidationState::Warning;
       // modelValidationError = QStringLiteral("Missing or incorrect inputs");
-      _result.reset();
+      _resultPtr.reset();
     }
 
     Q_EMIT dataUpdated(outPortIndex);

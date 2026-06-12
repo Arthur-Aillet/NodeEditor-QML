@@ -29,27 +29,29 @@ class DivisionNode : public MathOperationNodeModel {
     auto n2 = _inputNumbers[1].lock();
 
     NodeValidationState state;
-    if (n2 && (n2->number() == 0.0)) {
+    if (n2 && (n2->repr<double>() == 0.0)) {
       state._state = NodeValidationState::State::Error;
       state._stateMessage = QStringLiteral("Division by zero error");
       setValidationState(state);
-      _result.reset();
-    } else if (n2 && (n2->number() < 1e-5)) {
+      _resultPtr.reset();
+    } else if (n2 && (n2->repr<double>() < 1e-5)) {
       state._state = NodeValidationState::State::Warning;
       state._stateMessage = QStringLiteral("Very small divident. Result might overflow");
       setValidationState(state);
       if (n1) {
-        _result = std::make_shared<DecimalData>(n1->number() / n2->number());
+        _result = n1->repr<double>() / n2->repr<double>();
+        _resultPtr = std::make_shared<DecimalData>(&_result);
       } else {
-        _result.reset();
+        _resultPtr.reset();
       }
     } else if (n1 && n2) {
       setValidationState(state);
-      _result = std::make_shared<DecimalData>(n1->number() / n2->number());
+      _result = n1->repr<double>() / n2->repr<double>();
+      _resultPtr = std::make_shared<DecimalData>(&_result);
     } else {
       NodeValidationState state;
       setValidationState(state);
-      _result.reset();
+      _resultPtr.reset();
     }
 
     Q_EMIT dataUpdated(outPortIndex);

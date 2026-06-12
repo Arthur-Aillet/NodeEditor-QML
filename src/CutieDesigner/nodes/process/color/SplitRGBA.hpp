@@ -4,6 +4,7 @@
 #include "NodeDelegateModel.hpp"
 
 #include <memory>
+#include <qvariant.h>
 
 class SplitRGBA : public NodeDelegateModel {
   public:
@@ -24,10 +25,10 @@ class SplitRGBA : public NodeDelegateModel {
 
   private:
   std::weak_ptr<NodeData> _inColor;
-  double _r = 0.0;
-  double _g = 0.0;
-  double _b = 0.0;
-  double _a = 1.0;
+  QProperty<QVariant> _r = QProperty<QVariant>(double(0.0));
+  QProperty<QVariant> _g = QProperty<QVariant>(double(0.0));
+  QProperty<QVariant> _b = QProperty<QVariant>(double(0.0));
+  QProperty<QVariant> _a = QProperty<QVariant>(double(1.0));
   std::shared_ptr<DecimalData> _rPtr;
   std::shared_ptr<DecimalData> _gPtr;
   std::shared_ptr<DecimalData> _bPtr;

@@ -9,12 +9,13 @@
 #include <qvalidator.h>
 
 NumberInputNode::NumberInputNode(QQmlEngine *engine)
-    : NodeDelegateModel(engine), _number(std::make_shared<DecimalData>(0.0)) {}
+    : NodeDelegateModel(engine), _numberPtr(std::make_shared<DecimalData>(&_number)) {}
 
 QJsonObject NumberInputNode::save() const {
   QJsonObject modelJson = NodeDelegateModel::save();
 
-  modelJson["number"] = _number->text();
+  auto a = _numberPtr->repr<QString>();
+  modelJson["number"] = _numberPtr->repr<QString>();
 
   return modelJson;
 }
@@ -26,9 +27,9 @@ void NumberInputNode::load(QJsonObject const &p) {
     QString strNum = v.toString();
 
     bool ok = false;
-    double d = strNum.toDouble(&ok);
+    _number = strNum.toDouble(&ok);
     if (ok) {
-      _number = std::make_shared<DecimalData>(d);
+      _numberPtr = std::make_shared<DecimalData>(&_number);
     }
   }
 }
@@ -49,23 +50,27 @@ QQmlComponent NumberInputNode::embeddedComponent(QQmlEngine *engine) {
 void NumberInputNode::embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded) {
   _portLabel = loaded;
   _portLabel->setProperty("placeholderText", "Value");
-  if (_number != nullptr) {
-    _portLabel->setProperty("text", _number->text());
+  if (_numberPtr != nullptr) {
+    _portLabel->setProperty("text", _numberPtr->repr<QString>());
   }
   _portLabel->connect(_portLabel.get(), SIGNAL(textEdited()), this, SLOT(onTextEdited()));
 }
 
 void NumberInputNode::onTextEdited() {
   auto str = _portLabel->property("text");
-  bool ok = false;
 
+  if (str == "") {
+    _number = 0;
+    Q_EMIT dataUpdated(0);
+    return;
+  }
+
+  bool ok = false;
   double number = str.toDouble(&ok);
 
   if (ok) {
-    _number = std::make_shared<DecimalData>(number);
-
+    _number = number;
     Q_EMIT dataUpdated(0);
-
   } else {
     Q_EMIT dataInvalidated(0);
   }
@@ -75,4 +80,4 @@ const NodeDataType &NumberInputNode::dataType(PortType, PortIndex id) const {
   return DecimalData().type();
 }
 
-std::shared_ptr<NodeData> NumberInputNode::outData(PortIndex) { return _number; }
+std::shared_ptr<NodeData> NumberInputNode::outData(PortIndex) { return _numberPtr; }

@@ -35,12 +35,8 @@ class NodeData : public QObject {
   public:
   virtual ~NodeData() = default;
 
-  virtual bool sameType(NodeData const &nodeData) const {
-    return (this->type().id == nodeData.type().id);
-  }
-
   template <typename T>
-  const T &get() const {
+  const T &repr() const {
     const QVariant &variant = get(QMetaType::fromType<T>());
     return *reinterpret_cast<const T *>(variant.constData());
   }

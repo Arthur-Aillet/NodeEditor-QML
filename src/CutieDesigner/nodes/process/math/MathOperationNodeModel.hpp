@@ -9,6 +9,7 @@
 #include <QtWidgets/QLabel>
 #include <qqmlcomponent.h>
 #include <qqmlengine.h>
+#include <qvariant.h>
 
 class DecimalData;
 
@@ -44,7 +45,8 @@ class MathOperationNodeModel : public NodeDelegateModel {
   virtual void compute() = 0;
 
   protected:
-  std::vector<std::weak_ptr<DecimalData>> _inputNumbers;
+  std::vector<std::weak_ptr<NodeData>> _inputNumbers;
 
-  std::shared_ptr<DecimalData> _result;
+  QProperty<QVariant> _result;
+  std::shared_ptr<DecimalData> _resultPtr;
 };

@@ -14,17 +14,29 @@ struct DecimalDataType : public NodeDataType {
   }
 };
 
-class DecimalData : public TextData {
+class DecimalData : public NodeData {
   public:
-  DecimalData(const double &number = 0.0)
-      : _number(number), TextData(QString::number(number, 'f', 2)) {}
+  DecimalData() {}
+  DecimalData(QProperty<QVariant> *doubleProp) : _doubleProp(doubleProp) {
+    _textRepr = QString::number(_doubleProp->value().value<double>(), 'f', 2);
+
+    _registeredBindings.push_back(doubleProp->subscribe(BindingFn(
+        [this]() { _textRepr = QString::number(_doubleProp->value().value<double>(), 'f', 2); })));
+  }
 
   inline static const DecimalDataType dataType = DecimalDataType("decimal", "Decimal");
 
   const DecimalDataType &type() const override { return dataType; }
 
-  double number() const { return _number; }
-
   protected:
-  const double &_number;
+  const QVariant &get(QMetaType type) const override {
+    if (type == QMetaType::fromType<double>())
+      return _doubleProp->value();
+    if (type == QMetaType::fromType<QString>())
+      return _textRepr;
+    return err;
+  }
+
+  QProperty<QVariant> *_doubleProp;
+  QVariant _textRepr;
 };

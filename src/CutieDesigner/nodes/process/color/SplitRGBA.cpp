@@ -5,9 +5,9 @@
 #include <qcolor.h>
 
 SplitRGBA::SplitRGBA(QQmlEngine *engine)
-    : NodeDelegateModel(engine), _rPtr(std::make_shared<DecimalData>(_r)),
-      _gPtr(std::make_shared<DecimalData>(_g)), _bPtr(std::make_shared<DecimalData>(_b)),
-      _aPtr(std::make_shared<DecimalData>(_a)) {}
+    : NodeDelegateModel(engine), _rPtr(std::make_shared<DecimalData>(&_r)),
+      _gPtr(std::make_shared<DecimalData>(&_g)), _bPtr(std::make_shared<DecimalData>(&_b)),
+      _aPtr(std::make_shared<DecimalData>(&_a)) {}
 
 unsigned int SplitRGBA::nPorts(PortType portType) const {
   switch (portType) {
@@ -71,7 +71,7 @@ void SplitRGBA::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
     emit dataInvalidated(3);
   } else {
     _inColor = data;
-    const auto &color = _inColor.lock()->get<QColor>();
+    const auto &color = _inColor.lock()->repr<QColor>();
     _r = color.redF();
     _g = color.greenF();
     _b = color.blueF();

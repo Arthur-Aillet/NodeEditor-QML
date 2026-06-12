@@ -3,13 +3,13 @@
 #include "ATypeCharacterNodeModel.hpp"
 #include "NodeDelegateModel.hpp"
 #include "SurfaceData.hpp"
-#include "TextData.hpp"
 
 #include <QQmlComponent>
 #include <QtCore/QObject>
 #include <memory>
 #include <qcontainerfwd.h>
 #include <qdebug.h>
+#include <qjsvalue.h>
 #include <qqmlcomponent.h>
 #include <qqmlcontext.h>
 #include <qqmlengine.h>
@@ -42,7 +42,7 @@ class ATypeNode : public NodeDelegateModel {
     if (_text.expired()) {
       return "";
     }
-    return _text.lock()->text();
+    return _text.lock()->repr<QString>();
   }
 
   signals:
@@ -51,7 +51,7 @@ class ATypeNode : public NodeDelegateModel {
   void charChanged();
 
   private:
-  std::weak_ptr<TextData> _text;
+  std::weak_ptr<NodeData> _text;
   ATypeCharacterNodeModel *_charModel = nullptr;
   std::shared_ptr<SurfaceData> _content;
 };

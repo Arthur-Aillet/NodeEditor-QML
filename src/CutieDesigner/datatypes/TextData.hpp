@@ -4,13 +4,20 @@
 
 class TextData : public NodeData {
   public:
-  TextData(const QString &text = "") : _text(text) {}
+  TextData() {}
+  TextData(QProperty<QVariant> *textProp) : _textProp(textProp) {}
 
   static inline const NodeDataType dataType = NodeDataType("text", "Text");
 
   const NodeDataType &type() const override { return dataType; }
-  const QString &text() const { return _text; }
 
   protected:
-  const QString &_text;
+  const QVariant &get(QMetaType type) const override {
+    if (type == QMetaType::fromType<QString>())
+      return _textProp->value();
+    return err;
+  }
+
+  protected:
+  QProperty<QVariant> *_textProp;
 };

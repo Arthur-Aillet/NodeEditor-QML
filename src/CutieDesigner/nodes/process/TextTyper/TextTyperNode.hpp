@@ -7,6 +7,7 @@
 #include <qnamespace.h>
 #include <qqmlengine.h>
 #include <qtmetamacros.h>
+#include <qvariant.h>
 
 class TextTyperNode : public NodeDelegateModel {
   Q_OBJECT
@@ -61,6 +62,6 @@ class TextTyperNode : public NodeDelegateModel {
   TextTyperEventList _eventList;
   QTimer _timer;
   bool _playing;
-  QString _text = "...";
+  QProperty<QVariant> _text = QProperty<QVariant>("...");
   std::shared_ptr<TextData> _content;
 };

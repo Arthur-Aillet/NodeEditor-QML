@@ -47,7 +47,7 @@ class ATypeCharacterNodeModel : public NodeDelegateModel {
     if (baseColorEditable()) {
       return _baseColor;
     } else {
-      return _baseColorPtr.lock()->get<QColor>();
+      return _baseColorPtr.lock()->repr<QColor>();
     }
   }
 

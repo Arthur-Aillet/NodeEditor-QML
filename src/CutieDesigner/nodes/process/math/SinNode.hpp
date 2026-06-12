@@ -21,9 +21,10 @@ class SinNode : public MathOperationNodeModel {
     auto n1 = _inputNumbers[0].lock();
 
     if (n1) {
-      _result = std::make_shared<DecimalData>(sin(n1->number()));
+      _result = sin(n1->repr<double>());
+      _resultPtr = std::make_shared<DecimalData>(&_result);
     } else {
-      _result.reset();
+      _resultPtr.reset();
     }
 
     emit dataUpdated(0);
