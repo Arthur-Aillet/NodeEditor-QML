@@ -6,6 +6,7 @@
 #include "CosNode.hpp"
 #include "DataFlowModelInterface.hpp"
 #include "Definitions.hpp"
+#include "DimensionNode.hpp"
 #include "DivisionNode.hpp"
 #include "FillNode.hpp"
 #include "GradientInputNode.hpp"
@@ -48,6 +49,7 @@ int main(int argc, char *argv[]) {
   ret->registerModel<CosNode>("Process");
   ret->registerModel<CombineRGBA>("Process");
   ret->registerModel<SplitRGBA>("Process");
+  ret->registerModel<DimensionNode>("Display");
   ret->registerModel<SurfaceDisplayNode>("Display");
   ret->registerModel<UkrugNode>("Display");
   ret->registerModel<ATypeNode>("Display");

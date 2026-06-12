@@ -2,13 +2,6 @@
 #include "NodeDelegateModel.hpp"
 #include "SurfaceData.hpp"
 
-#include <QtWidgets/QLabel>
-#include <memory>
-#include <qdebug.h>
-#include <qqmlcomponent.h>
-#include <qtimer.h>
-#include <qtmetamacros.h>
-
 BlendNode::BlendNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
   auto comp = std::make_unique<QQmlComponent>(engine, "CutieDesigner.Nodes", "Blend");
   QVariantMap map;

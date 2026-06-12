@@ -10,6 +10,7 @@ qt_add_qml_module(nodes
   display/AType/Ukrug/UkrugControl.qml
   display/AType/Ukrug/UkrugCharacter.qml
   display/AType/AType.qml
+  display/Dimension/Dimension.qml
   display/fill/FillSurface.qml
   display/shaderEffects/Blend/Blend.qml
   display/shaderEffects/Blend/BlendControl.qml
@@ -36,6 +37,8 @@ qt_add_qml_module(nodes
   display/AType/ATypeCharacterNodeModel.cpp
   display/AType/ATypeNode.hpp
   display/AType/ATypeNode.cpp
+  display/Dimension/DimensionNode.hpp
+  display/Dimension/DimensionNode.cpp
   display/fill/FillNode.hpp
   display/fill/FillNode.cpp
   display/Stack/StackNode.cpp
@@ -94,6 +97,7 @@ target_include_directories(nodes
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${GSTREAMER_INCLUDE_DIRS}
   display
+  display/Dimension
   display/AType
   display/AType/Ukrug
   display/surface

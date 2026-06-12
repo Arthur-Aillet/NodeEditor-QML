@@ -38,8 +38,10 @@ void SurfaceLoader::createComponent(SurfaceData *surfaceDescription) {
       qobject_cast<QQuickItem *>(surfaceDescription->component()->createWithInitialProperties(
           surfaceDescription->initialProps()));
   _surface->setParentItem(static_cast<QQuickItem *>(this));
-  qvariant_cast<QObject *>(this->property("anchors"))
-      ->setProperty("fill", QVariant::fromValue(parentItem()));
+  if (_anchored) {
+    qvariant_cast<QObject *>(this->property("anchors"))
+        ->setProperty("fill", QVariant::fromValue(parentItem()));
+  }
   //_surface->stackAfter(this);
   // if (nextItem != nullptr) {
   // }

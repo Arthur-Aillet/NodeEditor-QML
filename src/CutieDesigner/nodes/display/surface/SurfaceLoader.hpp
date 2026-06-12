@@ -14,6 +14,7 @@ class SurfaceLoader : public QQuickItem {
   Q_PROPERTY(
       SurfaceData *surfaceData READ surfaceData WRITE setSurfaceData NOTIFY surfaceDataChanged)
   Q_PROPERTY(QQuickItem *surface MEMBER _surface NOTIFY surfaceChanged)
+  Q_PROPERTY(bool anchored MEMBER _anchored NOTIFY surfaceChanged)
 
   public:
   SurfaceLoader(QQuickItem *parent = nullptr);
@@ -26,10 +27,12 @@ class SurfaceLoader : public QQuickItem {
   signals:
   void surfaceDataChanged();
   void surfaceChanged();
+  void anchoredChanged();
 
   private:
   SurfaceData *_surfaceData = nullptr;
   QQuickItem *_surface = nullptr;
+  bool _anchored = true;
   void createComponent(SurfaceData *surface);
   void removeComponent();
 

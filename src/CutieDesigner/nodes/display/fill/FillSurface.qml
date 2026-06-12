@@ -24,6 +24,8 @@ Shape {
         startX: root.x
         startY: root.y
 
+        strokeWidth: 0
+
         PathLine {
             x: root.x
             y: root.y + root.height
