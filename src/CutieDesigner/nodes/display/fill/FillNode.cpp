@@ -36,6 +36,7 @@ void FillNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
 
   if (!data) {
     _gradient.reset();
+    emit gradientChanged();
     emit dataInvalidated(0);
   } else {
     _gradient = data;
