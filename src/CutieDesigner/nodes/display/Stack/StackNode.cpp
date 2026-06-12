@@ -122,7 +122,7 @@ void StackNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
 QString StackNode::portCaption(PortType portType, PortIndex portIndex) const {
   switch (portType) {
   case PortType::In:
-    return QString();
+    return QString::number(portIndex);
   default:
     return QString("out");
   }

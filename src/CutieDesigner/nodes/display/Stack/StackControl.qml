@@ -4,18 +4,26 @@ import QtQuick.Layouts
 import CutieDesigner.Nodes
 
 FlexboxLayout {
-    id: root
+    id: stackControl
     required property StackNode node
+
+    onParentChanged: {
+        parent.anchors.verticalCenter = undefined;
+        parent.anchors.top = parent.parent.top;
+    }
 
     Button {
         text: "+"
-        height: 20
-        onClicked: root.node.addEmptyPort()
+        implicitHeight: 20
+        implicitWidth: 30
+        onClicked: stackControl.node.addEmptyPort()
     }
 
     Button {
         text: "-"
-        height: 20
-        onClicked: root.node.removeLastPort()
+        implicitHeight: 20
+        implicitWidth: 30
+        onClicked: stackControl.node.removeLastPort()
     }
+    y: 10
 }
