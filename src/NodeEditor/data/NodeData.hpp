@@ -2,12 +2,13 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
+#include <memory>
 #include <qdebug.h>
+#include <qlogging.h>
 #include <qproperty.h>
 #include <qqmlintegration.h>
 #include <qtmetamacros.h>
 #include <qvariant.h>
-#include <vector>
 
 /**
  * `id` represents an internal unique data type for the given port.
@@ -37,7 +38,10 @@ class NodeData : public QObject {
 
   template <typename T>
   const T &repr() const {
-    const QVariant &variant = _map.find(QMetaType::fromType<T>()).value();
+    auto it = _map.find(QMetaType::fromType<T>());
+    if (it == _map.end())
+      qCritical() << "Couldn't find type" << QMetaType::fromType<T>().name();
+    const QVariant &variant = it.value();
     return *reinterpret_cast<const T *>(variant.constData());
   }
 
@@ -49,7 +53,13 @@ class NodeData : public QObject {
   typedef QPropertyChangeHandler<BindingFn> BindingFnHandler;
 
   QHash<QMetaType, QVariant> _map;
-  std::vector<BindingFnHandler> _registeredBindings;
+
+  void defineBinding(BindingFnHandler &&binding) {
+    _registeredBinding = std::make_unique<BindingFnHandler>(std::move(binding));
+  }
+
+  private:
+  std::unique_ptr<BindingFnHandler> _registeredBinding;
   QVariant err = QVariant::fromMetaType(QMetaType(QMetaType::UnknownType));
 };
 

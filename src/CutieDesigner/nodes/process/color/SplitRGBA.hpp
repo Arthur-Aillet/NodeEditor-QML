@@ -24,7 +24,6 @@ class SplitRGBA : public NodeDelegateModel {
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
   private:
-  std::weak_ptr<NodeData> _inColor;
   QProperty<double> _r = QProperty<double>(0.0);
   QProperty<double> _g = QProperty<double>(0.0);
   QProperty<double> _b = QProperty<double>(0.0);

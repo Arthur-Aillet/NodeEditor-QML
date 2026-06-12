@@ -6,7 +6,7 @@ class TextData : public NodeData {
   public:
   TextData() {}
   TextData(QProperty<QString> &textProp) {
-    _registeredBindings.push_back(textProp.subscribe(BindingFn([this, &textProp]() {
+    defineBinding(textProp.subscribe(BindingFn([this, &textProp]() {
       _map.insert_or_assign(QMetaType::fromType<QString>(), textProp.value());
     })));
   }

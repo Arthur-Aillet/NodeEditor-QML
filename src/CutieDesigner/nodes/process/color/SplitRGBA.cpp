@@ -60,7 +60,6 @@ std::shared_ptr<NodeData> SplitRGBA::outData(PortIndex portIndex) {
 
 void SplitRGBA::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
   if (!data) {
-    _inColor.reset();
     _r = 0.0;
     _g = 0.0;
     _b = 0.0;
@@ -70,8 +69,7 @@ void SplitRGBA::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
     emit dataInvalidated(2);
     emit dataInvalidated(3);
   } else {
-    _inColor = data;
-    const auto &color = _inColor.lock()->repr<QColor>();
+    const auto &color = data->repr<QColor>();
     _r = color.redF();
     _g = color.greenF();
     _b = color.blueF();

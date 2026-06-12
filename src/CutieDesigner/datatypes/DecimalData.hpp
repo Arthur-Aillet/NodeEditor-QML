@@ -19,7 +19,7 @@ class DecimalData : public NodeData {
   public:
   DecimalData() {}
   DecimalData(QProperty<double> &doubleProp) {
-    _registeredBindings.push_back(doubleProp.subscribe(BindingFn([this, &doubleProp]() {
+    defineBinding(doubleProp.subscribe(BindingFn([this, &doubleProp]() {
       _map.insert_or_assign(QMetaType::fromType<double>(), QVariant::fromValue(doubleProp.value()));
       _map.insert_or_assign(QMetaType::fromType<QString>(),
                             QVariant::fromValue(QString::number(doubleProp.value(), 'f', 2)));
