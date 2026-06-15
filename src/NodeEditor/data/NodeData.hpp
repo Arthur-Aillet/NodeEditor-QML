@@ -2,13 +2,13 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
-#include <memory>
-#include <qdebug.h>
+#include <any>
+#include <functional>
 #include <qlogging.h>
-#include <qproperty.h>
 #include <qqmlintegration.h>
 #include <qtmetamacros.h>
 #include <qvariant.h>
+#include <string>
 
 /**
  * `id` represents an internal unique data type for the given port.
@@ -37,30 +37,30 @@ class NodeData : public QObject {
   virtual ~NodeData() = default;
 
   template <typename T>
-  const T &repr() const {
+  T repr() const {
     auto it = _map.find(QMetaType::fromType<T>());
-    if (it == _map.end())
-      qCritical() << "Couldn't find type" << QMetaType::fromType<T>().name();
-    const QVariant &variant = it.value();
-    return *reinterpret_cast<const T *>(variant.constData());
+    if (it == _map.end()) {
+      std::string s;
+      s.append("Couldn't find type: ");
+      s.append(QMetaType::fromType<T>().name());
+      throw s.c_str();
+    }
+    auto fn = *it;
+    return std::any_cast<T>(fn());
   }
 
   /// Type for inner use
   virtual const NodeDataType &type() const = 0;
 
   protected:
-  typedef std::function<void(void)> BindingFn;
-  typedef QPropertyChangeHandler<BindingFn> BindingFnHandler;
-
-  QHash<QMetaType, QVariant> _map;
-
-  void defineBinding(BindingFnHandler &&binding) {
-    _registeredBinding = std::make_unique<BindingFnHandler>(std::move(binding));
+  template <typename T>
+  void registerConvert(std::function<T(void)> fn) {
+    _map.insert(QMetaType::fromType<T>(), [fn]() { return std::any(fn()); });
   }
 
-  private:
-  std::unique_ptr<BindingFnHandler> _registeredBinding;
-  QVariant err = QVariant::fromMetaType(QMetaType(QMetaType::UnknownType));
+  typedef std::function<std::any(void)> ConvertFn;
+
+  QHash<QMetaType, ConvertFn> _map;
 };
 
 Q_DECLARE_INTERFACE(NodeData, "NodeData")

@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
   DataFlowModelInterface::init(model);
 
   engine.loadFromModule("CutieDesigner", "Main");
-  QObject *item = engine.rootObjects().first();
+  QObject &item = *engine.rootObjects().first();
 
   auto source = model.addNode(SurfaceDisplayNode(&engine).name());
   model.setNodeData(source, NodeRole::Position, QPointF(400, 150));
@@ -76,7 +76,7 @@ int main(int argc, char *argv[]) {
   model.setNodeData(source, NodeRole::Flags, NodeFlag::Locked);
   auto display = model.delegateModel<SurfaceDisplayNode>(source);
 
-  auto loader = item->property("objectLoader").value<SurfaceLoader *>();
+  auto loader = item.property("objectLoader").value<SurfaceLoader *>();
   QObject::connect(display, SIGNAL(contentChanged(SurfaceData *)), loader,
                    SLOT(setSurfaceData(SurfaceData *)));
 

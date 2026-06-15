@@ -25,7 +25,7 @@ void AbstractGraphModel::portsAboutToBeDeleted(NodeId const nodeId, PortType con
     }
   }
 
-  std::size_t const nRemovedPorts = clampedLast - first + 1;
+  size_t const nRemovedPorts = clampedLast - first + 1;
 
   for (PortIndex portIndex = clampedLast + 1; portIndex < portCount; ++portIndex) {
     QSet<ConnectionId> conns = connections(nodeId, portType, portIndex);
@@ -66,7 +66,7 @@ void AbstractGraphModel::portsAboutToBeInserted(NodeId const nodeId, PortType co
   if (last < first)
     return;
 
-  std::size_t const nNewPorts = last - first + 1;
+  size_t const nNewPorts = last - first + 1;
 
   for (PortIndex portIndex = first; portIndex < portCount; ++portIndex) {
     QSet<ConnectionId> conns = connections(nodeId, portType, portIndex);

@@ -50,7 +50,7 @@ class GradientInputNode : public NodeDelegateModel {
 
   GradientInputList *colorList() { return nullptr; }
 
-  QColor color() { return _color.value(); }
+  QColor color() { return _color; }
 
   void setColor(QColor color) {
     _color = color;
@@ -62,6 +62,6 @@ class GradientInputNode : public NodeDelegateModel {
   void colorChanged();
 
   private:
-  QProperty<QColor> _color = QProperty<QColor>(QColor("red"));
+  QColor _color = "red";
   std::shared_ptr<ColorData> _content;
 };

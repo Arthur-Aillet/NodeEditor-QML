@@ -23,17 +23,20 @@ struct DecimalDataType : public NodeDataType {
 class DecimalData : public NodeData {
   public:
   DecimalData() {}
-  DecimalData(QProperty<double> &doubleProp) {
-    defineBinding(doubleProp.subscribe(BindingFn([this, &doubleProp]() {
-      _map.insert_or_assign(QMetaType::fromType<double>(), doubleProp.value());
-      _map.insert_or_assign(QMetaType::fromType<QString>(),
-                            QString::number(doubleProp.value(), 'f', 2));
-      QColor col = QColor::fromRgbF(doubleProp, doubleProp, doubleProp, 1);
-      _map.insert_or_assign(QMetaType::fromType<QColor>(), col);
+  DecimalData(double &v) {
+    registerConvert<double>([&v]() { return v; });
+    registerConvert<QString>([&v]() { return QString::number(v, 'f', 2); });
+    registerConvert<QColor>([&v]() {
+      return QColor::fromRgbF(std::clamp(v, 0.0, 1.0), std::clamp(v, 0.0, 1.0),
+                              std::clamp(v, 0.0, 1.0), 1);
+    });
+    registerConvert<QGradient>([&v]() {
+      QColor col = QColor::fromRgbF(std::clamp(v, 0.0, 1.0), std::clamp(v, 0.0, 1.0),
+                                    std::clamp(v, 0.0, 1.0), 1);
       QGradient g;
       g.setColorAt(0, col);
-      _map.insert_or_assign(QMetaType::fromType<QGradient>(), QVariant::fromValue(g));
-    })));
+      return g;
+    });
   }
 
   inline static const DecimalDataType dataType = DecimalDataType("decimal", "Decimal");

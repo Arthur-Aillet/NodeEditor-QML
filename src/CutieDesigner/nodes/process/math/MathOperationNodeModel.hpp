@@ -47,6 +47,6 @@ class MathOperationNodeModel : public NodeDelegateModel {
   protected:
   std::vector<std::weak_ptr<NodeData>> _inputNumbers;
 
-  QProperty<double> _result;
+  double _result;
   std::shared_ptr<DecimalData> _resultPtr;
 };

@@ -7,11 +7,8 @@
 class GradientData : public NodeData {
   public:
   GradientData() {}
-  GradientData(QProperty<QGradient> &gradientProp) {
-    defineBinding(gradientProp.subscribe(BindingFn([this, &gradientProp]() {
-      _map.insert_or_assign(QMetaType::fromType<QGradient>(),
-                            QVariant::fromValue(gradientProp.value()));
-    })));
+  GradientData(QGradient &gradientProp) {
+    registerConvert<QGradient>([&gradientProp]() { return gradientProp; });
   }
 
   inline static const NodeDataType dataType = NodeDataType("gradient-01", "Gradient");

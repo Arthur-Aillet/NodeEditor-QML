@@ -3,6 +3,7 @@
 #include "GradientData.hpp"
 #include "NodeData.hpp"
 #include <QtGui/QColor>
+#include <qbrush.h>
 #include <qcolor.h>
 
 struct ColorDataType : public NodeDataType {
@@ -20,15 +21,13 @@ class ColorData : public NodeData {
 
   public:
   ColorData() {}
-  ColorData(QProperty<QColor> &colorProp) {
-    _map.insert(QMetaType::fromType<QGradient>(), QVariant::fromValue(QLinearGradient()));
-
-    defineBinding(colorProp.subscribe(BindingFn([this, &colorProp]() {
-      _map.insert_or_assign(QMetaType::fromType<QColor>(), colorProp.value());
-      QGradient &gradient =
-          *reinterpret_cast<QGradient *>(_map[QMetaType::fromType<QGradient>()].data());
-      gradient.setColorAt(0, colorProp.value());
-    })));
+  ColorData(QColor &color) {
+    registerConvert<QColor>([&color]() { return color; });
+    registerConvert<QGradient>([&color]() {
+      QGradient g;
+      g.setColorAt(0, color);
+      return g;
+    });
   }
 
   inline static const ColorDataType dataType = ColorDataType("col", "Color");

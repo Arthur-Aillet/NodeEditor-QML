@@ -24,10 +24,10 @@ class SplitRGBA : public NodeDelegateModel {
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
   private:
-  QProperty<double> _r = QProperty<double>(0.0);
-  QProperty<double> _g = QProperty<double>(0.0);
-  QProperty<double> _b = QProperty<double>(0.0);
-  QProperty<double> _a = QProperty<double>(1.0);
+  double _r = 0.0;
+  double _g = 0.0;
+  double _b = 0.0;
+  double _a = 1.0;
   std::shared_ptr<DecimalData> _rPtr;
   std::shared_ptr<DecimalData> _gPtr;
   std::shared_ptr<DecimalData> _bPtr;
