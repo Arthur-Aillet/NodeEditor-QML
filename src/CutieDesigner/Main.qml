@@ -1,11 +1,10 @@
 pragma ComponentBehavior: Bound
 import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
 
 import CutieDesigner.App
+import CutieUiModule
 
-ApplicationWindow {
+CutieWindow {
     width: 1400
     height: 1000
     visible: true
@@ -14,11 +13,6 @@ ApplicationWindow {
 
     property alias objectLoader: appLayout.objectLoader
 
-    footer: ToolBar {
-        RowLayout {
-            anchors.fill: parent
-        }
-    }
     AppLayout {
         id: appLayout
     }

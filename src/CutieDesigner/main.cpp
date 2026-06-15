@@ -10,6 +10,7 @@
 #include "DivisionNode.hpp"
 #include "FillNode.hpp"
 #include "GradientInputNode.hpp"
+#include "MouseInputNode.hpp"
 #include "MultiplicationNode.hpp"
 #include "NumberInputNode.hpp"
 #include "SinNode.hpp"
@@ -20,7 +21,7 @@
 #include "SurfaceLoader.hpp"
 #include "TextTyperNode.hpp"
 #include "UkrugNode.hpp"
-#include "video/VideoDisplayNode.hpp"
+#include "VideoDisplayNode.hpp"
 
 #include <QQmlApplicationEngine>
 #include <QtQml>
@@ -36,11 +37,14 @@ int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
   QQmlApplicationEngine engine;
 
+  engine.rootContext()->setContextProperty("app", &app);
+
   auto ret = std::make_shared<NodeDelegateModelRegistry>(&engine);
 
   ret->registerModel<ColorInputNode>("Input");
-  ret->registerModel<NumberInputNode>("Input");
   ret->registerModel<GradientInputNode>("Input");
+  ret->registerModel<NumberInputNode>("Input");
+  ret->registerModel<MouseInputNode>("Input");
   ret->registerModel<AdditionNode>("Process");
   ret->registerModel<DivisionNode>("Process");
   ret->registerModel<MultiplicationNode>("Process");

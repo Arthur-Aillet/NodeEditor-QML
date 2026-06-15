@@ -28,6 +28,8 @@ qt_add_qml_module(nodes
   input/GradientInput/GradientInputList.cpp
   input/NumberInput/NumberInputNode.hpp
   input/NumberInput/NumberInputNode.cpp
+  input/MouseInput/MouseInputNode.hpp
+  input/MouseInput/MouseInputNode.cpp
 
   display/AType/Ukrug/UkrugNode.hpp
   display/AType/Ukrug/UkrugNode.cpp
@@ -90,9 +92,9 @@ target_link_directories(nodes
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${LIB_TARGET_LINK_DIRECTORIES}
   ${GSTREAMER_LIBRARY_DIRS}
-)
-
-target_include_directories(nodes
+  )
+  
+  target_include_directories(nodes
   PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${GSTREAMER_INCLUDE_DIRS}
@@ -110,13 +112,14 @@ target_include_directories(nodes
   input/ColorInput/
   input/GradientInput/
   input/NumberInput/
+  input/MouseInput/
   process
   process/color
   process/math
   process/TextTyper
 )
 
-target_link_libraries(nodes PRIVATE
+target_link_libraries(nodes PUBLIC
   Qt6::Core
   Qt6::Gui
   Qt6::Quick

@@ -6,6 +6,10 @@ qt_add_qml_module(CutieUiModule
   ColorPicker.qml
   TextField.qml
   SliderField.qml
+
+  SOURCES
+  CutieWindow.hpp
+  
   DEPENDENCIES QtQuick
 )
 

@@ -8,7 +8,7 @@ Text {
         refreshPeriod: 500
     }
     color: "white"
-    text: "Current fps: " + (rotationAnim.paused ? " -" : monitor.fps)
+    text: "Current fps: " + monitor.fps
     font.pixelSize: 12
     Image {
         x: parent.width - width
