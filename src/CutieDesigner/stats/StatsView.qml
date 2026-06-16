@@ -3,6 +3,7 @@ import QtQuick.Controls
 import CutieDesigner.Stats
 
 PaneBackground {
+    clip: true
     Item {
         x: 12
         y: 12
