@@ -13,8 +13,6 @@ class AdditionNode : public MathOperationNodeModel {
 
   public:
   QString caption() const override { return QStringLiteral("add"); }
-  bool labelVisible() const override { return true; }
-
   QString name() const override { return QStringLiteral("Addition"); }
 
   private:
