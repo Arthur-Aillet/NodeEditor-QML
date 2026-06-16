@@ -1,35 +1,14 @@
 add_subdirectory(display)
+add_subdirectory(input)
 
 qt_add_qml_module(nodes
   URI CutieDesigner.Nodes
   SHARED
   QML_FILES
 
-  input/ColorInput/ColorInputControl.qml
-  input/GradientInput/GradientInputControl.qml
-  input/NumberInput/NumberInputControl.qml
-  input/Vec2Input/Vec2InputControl.qml
-
   process/TextTyper/TextTyper.qml
 
   SOURCES
-  input/ColorInput/ColorInputNode.hpp
-  input/ColorInput/ColorInputNode.cpp
-  input/GradientInput/GradientInputNode.hpp
-  input/GradientInput/GradientInputNode.cpp
-  input/GradientInput/GradientInputList.hpp
-  input/GradientInput/GradientInputList.cpp
-  input/NumberInput/NumberInputNode.hpp
-  input/NumberInput/NumberInputNode.cpp
-  input/Vec2Input/Vec2InputNode.hpp
-  input/Vec2Input/Vec2InputNode.cpp
-  input/MouseInput/MouseInputNode.hpp
-  input/MouseInput/MouseInputNode.cpp
-  input/SceneInput/SceneInputNode.hpp
-  input/SceneInput/SceneInputNode.cpp
-  input/WindowInput/WindowInputNode.hpp
-  input/WindowInput/WindowInputNode.cpp
-
   process/color/CombineRGBA.cpp
   process/color/CombineRGBA.hpp
   process/color/SplitRGBA.cpp
@@ -66,15 +45,6 @@ target_link_directories(nodes
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${GSTREAMER_INCLUDE_DIRS}
 
-  input
-  input/ColorInput/
-  input/GradientInput/
-  input/NumberInput/
-  input/Vec2Input/
-  input/MouseInput/
-  input/SceneInput/
-  input/WindowInput/
-  process
   process/color
   process/math
   process/TextTyper
@@ -92,6 +62,7 @@ target_link_libraries(nodes PUBLIC
   vivid
   datatypes
   display
+  input
   ${GSTREAMER_LIBRARIES}
 )
 

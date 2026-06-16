@@ -60,11 +60,10 @@ target_link_directories(display
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${LIB_TARGET_LINK_DIRECTORIES}
   ${GSTREAMER_LIBRARY_DIRS}
-  )
+)
   
-  target_include_directories(display
+target_include_directories(display
   PUBLIC
-  ${CMAKE_CURRENT_SOURCE_DIR}
   ${GSTREAMER_INCLUDE_DIRS}
   Dimension
   AType

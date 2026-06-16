@@ -1,6 +1,6 @@
 import QtQuick
 import CutieUiModule
-import CutieDesigner.Nodes
+import CutieDesigner.Nodes.Input
 
 GridController {
     required property Vec2InputNode node

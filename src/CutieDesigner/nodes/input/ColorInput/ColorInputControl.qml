@@ -1,6 +1,6 @@
 import QtQuick
 import CutieUiModule
-import CutieDesigner.Nodes
+import CutieDesigner.Nodes.Input
 
 ColorPicker {
     required property ColorInputNode node

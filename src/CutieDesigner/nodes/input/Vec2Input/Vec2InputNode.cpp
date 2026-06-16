@@ -15,7 +15,7 @@ unsigned int Vec2InputNode::nPorts(PortType portType) const {
 }
 
 QQmlComponent Vec2InputNode::embeddedComponent(QQmlEngine *engine) {
-  return QQmlComponent(engine, "CutieDesigner.Nodes", "Vec2InputControl");
+  return QQmlComponent(engine, "CutieDesigner.Nodes.Input", "Vec2InputControl");
 }
 
 QVariantMap Vec2InputNode::componentInitialProperties() {

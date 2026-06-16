@@ -34,7 +34,7 @@ class GradientInputNode : public NodeDelegateModel {
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }
 
   QQmlComponent embeddedComponent(QQmlEngine *engine) override {
-    return QQmlComponent(engine, "CutieDesigner.Nodes", "GradientInputControl");
+    return QQmlComponent(engine, "CutieDesigner.Nodes.Input", "GradientInputControl");
   }
 
   QVariantMap componentInitialProperties() override {

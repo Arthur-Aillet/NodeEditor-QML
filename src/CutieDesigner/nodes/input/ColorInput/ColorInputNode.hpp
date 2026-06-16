@@ -32,7 +32,7 @@ class ColorInputNode : public NodeDelegateModel {
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }
 
   QQmlComponent embeddedComponent(QQmlEngine *engine) override {
-    return QQmlComponent(engine, "CutieDesigner.Nodes", "ColorInputControl");
+    return QQmlComponent(engine, "CutieDesigner.Nodes.Input", "ColorInputControl");
   }
 
   QVariantMap componentInitialProperties() override {

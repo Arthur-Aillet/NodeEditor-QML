@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import CutieUiModule
-import CutieDesigner.Nodes
+import CutieDesigner.Nodes.Input
 
 FlexboxLayout {
     id: gradientInputControl
