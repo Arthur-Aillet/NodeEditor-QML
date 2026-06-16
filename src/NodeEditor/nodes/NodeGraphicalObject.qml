@@ -81,7 +81,7 @@ MouseArea {
     Keys.onPressed: event => {
         if (event.key == Qt.Key_Delete || event.key == Qt.Key_Back)
             for (let id of nodes.selectedNodes.inner)
-                event.accepted = ModelInterface.deleteNode(id);
+                event.accepted = ModelInterface.graph.deleteNode(id);
     }
 
     Connections {

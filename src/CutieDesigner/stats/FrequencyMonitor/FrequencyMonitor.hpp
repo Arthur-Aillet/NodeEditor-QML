@@ -32,7 +32,7 @@ class FrequencyMonitor : public QQuickItem {
   void fpsChanged();
   void refreshPeriodChanged();
 
-  public Q_SLOTS:
+  public slots:
   void handleAfterRendering();
   void handleWindowChanged(QQuickWindow *window);
 

@@ -9,6 +9,7 @@ qt_add_qml_module(CutieUiModule
 
   SOURCES
   CutieWindow.hpp
+  CutieWindow.cpp
   
   DEPENDENCIES QtQuick
 )

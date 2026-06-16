@@ -28,8 +28,3 @@ void ModelInterface::deleteConnection(ConnectionId id) {
 void ModelInterface::createNode(QString const nodeType, QPoint const &scenePos) {
   undoStack.push(new CreateCommand(this, nodeType, scenePos));
 }
-
-bool ModelInterface::deleteNode(const NodeId nodeId) {
-  // TODO: restore DeleteNodeCommand
-  return graphModel.deleteNode(nodeId);
-}
