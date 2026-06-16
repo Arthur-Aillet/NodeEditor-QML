@@ -86,5 +86,5 @@ lib/
 
 # Editor specific config
 .vscode
-
 .cache
+.direnv

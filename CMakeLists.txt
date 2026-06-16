@@ -13,8 +13,8 @@ project(CutieDesigner VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-set(CMAKE_PREFIX_PATH "~/Qt/6.11.0/gcc_64/")
-set(LD_LIBRARY_PATH "~/Qt/6.11.0/gcc_64/lib")
+#set(CMAKE_PREFIX_PATH "~/Qt/6.11.0/gcc_64/")
+#set(LD_LIBRARY_PATH "~/Qt/6.11.0/gcc_64/lib")
 set(QT_QML_GENERATE_QMLLS_INI ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Quick Core Gui QuickWidgets QuickControls2 Qml Core5Compat ShaderTools)
@@ -32,8 +32,8 @@ option(RUN "Launch App" OFF)
 
 
 set(QML_IMPORT_PATH
-    ${CMAKE_BINARY_DIR}/qml
-    CACHE STRING "" FORCE
+  ${CMAKE_BINARY_DIR}/qml
+  CACHE STRING "" FORCE
 )
 set(QT_QML_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/qml)
 
