@@ -1,47 +1,28 @@
 #include "SceneInputNode.hpp"
 #include "CutieWindow.hpp"
-#include "DecimalData.hpp"
-#include "NodeDelegateModel.hpp"
-
-#include <QtCore/QJsonValue>
-#include <QtGui/QDoubleValidator>
-#include <QtWidgets/QLineEdit>
-#include <qapplication.h>
-#include <qevent.h>
-#include <qobject.h>
-#include <qqmlcomponent.h>
-#include <qqmlcontext.h>
-#include <qquickitem.h>
-#include <qquickwindow.h>
-#include <qvalidator.h>
-#include <qvariant.h>
-#include <qwindow.h>
 
 SceneInputNode::SceneInputNode(QQmlEngine *engine)
-    : NodeDelegateModel(engine), _xPtr(std::make_shared<DecimalData>(_x)),
-      _yPtr(std::make_shared<DecimalData>(_y)), _widthPtr(std::make_shared<DecimalData>(_width)),
-      _heightPtr(std::make_shared<DecimalData>(_height)) {
+    : NodeDelegateModel(engine), _posData(std::make_shared<Vec2Data>(_pos)),
+      _sizeData(std::make_shared<Vec2Data>(_size)) {
   auto window = CutieWindow::getCutieWindow(engine);
   if (window == nullptr)
     return;
 
   _frame = qvariant_cast<QQuickItem *>(window->property("sceneContent"));
 
-  _x = _frame->x();
-  _y = _frame->y();
-  _width = _frame->width();
-  _height = _frame->height();
+  _pos = QVector2D(_frame->position());
+  _size = QVector2D(_frame->width(), _frame->height());
 
-  QObject::connect(_frame, SIGNAL(xChanged()), this, SLOT(xChanged()));
-  QObject::connect(_frame, SIGNAL(yChanged()), this, SLOT(yChanged()));
-  QObject::connect(_frame, SIGNAL(widthChanged()), this, SLOT(widthChanged()));
-  QObject::connect(_frame, SIGNAL(heightChanged()), this, SLOT(heightChanged()));
+  QObject::connect(_frame, SIGNAL(xChanged()), this, SLOT(posChanged()));
+  QObject::connect(_frame, SIGNAL(yChanged()), this, SLOT(posChanged()));
+  QObject::connect(_frame, SIGNAL(widthChanged()), this, SLOT(sizeChanged()));
+  QObject::connect(_frame, SIGNAL(heightChanged()), this, SLOT(sizeChanged()));
 }
 
 unsigned int SceneInputNode::nPorts(PortType portType) const {
   switch (portType) {
   case PortType::Out:
-    return 4;
+    return 2;
   default:
     return 0;
   }
@@ -50,57 +31,35 @@ unsigned int SceneInputNode::nPorts(PortType portType) const {
 QString SceneInputNode::portCaption(PortType portType, PortIndex portIndex) const {
   switch (portIndex) {
   case 0:
-    return "x";
-  case 1:
-    return "y";
-  case 2:
-    return "width";
+    return "pos";
   default:
-    return "height";
+    return "size";
   }
 }
 
 const NodeDataType &SceneInputNode::dataType(PortType _portType, PortIndex _portIndex) const {
-  return DecimalData().type();
+  return Vec2Data().type();
 }
 
 std::shared_ptr<NodeData> SceneInputNode::outData(PortIndex portIndex) {
   switch (portIndex) {
   case 0:
-    return _xPtr;
-  case 1:
-    return _yPtr;
-  case 2:
-    return _widthPtr;
+    return _posData;
   default:
-    return _heightPtr;
+    return _sizeData;
   }
 }
 
-void SceneInputNode::xChanged() {
-  if (_frame->x() != _x) {
-    _x = _frame->x();
+void SceneInputNode::posChanged() {
+  if (QVector2D(_frame->position()) != _pos) {
+    _pos = QVector2D(_frame->position());
     emit dataUpdated(0);
   }
 }
 
-void SceneInputNode::yChanged() {
-  if (_frame->y() != _y) {
-    _y = _frame->y();
+void SceneInputNode::sizeChanged() {
+  if (QVector2D(_frame->width(), _frame->height()) != _size) {
+    _size = QVector2D(_frame->width(), _frame->height());
     emit dataUpdated(1);
-  }
-}
-
-void SceneInputNode::widthChanged() {
-  if (_frame->width() != _width) {
-    _width = _frame->width();
-    emit dataUpdated(2);
-  }
-}
-
-void SceneInputNode::heightChanged() {
-  if (_frame->height() != _height) {
-    _height = _frame->height();
-    emit dataUpdated(3);
   }
 }

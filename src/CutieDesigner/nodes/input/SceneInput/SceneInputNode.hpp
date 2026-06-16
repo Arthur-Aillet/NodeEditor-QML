@@ -1,17 +1,7 @@
 #pragma once
 
-#include "DecimalData.hpp"
 #include "NodeDelegateModel.hpp"
-
-#include <QQuickItem>
-#include <QtCore/QObject>
-#include <qevent.h>
-#include <qforeach.h>
-#include <qobject.h>
-#include <qqmlengine.h>
-#include <qquickitem.h>
-#include <qtmetamacros.h>
-#include <qvariant.h>
+#include "Vec2Data.hpp"
 
 class SceneInputNode : public NodeDelegateModel {
   Q_OBJECT
@@ -36,19 +26,13 @@ class SceneInputNode : public NodeDelegateModel {
   void setInData(std::shared_ptr<NodeData>, PortIndex) override {}
 
   public slots:
-  void xChanged();
-  void yChanged();
-  void widthChanged();
-  void heightChanged();
+  void posChanged();
+  void sizeChanged();
 
   private:
-  double _x = 0.0;
-  double _y = 0.0;
-  double _width = 0.0;
-  double _height = 0.0;
+  QVector2D _pos;
+  QVector2D _size;
   QQuickItem *_frame = nullptr;
-  std::shared_ptr<DecimalData> _xPtr;
-  std::shared_ptr<DecimalData> _yPtr;
-  std::shared_ptr<DecimalData> _widthPtr;
-  std::shared_ptr<DecimalData> _heightPtr;
+  std::shared_ptr<Vec2Data> _posData;
+  std::shared_ptr<Vec2Data> _sizeData;
 };

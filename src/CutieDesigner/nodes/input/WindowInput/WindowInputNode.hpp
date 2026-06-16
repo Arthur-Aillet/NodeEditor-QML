@@ -1,17 +1,8 @@
 #pragma once
 
 #include "CutieWindow.hpp"
-#include "DecimalData.hpp"
 #include "NodeDelegateModel.hpp"
-
-#include <QQuickItem>
-#include <QtCore/QObject>
-#include <qevent.h>
-#include <qforeach.h>
-#include <qobject.h>
-#include <qqmlengine.h>
-#include <qtmetamacros.h>
-#include <qvariant.h>
+#include "Vec2Data.hpp"
 
 class WindowInputNode : public NodeDelegateModel {
   Q_OBJECT
@@ -39,9 +30,7 @@ class WindowInputNode : public NodeDelegateModel {
   void resizeEvent(QResizeEvent *event);
 
   private:
-  double _width = 0.0;
-  double _height = 0.0;
+  QVector2D _size;
   CutieWindow *_window = nullptr;
-  std::shared_ptr<DecimalData> _widthPtr;
-  std::shared_ptr<DecimalData> _heightPtr;
+  std::shared_ptr<Vec2Data> _sizeData;
 };
