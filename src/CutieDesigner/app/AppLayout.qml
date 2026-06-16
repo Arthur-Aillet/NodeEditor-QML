@@ -98,10 +98,6 @@ Item {
 
                 HoverHandler {
                     id: sceneHoverHandler
-                    onHoveredChanged: {
-                        if (!sceneContent.focus)
-                            sceneContent.focus = true;
-                    }
                 }
 
                 SurfaceLoader {
@@ -136,7 +132,7 @@ Item {
                 HoverHandler {
                     id: viewHoverHandler
                     onHoveredChanged: {
-                        if (!view.focus)
+                        if (!view.focus && hovered)
                             view.focus = true;
                     }
                 }
