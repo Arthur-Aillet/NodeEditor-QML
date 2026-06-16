@@ -55,10 +55,6 @@ QVariantMap TextTyperNode::componentInitialProperties() {
   return map;
 }
 
-void TextTyperNode::embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded) {
-  _textTyperQml = loaded;
-}
-
 TextTyperEventList *TextTyperNode::getModel() { return &_eventList; }
 
 bool TextTyperNode::getPlay() { return _playing; }

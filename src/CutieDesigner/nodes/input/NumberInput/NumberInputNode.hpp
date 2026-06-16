@@ -3,14 +3,6 @@
 #include "DecimalData.hpp"
 #include "NodeDelegateModel.hpp"
 
-#include <QQuickItem>
-#include <QtCore/QObject>
-#include <qforeach.h>
-#include <qobject.h>
-#include <qqmlengine.h>
-#include <qtmetamacros.h>
-#include <qvariant.h>
-
 class NumberInputNode : public NodeDelegateModel {
   Q_OBJECT
 
@@ -42,6 +34,5 @@ class NumberInputNode : public NodeDelegateModel {
   private:
   double _number = 0.0;
   std::shared_ptr<QQuickItem> _portLabel{nullptr};
-  std::shared_ptr<DecimalData> _numberPtr;
-  std::shared_ptr<QQmlComponent> _component{nullptr};
+  std::shared_ptr<DecimalData> _numberData;
 };

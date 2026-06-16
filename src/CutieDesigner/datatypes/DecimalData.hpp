@@ -6,6 +6,7 @@
 #include "TextData.hpp"
 #include <qbrush.h>
 #include <qvariant.h>
+#include <qvectornd.h>
 
 struct DecimalDataType : public NodeDataType {
   DecimalDataType(DataTypeId id, QString name) : NodeDataType(id, name) {}
@@ -16,6 +17,7 @@ struct DecimalDataType : public NodeDataType {
     types.push_front(TextData().type().id);
     types.push_front(ColorData().type().id);
     types.push_front(GradientData().type().id);
+    types.push_front("vec2-01"); // Vec2Data().type().id);
     return types;
   }
 };
@@ -37,6 +39,7 @@ class DecimalData : public NodeData {
       g.setColorAt(0, col);
       return g;
     });
+    registerConvert<QVector2D>([&v]() { return QVector2D(v, v); });
   }
 
   inline static const DecimalDataType dataType = DecimalDataType("decimal", "Decimal");

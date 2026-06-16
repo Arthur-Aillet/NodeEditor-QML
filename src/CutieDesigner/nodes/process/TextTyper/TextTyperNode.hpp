@@ -33,7 +33,6 @@ class TextTyperNode : public NodeDelegateModel {
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
   QQmlComponent embeddedComponent(QQmlEngine *engine) override;
-  void embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded) override;
   QVariantMap componentInitialProperties() override;
 
   TextTyperEventList *getModel();
@@ -58,7 +57,6 @@ class TextTyperNode : public NodeDelegateModel {
   private:
   int _currentEventIdx = 0;
   TextTyperEventList::TypeEvent _currentEvent;
-  std::shared_ptr<QQuickItem> _textTyperQml{nullptr};
   TextTyperEventList _eventList;
   QTimer _timer;
   bool _playing;

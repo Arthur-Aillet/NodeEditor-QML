@@ -1,10 +1,12 @@
 qt_add_qml_module(nodes
   URI CutieDesigner.Nodes
+  SHARED
   QML_FILES
 
   input/ColorInput/ColorInputControl.qml
   input/GradientInput/GradientInputControl.qml
   input/NumberInput/NumberInputControl.qml
+  input/Vec2Input/Vec2InputControl.qml
   display/AType/Ukrug/Ukrug.qml
   display/AType/Ukrug/UkrugShader.qml
   display/AType/Ukrug/UkrugControl.qml
@@ -28,6 +30,8 @@ qt_add_qml_module(nodes
   input/GradientInput/GradientInputList.cpp
   input/NumberInput/NumberInputNode.hpp
   input/NumberInput/NumberInputNode.cpp
+  input/Vec2Input/Vec2InputNode.hpp
+  input/Vec2Input/Vec2InputNode.cpp
   input/MouseInput/MouseInputNode.hpp
   input/MouseInput/MouseInputNode.cpp
   input/SceneInput/SceneInputNode.hpp
@@ -74,6 +78,10 @@ qt_add_qml_module(nodes
   process/TextTyper/TextTyperNode.cpp
   process/TextTyper/TextTyperEventList.hpp
   process/TextTyper/TextTyperEventList.cpp
+  process/vectors/CombineVec2.cpp
+  process/vectors/CombineVec2.hpp
+  process/vectors/SplitVec2.cpp
+  process/vectors/SplitVec2.hpp
 
   DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieUiModule CutieDesigner.Datatypes
   RESOURCES
@@ -116,6 +124,7 @@ target_link_directories(nodes
   input/ColorInput/
   input/GradientInput/
   input/NumberInput/
+  input/Vec2Input/
   input/MouseInput/
   input/SceneInput/
   input/WindowInput/
@@ -123,6 +132,7 @@ target_link_directories(nodes
   process/color
   process/math
   process/TextTyper
+  process/vectors
 )
 
 target_link_libraries(nodes PUBLIC

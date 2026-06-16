@@ -3,7 +3,6 @@ import CutieDesigner.Nodes
 import CutieUiModule
 
 GridController {
-    id: root
     required property UkrugNode node
 
     object: node

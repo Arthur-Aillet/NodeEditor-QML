@@ -6,16 +6,15 @@
 #include <QtGui/QDoubleValidator>
 #include <QtWidgets/QLineEdit>
 #include <qqmlcomponent.h>
-#include <qvalidator.h>
 
 NumberInputNode::NumberInputNode(QQmlEngine *engine)
-    : NodeDelegateModel(engine), _numberPtr(std::make_shared<DecimalData>(_number)) {}
+    : NodeDelegateModel(engine), _numberData(std::make_shared<DecimalData>(_number)) {}
 
 QJsonObject NumberInputNode::save() const {
   QJsonObject modelJson = NodeDelegateModel::save();
 
-  auto a = _numberPtr->repr<QString>();
-  modelJson["number"] = _numberPtr->repr<QString>();
+  auto a = _numberData->repr<QString>();
+  modelJson["number"] = _numberData->repr<QString>();
 
   return modelJson;
 }
@@ -29,7 +28,7 @@ void NumberInputNode::load(QJsonObject const &p) {
     bool ok = false;
     _number = strNum.toDouble(&ok);
     if (ok) {
-      _numberPtr = std::make_shared<DecimalData>(_number);
+      _numberData = std::make_shared<DecimalData>(_number);
     }
   }
 }
@@ -50,8 +49,8 @@ QQmlComponent NumberInputNode::embeddedComponent(QQmlEngine *engine) {
 void NumberInputNode::embeddedComponentLoaded(std::shared_ptr<QQuickItem> loaded) {
   _portLabel = loaded;
   _portLabel->setProperty("placeholderText", "Value");
-  if (_numberPtr != nullptr) {
-    _portLabel->setProperty("text", _numberPtr->repr<QString>());
+  if (_numberData != nullptr) {
+    _portLabel->setProperty("text", _numberData->repr<QString>());
   }
   _portLabel->connect(_portLabel.get(), SIGNAL(textEdited()), this, SLOT(onTextEdited()));
 }
@@ -80,4 +79,4 @@ const NodeDataType &NumberInputNode::dataType(PortType, PortIndex id) const {
   return DecimalData().type();
 }
 
-std::shared_ptr<NodeData> NumberInputNode::outData(PortIndex) { return _numberPtr; }
+std::shared_ptr<NodeData> NumberInputNode::outData(PortIndex) { return _numberData; }

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "CutieWindow.hpp"
-#include "DecimalData.hpp"
 #include "NodeDelegateModel.hpp"
+#include "Vec2Data.hpp"
 
 #include <QQuickItem>
 #include <QtCore/QObject>
@@ -11,6 +11,7 @@
 #include <qqmlengine.h>
 #include <qtmetamacros.h>
 #include <qvariant.h>
+#include <qvectornd.h>
 
 class MouseInputNode : public NodeDelegateModel {
   Q_OBJECT
@@ -26,9 +27,6 @@ class MouseInputNode : public NodeDelegateModel {
   bool captionVisible() const override { return true; }
   QString name() const override { return "Mouse"; }
 
-  bool labelVisible() const override { return true; }
-  QString label() const override { return "Mouse pos in window space"; }
-
   unsigned int nPorts(PortType portType) const override;
   const NodeDataType &dataType(PortType portType, PortIndex portIndex) const override;
   std::shared_ptr<NodeData> outData(PortIndex port) override;
@@ -42,9 +40,7 @@ class MouseInputNode : public NodeDelegateModel {
   void mouseMoveEvent(QMouseEvent *event);
 
   private:
-  double _x = 0.0;
-  double _y = 0.0;
+  QVector2D _pos = {0.0, 0.0};
   CutieWindow *_window = nullptr;
-  std::shared_ptr<DecimalData> _xPtr;
-  std::shared_ptr<DecimalData> _yPtr;
+  std::shared_ptr<Vec2Data> _posData;
 };

@@ -1,0 +1,47 @@
+#include "Vec2InputNode.hpp"
+#include "NodeDelegateModel.hpp"
+#include "Vec2Data.hpp"
+
+Vec2InputNode::Vec2InputNode(QQmlEngine *engine)
+    : NodeDelegateModel(engine), _vecData(std::make_shared<Vec2Data>(_vec)) {}
+
+unsigned int Vec2InputNode::nPorts(PortType portType) const {
+  switch (portType) {
+  case PortType::Out:
+    return 1;
+  default:
+    return 0;
+  }
+}
+
+QQmlComponent Vec2InputNode::embeddedComponent(QQmlEngine *engine) {
+  return QQmlComponent(engine, "CutieDesigner.Nodes", "Vec2InputControl");
+}
+
+QVariantMap Vec2InputNode::componentInitialProperties() {
+  QVariantMap map;
+  map["node"] = QVariant::fromValue(this);
+  return map;
+}
+
+const NodeDataType &Vec2InputNode::dataType(PortType, PortIndex id) const {
+  return Vec2Data().type();
+}
+
+std::shared_ptr<NodeData> Vec2InputNode::outData(PortIndex) { return _vecData; }
+
+void Vec2InputNode::setX(double x) {
+  if (x == _vec.x())
+    return;
+  _vec.setX(x);
+  emit xChanged();
+  emit dataUpdated(0);
+}
+
+void Vec2InputNode::setY(double y) {
+  if (y == _vec.y())
+    return;
+  _vec.setY(y);
+  emit yChanged();
+  emit dataUpdated(0);
+}

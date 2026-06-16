@@ -3,6 +3,7 @@
 #include "BlendNode.hpp"
 #include "ColorInputNode.hpp"
 #include "CombineRGBA.hpp"
+#include "CombineVec2.hpp"
 #include "CosNode.hpp"
 #include "DataFlowModelInterface.hpp"
 #include "Definitions.hpp"
@@ -16,12 +17,14 @@
 #include "SceneInputNode.hpp"
 #include "SinNode.hpp"
 #include "SplitRGBA.hpp"
+#include "SplitVec2.hpp"
 #include "StackNode.hpp"
 #include "SubtractionNode.hpp"
 #include "SurfaceDisplayNode.hpp"
 #include "SurfaceLoader.hpp"
 #include "TextTyperNode.hpp"
 #include "UkrugNode.hpp"
+#include "Vec2InputNode.hpp"
 #include "VideoDisplayNode.hpp"
 #include "WindowInputNode.hpp"
 
@@ -46,6 +49,7 @@ int main(int argc, char *argv[]) {
   ret->registerModel<ColorInputNode>("Input");
   ret->registerModel<GradientInputNode>("Input");
   ret->registerModel<NumberInputNode>("Input");
+  ret->registerModel<Vec2InputNode>("Input");
   ret->registerModel<MouseInputNode>("Input");
   ret->registerModel<WindowInputNode>("Input");
   ret->registerModel<SceneInputNode>("Input");
@@ -57,6 +61,8 @@ int main(int argc, char *argv[]) {
   ret->registerModel<CosNode>("Process");
   ret->registerModel<CombineRGBA>("Process");
   ret->registerModel<SplitRGBA>("Process");
+  ret->registerModel<CombineVec2>("Process");
+  ret->registerModel<SplitVec2>("Process");
   ret->registerModel<DimensionNode>("Display");
   ret->registerModel<SurfaceDisplayNode>("Display");
   ret->registerModel<UkrugNode>("Display");
