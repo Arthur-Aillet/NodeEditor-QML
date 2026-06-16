@@ -1,5 +1,5 @@
 import QtQuick
-import CutieDesigner.Nodes
+import CutieDesigner.Nodes.Display
 
 Item {
     id: blend

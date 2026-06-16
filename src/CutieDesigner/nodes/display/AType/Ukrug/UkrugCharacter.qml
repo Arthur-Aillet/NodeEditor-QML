@@ -2,7 +2,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 
-import CutieDesigner.Nodes
+import CutieDesigner.Nodes.Display
 
 Item {
     id: root

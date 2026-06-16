@@ -52,7 +52,7 @@ class StackNode : public NodeDelegateModel {
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }
 
   QQmlComponent embeddedComponent(QQmlEngine *engine) override {
-    return QQmlComponent(engine, "CutieDesigner.Nodes", "StackControl");
+    return QQmlComponent(engine, "CutieDesigner.Nodes.Display", "StackControl");
   }
 
   QVariantMap componentInitialProperties() override {

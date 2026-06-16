@@ -9,8 +9,8 @@
 
 UkrugNode::UkrugNode(QQmlEngine *engine)
     : ATypeCharacterNodeModel(engine), _modelData(std::make_shared<ATypeCharacterData>(this)),
-      _component(std::move(
-          std::make_unique<QQmlComponent>(engine, "CutieDesigner.Nodes", "UkrugCharacter"))) {}
+      _component(std::move(std::make_unique<QQmlComponent>(engine, "CutieDesigner.Nodes.Display",
+                                                           "UkrugCharacter"))) {}
 
 unsigned int UkrugNode::nPorts(PortType portType) const {
   switch (portType) {

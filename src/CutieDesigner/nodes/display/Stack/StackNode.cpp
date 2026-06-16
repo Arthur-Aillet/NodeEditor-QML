@@ -71,7 +71,7 @@ void SurfaceList::removeLastPort() {
 }
 
 StackNode::StackNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
-  auto comp = std::make_unique<QQmlComponent>(engine, "CutieDesigner.Nodes", "Stack");
+  auto comp = std::make_unique<QQmlComponent>(engine, "CutieDesigner.Nodes.Display", "Stack");
   QVariantMap map;
   map["node"] = QVariant::fromValue(this);
   _content = std::make_shared<SurfaceData>(std::move(comp), map);

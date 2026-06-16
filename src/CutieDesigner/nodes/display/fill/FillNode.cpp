@@ -2,16 +2,8 @@
 #include "GradientData.hpp"
 #include "SurfaceData.hpp"
 
-#include <QtWidgets/QLabel>
-#include <memory>
-#include <qbrush.h>
-#include <qdebug.h>
-#include <qqmlcomponent.h>
-#include <qtimer.h>
-#include <qtmetamacros.h>
-
 FillNode::FillNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
-  auto comp = std::make_unique<QQmlComponent>(engine, "CutieDesigner.Nodes", "FillSurface");
+  auto comp = std::make_unique<QQmlComponent>(engine, "CutieDesigner.Nodes.Display", "FillSurface");
   QVariantMap map;
   map["node"] = QVariant::fromValue(this);
   _content = std::make_shared<SurfaceData>(std::move(comp), map);
@@ -48,8 +40,8 @@ void FillNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
 QString FillNode::portCaption(PortType portType, PortIndex portIndex) const {
   switch (portType) {
   case PortType::In:
-    return QString("gradient");
+    return "gradient";
   default:
-    return QString("out");
+    return "out";
   }
 }

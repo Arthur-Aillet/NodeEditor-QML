@@ -3,10 +3,9 @@
 #include "DimensionNode.hpp"
 #include "NodeDelegateModel.hpp"
 #include "SurfaceData.hpp"
-#include <qdebug.h>
 
 DimensionNode::DimensionNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
-  auto comp = std::make_unique<QQmlComponent>(engine, "CutieDesigner.Nodes", "Dimension");
+  auto comp = std::make_unique<QQmlComponent>(engine, "CutieDesigner.Nodes.Display", "Dimension");
   QVariantMap map;
   map["node"] = QVariant::fromValue(this);
   _content = std::make_shared<SurfaceData>(std::move(comp), map);

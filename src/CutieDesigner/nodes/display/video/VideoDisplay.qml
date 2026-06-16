@@ -1,6 +1,6 @@
 import QtQuick
 import QtMultimedia
-import CutieDesigner.Nodes
+import CutieDesigner.Nodes.Display
 
 Item {
     required property VideoDisplayNode node

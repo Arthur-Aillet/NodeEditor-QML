@@ -28,16 +28,6 @@ class VideoDisplayNode : public NodeDelegateModel {
   QString portCaption(PortType portType, PortIndex portIndex) const override;
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }
 
-  // QQmlComponent embeddedComponent(QQmlEngine *engine) override {
-  //   return QQmlComponent(engine, "CutieDesigner.Nodes", "BlendControl");
-  // }
-
-  // QVariantMap componentInitialProperties() override {
-  //   QVariantMap map;
-  //   map["node"] = QVariant::fromValue(this);
-  //   return map;
-  // }
-
   unsigned int nPorts(PortType portType) const override;
   const NodeDataType &dataType(PortType portType, PortIndex portIndex) const override;
   std::shared_ptr<NodeData> outData(PortIndex port) override;

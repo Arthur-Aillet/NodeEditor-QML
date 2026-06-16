@@ -4,7 +4,7 @@ qt_add_qml_module(app
   QML_FILES
   AppLayout.qml
 
-  DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieDesigner.Nodes CutieDesigner.Stats
+  DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieDesigner.Nodes.Display CutieDesigner.Stats
 )
 
 target_link_directories(app

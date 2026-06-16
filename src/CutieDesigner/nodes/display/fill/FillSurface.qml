@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Shapes
-import CutieDesigner.Nodes
+import CutieDesigner.Nodes.Display
 
 Shape {
     id: root

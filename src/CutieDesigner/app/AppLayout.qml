@@ -4,7 +4,7 @@ import QtQuick.Controls
 
 import NodeEditor
 import CutieDesigner.Stats
-import CutieDesigner.Nodes
+import CutieDesigner.Nodes.Display
 
 Item {
     id: root

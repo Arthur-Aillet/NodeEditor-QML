@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import CutieDesigner.Nodes
+import CutieDesigner.Nodes.Display
 
 FlexboxLayout {
     id: stackControl

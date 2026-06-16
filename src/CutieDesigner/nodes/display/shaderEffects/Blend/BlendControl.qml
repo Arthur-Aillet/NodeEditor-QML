@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Controls
-import CutieDesigner.Nodes
+import CutieDesigner.Nodes.Display
 
 ComboBox {
     required property BlendNode node

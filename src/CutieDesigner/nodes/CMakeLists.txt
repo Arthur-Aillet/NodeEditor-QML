@@ -1,3 +1,5 @@
+add_subdirectory(display)
+
 qt_add_qml_module(nodes
   URI CutieDesigner.Nodes
   SHARED
@@ -7,18 +9,7 @@ qt_add_qml_module(nodes
   input/GradientInput/GradientInputControl.qml
   input/NumberInput/NumberInputControl.qml
   input/Vec2Input/Vec2InputControl.qml
-  display/AType/Ukrug/Ukrug.qml
-  display/AType/Ukrug/UkrugShader.qml
-  display/AType/Ukrug/UkrugControl.qml
-  display/AType/Ukrug/UkrugCharacter.qml
-  display/AType/AType.qml
-  display/Dimension/Dimension.qml
-  display/fill/FillSurface.qml
-  display/shaderEffects/Blend/Blend.qml
-  display/shaderEffects/Blend/BlendControl.qml
-  display/video/VideoDisplay.qml
-  display/Stack/Stack.qml
-  display/Stack/StackControl.qml
+
   process/TextTyper/TextTyper.qml
 
   SOURCES
@@ -38,29 +29,6 @@ qt_add_qml_module(nodes
   input/SceneInput/SceneInputNode.cpp
   input/WindowInput/WindowInputNode.hpp
   input/WindowInput/WindowInputNode.cpp
-
-  display/AType/Ukrug/UkrugNode.hpp
-  display/AType/Ukrug/UkrugNode.cpp
-  display/AType/Ukrug/UkrugPointsList.hpp
-  display/AType/Ukrug/UkrugPointsList.cpp
-  display/AType/ATypeCharacterNodeModel.hpp
-  display/AType/ATypeCharacterNodeModel.cpp
-  display/AType/ATypeNode.hpp
-  display/AType/ATypeNode.cpp
-  display/Dimension/DimensionNode.hpp
-  display/Dimension/DimensionNode.cpp
-  display/fill/FillNode.hpp
-  display/fill/FillNode.cpp
-  display/Stack/StackNode.cpp
-  display/Stack/StackNode.cpp
-  display/surface/SurfaceDisplayNode.hpp
-  display/surface/SurfaceDisplayNode.cpp
-  display/surface/SurfaceLoader.hpp
-  display/surface/SurfaceLoader.cpp
-  display/shaderEffects/Blend/BlendNode.cpp
-  display/shaderEffects/Blend/BlendNode.hpp
-  display/video/VideoDisplayNode.hpp
-  display/video/VideoDisplayNode.cpp
 
   process/color/CombineRGBA.cpp
   process/color/CombineRGBA.hpp
@@ -84,19 +52,6 @@ qt_add_qml_module(nodes
   process/vectors/SplitVec2.hpp
 
   DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieUiModule CutieDesigner.Datatypes
-  RESOURCES
-  display/AType/Ukrug/UkrugPointsData.json
-  display/AType/Ukrug/ukrug.vert.qsb
-  display/AType/Ukrug/ukrug.frag.qsb
-)
-
-
-qt6_add_shaders(nodes "nodes_shaders"
-  PREFIX
-    "/qt/qml/CutieDesigner/Nodes"
-  FILES
-  display/shaderEffects/Blend/blend.vert
-  display/shaderEffects/Blend/blend.frag
 )
 
 target_link_directories(nodes
@@ -110,16 +65,7 @@ target_link_directories(nodes
   PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${GSTREAMER_INCLUDE_DIRS}
-  display
-  display/Dimension
-  display/AType
-  display/AType/Ukrug
-  display/surface
-  display/fill
-  display/Stack
-  display/shaderEffects
-  display/shaderEffects/Blend
-  display/video
+
   input
   input/ColorInput/
   input/GradientInput/
@@ -145,6 +91,7 @@ target_link_libraries(nodes PUBLIC
   CutieUiModule
   vivid
   datatypes
+  display
   ${GSTREAMER_LIBRARIES}
 )
 
