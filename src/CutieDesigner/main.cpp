@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
   QObject &item = *engine.rootObjects().first();
 
   auto source = model.addNode(SurfaceDisplayNode(&engine).name());
-  model.setNodeData(source, NodeRole::Position, QPointF(400, 150));
+  model.setNodeData(source, NodeRole::Position, QPointF(750, 225));
   model.setNodeData(source, NodeRole::Type, SurfaceDisplayNode(&engine).name());
   model.setNodeData(source, NodeRole::Flags, NodeFlag::Locked);
   auto display = model.delegateModel<SurfaceDisplayNode>(source);
@@ -87,22 +87,6 @@ int main(int argc, char *argv[]) {
   auto loader = item.property("objectLoader").value<SurfaceLoader *>();
   QObject::connect(display, SIGNAL(contentChanged(SurfaceData *)), loader,
                    SLOT(setSurfaceData(SurfaceData *)));
-
-  auto id1 = model.addNode(ATypeNode(&engine).name());
-  model.setNodeData(id1, NodeRole::Position, QPointF(220, 40));
-  model.setNodeData(id1, NodeRole::Type, ATypeNode(&engine).name());
-
-  auto id2 = model.addNode(TextTyperNode(&engine).name());
-  model.setNodeData(id2, NodeRole::Position, QPointF(0, 0));
-  model.setNodeData(id2, NodeRole::Type, TextTyperNode(&engine).name());
-
-  auto ukr = model.addNode(UkrugNode(&engine).name());
-  model.setNodeData(ukr, NodeRole::Position, QPointF(100, 150));
-  model.setNodeData(ukr, NodeRole::Type, UkrugNode(&engine).name());
-
-  auto id3 = model.addNode(BlendNode(&engine).name());
-  model.setNodeData(id3, NodeRole::Position, QPointF(200, 150));
-  model.setNodeData(id3, NodeRole::Type, BlendNode(&engine).name());
 
   int status = app.exec();
 
