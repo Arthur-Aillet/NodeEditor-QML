@@ -13,6 +13,11 @@ class CutieWindow : public QQuickWindow {
     emit mouseMoveEventForward(event);
   }
 
+  void resizeEvent(QResizeEvent *event) override {
+    QQuickWindow::resizeEvent(event);
+    emit resizeEventForward(event);
+  }
+
   void startRequestRefresh(QObject *object) {
     if (_dependsOnRefresh.empty()) {
       QObject::connect(this, &QQuickWindow::frameSwapped, this, &QQuickWindow::requestUpdate);
@@ -31,6 +36,7 @@ class CutieWindow : public QQuickWindow {
 
   signals:
   void mouseMoveEventForward(QMouseEvent *event);
+  void resizeEventForward(QResizeEvent *event);
 
   protected:
   std::vector<QObject *> _dependsOnRefresh = {};

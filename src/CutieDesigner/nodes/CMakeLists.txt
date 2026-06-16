@@ -30,6 +30,8 @@ qt_add_qml_module(nodes
   input/NumberInput/NumberInputNode.cpp
   input/MouseInput/MouseInputNode.hpp
   input/MouseInput/MouseInputNode.cpp
+  input/WindowInput/WindowInputNode.hpp
+  input/WindowInput/WindowInputNode.cpp
 
   display/AType/Ukrug/UkrugNode.hpp
   display/AType/Ukrug/UkrugNode.cpp
@@ -113,6 +115,7 @@ target_link_directories(nodes
   input/GradientInput/
   input/NumberInput/
   input/MouseInput/
+  input/WindowInput/
   process
   process/color
   process/math

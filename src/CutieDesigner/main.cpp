@@ -22,6 +22,7 @@
 #include "TextTyperNode.hpp"
 #include "UkrugNode.hpp"
 #include "VideoDisplayNode.hpp"
+#include "WindowInputNode.hpp"
 
 #include <QQmlApplicationEngine>
 #include <QtQml>
@@ -45,6 +46,7 @@ int main(int argc, char *argv[]) {
   ret->registerModel<GradientInputNode>("Input");
   ret->registerModel<NumberInputNode>("Input");
   ret->registerModel<MouseInputNode>("Input");
+  ret->registerModel<WindowInputNode>("Input");
   ret->registerModel<AdditionNode>("Process");
   ret->registerModel<DivisionNode>("Process");
   ret->registerModel<MultiplicationNode>("Process");

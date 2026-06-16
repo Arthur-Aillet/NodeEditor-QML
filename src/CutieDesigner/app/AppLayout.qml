@@ -98,6 +98,10 @@ Item {
 
                 HoverHandler {
                     id: sceneHoverHandler
+                    onHoveredChanged: {
+                        if (!sceneContent.focus)
+                            sceneContent.focus = true;
+                    }
                 }
 
                 SurfaceLoader {
@@ -121,17 +125,18 @@ Item {
 
                 Keys.onPressed: event => {
                     if ((event.key == Qt.Key_Space) && (event.modifiers & Qt.ControlModifier)) {
-                        if (root.state != "NodesFocus")
+                        if (root.state != "NodesFocus") {
                             root.state = "NodesFocus";
-                        else
+                        } else {
                             root.state = "";
+                        }
                     }
                 }
 
                 HoverHandler {
                     id: viewHoverHandler
                     onHoveredChanged: {
-                        if (view.focus == false)
+                        if (!view.focus)
                             view.focus = true;
                     }
                 }

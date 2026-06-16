@@ -6,26 +6,27 @@
 
 #include <QQuickItem>
 #include <QtCore/QObject>
+#include <qevent.h>
 #include <qforeach.h>
 #include <qobject.h>
 #include <qqmlengine.h>
 #include <qtmetamacros.h>
 #include <qvariant.h>
 
-class MouseInputNode : public NodeDelegateModel {
+class WindowInputNode : public NodeDelegateModel {
   Q_OBJECT
 
   public:
-  MouseInputNode(QQmlEngine *engine);
-  ~MouseInputNode() override {
+  WindowInputNode(QQmlEngine *engine);
+  ~WindowInputNode() override {
     if (_window != nullptr) {
       _window->stopRequestRefresh(this);
     }
   };
 
   bool captionVisible() const override { return true; }
-  QString name() const override { return "Mouse"; }
-  QString label() const override { return "Relative mouse position"; }
+  QString name() const override { return "Window"; }
+  QString label() const override { return "Cutie window dimensions"; }
 
   unsigned int nPorts(PortType portType) const override;
   const NodeDataType &dataType(PortType portType, PortIndex portIndex) const override;
@@ -37,12 +38,12 @@ class MouseInputNode : public NodeDelegateModel {
   void setInData(std::shared_ptr<NodeData>, PortIndex) override {}
 
   public slots:
-  void mouseMoveEvent(QMouseEvent *event);
+  void resizeEvent(QResizeEvent *event);
 
   private:
-  double _x = 0.0;
-  double _y = 0.0;
+  double _width = 0.0;
+  double _height = 0.0;
   CutieWindow *_window = nullptr;
-  std::shared_ptr<DecimalData> _xPtr;
-  std::shared_ptr<DecimalData> _yPtr;
+  std::shared_ptr<DecimalData> _widthPtr;
+  std::shared_ptr<DecimalData> _heightPtr;
 };
