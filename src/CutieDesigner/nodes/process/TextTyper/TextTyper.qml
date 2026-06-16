@@ -4,7 +4,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import NodeEditor
-import CutieDesigner.Nodes
+import CutieDesigner.Nodes.Process
 
 FlexboxLayout {
     id: root

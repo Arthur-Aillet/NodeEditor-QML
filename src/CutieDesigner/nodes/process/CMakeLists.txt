@@ -1,0 +1,63 @@
+qt_add_qml_module(process
+  URI CutieDesigner.Nodes.Process
+  SHARED
+  QML_FILES
+
+  TextTyper/TextTyper.qml
+
+  SOURCES
+  color/CombineRGBA.cpp
+  color/CombineRGBA.hpp
+  color/SplitRGBA.cpp
+  color/SplitRGBA.hpp
+  math/SubtractionNode.hpp
+  math/AdditionNode.hpp
+  math/DivisionNode.hpp
+  math/MathOperationNodeModel.hpp
+  math/MathOperationNodeModel.cpp
+  math/MultiplicationNode.hpp
+  math/SinNode.hpp
+  math/CosNode.hpp
+  TextTyper/TextTyperNode.hpp
+  TextTyper/TextTyperNode.cpp
+  TextTyper/TextTyperEventList.hpp
+  TextTyper/TextTyperEventList.cpp
+  vectors/CombineVec2.cpp
+  vectors/CombineVec2.hpp
+  vectors/SplitVec2.cpp
+  vectors/SplitVec2.hpp
+
+  DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieUiModule CutieDesigner.Datatypes
+)
+
+target_link_directories(process
+  PUBLIC
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${LIB_TARGET_LINK_DIRECTORIES}
+  ${GSTREAMER_LIBRARY_DIRS}
+)
+  
+target_include_directories(process
+  PUBLIC
+  ${GSTREAMER_INCLUDE_DIRS}
+
+  color
+  math
+  TextTyper
+  vectors
+)
+
+target_link_libraries(process PUBLIC
+  Qt6::Core
+  Qt6::Gui
+  Qt6::Quick
+  Qt6::QuickWidgets
+  Qt6::Qml
+  NodeEditor
+  CutieUiModule
+  vivid
+  datatypes
+  ${GSTREAMER_LIBRARIES}
+)
+
+target_compile_definitions(process PRIVATE GLM_ENABLE_EXPERIMENTAL)
