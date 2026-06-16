@@ -18,8 +18,8 @@
 WindowInputNode::WindowInputNode(QQmlEngine *engine)
     : NodeDelegateModel(engine), _widthPtr(std::make_shared<DecimalData>(_width)),
       _heightPtr(std::make_shared<DecimalData>(_height)) {
-  auto window = CutieWindow::getCutieWindow(engine);
-  if (window == nullptr)
+  _window = CutieWindow::getCutieWindow(engine);
+  if (_window == nullptr)
     return;
 
   _width = _window->width();
