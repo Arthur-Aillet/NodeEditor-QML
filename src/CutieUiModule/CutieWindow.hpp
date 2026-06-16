@@ -1,6 +1,8 @@
 #pragma once
 
+#include <QtWidgets/qapplication.h>
 #include <qevent.h>
+#include <qqmlengine.h>
 #include <qquickwindow.h>
 
 class CutieWindow : public QQuickWindow {
@@ -12,6 +14,9 @@ class CutieWindow : public QQuickWindow {
 
   void startRequestRefresh(QObject *object);
   void stopRequestRefresh(QObject *object);
+
+  static CutieWindow *getCutieWindow(QApplication *application);
+  static CutieWindow *getCutieWindow(QQmlEngine *engine);
 
   signals:
   void mouseMoveEventForward(QMouseEvent *event);

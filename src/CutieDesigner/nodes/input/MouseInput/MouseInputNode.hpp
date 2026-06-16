@@ -25,7 +25,9 @@ class MouseInputNode : public NodeDelegateModel {
 
   bool captionVisible() const override { return true; }
   QString name() const override { return "Mouse"; }
-  QString label() const override { return "Relative mouse position"; }
+
+  bool labelVisible() const override { return true; }
+  QString label() const override { return "Mouse pos in window space"; }
 
   unsigned int nPorts(PortType portType) const override;
   const NodeDataType &dataType(PortType portType, PortIndex portIndex) const override;

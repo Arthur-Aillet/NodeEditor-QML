@@ -1,4 +1,20 @@
 #include "CutieWindow.hpp"
+#include <qqmlcontext.h>
+
+CutieWindow *CutieWindow::getCutieWindow(QQmlEngine *engine) {
+  auto app = qvariant_cast<QApplication *>(engine->rootContext()->contextProperty("app"));
+
+  return getCutieWindow(app);
+};
+
+CutieWindow *CutieWindow::getCutieWindow(QApplication *application) {
+  for (auto w : application->allWindows()) {
+    CutieWindow *cutieWindow = qobject_cast<CutieWindow *>(w);
+    if (cutieWindow != nullptr)
+      return cutieWindow;
+  }
+  return nullptr;
+};
 
 void CutieWindow::mouseMoveEvent(QMouseEvent *event) {
   QQuickWindow::mouseMoveEvent(event);

@@ -13,6 +13,7 @@
 #include "MouseInputNode.hpp"
 #include "MultiplicationNode.hpp"
 #include "NumberInputNode.hpp"
+#include "SceneInputNode.hpp"
 #include "SinNode.hpp"
 #include "SplitRGBA.hpp"
 #include "StackNode.hpp"
@@ -47,6 +48,7 @@ int main(int argc, char *argv[]) {
   ret->registerModel<NumberInputNode>("Input");
   ret->registerModel<MouseInputNode>("Input");
   ret->registerModel<WindowInputNode>("Input");
+  ret->registerModel<SceneInputNode>("Input");
   ret->registerModel<AdditionNode>("Process");
   ret->registerModel<DivisionNode>("Process");
   ret->registerModel<MultiplicationNode>("Process");

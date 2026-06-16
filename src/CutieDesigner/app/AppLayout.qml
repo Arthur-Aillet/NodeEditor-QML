@@ -11,6 +11,7 @@ Item {
     anchors.fill: parent
 
     property alias objectLoader: objectLoader
+    property alias sceneContent: sceneContent
 
     states: [
         State {

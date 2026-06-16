@@ -12,6 +12,7 @@ CutieWindow {
     title: qsTr("CutieDesigner!")
 
     property alias objectLoader: appLayout.objectLoader
+    property alias sceneContent: appLayout.sceneContent
 
     AppLayout {
         id: appLayout

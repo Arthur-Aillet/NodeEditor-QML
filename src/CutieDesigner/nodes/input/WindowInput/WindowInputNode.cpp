@@ -8,7 +8,6 @@
 #include <qapplication.h>
 #include <qevent.h>
 #include <qlogging.h>
-#include <qobject.h>
 #include <qqmlcomponent.h>
 #include <qqmlcontext.h>
 #include <qquickwindow.h>
@@ -16,22 +15,11 @@
 #include <qvariant.h>
 #include <qwindow.h>
 
-static CutieWindow *getCutieWindow(QApplication *application) {
-  for (auto w : application->allWindows()) {
-    CutieWindow *cutieWindow = qobject_cast<CutieWindow *>(w);
-    if (cutieWindow != nullptr)
-      return cutieWindow;
-  }
-  return nullptr;
-}
-
 WindowInputNode::WindowInputNode(QQmlEngine *engine)
     : NodeDelegateModel(engine), _widthPtr(std::make_shared<DecimalData>(_width)),
       _heightPtr(std::make_shared<DecimalData>(_height)) {
-  auto app = qvariant_cast<QApplication *>(engine->rootContext()->contextProperty("app"));
-
-  _window = getCutieWindow(app);
-  if (_window == nullptr)
+  auto window = CutieWindow::getCutieWindow(engine);
+  if (window == nullptr)
     return;
 
   _width = _window->width();
@@ -68,13 +56,24 @@ std::shared_ptr<NodeData> WindowInputNode::outData(PortIndex portIndex) {
     return _heightPtr;
 }
 
-void WindowInputNode::resizeEvent(QResizeEvent *event) {
-  if (event->size().width() != _width) {
-    _width = event->size().width();
+void WindowInputNode::resizeEvent(QResizeEvent *_event) {
+  auto frame = qvariant_cast<QQuickItem *>(_window->property("sceneContent"));
+
+  if (frame->size().width() != _width) {
+    _width = frame->size().width();
     emit dataUpdated(0);
   }
-  if (event->size().height() != _height) {
-    _height = event->size().height();
+  if (frame->size().height() != _height) {
+    _height = frame->size().height();
     emit dataUpdated(1);
   }
+
+  // if (event->size().width() != _width) {
+  //   _width = event->size().width();
+  //   emit dataUpdated(0);
+  // }
+  // if (event->size().height() != _height) {
+  //   _height = event->size().height();
+  //   emit dataUpdated(1);
+  // }
 }
