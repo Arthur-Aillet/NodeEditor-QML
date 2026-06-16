@@ -12,6 +12,7 @@ qt_add_qml_module(NodeEditor
   view/GraphicsView.qml
   view/NavigableArea.qml
   view/SceneMenu.qml
+  view/ViewBackground/ViewBackground.qml
 
   connections/DefaultConnection.qml
   connections/DraftConnection.qml
@@ -20,8 +21,8 @@ qt_add_qml_module(NodeEditor
   DEPENDENCIES QtQuick
 
   SOURCES
-  view/ViewBackground.cpp
-  view/ViewBackground.hpp
+  # view/ViewBackground.cpp
+  # view/ViewBackground.hpp
 
   interface/ModelInterface.cpp
   interface/ModelInterface.hpp
@@ -59,6 +60,15 @@ qt_add_qml_module(NodeEditor
 
   RESOURCES
   resources/resources.qrc
+)
+
+
+qt6_add_shaders(NodeEditor "NodeEditor_shaders"
+  PREFIX
+  "/qt/qml/NodeEditor"
+  FILES
+  view/ViewBackground/viewBackground.frag
+  view/ViewBackground/viewBackground.vert
 )
 
 target_include_directories(NodeEditor PUBLIC

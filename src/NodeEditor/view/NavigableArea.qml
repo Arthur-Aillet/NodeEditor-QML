@@ -14,27 +14,32 @@ Item {
     property alias background: background
     property alias dragArea: dragArea
 
+
     ViewBackground {
         id: background
-
-        property real zoom: inner.mat.m11
-        property real zoomedScale: (150 * zoom)
-        property real offsetX: inner.mat.m14 + inner.x
-        property real offsetY: inner.mat.m24 + inner.y
-
-        x: offsetX % zoomedScale - (offsetX > 0) * zoomedScale
-        y: offsetY % zoomedScale - (offsetY > 0) * zoomedScale
-        antialiasing: zoom < 1
-        smooth: zoom < 1
-        width: (parent.width - x) / zoom + 1 // + 1 to hide any rounding error
-        height: (parent.height - y) / zoom + 1
-        transform: [
-            Scale {
-                xScale: background.zoom
-                yScale: background.zoom
-            }
-        ]
     }
+
+    // ViewBackground {
+    //     id: background
+
+    //     property real zoom: inner.mat.m11
+    //     property real zoomedScale: (150 * zoom)
+    //     property real offsetX: inner.mat.m14 + inner.x
+    //     property real offsetY: inner.mat.m24 + inner.y
+
+    //     x: offsetX % zoomedScale - (offsetX > 0) * zoomedScale
+    //     y: offsetY % zoomedScale - (offsetY > 0) * zoomedScale
+    //     antialiasing: zoom < 1
+    //     smooth: zoom < 1
+    //     width: (parent.width - x) / zoom + 1 // + 1 to hide any rounding error
+    //     height: (parent.height - y) / zoom + 1
+    //     transform: [
+    //         Scale {
+    //             xScale: background.zoom
+    //             yScale: background.zoom
+    //         }
+    //     ]
+    // }
 
     MouseArea {
         id: dragArea

@@ -7,9 +7,6 @@ layout(location = 1) out vec2 fragCoord;
 layout(std140, binding = 0) uniform buf {
   mat4 qt_Matrix;
   float qt_Opacity;
-  vec4 targetRect;
-  vec4 sourceRect;
-  int mode;
 };
 
 void main() {
