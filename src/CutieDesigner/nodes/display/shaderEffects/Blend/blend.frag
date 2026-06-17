@@ -1,5 +1,5 @@
 #version 440
-layout(location = 0) in vec2 qt_TexCoord0;
+layout(location = 0) in vec2 texCoord;
 layout(location = 1) in vec2 fragCoord;
 layout(location = 0) out vec4 fragColor;
 
@@ -150,7 +150,7 @@ void main() {
   bool inside = mappedCoord.x < targetRect.z && mappedCoord.y < targetRect.w;
   color1 *= (inside ? 1 : 0);
 
-  vec4 color2 = texture(source, qt_TexCoord0);
+  vec4 color2 = texture(source, texCoord);
 
   vec3 rgb1 = color1.rgb / max(1.0 / 256.0, color1.a);
   vec3 rgb2 = color2.rgb / max(1.0 / 256.0, color2.a);
