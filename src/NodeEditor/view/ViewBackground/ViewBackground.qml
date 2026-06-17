@@ -18,9 +18,6 @@ Item {
         property color fineGridColor: StyleCollection.graphicsView.fineGridColor
         property color coarseGridColor: StyleCollection.graphicsView.coarseGridColor
 
-        onZoomChanged: {
-            console.log(zoom);
-        }
         fragmentShader: 'viewBackground.frag.qsb'
         vertexShader: 'viewBackground.vert.qsb'
     }

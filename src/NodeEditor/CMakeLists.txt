@@ -21,9 +21,6 @@ qt_add_qml_module(NodeEditor
   DEPENDENCIES QtQuick
 
   SOURCES
-  # view/ViewBackground.cpp
-  # view/ViewBackground.hpp
-
   interface/ModelInterface.cpp
   interface/ModelInterface.hpp
   interface/DataFlowModelInterface.cpp
