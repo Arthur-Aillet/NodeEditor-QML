@@ -7,6 +7,11 @@ layout(location = 1) out vec2 fragCoord;
 layout(std140, binding = 0) uniform buf {
   mat4 qt_Matrix;
   float qt_Opacity;
+  vec2 translate;
+  float zoom;
+  vec4 backgroundColor;
+  vec4 fineGridColor;
+  vec4 coarseGridColor;
 };
 
 void main() {

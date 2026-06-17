@@ -14,9 +14,10 @@ Item {
     property alias background: background
     property alias dragArea: dragArea
 
-
     ViewBackground {
         id: background
+        zoom: inner.mat.m11
+        translate: Qt.point(inner.mat.m14 + inner.x, inner.mat.m24 + inner.y)
     }
 
     // ViewBackground {

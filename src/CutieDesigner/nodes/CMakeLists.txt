@@ -2,7 +2,7 @@ add_subdirectory(display)
 add_subdirectory(input)
 add_subdirectory(process)
 
-qt_add_library(nodes STATIC)
+add_library(nodes STATIC)
 
 target_link_libraries(nodes PUBLIC
   display

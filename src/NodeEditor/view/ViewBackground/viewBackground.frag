@@ -3,29 +3,49 @@ layout(location = 0) in vec2 texCoord;
 layout(location = 1) in vec2 fragCoord;
 layout(location = 0) out vec4 fragColor;
 
-const float LINE_WIDTH_1 = 1.0;
-const float LINE_WIDTH_2 = 3.0;
-const vec3 BG_COLOR =  vec3(0.2); // Black
-const vec3 LINE_COLOR =  vec3(1.0); // White
+const float SMALL_OFFSET = 15.;
+const float SMALL_WIDTH = 0.5;
+const float LARGE_OFFSET = 150.;
+const float LARGE_WIDTH = 1.0;
+const float LARGE_WIDTH_CUT = 3.0;
+const float ZOOM_CUTOFF_START = 0.8;
+const float ZOOM_CUTOFF_END = 0.4;
 
 layout(std140, binding = 0) uniform buf {
-    mat4 qt_Matrix;
-    float qt_Opacity;
+  mat4 qt_Matrix;
+  float qt_Opacity;
+  vec2 translate;
+  float zoom;
+  vec4 backgroundColor;
+  vec4 fineGridColor;
+  vec4 coarseGridColor;
 };
 
+float grid(vec2 fragCoord, float space, float gridWidth) {
+  vec2 p = fragCoord - vec2(.5);
+  vec2 size = vec2(gridWidth);
+
+  vec2 a1 = mod(fragCoord + .5, space) - .5;
+  vec2 a = abs(a1) - vec2(gridWidth / 2.);
+
+  float g = min(a.x, a.y);
+  return clamp(g, 0., 1.0);
+}
+
 void main() {
-    float N = 10.;
-    float NN = N + N + 10.;
-    float pix = 1.5;
-    
-    vec2 coord = fragCoord;
-    coord -= .5;
-    
-    vec2 p1 = abs(mod(coord + LINE_WIDTH_1 / 2. + pix, NN) - pix);
-    vec2 p2 = abs(mod(coord + LINE_WIDTH_2 / 2. + pix, 10.*NN) - pix);
-    
-    float g1 = min(p1.x, p1.y),
-          g2 = min(p2.x ,p2.y);
-    float amount = smoothstep(0.,pix, min(g1, g2));
-    fragColor = vec4(mix(LINE_COLOR, BG_COLOR, amount), 1.0) * qt_Opacity;
+  vec2 coord = fragCoord;
+  coord -= .5;
+  coord -= translate;
+  coord /= zoom;
+
+  float filterCursor = min((zoom - ZOOM_CUTOFF_END) / (ZOOM_CUTOFF_START - ZOOM_CUTOFF_END), 1.);
+
+  float smallGrid = grid(coord, SMALL_OFFSET, SMALL_WIDTH);
+  float filteredSmallGrid = min(1 - smallGrid, filterCursor);
+  float largeGrid =
+      (1 - grid(coord, LARGE_OFFSET, LARGE_WIDTH + LARGE_WIDTH_CUT * (1.0 - filterCursor))) *
+      (0.6 + filterCursor / 1.6);
+
+  fragColor = mix(backgroundColor, fineGridColor, filteredSmallGrid);
+  fragColor = mix(fragColor, coarseGridColor, largeGrid) * qt_Opacity;
 }
