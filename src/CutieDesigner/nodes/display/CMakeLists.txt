@@ -39,7 +39,7 @@ qt_add_qml_module(display
   video/VideoDisplayNode.hpp
   video/VideoDisplayNode.cpp
 
-  DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieUiModule CutieDesigner.Datatypes
+  DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieUiModule CutieDesigner.Datatypes org.freedesktop.gstreamer.Qt6GLVideoItem
   RESOURCES
   AType/Ukrug/UkrugPointsData.json
   AType/Ukrug/ukrug.vert.qsb
@@ -61,7 +61,9 @@ target_link_directories(display
   ${LIB_TARGET_LINK_DIRECTORIES}
   ${GSTREAMER_LIBRARY_DIRS}
 )
-  
+
+target_compile_options(display PRIVATE ${GSTREAMER_CFLAGS})
+
 target_include_directories(display
   PUBLIC
   ${GSTREAMER_INCLUDE_DIRS}
@@ -82,6 +84,7 @@ target_link_libraries(display PUBLIC
   Qt6::Quick
   Qt6::QuickWidgets
   Qt6::Qml
+  Qt6::OpenGL
   NodeEditor
   CutieUiModule
   vivid

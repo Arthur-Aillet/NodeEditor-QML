@@ -14,11 +14,11 @@ void SurfaceLoader::createComponent(SurfaceData *surfaceDescription) {
     return;
 
   if (surfaceDescription->component()->isError()) {
-    qCritical() << "AType letter componenent:" << surfaceDescription->component()->errorString();
+    qCritical() << "Surface load:" << surfaceDescription->component()->errorString();
     return;
   }
   if (!surfaceDescription->component()->isReady()) {
-    qCritical() << "AType letter componenent: Not Ready to be created";
+    qCritical() << "Surface load: Not Ready to be created";
     return;
   }
 
@@ -47,6 +47,8 @@ void SurfaceLoader::createComponent(SurfaceData *surfaceDescription) {
   // }
   QJSEngine::setObjectOwnership(_surface, QJSEngine::CppOwnership);
   emit surfaceDescription->componentLoaded(_surface);
+  QObject::connect(_surface, SIGNAL(destroyed(QObject *)), surfaceDescription,
+                   SIGNAL(componentDestroyed(QObject *)));
   emit surfaceChanged();
 }
 

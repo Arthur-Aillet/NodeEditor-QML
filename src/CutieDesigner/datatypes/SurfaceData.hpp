@@ -32,4 +32,5 @@ class SurfaceData : public NodeData {
 
   signals:
   void componentLoaded(QQuickItem *object);
+  void componentDestroyed(QObject *object);
 };

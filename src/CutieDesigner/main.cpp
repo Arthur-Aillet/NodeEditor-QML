@@ -42,6 +42,8 @@ int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
   QQmlApplicationEngine engine;
 
+  QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
+
   engine.rootContext()->setContextProperty("app", &app);
 
   auto ret = std::make_shared<NodeDelegateModelRegistry>(&engine);
@@ -73,6 +75,9 @@ int main(int argc, char *argv[]) {
   ret->registerModel<FillNode>("Display");
   ret->registerModel<StackNode>("Display");
 
+  GstElement *sink = gst_element_factory_make("qml6glsink", NULL);
+  gst_object_unref(sink);
+
   auto model = DataFlowGraphModel(ret, &engine);
 
   QObject::connect(
@@ -95,6 +100,7 @@ int main(int argc, char *argv[]) {
                    SLOT(setSurfaceData(SurfaceData *)));
 
   int status = app.exec();
+  gst_deinit();
 
   // Delete first surface loader to unload the visual tree
   // before the node tree to prevent missing properties
