@@ -38,6 +38,8 @@ qt_add_qml_module(display
   shaderEffects/Blend/BlendNode.hpp
   video/VideoDisplayNode.hpp
   video/VideoDisplayNode.cpp
+  video/GstreamerController.hpp
+  video/GstreamerController.cpp
 
   DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieUiModule CutieDesigner.Datatypes org.freedesktop.gstreamer.Qt6GLVideoItem
   RESOURCES

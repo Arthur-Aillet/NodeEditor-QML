@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CutieWindow.hpp"
+#include "GstreamerController.hpp"
 #include "NodeDelegateModel.hpp"
 #include "SurfaceData.hpp"
 
@@ -21,22 +22,6 @@
 #include <qrunnable.h>
 #include <qtmetamacros.h>
 
-class SetPlaying : public QRunnable {
-  public:
-  SetPlaying(GstElement *pipeline, GstElement *sink, QQuickItem *item)
-      : _pipeline(pipeline), _sink(sink), _item(item) {}
-
-  void run() {
-    g_object_set(_sink, "widget", _item, NULL);
-    gst_element_set_state(_pipeline, GST_STATE_PLAYING);
-  }
-
-  private:
-  GstElement *_pipeline;
-  GstElement *_sink;
-  QQuickItem *_item;
-};
-
 class VideoDisplayNode : public NodeDelegateModel {
   Q_OBJECT
   QML_ELEMENT
@@ -44,7 +29,7 @@ class VideoDisplayNode : public NodeDelegateModel {
 
   public:
   VideoDisplayNode(QQmlEngine *engine);
-  ~VideoDisplayNode();
+  ~VideoDisplayNode(){};
 
   public:
   bool captionVisible() const override { return true; }
@@ -57,26 +42,15 @@ class VideoDisplayNode : public NodeDelegateModel {
   const NodeDataType &dataType(PortType portType, PortIndex portIndex) const override;
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
+  void initPipeline();
 
   public slots:
-  void componentLoaded(QQuickItem *item) {
-    _window->scheduleRenderJob(new SetPlaying(_pipeline, _sink, item),
-                               QQuickWindow::AfterSynchronizingStage);
-  }
-
-  void componentDestroyed(QObject *object) {
-    qDebug()
-        << "finished"; // https://github.com/GStreamer/gst-plugins-good/blob/master/tests/examples/qt/qmlsink-dynamically-added/main.cpp
-    gst_element_set_state(_pipeline, GST_STATE_PAUSED);
-    g_object_set(_sink, "widget", NULL, NULL);
-  }
+  void componentLoaded(QQuickItem *item);
+  void componentDestroyed(QObject *object);
 
   private:
   std::shared_ptr<SurfaceData> _content = nullptr;
-  GstElement *_source = nullptr;
-  GstElement *_glupload = nullptr;
-  GstElement *_sink = nullptr;
-  GstElement *_pipeline = nullptr;
   CutieWindow *_window = nullptr;
+  std::unique_ptr<GstreamerController> _controller = nullptr;
   QQmlEngine *_engine;
 };

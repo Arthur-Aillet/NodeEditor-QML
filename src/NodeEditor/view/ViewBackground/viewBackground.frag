@@ -4,9 +4,9 @@ layout(location = 1) in vec2 fragCoord;
 layout(location = 0) out vec4 fragColor;
 
 const float SMALL_OFFSET = 15.;
-const float SMALL_WIDTH = 0.25;
+const float SMALL_WIDTH = 0.5;
 const float LARGE_OFFSET = 150.;
-const float LARGE_WIDTH = 0.5;
+const float LARGE_WIDTH = 1.0;
 const float LARGE_WIDTH_CUT = 3.0;
 const float ZOOM_CUTOFF_START = 0.8;
 const float ZOOM_CUTOFF_END = 0.4;

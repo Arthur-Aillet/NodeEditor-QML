@@ -25,6 +25,8 @@ qt_add_qml_module(input
   SceneInput/SceneInputNode.cpp
   WindowInput/WindowInputNode.hpp
   WindowInput/WindowInputNode.cpp
+  TimeInput/TimeInputNode.hpp
+  TimeInput/TimeInputNode.cpp
 
   DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieUiModule CutieDesigner.Datatypes
 )
@@ -47,6 +49,7 @@ target_include_directories(input
   MouseInput/
   SceneInput/
   WindowInput/
+  TimeInput/
 )
 
 target_link_libraries(input PUBLIC

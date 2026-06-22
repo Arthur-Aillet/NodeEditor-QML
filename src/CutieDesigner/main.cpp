@@ -23,6 +23,7 @@
 #include "SurfaceDisplayNode.hpp"
 #include "SurfaceLoader.hpp"
 #include "TextTyperNode.hpp"
+#include "TimeInputNode.hpp"
 #include "UkrugNode.hpp"
 #include "Vec2InputNode.hpp"
 #include "VideoDisplayNode.hpp"
@@ -36,49 +37,59 @@
 #include <qdebug.h>
 #include <qquickitem.h>
 
-int main(int argc, char *argv[]) {
+// Must be run after QApplication setup
+static void setupGstreamer() {
   gst_init(nullptr, nullptr);
 
+  // Register qml6 gstreamer plugin
+  GstElement *sink = gst_element_factory_make("qml6glsink", NULL);
+  gst_object_unref(sink);
+}
+
+static std::shared_ptr<NodeDelegateModelRegistry> createRegistery(QQmlEngine &engine) {
+  auto reg = std::make_shared<NodeDelegateModelRegistry>(&engine);
+
+  reg->registerModel<ColorInputNode>("Input");
+  reg->registerModel<GradientInputNode>("Input");
+  reg->registerModel<NumberInputNode>("Input");
+  reg->registerModel<Vec2InputNode>("Input");
+  reg->registerModel<MouseInputNode>("Input");
+  reg->registerModel<WindowInputNode>("Input");
+  reg->registerModel<SceneInputNode>("Input");
+  reg->registerModel<TimeInputNode>("Input");
+  reg->registerModel<AdditionNode>("Process");
+  reg->registerModel<DivisionNode>("Process");
+  reg->registerModel<MultiplicationNode>("Process");
+  reg->registerModel<SubtractionNode>("Process");
+  reg->registerModel<SinNode>("Process");
+  reg->registerModel<CosNode>("Process");
+  reg->registerModel<CombineRGBA>("Process");
+  reg->registerModel<SplitRGBA>("Process");
+  reg->registerModel<CombineVec2>("Process");
+  reg->registerModel<SplitVec2>("Process");
+  reg->registerModel<DimensionNode>("Display");
+  reg->registerModel<SurfaceDisplayNode>("Display");
+  reg->registerModel<UkrugNode>("Display");
+  reg->registerModel<ATypeNode>("Display");
+  reg->registerModel<TextTyperNode>("Process");
+  reg->registerModel<BlendNode>("Process");
+  reg->registerModel<VideoDisplayNode>("Display");
+  reg->registerModel<FillNode>("Display");
+  reg->registerModel<StackNode>("Display");
+  return reg;
+}
+
+int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
   QQmlApplicationEngine engine;
+
+  setupGstreamer();
 
   QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
 
   engine.rootContext()->setContextProperty("app", &app);
 
-  auto ret = std::make_shared<NodeDelegateModelRegistry>(&engine);
-
-  ret->registerModel<ColorInputNode>("Input");
-  ret->registerModel<GradientInputNode>("Input");
-  ret->registerModel<NumberInputNode>("Input");
-  ret->registerModel<Vec2InputNode>("Input");
-  ret->registerModel<MouseInputNode>("Input");
-  ret->registerModel<WindowInputNode>("Input");
-  ret->registerModel<SceneInputNode>("Input");
-  ret->registerModel<AdditionNode>("Process");
-  ret->registerModel<DivisionNode>("Process");
-  ret->registerModel<MultiplicationNode>("Process");
-  ret->registerModel<SubtractionNode>("Process");
-  ret->registerModel<SinNode>("Process");
-  ret->registerModel<CosNode>("Process");
-  ret->registerModel<CombineRGBA>("Process");
-  ret->registerModel<SplitRGBA>("Process");
-  ret->registerModel<CombineVec2>("Process");
-  ret->registerModel<SplitVec2>("Process");
-  ret->registerModel<DimensionNode>("Display");
-  ret->registerModel<SurfaceDisplayNode>("Display");
-  ret->registerModel<UkrugNode>("Display");
-  ret->registerModel<ATypeNode>("Display");
-  ret->registerModel<TextTyperNode>("Process");
-  ret->registerModel<BlendNode>("Process");
-  ret->registerModel<VideoDisplayNode>("Display");
-  ret->registerModel<FillNode>("Display");
-  ret->registerModel<StackNode>("Display");
-
-  GstElement *sink = gst_element_factory_make("qml6glsink", NULL);
-  gst_object_unref(sink);
-
-  auto model = DataFlowGraphModel(ret, &engine);
+  auto model = DataFlowGraphModel(createRegistery(engine), &engine);
 
   QObject::connect(
       &engine, &QQmlApplicationEngine::objectCreationFailed, &app,

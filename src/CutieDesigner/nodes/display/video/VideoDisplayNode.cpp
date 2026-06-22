@@ -1,13 +1,24 @@
 #include "VideoDisplayNode.hpp"
+#include "GstreamerController.hpp"
 #include "SurfaceData.hpp"
 
 #include <QtWidgets/QLabel>
 #include <memory>
-#include <qdebug.h>
 #include <qobject.h>
 #include <qqmlcomponent.h>
+#include <qquickitem.h>
 #include <qtimer.h>
 #include <qtmetamacros.h>
+
+void VideoDisplayNode::componentLoaded(QQuickItem *videoItem) {
+  _controller->linkQtSink(videoItem);
+  // _window->scheduleRenderJob(new SetPlaying(this, videoItem),
+  //                            QQuickWindow::BeforeSynchronizingStage);
+}
+
+void VideoDisplayNode::componentDestroyed(QObject *object) {
+  _controller->unlinkQtSink(qobject_cast<QQuickItem *>(object));
+}
 
 VideoDisplayNode::VideoDisplayNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
   _window = CutieWindow::getCutieWindow(engine);
@@ -25,23 +36,7 @@ VideoDisplayNode::VideoDisplayNode(QQmlEngine *engine) : NodeDelegateModel(engin
                    SLOT(componentLoaded(QQuickItem *)));
   QObject::connect(_content.get(), SIGNAL(componentDestroyed(QObject *)), this,
                    SLOT(componentDestroyed(QObject *)));
-
-  _pipeline = gst_pipeline_new(NULL);
-  _source = gst_element_factory_make("videotestsrc", NULL);
-  _glupload = gst_element_factory_make("glupload", NULL);
-  _sink = gst_element_factory_make("qml6glsink", NULL);
-
-  g_assert(_source && _glupload && _sink);
-
-  gst_bin_add_many(GST_BIN(_pipeline), _source, _glupload, _sink, NULL);
-  gst_element_link_many(_source, _glupload, _sink, NULL);
-}
-
-VideoDisplayNode::~VideoDisplayNode() {
-  if (_pipeline != nullptr) {
-    gst_element_set_state(_pipeline, GST_STATE_NULL);
-    gst_object_unref(_pipeline);
-  }
+  _controller = std::make_unique<GstreamerController>(_window);
 }
 
 unsigned int VideoDisplayNode::nPorts(PortType portType) const {
