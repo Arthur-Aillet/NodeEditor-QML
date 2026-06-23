@@ -19,16 +19,34 @@ Item {
         connected = ModelInterface.graph.connections(nodePainter.nodeObject.nodeId, side, portId).length != 0;
     }
 
-    property bool connected: ModelInterface.graph.connections(nodePainter.nodeObject.nodeId, side, portId).length != 0
-    property string dataType: ModelInterface.graph.portData(nodePainter.nodeObject.nodeId, side, portId, NodeEditor.PortRole.DataType)
-    property string dataName: ModelInterface.graph.portData(nodePainter.nodeObject.nodeId, side, portId, NodeEditor.PortRole.DataName)
+    property bool connected
+    property string dataType
+    property string dataName
+    property bool captionVisible
+    property string caption
+
+    function queryPortInfo() {
+        connected = ModelInterface.graph.connections(nodePainter.nodeObject.nodeId, side, portId).length != 0;
+        dataType = ModelInterface.graph.portData(nodePainter.nodeObject.nodeId, side, portId, NodeEditor.PortRole.DataType);
+        dataName = ModelInterface.graph.portData(nodePainter.nodeObject.nodeId, side, portId, NodeEditor.PortRole.DataName);
+        captionVisible = ModelInterface.graph.portData(nodePainter.nodeObject.nodeId, side, portId, NodeEditor.PortRole.PortCaptionVisible);
+        caption = ModelInterface.graph.portData(nodePainter.nodeObject.nodeId, side, portId, NodeEditor.PortRole.PortCaption);
+    }
+
+    Component.onCompleted: port.queryPortInfo()
+
+    Connections {
+        target: port.nodePainter.nodeObject
+        function onPortsChanged(type: int) {
+            if (type == port.side) {
+                port.queryPortInfo();
+            }
+        }
+    }
 
     Text {
         id: portLabel
         readonly property real offset: 10
-
-        property bool captionVisible: ModelInterface.graph.portData(port.nodePainter.nodeObject.nodeId, port.side, port.portId, NodeEditor.PortRole.PortCaptionVisible)
-        property string caption: ModelInterface.graph.portData(port.nodePainter.nodeObject.nodeId, port.side, port.portId, NodeEditor.PortRole.PortCaption)
 
         FontMetrics {
             id: portLabelMetrics
@@ -37,7 +55,7 @@ Item {
 
         x: connectionPoint.x + (port.side == NodeEditor.PortType.In ? offset : -width - offset)
         y: connectionPoint.y - portLabelMetrics.ascent / 2.0 - port.style.connectionPointDiameter / 4.0
-        text: captionVisible ? caption : port.dataName
+        text: port.captionVisible ? port.caption : port.dataName
         color: port.connected ? port.style.fontColor : port.style.fontColorFaded
     }
 

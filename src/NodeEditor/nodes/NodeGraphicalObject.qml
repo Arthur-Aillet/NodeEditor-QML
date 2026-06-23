@@ -3,19 +3,20 @@ import QtQuick
 import NodeEditor
 
 MouseArea {
-    id: root
+    id: nodeObj
     opacity: selected ? 1 : style.opacity
     focusPolicy: Qt.StrongFocus
 
     signal connectionChanged(portIndex: int, portType: int, otherNodeId: int, otherPortId: int)
+    signal portsChanged(type: int)
 
     required property DraftConnection draftConnection
     required property NavigableArea area
     required property NodeList nodes
     required property int nodeId
 
-    property int inPortCount: ModelInterface.graph.nodeData(root.nodeId, NodeEditor.NodeRole.InPortCount)
-    property int outPortCount: ModelInterface.graph.nodeData(root.nodeId, NodeEditor.NodeRole.OutPortCount)
+    property int inPortCount: ModelInterface.graph.nodeData(nodeObj.nodeId, NodeEditor.NodeRole.InPortCount)
+    property int outPortCount: ModelInterface.graph.nodeData(nodeObj.nodeId, NodeEditor.NodeRole.OutPortCount)
 
     property var getPortPosition: (painter.item as AbstractNodePainter).getPortPosition
 
@@ -23,12 +24,15 @@ MouseArea {
     property int flags
     property bool locked: flags & NodeEditor.NodeFlags.Locked
 
-    function portsChanged(type: int) {
-        if (type == NodeEditor.PortType.In) {
-            inPortCount = ModelInterface.graph.nodeData(root.nodeId, NodeEditor.NodeRole.InPortCount);
+    Connections {
+        target: nodeObj
+        function onPortsChanged(type: int) {
+            if (type == NodeEditor.PortType.In) {
+                nodeObj.inPortCount = ModelInterface.graph.nodeData(nodeObj.nodeId, NodeEditor.NodeRole.InPortCount);
+            } else if (type == NodeEditor.PortType.Out) {
+                nodeObj.outPortCount = ModelInterface.graph.nodeData(nodeObj.nodeId, NodeEditor.NodeRole.OutPortCount);
+            }
         }
-        if (type == NodeEditor.PortType.Out)
-            outPortCount = ModelInterface.graph.nodeData(root.nodeId, NodeEditor.NodeRole.OutPortCount);
     }
 
     function loadFlags() {
@@ -45,9 +49,9 @@ MouseArea {
     property bool selected: false
 
     Connections {
-        target: root.nodes.selectedNodes
+        target: nodeObj.nodes.selectedNodes
         function onChanged() {
-            root.selected = root.nodes.selectedNodes.has(root.nodeId);
+            nodeObj.selected = nodeObj.nodes.selectedNodes.has(nodeObj.nodeId);
         }
     }
 
@@ -85,15 +89,15 @@ MouseArea {
     }
 
     Connections {
-        target: root.draftConnection
+        target: nodeObj.draftConnection
 
         function onSelectedPortChanged() {
-            if (root.draftConnection.selectedPort == null) {
-                root.focusPolicy = Qt.StrongFocus;
+            if (nodeObj.draftConnection.selectedPort == null) {
+                nodeObj.focusPolicy = Qt.StrongFocus;
             } else {
-                root.nodes.selectedNodes.clear();
-                root.focus = false;
-                root.focusPolicy = Qt.NoFocus;
+                nodeObj.nodes.selectedNodes.clear();
+                nodeObj.focus = false;
+                nodeObj.focusPolicy = Qt.NoFocus;
             }
         }
     }
@@ -117,12 +121,12 @@ MouseArea {
 
     drag {
         filterChildren: true
-        target: root.selected ? root : undefined
+        target: nodeObj.selected ? nodeObj : undefined
         onActiveChanged: if (drag.active)
             focus = true
     }
     propagateComposedEvents: true
-    anchors.fill: root
+    anchors.fill: nodeObj
     hoverEnabled: true
     cursorShape: locked ? Qt.ArrowCursor : Qt.DragMoveCursor
 
@@ -136,28 +140,28 @@ MouseArea {
 
         onNodePainterUrlChanged: {
             const initialProperties = {
-                nodeObject: root,
-                area: root.area,
-                draftConnection: root.draftConnection
+                nodeObject: nodeObj,
+                area: nodeObj.area,
+                draftConnection: nodeObj.draftConnection
             };
             setSource(nodePainterUrl, initialProperties);
         }
         Component.onCompleted: {
             nodePainterUrl = "DefaultNodePainter.qml";
         }
-        onItemChanged: DataFlowModelInterface.dataFlowGraph.requestComponent(root.nodeId, (item as AbstractNodePainter).embeddedComponentContainer)
+        onItemChanged: DataFlowModelInterface.dataFlowGraph.requestComponent(nodeObj.nodeId, (item as AbstractNodePainter).embeddedComponentContainer)
     }
 
     // Port Interaction points
     Repeater {
-        model: root.inPortCount + root.outPortCount
+        model: nodeObj.inPortCount + nodeObj.outPortCount
         delegate: MouseArea {
             required property int index
-            property var side: (index < root.inPortCount) ? NodeEditor.PortType.In : NodeEditor.PortType.Out
-            property int portId: (index < root.inPortCount) ? index : index - root.inPortCount
+            property var side: (index < nodeObj.inPortCount) ? NodeEditor.PortType.In : NodeEditor.PortType.Out
+            property int portId: (index < nodeObj.inPortCount) ? index : index - nodeObj.inPortCount
 
             property point pos: (painter.item as AbstractNodePainter).getPortPosition(portId, side)
-            property real radius: root.style.connectionPointDiameter * 0.6 // Diameter is used a the radius in the original
+            property real radius: nodeObj.style.connectionPointDiameter * 0.6 // Diameter is used a the radius in the original
 
             x: pos.x - radius * 1.5
             y: pos.y - radius * 1.5
@@ -165,9 +169,9 @@ MouseArea {
             width: radius * 2 * 1.5
             height: radius * 2 * 1.5
 
-            onPressed: root.draftConnection.selectedPort = {
+            onPressed: nodeObj.draftConnection.selectedPort = {
                 "portId": portId,
-                "nodeId": root.nodeId,
+                "nodeId": nodeObj.nodeId,
                 "portType": side
             }
         }

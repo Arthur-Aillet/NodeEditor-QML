@@ -75,6 +75,9 @@ NodeId DataFlowGraphModel::addNode(QString const nodeType) {
     connect(model.get(), &NodeDelegateModel::portsInserted,
             [newId, this](PortType const portType) { portsInserted(newId, portType); });
 
+    connect(model.get(), &NodeDelegateModel::portsNameChanged,
+            [newId, this](PortType const portType) { nodePortsUpdated(newId, portType); });
+
     _models[newId] = std::move(model);
 
     _labels[newId] = _models[newId]->label();
@@ -603,6 +606,11 @@ void DataFlowGraphModel::loadNode(QJsonObject const &nodeJson) {
     connect(model.get(), &NodeDelegateModel::portsInserted,
             [restoredNodeId, this](PortType const portType) {
               portsInserted(restoredNodeId, portType);
+            });
+
+    connect(model.get(), &NodeDelegateModel::portsNameChanged,
+            [restoredNodeId, this](PortType const portType) {
+              nodePortsUpdated(restoredNodeId, portType);
             });
 
     _models[restoredNodeId] = std::move(model);

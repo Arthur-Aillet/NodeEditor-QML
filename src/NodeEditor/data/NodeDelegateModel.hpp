@@ -191,6 +191,9 @@ class NodeDelegateModel : public QObject, public Serializable {
   /// Call this function when data and port moditications are finished.
   void portsInserted(PortType const portType);
 
+  /// Call this function when you want to refresh the ports names.
+  void portsNameChanged(PortType const portType);
+
   private:
   std::shared_ptr<QQuickItem> _embed{nullptr};
   NodeStyle _nodeStyle;
