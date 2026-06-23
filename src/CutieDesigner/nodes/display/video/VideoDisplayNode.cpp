@@ -12,12 +12,6 @@
 
 void VideoDisplayNode::componentLoaded(QQuickItem *videoItem) {
   _controller->linkQtSink(videoItem);
-  // _window->scheduleRenderJob(new SetPlaying(this, videoItem),
-  //                            QQuickWindow::BeforeSynchronizingStage);
-}
-
-void VideoDisplayNode::componentDestroyed(QObject *object) {
-  _controller->unlinkQtSink(qobject_cast<QQuickItem *>(object));
 }
 
 VideoDisplayNode::VideoDisplayNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
@@ -34,8 +28,6 @@ VideoDisplayNode::VideoDisplayNode(QQmlEngine *engine) : NodeDelegateModel(engin
   _content = std::make_shared<SurfaceData>(std::move(comp), map);
   QObject::connect(_content.get(), SIGNAL(componentLoaded(QQuickItem *)), this,
                    SLOT(componentLoaded(QQuickItem *)));
-  QObject::connect(_content.get(), SIGNAL(componentDestroyed(QObject *)), this,
-                   SLOT(componentDestroyed(QObject *)));
   _controller = std::make_unique<GstreamerController>(_window);
 }
 

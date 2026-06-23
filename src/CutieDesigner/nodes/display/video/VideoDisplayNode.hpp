@@ -44,9 +44,13 @@ class VideoDisplayNode : public NodeDelegateModel {
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
   void initPipeline();
 
+  Q_INVOKABLE void gettingDestroyed(QQuickItem *item) {
+    qDebug() << "I'm getting destroyed" << item;
+    _controller->unlinkQtSink(item);
+  }
+
   public slots:
   void componentLoaded(QQuickItem *item);
-  void componentDestroyed(QObject *object);
 
   private:
   std::shared_ptr<SurfaceData> _content = nullptr;

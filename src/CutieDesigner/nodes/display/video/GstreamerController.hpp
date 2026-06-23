@@ -18,19 +18,17 @@ class GstreamerController {
   void unlinkQtSink(QQuickItem *item);
 
   private:
-  void linkQtSinkAfterQML(QQuickItem *item, GstElement *sink);
+  void linkQtSinkAfterQML(QQuickItem *item);
 
   public:
-  GstElement *pipeline;
-  GstElement *qmlsink;
-  GstElement *tee;
-  GstElement *src;
+  GstElement *pipeline = nullptr;
+  GstElement *qmlsink = nullptr;
+  GstElement *tee = nullptr;
+  GstElement *src = nullptr;
 
-  GstElement *fakesink;
-  GstElement *queueFake;
-  GstPad *blockpad;
-  QQuickItem *item;
+  GstElement *fakesink = nullptr;
+  GstElement *queueFake = nullptr;
 
   private:
-  CutieWindow *_window;
+  CutieWindow *_window = nullptr;
 };
