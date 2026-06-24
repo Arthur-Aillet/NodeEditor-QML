@@ -14,6 +14,7 @@ enum ColorMode {
   HSVA,
   CMYKA,
   OKLAB,
+  LCH,
 };
 Q_ENUM_NS(ColorMode)
 

@@ -11,9 +11,8 @@ QStringList CutieDesigner::getColorModeNames() {
 }
 
 std::string CutieDesigner::getColorModeComponents(CutieDesigner::ColorMode mode) {
-  static const std::array<std::string, 5> components = {
-      "rgba", "hsla", "hsva", "cmyka", "LABa",
-  };
+  static const std::array<std::string, 6> components = {"rgba",  "hsla", "hsva",
+                                                        "cmyka", "LABa", "lcha"};
 
   return components[mode];
 }

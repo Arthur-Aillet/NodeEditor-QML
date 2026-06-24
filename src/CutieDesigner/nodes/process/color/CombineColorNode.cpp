@@ -91,6 +91,8 @@ std::shared_ptr<NodeData> CombineColorNode::outData(PortIndex portIndex) {
   auto in4 = _input[3].expired() ? !isFive : std::clamp(_input[3].lock()->repr<double>(), 0.0, 1.0);
   auto in5 = _input[4].expired() ? isFive : std::clamp(_input[4].lock()->repr<double>(), 0.0, 1.0);
 
+  vivid::Color asRgb;
+
   switch (_mode) {
   case RGBA:
     _color = QColor::fromRgbF(in1, in2, in3, in4);
@@ -105,8 +107,15 @@ std::shared_ptr<NodeData> CombineColorNode::outData(PortIndex portIndex) {
     _color = QColor::fromCmykF(in1, in2, in3, in4, in5);
     break;
   case OKLAB:
-    vivid::oklab_t oklab{static_cast<float>(in1), static_cast<float>(in2), static_cast<float>(in3)};
-    auto asRgb = vivid::Color(oklab).rgb();
+    asRgb = vivid::Color(vivid::oklab_t{static_cast<float>(in1), static_cast<float>(in2),
+                                        static_cast<float>(in3)})
+                .rgb();
+    _color = QColor::fromRgbF(asRgb.value().r, asRgb.value().g, asRgb.value().b, in4);
+    break;
+  case LCH:
+    asRgb = vivid::Color(vivid::lch_t{static_cast<float>(in1) * 100, static_cast<float>(in2) * 140,
+                                      static_cast<float>(in3) * 360})
+                .rgb();
     _color = QColor::fromRgbF(asRgb.value().r, asRgb.value().g, asRgb.value().b, in4);
   }
   return _outColorPtr;

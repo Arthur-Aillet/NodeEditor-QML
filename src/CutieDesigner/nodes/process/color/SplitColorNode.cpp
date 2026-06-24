@@ -102,6 +102,8 @@ std::shared_ptr<NodeData> SplitColorNode::outData(PortIndex portIndex) {
   float in4 = 0;
   float in5 = 1;
 
+  vivid::Color asVivid;
+
   switch (_mode) {
   case RGBA:
     color.getRgbF(&in1, &in2, &in3, &in4);
@@ -118,11 +120,19 @@ std::shared_ptr<NodeData> SplitColorNode::outData(PortIndex portIndex) {
   case OKLAB:
     color.getRgbF(&in1, &in2, &in3, &in4);
 
-    vivid::rgb_t vividColor{in1, in2, in3};
-    auto asOklab = vivid::Color(vividColor).oklab();
-    in1 = asOklab.value().x;
-    in2 = asOklab.value().y;
-    in3 = asOklab.value().z;
+    asVivid = vivid::Color(vivid::rgb_t{in1, in2, in3}).oklab();
+    in1 = asVivid.value().x;
+    in2 = asVivid.value().y;
+    in3 = asVivid.value().z;
+    break;
+  case LCH:
+    color.getRgbF(&in1, &in2, &in3, &in4);
+
+    asVivid = vivid::Color(vivid::rgb_t{in1, in2, in3}).lch();
+    in1 = asVivid.value().x / 100.0;
+    in2 = asVivid.value().y / 140.0;
+    in3 = asVivid.value().z / 360.0;
+    break;
   }
   _outValues[0] = in1;
   _outValues[1] = in2;
