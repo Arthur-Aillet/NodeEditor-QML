@@ -1,5 +1,4 @@
 #include "ATypeCharacterNodeModel.hpp"
-#include <qdebug.h>
 #include <qlogging.h>
 #include <qtimer.h>
 

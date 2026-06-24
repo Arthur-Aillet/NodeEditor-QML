@@ -2,7 +2,7 @@
 #include "AdditionNode.hpp"
 #include "BlendNode.hpp"
 #include "ColorInputNode.hpp"
-#include "CombineRGBA.hpp"
+#include "CombineColorNode.hpp"
 #include "CombineVec2.hpp"
 #include "CosNode.hpp"
 #include "DataFlowModelInterface.hpp"
@@ -16,7 +16,7 @@
 #include "NumberInputNode.hpp"
 #include "SceneInputNode.hpp"
 #include "SinNode.hpp"
-#include "SplitRGBA.hpp"
+#include "SplitColorNode.hpp"
 #include "SplitVec2.hpp"
 #include "StackNode.hpp"
 #include "SubtractionNode.hpp"
@@ -34,7 +34,6 @@
 #include <QtWidgets/QApplication>
 #include <gst/gst.h>
 #include <memory>
-#include <qdebug.h>
 #include <qquickitem.h>
 
 // Must be run after QApplication setup
@@ -63,8 +62,8 @@ static std::shared_ptr<NodeDelegateModelRegistry> createRegistery(QQmlEngine &en
   reg->registerModel<SubtractionNode>("Process");
   reg->registerModel<SinNode>("Process");
   reg->registerModel<CosNode>("Process");
-  reg->registerModel<CombineRGBA>("Process");
-  reg->registerModel<SplitRGBA>("Process");
+  reg->registerModel<CombineColorNode>("Process");
+  reg->registerModel<SplitColorNode>("Process");
   reg->registerModel<CombineVec2>("Process");
   reg->registerModel<SplitVec2>("Process");
   reg->registerModel<DimensionNode>("Display");

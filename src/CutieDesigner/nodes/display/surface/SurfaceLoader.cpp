@@ -1,6 +1,5 @@
 #include "SurfaceLoader.hpp"
 
-#include <qdebug.h>
 #include <qjsengine.h>
 #include <qlogging.h>
 #include <qobject.h>

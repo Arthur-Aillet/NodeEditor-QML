@@ -9,7 +9,6 @@
 #include <QtGui/QClipboard>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QGraphicsObject>
-#include <qdebug.h>
 
 static void insertSerializedItems(QJsonObject const &json, ModelInterface *interface) {
   AbstractGraphModel &graphModel = interface->graphModel;

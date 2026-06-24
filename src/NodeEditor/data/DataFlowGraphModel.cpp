@@ -3,7 +3,6 @@
 #include "NodeData.hpp"
 
 #include <QJsonArray>
-#include <qdebug.h>
 #include <qobject.h>
 #include <qqmlengine.h>
 #include <stack>

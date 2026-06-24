@@ -1,7 +1,6 @@
 #include "FrequencyMonitor.hpp"
 #include <QQuickWindow>
 #include <QTime>
-#include <qdebug.h>
 
 FrequencyMonitor::FrequencyMonitor(QQuickItem *parent)
     : QQuickItem(parent), _counter(0), _refreshPeriod(1000) {

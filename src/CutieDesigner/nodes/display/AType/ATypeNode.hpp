@@ -8,7 +8,6 @@
 #include <QtCore/QObject>
 #include <memory>
 #include <qcontainerfwd.h>
-#include <qdebug.h>
 #include <qjsvalue.h>
 #include <qqmlcomponent.h>
 #include <qqmlcontext.h>

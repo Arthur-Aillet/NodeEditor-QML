@@ -6,7 +6,6 @@
 #include <QQmlComponent>
 #include <QtCore/QObject>
 #include <memory>
-#include <qdebug.h>
 #include <qjsvalue.h>
 #include <qqmlcomponent.h>
 #include <qqmlengine.h>

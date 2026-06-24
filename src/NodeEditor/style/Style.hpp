@@ -1,12 +1,10 @@
 #pragma once
 
-#include <QtCore/QDebug>
 #include <QtCore/QFile>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QObject>
 #include <QtCore/QString>
-#include <qdebug.h>
 
 class Style // : public QObject
 {

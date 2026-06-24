@@ -2,7 +2,6 @@
 
 #include "UkrugNode.hpp"
 #include <QQmlEngine>
-#include <qdebug.h>
 #include <qdir.h>
 #include <qfile.h>
 #include <qjsonarray.h>

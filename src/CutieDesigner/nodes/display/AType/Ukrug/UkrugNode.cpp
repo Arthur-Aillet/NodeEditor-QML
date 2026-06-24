@@ -4,7 +4,6 @@
 #include "DecimalData.hpp"
 #include <memory>
 #include <qcontainerfwd.h>
-#include <qdebug.h>
 #include <qqmlcomponent.h>
 
 UkrugNode::UkrugNode(QQmlEngine *engine)

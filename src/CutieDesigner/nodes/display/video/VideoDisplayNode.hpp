@@ -13,7 +13,6 @@
 #include <QtCore/QObject>
 
 #include <memory>
-#include <qdebug.h>
 #include <qjsvalue.h>
 #include <qlogging.h>
 #include <qqmlcomponent.h>

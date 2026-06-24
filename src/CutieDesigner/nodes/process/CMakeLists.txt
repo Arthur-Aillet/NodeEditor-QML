@@ -4,12 +4,15 @@ qt_add_qml_module(process
   QML_FILES
 
   TextTyper/TextTyper.qml
+  color/ColorModeControl.qml
 
   SOURCES
-  color/CombineRGBA.cpp
-  color/CombineRGBA.hpp
-  color/SplitRGBA.cpp
-  color/SplitRGBA.hpp
+  color/CombineColorNode.cpp
+  color/CombineColorNode.hpp
+  color/ColorModes.cpp
+  color/ColorModes.hpp
+  color/SplitColorNode.cpp
+  color/SplitColorNode.hpp
   math/SubtractionNode.hpp
   math/AdditionNode.hpp
   math/DivisionNode.hpp

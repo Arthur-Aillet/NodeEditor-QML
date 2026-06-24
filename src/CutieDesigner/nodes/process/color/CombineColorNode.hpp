@@ -1,19 +1,21 @@
 #pragma once
 
 #include "ColorData.hpp"
+#include "ColorModes.hpp"
 #include "NodeDelegateModel.hpp"
-#include <memory>
-#include <qcolor.h>
-#include <qvariant.h>
+#include <array>
 
-class CombineRGBA : public NodeDelegateModel {
-  public:
-  CombineRGBA(QQmlEngine *engine);
-  ~CombineRGBA() = default;
+using namespace CutieDesigner;
+
+class CombineColorNode : public NodeDelegateModel {
+  Q_OBJECT
 
   public:
+  CombineColorNode(QQmlEngine *engine);
+  ~CombineColorNode() = default;
+
   bool captionVisible() const override { return true; }
-  QString name() const override { return QStringLiteral("Combine RGBA"); }
+  QString name() const override { return "Combine Color"; }
 
   QString portCaption(PortType portType, PortIndex portIndex) const override;
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }
@@ -23,11 +25,16 @@ class CombineRGBA : public NodeDelegateModel {
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
+  QQmlComponent embeddedComponent(QQmlEngine *engine) override;
+
+  public slots:
+  void currentModeChanged();
+  void embeddedComponentLoaded(std::shared_ptr<QQuickItem> instance) override;
+
   private:
-  std::weak_ptr<NodeData> _r;
-  std::weak_ptr<NodeData> _g;
-  std::weak_ptr<NodeData> _b;
-  std::weak_ptr<NodeData> _a;
+  std::array<std::weak_ptr<NodeData>, 5> _input;
+  std::weak_ptr<QQuickItem> _embedded;
   QColor _color = "black";
+  ColorMode _mode = ColorMode::RGBA;
   std::shared_ptr<ColorData> _outColorPtr;
 };

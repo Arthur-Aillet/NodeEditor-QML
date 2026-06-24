@@ -1,6 +1,5 @@
 #include "UkrugPointsList.hpp"
 #include "UkrugNode.hpp"
-#include <qdebug.h>
 #include <qmath.h>
 
 UkrugPointsList::UkrugPointsList() {
@@ -99,51 +98,3 @@ bool UkrugPointsList::assignLetter(QString character) {
   emit pointsChanged();
   return validLetterFound;
 }
-// void UkrugPointsListModel::setLetter(QString letter) {
-//   qDebug() << "letter: " << letter;
-//   QList<UkrugPoint> letterData;
-
-//   if (letter == "A") {
-//     for (auto &p : A) {
-//       letterData.append(p);
-//     }
-//   } else {
-//     for (auto &p : NotA) {
-//       letterData.append(p);
-//     }
-//   }
-
-//   // Find best matches
-//   std::set<std::pair<int, int>> indexMatchs;
-
-//   for (int i = 0; i != letterData.count(); i++) {
-//     auto [firstIdx, secondIdx] = getClosestMatch(_points, letterData, indexMatchs);
-//     if (firstIdx != -1) {
-//       qDebug() << firstIdx << " " << secondIdx;
-//       indexMatchs.insert({firstIdx, secondIdx});
-//     }
-//   }
-
-//   // Changed matched angle:
-//   for (auto &[first, second] : indexMatchs) {
-//     _points[first].angle = letterData[second].angle;
-//     emit dataChanged(index(first, 0), index(first, 0), {static_cast<int>(PointRoles::Angle)});
-//   }
-
-//   for (int i = _points.count() - 1; i != -1; i--) {
-//     if (!pairContain(indexMatchs, i, 0)) {
-//       beginRemoveRows({}, i, i);
-//       _points.remove(i);
-//       endRemoveRows();
-//     }
-//   }
-
-//   // Add missing elements
-//   for (int i = 0; i != letterData.count(); i++) {
-//     if (!pairContain(indexMatchs, i, 1)) {
-//       beginInsertRows({}, rowCount(), rowCount());
-//       _points.append(letterData[i]);
-//       endInsertRows();
-//     }
-//   }
-// }

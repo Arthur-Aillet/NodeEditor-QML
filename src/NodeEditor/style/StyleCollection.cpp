@@ -1,6 +1,5 @@
 #include "StyleCollection.hpp"
 #include "NodeStyle.hpp"
-#include <qdebug.h>
 #include <qtmetamacros.h>
 
 StyleCollection::StyleCollection(QObject *parent)

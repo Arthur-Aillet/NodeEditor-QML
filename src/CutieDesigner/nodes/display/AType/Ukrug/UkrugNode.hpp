@@ -9,7 +9,6 @@
 #include <memory>
 
 #include <qcontainerfwd.h>
-#include <qdebug.h>
 #include <qjsvalue.h>
 #include <qqmlcomponent.h>
 #include <qqmlengine.h>

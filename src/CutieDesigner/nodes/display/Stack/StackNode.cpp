@@ -3,7 +3,6 @@
 
 #include <QtWidgets/QLabel>
 #include <memory>
-#include <qdebug.h>
 #include <qqmlcomponent.h>
 #include <qtimer.h>
 #include <qtmetamacros.h>

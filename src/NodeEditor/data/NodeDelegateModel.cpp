@@ -2,7 +2,6 @@
 
 #include "NodeStyle.hpp"
 #include "StyleCollection.hpp"
-#include <qdebug.h>
 
 NodeDelegateModel::NodeDelegateModel(QQmlEngine *engine)
     : _nodeStyle(StyleCollection::getNodeStyle()) {}

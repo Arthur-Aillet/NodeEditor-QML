@@ -8,7 +8,6 @@
 #include <QtCore/QObject>
 #include <memory>
 #include <qabstractitemmodel.h>
-#include <qdebug.h>
 #include <qjsvalue.h>
 #include <qqmlcomponent.h>
 #include <qqmlengine.h>

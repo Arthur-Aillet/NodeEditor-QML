@@ -17,7 +17,10 @@ AbstractNodePainter {
     Connections {
         target: root.nodeObject
         function onConnectionChanged(portIndex: int, portType: int, otherNodeId: int, otherPortId: int) {
-            inOutRepeater.portAt(portIndex, portType).portConnectionChanged();
+            let port = inOutRepeater.portAt(portIndex, portType);
+            if (port) {
+                port.portConnectionChanged();
+            }
         }
     }
 

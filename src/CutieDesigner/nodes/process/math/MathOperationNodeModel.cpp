@@ -1,6 +1,5 @@
 #include "MathOperationNodeModel.hpp"
 #include "DecimalData.hpp"
-#include <qdebug.h>
 
 unsigned int MathOperationNodeModel::nPorts(PortType portType) const {
   if (portType == PortType::In)
