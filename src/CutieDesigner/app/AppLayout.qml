@@ -2,7 +2,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
 
-import NodeEditor
+import CutieUiModule
 import CutieDesigner.Stats
 import CutieDesigner.Nodes.Display
 
@@ -20,8 +20,8 @@ Item {
                 script: {
                     if (view.needRevert) {
                         // Really not maintainable but it will do for now
-                        view.area.inner.x -= leftPanel.width + 2;
-                        view.area.inner.y -= topView.height + 2;
+                        view.graphicsView.area.inner.x -= leftPanel.width + 2;
+                        view.graphicsView.area.inner.y -= topView.height + 2;
                         view.needRevert = false;
                     }
                 }
@@ -40,7 +40,7 @@ Item {
             PropertyChanges {
                 view {
                     SplitView.preferredWidth: undefined
-                    area.background.opacity: 0.5
+                    graphicsView.area.background.opacity: 0.5
                     anchors.fill: root
                 }
                 layout {
@@ -55,8 +55,8 @@ Item {
             }
             StateChangeScript {
                 script: {
-                    view.area.inner.x += view.x;
-                    view.area.inner.y += view.y;
+                    view.graphicsView.area.inner.x += view.x;
+                    view.graphicsView.area.inner.y += view.y;
                 }
             }
         },
@@ -115,7 +115,7 @@ Item {
                 id: leftPanel
                 SplitView.preferredWidth: editView.width / 6
             }
-            GraphicsView {
+            NodeView {
                 id: view
 
                 property bool needRevert: false

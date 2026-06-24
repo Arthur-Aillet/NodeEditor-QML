@@ -45,6 +45,8 @@ Cute.TextField {
         from: 0
         to: 1
         stepSize: 0.01
+        Layout.fillWidth: true
+        Layout.fillHeight: true
 
         function lerp(factor: double): double {
             return root.min + (root.max - root.min) * factor;

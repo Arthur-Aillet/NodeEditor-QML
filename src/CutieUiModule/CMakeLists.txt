@@ -6,12 +6,23 @@ qt_add_qml_module(CutieUiModule
   ColorPicker.qml
   TextField.qml
   SliderField.qml
+  PaneBackground.qml
+  PlayPauseButton.qml
+  MediaButton.qml
 
   SOURCES
   CutieWindow.hpp
   CutieWindow.cpp
   
   DEPENDENCIES QtQuick
+
+  RESOURCES
+  ./InnerShadow/InnerShadow.qml
+  ./InnerShadow/innershadow.vert.qsb
+  ./InnerShadow/innershadow.frag.qsb
+  ./InnerShadow/BlurHelper.qml
+  ./InnerShadow/bluritems.frag.qsb
+  ./InnerShadow/bluritems.vert.qsb
 )
 
 target_include_directories(CutieUiModule PUBLIC

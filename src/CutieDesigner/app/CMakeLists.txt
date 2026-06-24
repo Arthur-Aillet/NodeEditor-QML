@@ -3,8 +3,10 @@ qt_add_qml_module(app
   URI CutieDesigner.App
   QML_FILES
   AppLayout.qml
+  Timeline.qml
+  NodeView.qml
 
-  DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieDesigner.Nodes.Display CutieDesigner.Stats
+  DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieDesigner.Nodes.Display CutieDesigner.Stats CutieUiModule
 )
 
 target_link_directories(app

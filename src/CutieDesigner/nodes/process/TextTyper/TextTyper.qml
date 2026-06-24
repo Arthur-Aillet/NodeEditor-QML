@@ -5,6 +5,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import NodeEditor
 import CutieDesigner.Nodes.Process
+import CutieUiModule as Cute
 
 FlexboxLayout {
     id: root
@@ -30,17 +31,16 @@ FlexboxLayout {
                 }
             }
         }
-        Button {
-            id: pauseBtn
+        Cute.PlayPauseButton {
+            id: playBtn
             anchors.left: displayArea.right
             height: parent.height
-            width: 20
-            text: root.textTyper.play ? "\u25B6" : "\u23F8"
+            playing: root.textTyper.play
             onClicked: root.textTyper.play = !root.textTyper.play
             Connections {
                 target: root.textTyper
                 function onPlayChanged() {
-                    pauseBtn.text = root.textTyper.play ? "\u25B6" : "\u23F8";
+                    playBtn.playing = root.textTyper.play;
                 }
             }
         }

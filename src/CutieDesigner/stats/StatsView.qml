@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import CutieDesigner.Stats
+import CutieUiModule
 
 PaneBackground {
     clip: true
