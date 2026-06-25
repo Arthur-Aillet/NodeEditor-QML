@@ -26,19 +26,19 @@ FlexboxLayout {
     }
 
     onValueChanged: {
-        slider.value = (value - min) / max;
+        slider.value = slider.easeInvFunction((value - min) / (max - min));
         textField.text = Number(value).toFixed(2);
     }
 
     TextField {
         id: textField
         Layout.preferredWidth: Math.max(40, contentWidth + 8)
-        onEditingFinished: {
-            text = Number(text).toFixed(2);
+        text: {
+            text = sliderField.value.toFixed(2);
         }
-        validator: DoubleValidator {
-            bottom: sliderField.min
-            top: sliderField.max
+        inputMethodHints: Qt.ImhFormattedNumbersOnly
+        onEditingFinished: {
+            sliderField.value = Math.max(Math.min(Number(text), sliderField.max), sliderField.min).toFixed(2);
         }
     }
 
@@ -47,7 +47,7 @@ FlexboxLayout {
         x: 0
         from: 0
         to: 1
-        stepSize: 0.01
+        stepSize: 0.01 / (sliderField.max - sliderField.min)
         Layout.fillWidth: true
         Layout.fillHeight: true
 

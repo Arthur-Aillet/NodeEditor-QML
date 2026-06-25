@@ -49,7 +49,7 @@ void TimeController::setCurrentPos(double val) {
   auto chrono = std::chrono::duration<double, std::milli>(val * 1000);
   if (chrono == _currentPos)
     return;
-  _currentPos = chrono;
+  _currentPos = std::clamp(chrono, _minPos, _maxPos);
   emit currentPosChanged();
 }
 

@@ -11,8 +11,7 @@ GridController {
         {
             name: "Base Color",
             type: GridController.Color,
-            property: "baseColor",
-            enabledProperty: "baseColorEditable"
+            property: "baseColor"
         },
         {
             name: "Font Size",

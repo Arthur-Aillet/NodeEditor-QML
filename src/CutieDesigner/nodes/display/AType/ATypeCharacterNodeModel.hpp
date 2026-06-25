@@ -23,7 +23,6 @@ class ATypeCharacterNodeModel : public NodeDelegateModel {
 
   public:
   Q_PROPERTY(QColor baseColor READ baseColor WRITE setBaseColor NOTIFY baseColorChanged)
-  Q_PROPERTY(bool baseColorEditable READ baseColorEditable NOTIFY baseColorEditableChanged)
   Q_PROPERTY(double fontSize MEMBER _fontSize NOTIFY fontSizeChanged)
 
   Q_PROPERTY(double animationOpacitySpeed MEMBER _animationOpacitySpeed NOTIFY
@@ -44,7 +43,7 @@ class ATypeCharacterNodeModel : public NodeDelegateModel {
   Q_INVOKABLE QString getString(QQuickItem *instance);
 
   QColor baseColor() {
-    if (baseColorEditable()) {
+    if (_baseColorPtr.expired()) {
       return _baseColor;
     } else {
       return _baseColorPtr.lock()->repr<QColor>();
@@ -58,8 +57,6 @@ class ATypeCharacterNodeModel : public NodeDelegateModel {
     emit baseColorChanged();
   }
 
-  bool baseColorEditable() { return _baseColorPtr.expired(); }
-
   protected:
   QVector<QSharedPointer<QQuickItem>> _characters{};
   QColor _baseColor = "white";
@@ -72,7 +69,6 @@ class ATypeCharacterNodeModel : public NodeDelegateModel {
   public:
   signals:
   void baseColorChanged();
-  void baseColorEditableChanged();
   void fontSizeChanged();
   void animationOpacitySpeedChanged();
   void animationWidthSpeedChanged();

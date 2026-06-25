@@ -4,6 +4,7 @@ import QtQuick.Controls
 
 import CutieUiModule
 import CutieDesigner.Stats
+import CutieDesigner.Time
 import CutieDesigner.Nodes.Display
 
 Item {
@@ -121,11 +122,15 @@ Item {
                 property bool needRevert: false
 
                 Keys.onPressed: event => {
-                    if ((event.key == Qt.Key_Space) && (event.modifiers & Qt.ControlModifier)) {
-                        if (root.state != "NodesFocus") {
-                            root.state = "NodesFocus";
+                    if (event.key == Qt.Key_Space) {
+                        if (event.modifiers & Qt.ControlModifier) {
+                            if (root.state != "NodesFocus") {
+                                root.state = "NodesFocus";
+                            } else {
+                                root.state = "";
+                            }
                         } else {
-                            root.state = "";
+                            TimeController.playing = !TimeController.playing;
                         }
                     }
                 }

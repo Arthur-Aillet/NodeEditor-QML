@@ -15,16 +15,27 @@ PaneBackground {
         alignItems: FlexboxLayout.AlignCenter
         gap: 6
 
+        PlayPauseButton {
+            playing: TimeController.playing
+            onClicked: TimeController.playing = !TimeController.playing
+        }
+
+        MediaButton {
+            type: MediaButton.MediaButtonType.Stop
+            onClicked: TimeController.stop()
+        }
+
         SliderField {
             id: slider
             direction: FlexboxLayout.RowReverse
             min: TimeController.minPos
             max: TimeController.maxPos
-            value: {
-                value = TimeController.currentPos;
-            }
+
             onValueChanged: {
                 TimeController.currentPos = value;
+            }
+            inner.onMoved: {
+                TimeController.playing = false;
             }
             Connections {
                 target: TimeController
@@ -35,27 +46,19 @@ PaneBackground {
             Layout.fillWidth: true
         }
 
-        PlayPauseButton {
-            playing: TimeController.playing
-            onClicked: TimeController.playing = !TimeController.playing
-        }
-        MediaButton {
-            type: MediaButton.MediaButtonType.Stop
-            onClicked: TimeController.stop()
-        }
-
         Text {
             text: "Start: "
             color: "white"
         }
         TextField {
             value: {
-                value = TimeController.minPos;
+                value = Number(TimeController.minPos).toFixed(2);
             }
             textField.placeholderText: "sec"
+            textField.inputMethodHints: Qt.ImhFormattedNumbersOnly
             onTextChanged: {
                 TimeController.minPos = value;
-                slider.inner.value = (TimeController.currentPos - TimeController.minPos) / TimeController.maxPos;
+                slider.inner.value = (TimeController.currentPos - TimeController.minPos) / (TimeController.maxPos - TimeController.minPos);
             }
         }
         Text {
@@ -64,12 +67,13 @@ PaneBackground {
         }
         TextField {
             value: {
-                value = TimeController.maxPos;
+                value = Number(TimeController.maxPos).toFixed(2);
             }
             textField.placeholderText: "sec"
+            textField.inputMethodHints: Qt.ImhFormattedNumbersOnly
             onTextChanged: {
                 TimeController.maxPos = value;
-                slider.inner.value = (TimeController.currentPos - TimeController.minPos) / TimeController.maxPos;
+                slider.inner.value = (TimeController.currentPos - TimeController.minPos) / (TimeController.maxPos - TimeController.minPos);
             }
         }
     }

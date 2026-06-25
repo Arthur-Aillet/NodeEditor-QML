@@ -42,11 +42,9 @@ void UkrugNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
     if (!data) {
       _baseColorPtr.reset();
       emit baseColorChanged();
-      emit baseColorEditableChanged();
     } else {
       _baseColorPtr = data;
       emit baseColorChanged();
-      emit baseColorEditableChanged();
     }
   default:
     return;

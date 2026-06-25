@@ -6,13 +6,6 @@
 #include <QQmlComponent>
 #include <QtCore/QObject>
 #include <QtGui/QColor>
-#include <memory>
-
-#include <qcontainerfwd.h>
-#include <qjsvalue.h>
-#include <qqmlcomponent.h>
-#include <qqmlengine.h>
-#include <qtmetamacros.h>
 
 class UkrugPointsList;
 
@@ -20,7 +13,7 @@ class UkrugNode : public ATypeCharacterNodeModel {
   Q_OBJECT
   QML_IMPLEMENTS_INTERFACES(ATypeCharacterNodeModel)
   QML_ELEMENT
-  QML_UNCREATABLE("")
+  QML_UNCREATABLE("NodeDelegateModel")
 
   public:
   Q_PROPERTY(double k MEMBER _k NOTIFY kChanged)
