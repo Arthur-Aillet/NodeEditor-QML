@@ -1,12 +1,18 @@
 #include "TimeInputNode.hpp"
-
-#include <QtCore/QJsonValue>
-#include <QtGui/QDoubleValidator>
-#include <QtWidgets/QLineEdit>
-#include <qqmlcomponent.h>
+#include "TimeController.hpp"
+#include <qobjectdefs.h>
 
 TimeInputNode::TimeInputNode(QQmlEngine *engine)
-    : NodeDelegateModel(engine), _numberData(std::make_shared<DecimalData>(_number)) {}
+    : NodeDelegateModel(engine), _numberData(std::make_shared<DecimalData>(_number)) {
+  if (TimeController::get()) {
+    QObject::connect(TimeController::get(), SIGNAL(currentPosChanged()), this, SLOT(updateTime()));
+  }
+}
+
+void TimeInputNode::updateTime() {
+  _number = TimeController::get()->getCurrentPos();
+  emit dataUpdated(0);
+}
 
 unsigned int TimeInputNode::nPorts(PortType portType) const {
   switch (portType) {

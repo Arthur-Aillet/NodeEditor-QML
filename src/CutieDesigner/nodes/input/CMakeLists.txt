@@ -28,7 +28,7 @@ qt_add_qml_module(input
   TimeInput/TimeInputNode.hpp
   TimeInput/TimeInputNode.cpp
 
-  DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieUiModule CutieDesigner.Datatypes
+  DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieUiModule CutieDesigner.Datatypes CutieDesigner.Time
 )
 
 target_link_directories(input
@@ -41,6 +41,7 @@ target_link_directories(input
 target_include_directories(input
   PUBLIC
   ${GSTREAMER_INCLUDE_DIRS}
+  ${LIB_TARGET_LINK_DIRECTORIES}
 
   ColorInput/
   GradientInput/
@@ -58,6 +59,7 @@ target_link_libraries(input PUBLIC
   Qt6::Quick
   Qt6::QuickWidgets
   Qt6::Qml
+  time
   NodeEditor
   CutieUiModule
   vivid

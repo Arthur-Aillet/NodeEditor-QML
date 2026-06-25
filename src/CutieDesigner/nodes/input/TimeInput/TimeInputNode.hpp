@@ -22,6 +22,9 @@ class TimeInputNode : public NodeDelegateModel {
 
   void setInData(std::shared_ptr<NodeData>, PortIndex) override {}
 
+  public slots:
+  void updateTime();
+
   private:
   double _number = 0.0;
   std::shared_ptr<QQuickItem> _portLabel{nullptr};

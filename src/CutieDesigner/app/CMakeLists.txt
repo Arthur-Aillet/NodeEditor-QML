@@ -26,4 +26,5 @@ target_link_libraries(app PRIVATE
   NodeEditor
   CutieUiModule
   nodes
+  time
 )

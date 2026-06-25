@@ -1,4 +1,5 @@
 add_subdirectory(datatypes)
+add_subdirectory(time)
 add_subdirectory(nodes)
 add_subdirectory(stats)
 add_subdirectory(app)

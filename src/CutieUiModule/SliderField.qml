@@ -2,16 +2,19 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import CutieUiModule as Cute
 
-Cute.TextField {
-    id: root
+FlexboxLayout {
+    id: sliderField
+    direction: FlexboxLayout.Row
+    alignItems: FlexboxLayout.AlignCenter
+    justifyContent: FlexboxLayout.JustifyStart
+    gap: 6
 
     property double min: 0
     property double max: 1
+    property double value: 0
+    property alias inner: slider
     property int ease: SliderField.Linear
-
-    property bool set: false
 
     enum Type {
         Linear,
@@ -23,20 +26,20 @@ Cute.TextField {
     }
 
     onValueChanged: {
-        if (!set) {
-            slider.value = root.value / root.max;
-            value = Number(value).toFixed(2);
-            set = true;
+        slider.value = (value - min) / max;
+        textField.text = Number(value).toFixed(2);
+    }
+
+    TextField {
+        id: textField
+        Layout.preferredWidth: Math.max(40, contentWidth + 8)
+        onEditingFinished: {
+            text = Number(text).toFixed(2);
         }
-    }
-
-    textField.onEditingFinished: {
-        value = text;
-    }
-
-    textField.validator: DoubleValidator {
-        bottom: root.min
-        top: root.max
+        validator: DoubleValidator {
+            bottom: sliderField.min
+            top: sliderField.max
+        }
     }
 
     Slider {
@@ -49,11 +52,11 @@ Cute.TextField {
         Layout.fillHeight: true
 
         function lerp(factor: double): double {
-            return root.min + (root.max - root.min) * factor;
+            return sliderField.min + (sliderField.max - sliderField.min) * factor;
         }
 
         function easeInvFunction(x: double): double {
-            switch (root.ease) {
+            switch (sliderField.ease) {
             case SliderField.Linear:
                 return x;
             case SliderField.Sine:
@@ -72,7 +75,7 @@ Cute.TextField {
         }
 
         function easeInFunction(x: double): double {
-            switch (root.ease) {
+            switch (sliderField.ease) {
             case SliderField.Linear:
                 return x;
             case SliderField.Sine:
@@ -91,7 +94,7 @@ Cute.TextField {
         }
 
         onMoved: {
-            root.value = lerp(easeInFunction(value)).toFixed(2);
+            sliderField.value = lerp(easeInFunction(value)).toFixed(2);
         }
 
         background: Rectangle {

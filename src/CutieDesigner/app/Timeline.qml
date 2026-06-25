@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import CutieUiModule
+import CutieDesigner.Time
 
 PaneBackground {
     height: 40
@@ -15,15 +16,32 @@ PaneBackground {
         gap: 6
 
         SliderField {
+            id: slider
+            direction: FlexboxLayout.RowReverse
+            min: TimeController.minPos
+            max: TimeController.maxPos
+            value: {
+                value = TimeController.currentPos;
+            }
+            onValueChanged: {
+                TimeController.currentPos = value;
+            }
+            Connections {
+                target: TimeController
+                function onCurrentPosChanged() {
+                    slider.value = TimeController.currentPos;
+                }
+            }
             Layout.fillWidth: true
         }
 
         PlayPauseButton {
-            playing: false
-            onClicked: playing = !playing
+            playing: TimeController.playing
+            onClicked: TimeController.playing = !TimeController.playing
         }
         MediaButton {
             type: MediaButton.MediaButtonType.Stop
+            onClicked: TimeController.stop()
         }
 
         Text {
@@ -31,14 +49,28 @@ PaneBackground {
             color: "white"
         }
         TextField {
+            value: {
+                value = TimeController.minPos;
+            }
             textField.placeholderText: "sec"
+            onTextChanged: {
+                TimeController.minPos = value;
+                slider.inner.value = (TimeController.currentPos - TimeController.minPos) / TimeController.maxPos;
+            }
         }
         Text {
             text: "End: "
             color: "white"
         }
         TextField {
+            value: {
+                value = TimeController.maxPos;
+            }
             textField.placeholderText: "sec"
+            onTextChanged: {
+                TimeController.maxPos = value;
+                slider.inner.value = (TimeController.currentPos - TimeController.minPos) / TimeController.maxPos;
+            }
         }
     }
 }

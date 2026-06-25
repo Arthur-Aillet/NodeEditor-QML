@@ -5,6 +5,7 @@
 #include "CombineColorNode.hpp"
 #include "CombineVec2.hpp"
 #include "CosNode.hpp"
+#include "CutieWindow.hpp"
 #include "DataFlowModelInterface.hpp"
 #include "Definitions.hpp"
 #include "DimensionNode.hpp"
@@ -28,6 +29,7 @@
 #include "Vec2InputNode.hpp"
 #include "VideoDisplayNode.hpp"
 #include "WindowInputNode.hpp"
+#include "time/TimeController.hpp"
 
 #include <QQmlApplicationEngine>
 #include <QtQml>
@@ -95,8 +97,10 @@ int main(int argc, char *argv[]) {
       []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
 
   DataFlowModelInterface::init(model);
-
+  TimeController::init();
   engine.loadFromModule("CutieDesigner", "Main");
+  TimeController::linkCutieWindow(CutieWindow::getCutieWindow(&engine));
+
   QObject &item = *engine.rootObjects().first();
 
   auto source = model.addNode(SurfaceDisplayNode(&engine).name());
