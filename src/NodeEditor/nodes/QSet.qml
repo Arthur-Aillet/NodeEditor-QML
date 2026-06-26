@@ -3,8 +3,13 @@ import QtQuick
 QtObject {
     id: root
     property var inner: new Set()
+    property int size: inner.size
 
     signal changed
+
+    onChanged: {
+        size = inner.size;
+    }
 
     function add(val) {
         inner.add(val);

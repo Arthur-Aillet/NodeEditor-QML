@@ -14,7 +14,7 @@ Frame {
         id: areaId
         width: root.width
         height: root.height
-        holdingItem: draftConnectionId.selectedPort !== null
+        holdingItem: (draftConnectionId.selectedPort !== null) || (nodesId.selectedNodes.size !== 0)
 
         ConnectionList {
             area: areaId

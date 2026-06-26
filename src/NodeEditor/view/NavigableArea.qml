@@ -2,7 +2,7 @@ import QtQuick
 import NodeEditor
 
 Item {
-    id: root
+    id: navigableArea
     anchors.fill: parent
 
     // Disable drag when holding an Item (Like a draft connection)
@@ -24,26 +24,28 @@ Item {
         id: dragArea
         hoverEnabled: true
         anchors.fill: parent
-        drag.target: root.holdingItem ? undefined : inner
+        drag.target: navigableArea.holdingItem ? undefined : inner
         drag.filterChildren: true
         focusPolicy: Qt.WheelFocus
 
-        onPositionChanged: root.mousePosition = mapToItem(inner, mouseX, mouseY)
+        onPositionChanged: navigableArea.mousePosition = mapToItem(inner, mouseX, mouseY)
 
         property real zoomMax: 2
         property real zoomStep: 0.03
         property real zoomMin: 0.3
 
         onWheel: wheel => {
+            if (wheel.angleDelta.y == 0)
+                return;
+
             const mapped = dragArea.mapToItem(inner, mouseX, mouseY);
 
-            var currentZoom = inner.mat.m11;
-            if (wheel.angleDelta.y > 0) {
+            let currentZoom = inner.mat.m11;
+            if (wheel.angleDelta.y > 0 && (currentZoom + zoomStep < zoomMax)) {
                 currentZoom += zoomStep;
-            } else {
+            } else if (wheel.angleDelta.y < 0 && (currentZoom - zoomStep > zoomMin)) {
                 currentZoom -= zoomStep;
             }
-            currentZoom = Math.max(Math.min(currentZoom, zoomMax), zoomMin);
             inner.mat.translate(Qt.vector2d(mapped.x, mapped.y));
             inner.mat.m11 = currentZoom;
             inner.mat.m22 = currentZoom;

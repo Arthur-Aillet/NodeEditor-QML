@@ -55,8 +55,10 @@ MouseArea {
         }
     }
 
-    onFocusChanged: if (!focus)
-        nodes.loseFocus()
+    onFocusChanged: {
+        if (!focus)
+            nodes.loseFocus();
+    }
 
     onClicked: mouse => {
         if (mouse.modifiers & Qt.ShiftModifier)
@@ -106,10 +108,14 @@ MouseArea {
     property real xPrev
     property real yPrev
 
-    onXChanged: if (!drag.active)
-        xPrev = x
-    onYChanged: if (!drag.active)
-        yPrev = y
+    onXChanged: {
+        if (!drag.active)
+            xPrev = x;
+    }
+    onYChanged: {
+        if (!drag.active)
+            yPrev = y;
+    }
 
     onPositionChanged: mouse => {
         if (drag.active) {
@@ -122,8 +128,11 @@ MouseArea {
     drag {
         filterChildren: true
         target: nodeObj.selected ? nodeObj : undefined
-        onActiveChanged: if (drag.active)
-            focus = true
+        onActiveChanged: {
+            if (drag.active) {
+                focus = true;
+            }
+        }
     }
     propagateComposedEvents: true
     anchors.fill: nodeObj
