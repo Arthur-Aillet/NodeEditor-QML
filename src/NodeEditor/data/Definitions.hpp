@@ -76,8 +76,9 @@ Q_ENUM_NS(PortRole)
  * values are fetched using PortRole::ConnectionPolicy.
  */
 enum class ConnectionPolicy {
-  One,  ///< Just one connection for each port.
-  Many, ///< Any number of connections possible for the port.
+  One,     ///< Just one connection for each port.
+  Replace, ///< Just one connection for each port. Replace the existing connection if necessary.
+  Many,    ///< Any number of connections possible for the port.
 };
 Q_ENUM_NS(ConnectionPolicy)
 

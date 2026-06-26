@@ -23,19 +23,13 @@ void NodeDelegateModel::setValidationState(const NodeValidationState &validation
 }
 
 ConnectionPolicy NodeDelegateModel::portConnectionPolicy(PortType portType, PortIndex) const {
-  auto result = ConnectionPolicy::One;
   switch (portType) {
   case PortType::In:
-    result = ConnectionPolicy::One;
-    break;
+    return ConnectionPolicy::Replace;
   case PortType::Out:
-    result = ConnectionPolicy::Many;
-    break;
-  case PortType::None:
-    break;
+  default:
+    return ConnectionPolicy::Many;
   }
-
-  return result;
 }
 
 NodeStyle const &NodeDelegateModel::nodeStyle() const { return _nodeStyle; }

@@ -122,12 +122,12 @@ bool DataFlowGraphModel::connectionPossible(ConnectionId const connectionId) con
   auto portVacant = [&](PortType const portType) {
     NodeId const nodeId = getNodeId(portType, connectionId);
     PortIndex const portIndex = getPortIndex(portType, connectionId);
-    auto const connected = connections(nodeId, portType, portIndex);
-
     auto policy = portData(nodeId, portType, portIndex, PortRole::ConnectionPolicyRole)
                       .value<ConnectionPolicy>();
 
-    return connected.empty() || (policy == ConnectionPolicy::Many);
+    if (policy != ConnectionPolicy::One)
+      return true;
+    return connections(nodeId, portType, portIndex).empty();
   };
 
   bool const basicChecks = getDataCompatible(PortType::Out).contains(getDataType(PortType::In)) &&
@@ -169,6 +169,21 @@ bool DataFlowGraphModel::connectionPossible(ConnectionId const connectionId) con
 }
 
 void DataFlowGraphModel::addConnection(ConnectionId const connectionId) {
+  auto removeReplaceConnections = [&](PortType const portType) {
+    NodeId const nodeId = getNodeId(portType, connectionId);
+    PortIndex const portIndex = getPortIndex(portType, connectionId);
+    auto policy = portData(nodeId, portType, portIndex, PortRole::ConnectionPolicyRole)
+                      .value<ConnectionPolicy>();
+    if (policy == ConnectionPolicy::Replace) {
+      for (auto &con : connections(nodeId, portType, portIndex)) {
+        deleteConnection(con);
+      }
+    }
+  };
+
+  removeReplaceConnections(PortType::In);
+  removeReplaceConnections(PortType::Out);
+
   _connectivity.insert(connectionId);
 
   sendConnectionCreation(connectionId);

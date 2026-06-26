@@ -88,17 +88,34 @@ Item {
 
                 Binding on radius {
                     property alias painter: port.nodePainter
+                    property var connectionPossible: {
+                        if (painter.draftConnection.selectedPort === null)
+                            return false;
+                        if (painter.draftConnection.selectedPort.portType === NodeEditor.PortType.In) {
+                            return ModelInterface.graph.connectionPossible({
+                                inNodeId: painter.draftConnection.selectedPort.nodeId,
+                                inPortIndex: painter.draftConnection.selectedPort.portId,
+                                outNodeId: painter.nodeObject.nodeId,
+                                outPortIndex: port.portId
+                            });
+                        } else {
+                            return ModelInterface.graph.connectionPossible({
+                                inNodeId: painter.nodeObject.nodeId,
+                                inPortIndex: port.portId,
+                                outNodeId: painter.draftConnection.selectedPort.nodeId,
+                                outPortIndex: painter.draftConnection.selectedPort.portId
+                            });
+                        }
+                    }
 
-                    when: painter.draftConnection.selectedPort !== null && !port.connected
+                    when: painter.draftConnection.selectedPort !== null && painter.draftConnection.selectedPort.portType !== port.side
                     value: {
-                        if (painter.draftConnection.selectedPort === null || painter.draftConnection.selectedPort.portType === port.side)
-                            return port.style.connectionPointDiameter * 0.6;
                         const pos = Qt.point(painter.nodeObject.x + connectionPoint.x, painter.nodeObject.y + connectionPoint.y);
                         const diff = Qt.vector2d(painter.area.mousePosition.x - pos.x, painter.area.mousePosition.y - pos.y);
                         const dist = Math.sqrt(diff.dotProduct(diff));
 
                         let r;
-                        if (painter.draftConnection.selectedPort.nodeId != painter.nodeObject.nodeId) {
+                        if (connectionPossible) {
                             const thres = 40.0;
                             r = (dist < thres) ? (2.0 - dist / thres) : 1.0;
                         } else {
