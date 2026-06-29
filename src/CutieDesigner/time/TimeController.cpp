@@ -25,8 +25,10 @@ void TimeController::linkCutieWindow(CutieWindow *window) {
   instance->_window = window;
   if (instance->_window != nullptr) {
     QObject::connect(instance->_window, SIGNAL(frameSwapped()), instance, SLOT(tickTime()));
-    instance->_window->startRequestRefresh(instance);
-    instance->_lastPoint = std::chrono::steady_clock::now();
+    if (instance->_playing) {
+      instance->_window->startRequestRefresh(instance);
+      instance->_lastPoint = std::chrono::steady_clock::now();
+    }
   }
 }
 
@@ -86,8 +88,14 @@ void TimeController::setMaxPos(double val) {
 }
 
 bool TimeController::getPlaying() { return _playing; }
-void TimeController::setPlaying(bool val) {
-  _playing = val;
+void TimeController::setPlaying(bool playing) {
+  _playing = playing;
+  if (playing) {
+    _lastPoint = std::chrono::steady_clock::now();
+    _window->startRequestRefresh(this);
+  } else {
+    _window->stopRequestRefresh(this);
+  }
   emit playingChanged();
 }
 

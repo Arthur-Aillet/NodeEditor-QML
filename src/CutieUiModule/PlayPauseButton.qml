@@ -6,5 +6,5 @@ Button {
 
     implicitHeight: 30
     implicitWidth: 20
-    text: playing ? "⏵" : "⏸"
+    text: playing ? "⏸" : "⏵"
 }

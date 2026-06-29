@@ -56,6 +56,6 @@ class TimeController : public QObject {
   std::chrono::duration<double, std::milli> _minPos;
   std::chrono::duration<double, std::milli> _maxPos;
   std::chrono::time_point<std::chrono::steady_clock> _lastPoint;
-  bool _playing;
+  bool _playing = false;
   CutieWindow *_window = nullptr;
 };
