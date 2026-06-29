@@ -102,6 +102,7 @@ MouseArea {
             for (let id of nodes.selectedNodes.inner) {
                 event.accepted = ModelInterface.graph.deleteNode(id);
             }
+            nodes.selectedNodes.clear();
         }
         if (event.key == Qt.Key_Left) {
             nodes.moveSelectedNodes(-3, 0, undefined);
