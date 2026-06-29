@@ -25,10 +25,10 @@ Item {
         selectedNodes.clear();
     }
 
-    function moveOtherSelectedNodes(xOffset, yOffset, originId) {
+    function moveSelectedNodes(xOffset, yOffset, excludedId) {
         for (let i = 0; i != nodes.count; i++) {
             const node = nodes.itemAt(i) as NodeGraphicalObject;
-            if (node.selected == true && node.nodeId != originId) {
+            if (node.selected == true && node.nodeId != excludedId) {
                 node.x += xOffset;
                 node.y += yOffset;
             }

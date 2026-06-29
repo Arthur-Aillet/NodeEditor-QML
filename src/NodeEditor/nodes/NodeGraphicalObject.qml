@@ -85,9 +85,27 @@ MouseArea {
     }
 
     Keys.onPressed: event => {
-        if (event.key == Qt.Key_Delete || event.key == Qt.Key_Back)
-            for (let id of nodes.selectedNodes.inner)
+        if (event.key == Qt.Key_Delete || event.key == Qt.Key_Back) {
+            for (let id of nodes.selectedNodes.inner) {
                 event.accepted = ModelInterface.graph.deleteNode(id);
+            }
+        }
+        if (event.key == Qt.Key_Left) {
+            nodes.moveSelectedNodes(-3, 0, undefined);
+            event.accepted = true;
+        }
+        if (event.key == Qt.Key_Right) {
+            nodes.moveSelectedNodes(3, 0, undefined);
+            event.accepted = true;
+        }
+        if (event.key == Qt.Key_Up) {
+            nodes.moveSelectedNodes(0, -3, undefined);
+            event.accepted = true;
+        }
+        if (event.key == Qt.Key_Down) {
+            nodes.moveSelectedNodes(0, 3, undefined);
+            event.accepted = true;
+        }
     }
 
     Connections {
@@ -119,7 +137,7 @@ MouseArea {
 
     onPositionChanged: mouse => {
         if (drag.active) {
-            nodes.moveOtherSelectedNodes(x - xPrev, y - yPrev, nodeId);
+            nodes.moveSelectedNodes(x - xPrev, y - yPrev, nodeId);
             xPrev = x;
             yPrev = y;
         }
