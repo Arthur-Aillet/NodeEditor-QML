@@ -47,7 +47,8 @@ FlexboxLayout {
         x: 0
         from: 0
         to: 1
-        stepSize: 0.01 / (sliderField.max - sliderField.min)
+        snapMode: Slider.NoSnap
+        stepSize: 0.1 / (sliderField.max - sliderField.min)
         Layout.fillWidth: true
         Layout.fillHeight: true
 
@@ -93,9 +94,7 @@ FlexboxLayout {
             }
         }
 
-        onMoved: {
-            sliderField.value = lerp(easeInFunction(value)).toFixed(2);
-        }
+        onMoved: sliderField.value = lerp(easeInFunction(visualPosition)).toFixed(2)
 
         background: Rectangle {
             x: slider.leftPadding + 5
@@ -105,7 +104,13 @@ FlexboxLayout {
             width: slider.availableWidth - 10
             height: implicitHeight
             radius: 2
-            color: "#bdbebf"
+            color: Qt.lighter(Qt.rgba(0.4, 0.4, 0.4), 1 + 0.2 * sliderHoverHandler.hovered + 0.2 * parent.focus)
+
+            HoverHandler {
+                id: sliderHoverHandler
+                margin: 10
+            }
+
             Repeater {
                 model: 9
                 Rectangle {
