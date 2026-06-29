@@ -3,18 +3,16 @@
 #include "DecimalData.hpp"
 #include "MathOperationNodeModel.hpp"
 
-#include <QtCore/QObject>
-
 class CosNode : public MathOperationNodeModel {
   public:
   CosNode(QQmlEngine *engine) : MathOperationNodeModel(engine) {}
   ~CosNode() = default;
 
   public:
-  QString caption() const override { return QStringLiteral("cos"); }
+  QString caption() const override { return "cos"; }
 
   unsigned int nbInputs() const override { return 1; };
-  QString name() const override { return QStringLiteral("Cos"); }
+  QString name() const override { return "Cos"; }
 
   private:
   void compute() override {

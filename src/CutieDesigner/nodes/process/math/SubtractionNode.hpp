@@ -1,8 +1,5 @@
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtWidgets/QLabel>
-
 #include "DecimalData.hpp"
 #include "MathOperationNodeModel.hpp"
 
@@ -12,7 +9,7 @@ class SubtractionNode : public MathOperationNodeModel {
   virtual ~SubtractionNode() {}
 
   public:
-  QString caption() const override { return QStringLiteral("sub"); }
+  QString caption() const override { return "sub"; }
 
   virtual bool portCaptionVisible(PortType portType, PortIndex portIndex) const override {
     Q_UNUSED(portType);
@@ -20,7 +17,7 @@ class SubtractionNode : public MathOperationNodeModel {
     return true;
   }
 
-  QString name() const override { return QStringLiteral("Subtraction"); }
+  QString name() const override { return "Subtraction"; }
 
   private:
   void compute() override {

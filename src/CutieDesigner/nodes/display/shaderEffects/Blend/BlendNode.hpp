@@ -3,14 +3,6 @@
 #include "NodeDelegateModel.hpp"
 #include "SurfaceData.hpp"
 
-#include <QQmlComponent>
-#include <QtCore/QObject>
-#include <memory>
-#include <qjsvalue.h>
-#include <qqmlcomponent.h>
-#include <qqmlengine.h>
-#include <qtmetamacros.h>
-
 class BlendNode : public NodeDelegateModel {
   Q_OBJECT
   QML_ELEMENT

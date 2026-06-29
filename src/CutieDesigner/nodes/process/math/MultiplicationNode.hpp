@@ -1,10 +1,9 @@
 #pragma once
 
-#include <QtCore/QObject>
-
+#include "DecimalData.hpp"
 #include "MathOperationNodeModel.hpp"
 
-#include "DecimalData.hpp"
+#include <QtCore/QObject>
 
 class MultiplicationNode : public MathOperationNodeModel {
   public:
@@ -12,9 +11,9 @@ class MultiplicationNode : public MathOperationNodeModel {
   virtual ~MultiplicationNode() {}
 
   public:
-  QString caption() const override { return QStringLiteral("mult"); }
+  QString caption() const override { return "mult"; }
 
-  QString name() const override { return QStringLiteral("Multiplication"); }
+  QString name() const override { return "Multiplication"; }
 
   private:
   void compute() override {

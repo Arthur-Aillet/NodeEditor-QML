@@ -3,16 +3,7 @@
 #include "NodeDelegateModel.hpp"
 #include "SurfaceData.hpp"
 
-#include <QQmlComponent>
-#include <QtCore/QObject>
-#include <memory>
-#include <qbrush.h>
-#include <qcolor.h>
-#include <qjsvalue.h>
-#include <qqmlcomponent.h>
-#include <qqmlengine.h>
-#include <qtmetamacros.h>
-#include <qvariant.h>
+#include <QGradient>
 
 class FillNode : public NodeDelegateModel {
   Q_OBJECT

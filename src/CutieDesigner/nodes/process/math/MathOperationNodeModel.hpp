@@ -3,14 +3,6 @@
 #include "Definitions.hpp"
 #include "NodeDelegateModel.hpp"
 
-#include <QQmlComponent>
-#include <QtCore/QJsonObject>
-#include <QtCore/QObject>
-#include <QtWidgets/QLabel>
-#include <qqmlcomponent.h>
-#include <qqmlengine.h>
-#include <qvariant.h>
-
 class DecimalData;
 
 /// The model dictates the number of inputs and outputs for the Node.

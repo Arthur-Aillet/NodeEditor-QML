@@ -11,7 +11,7 @@ class DivisionNode : public MathOperationNodeModel {
   virtual ~DivisionNode() {}
 
   public:
-  QString caption() const override { return QStringLiteral("div"); }
+  QString caption() const override { return "div"; }
 
   bool portCaptionVisible(PortType portType, PortIndex portIndex) const override {
     Q_UNUSED(portType);
@@ -19,7 +19,7 @@ class DivisionNode : public MathOperationNodeModel {
     return true;
   }
 
-  QString name() const override { return QStringLiteral("Division"); }
+  QString name() const override { return "Division"; }
 
   private:
   void compute() override {

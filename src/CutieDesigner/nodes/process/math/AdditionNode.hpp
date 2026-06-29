@@ -3,17 +3,14 @@
 #include "DecimalData.hpp"
 #include "MathOperationNodeModel.hpp"
 
-#include <QtCore/QObject>
-#include <memory>
-
 class AdditionNode : public MathOperationNodeModel {
   public:
   AdditionNode(QQmlEngine *engine) : MathOperationNodeModel(engine) {}
   ~AdditionNode() = default;
 
   public:
-  QString caption() const override { return QStringLiteral("add"); }
-  QString name() const override { return QStringLiteral("Addition"); }
+  QString caption() const override { return "add"; }
+  QString name() const override { return "Addition"; }
 
   private:
   void compute() override {
@@ -29,6 +26,6 @@ class AdditionNode : public MathOperationNodeModel {
       _resultPtr.reset();
     }
 
-    Q_EMIT dataUpdated(outPortIndex);
+    emit dataUpdated(outPortIndex);
   }
 };

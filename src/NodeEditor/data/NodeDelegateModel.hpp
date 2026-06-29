@@ -5,13 +5,10 @@
 #include "NodeStyle.hpp"
 #include "Serializable.hpp"
 
+#include <QJSEngine>
 #include <QQmlComponent>
+#include <QQuickItem>
 #include <QtGui/QColor>
-#include <QtWidgets/QWidget>
-#include <qlogging.h>
-#include <qobject.h>
-#include <qqmlengine.h>
-#include <qquickitem.h>
 
 /**
  * Describes whether a node configuration is usable and defines a description message

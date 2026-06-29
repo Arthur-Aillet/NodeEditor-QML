@@ -2,10 +2,9 @@
 
 #include "NodeDelegateModel.hpp"
 #include "SurfaceData.hpp"
+
+#include <QUrl>
 #include <optional>
-#include <qcontainerfwd.h>
-#include <qtmetamacros.h>
-#include <qurl.h>
 
 class ImageDisplayNode : public NodeDelegateModel {
   Q_OBJECT

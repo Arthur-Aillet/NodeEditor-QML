@@ -30,7 +30,6 @@ qt_policy(SET QTP0004 NEW)
 option(DEBUG_MODE "Set DEBUG Mode" ON)
 option(RUN "Launch App" OFF)
 
-
 set(QML_IMPORT_PATH
   ${CMAKE_BINARY_DIR}/qml
   CACHE STRING "" FORCE

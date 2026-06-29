@@ -1,12 +1,10 @@
 #pragma once
 
+#include "Style.hpp"
+
 #include <QIcon>
 #include <QtGui/QColor>
-#include <qnamespace.h>
-#include <qqmlintegration.h>
-#include <qtmetamacros.h>
-
-#include "Style.hpp"
+#include <QtQmlIntegration>
 
 /**
  * Describes the position of the processing icon on the node ui

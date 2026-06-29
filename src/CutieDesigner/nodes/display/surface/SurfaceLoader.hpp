@@ -2,11 +2,6 @@
 
 #include "SurfaceData.hpp"
 
-#include <QtCore/QObject>
-#include <qqmlintegration.h>
-#include <qquickitem.h>
-#include <qtmetamacros.h>
-
 class SurfaceLoader : public QQuickItem {
   Q_OBJECT
   QML_ELEMENT

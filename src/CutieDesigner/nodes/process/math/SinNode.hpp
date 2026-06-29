@@ -3,18 +3,16 @@
 #include "DecimalData.hpp"
 #include "MathOperationNodeModel.hpp"
 
-#include <QtCore/QObject>
-
 class SinNode : public MathOperationNodeModel {
   public:
   SinNode(QQmlEngine *engine) : MathOperationNodeModel(engine) {}
   ~SinNode() = default;
 
   public:
-  QString caption() const override { return QStringLiteral("sin"); }
+  QString caption() const override { return "sin"; }
 
   unsigned int nbInputs() const override { return 1; };
-  QString name() const override { return QStringLiteral("Sin"); }
+  QString name() const override { return "Sin"; }
 
   private:
   void compute() override {

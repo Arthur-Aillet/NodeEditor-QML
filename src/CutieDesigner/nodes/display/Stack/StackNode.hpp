@@ -4,17 +4,7 @@
 #include "NodeDelegateModel.hpp"
 #include "SurfaceData.hpp"
 
-#include <QQmlComponent>
-#include <QtCore/QObject>
-#include <memory>
-#include <qabstractitemmodel.h>
-#include <qjsvalue.h>
-#include <qqmlcomponent.h>
-#include <qqmlengine.h>
-#include <qqmlintegration.h>
-#include <qtmetamacros.h>
-#include <qvariant.h>
-#include <vector>
+#include <QAbstractItemModel>
 
 class SurfaceList : public QAbstractListModel {
   Q_OBJECT
