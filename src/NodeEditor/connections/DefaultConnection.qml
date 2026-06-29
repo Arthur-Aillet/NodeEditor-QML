@@ -123,7 +123,7 @@ Canvas {
     property bool hovered: false
 
     onHoveredChanged: markDirty(Qt.rect(x, y, width, height))
-    onFocusChanged: markDirty(Qt.rect(x, y, width, height))
+    onActiveFocusChanged: markDirty(Qt.rect(x, y, width, height))
 
     function distanceToCurve(point: point): real {
         const overlapAndCurveFactor = 1.2;
@@ -139,6 +139,8 @@ Canvas {
         }
         return shortestDistance;
     }
+
+    focusPolicy: root.hovered ? Qt.ClickFocus : Qt.NoFocus
 
     TapHandler {
         enabled: root.hovered
@@ -173,7 +175,7 @@ Canvas {
     property point scaledEndPoint: Qt.point((pathCubic.x - x) * scaleFactor, (pathCubic.y - y) * scaleFactor)
 
     function innerStrokeStyle(ctx): color {
-        if (focus)
+        if (activeFocus)
             return StyleCollection.connection.selectedColor;
         if (!StyleCollection.connection.useDataDefinedColors)
             return StyleCollection.connection.normalColor;
@@ -204,7 +206,7 @@ Canvas {
         if (fullyConnected) {
             ctx.setLineDash([]);
             ctx.lineWidth = StyleCollection.connection.lineWidth * 1.7 * scaleFactor;
-            if (focus) {
+            if (activeFocus) {
                 ctx.strokeStyle = StyleCollection.connection.selectedHaloColor;
                 ctx.stroke();
             } else if (hovered) {
