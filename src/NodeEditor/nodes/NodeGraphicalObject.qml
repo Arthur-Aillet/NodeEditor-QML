@@ -55,19 +55,28 @@ MouseArea {
         }
     }
 
+    property bool waitForClick: false
+    property bool waitForFocus: false
+
     onFocusChanged: {
-        if (!focus)
+        if (!focus) {
             nodes.loseFocus();
+        }
+        if (waitForFocus) {
+            nodes.selectedNodes.clear();
+            nodes.selectedNodes.add(nodeId);
+        }
+        waitForFocus = false;
     }
 
     onClicked: mouse => {
-        if (mouse.modifiers & Qt.ShiftModifier)
-            if (selected && !waitForClick)
+        if (mouse.modifiers & Qt.ShiftModifier) {
+            if (selected && !waitForClick) {
                 nodes.selectedNodes.remove(nodeId);
+            }
+        }
         waitForClick = false;
     }
-
-    property bool waitForClick: false
 
     onPressed: mouse => {
         if (locked)
@@ -79,8 +88,12 @@ MouseArea {
                 waitForClick = true;
             }
         } else {
-            nodes.selectedNodes.clear();
-            nodes.selectedNodes.add(nodeId);
+            if (focus) {
+                nodes.selectedNodes.clear();
+                nodes.selectedNodes.add(nodeId);
+            } else {
+                waitForFocus = true;
+            }
         }
     }
 
@@ -152,7 +165,7 @@ MouseArea {
             }
         }
     }
-    propagateComposedEvents: true
+
     anchors.fill: nodeObj
     hoverEnabled: true
     cursorShape: locked ? Qt.ArrowCursor : Qt.DragMoveCursor
