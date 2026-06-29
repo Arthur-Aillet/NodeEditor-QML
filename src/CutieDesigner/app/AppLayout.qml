@@ -40,7 +40,6 @@ Item {
             }
             PropertyChanges {
                 view {
-                    SplitView.preferredWidth: undefined
                     graphicsView.area.background.opacity: 0.5
                     anchors.fill: root
                 }
@@ -82,8 +81,8 @@ Item {
         orientation: Qt.Vertical
         Item {
             id: topView
-            SplitView.preferredWidth: root.width
-            SplitView.preferredHeight: root.height / 2
+            implicitWidth: root.width
+            implicitHeight: root.height / 2
             Item {
                 id: sceneContent
                 anchors.fill: parent
@@ -109,12 +108,12 @@ Item {
         }
         SplitView {
             id: editView
-            SplitView.preferredWidth: root.width
-            SplitView.preferredHeight: root.height / 2
+            implicitWidth: root.width
+            implicitHeight: root.height / 2
             orientation: Qt.Horizontal
             PaneBackground {
                 id: leftPanel
-                SplitView.preferredWidth: editView.width / 6
+                implicitWidth: editView.width / 6
             }
             NodeView {
                 id: view
@@ -146,7 +145,7 @@ Item {
                 SplitView.fillWidth: true
             }
             StatsView {
-                SplitView.preferredWidth: editView.width / 6
+                implicitWidth: editView.width / 6
             }
         }
     }
