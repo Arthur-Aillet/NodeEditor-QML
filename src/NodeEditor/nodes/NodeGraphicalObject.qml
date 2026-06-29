@@ -202,13 +202,13 @@ MouseArea {
             property int portId: (index < nodeObj.inPortCount) ? index : index - nodeObj.inPortCount
 
             property point pos: (painter.item as AbstractNodePainter).getPortPosition(portId, side)
-            property real radius: nodeObj.style.connectionPointDiameter * 0.6 // Diameter is used a the radius in the original
+            property real radius: nodeObj.style.connectionPointDiameter * 2 // Diameter is used a the radius in the original
 
-            x: pos.x - radius * 1.5
-            y: pos.y - radius * 1.5
+            x: pos.x - radius
+            y: pos.y - radius
 
-            width: radius * 2 * 1.5
-            height: radius * 2 * 1.5
+            width: radius * 2
+            height: radius * 2
 
             onPressed: nodeObj.draftConnection.selectedPort = {
                 "portId": portId,
