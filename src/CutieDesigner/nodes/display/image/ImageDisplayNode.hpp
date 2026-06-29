@@ -1,22 +1,26 @@
 #pragma once
 
-#include "CutieWindow.hpp"
-#include "GstreamerController.hpp"
 #include "NodeDelegateModel.hpp"
 #include "SurfaceData.hpp"
+#include <optional>
+#include <qcontainerfwd.h>
+#include <qtmetamacros.h>
+#include <qurl.h>
 
-class VideoDisplayNode : public NodeDelegateModel {
+class ImageDisplayNode : public NodeDelegateModel {
   Q_OBJECT
   QML_ELEMENT
   QML_UNCREATABLE("NodeDelegateModel")
 
   public:
-  VideoDisplayNode(QQmlEngine *engine);
-  ~VideoDisplayNode() = default;
+  Q_PROPERTY(QUrl source READ getSource WRITE setSource NOTIFY sourceChanged)
+  Q_PROPERTY(QString sourceFileName READ getSourceFileName NOTIFY sourceChanged)
 
-  public:
+  ImageDisplayNode(QQmlEngine *engine);
+  ~ImageDisplayNode() = default;
+
   bool captionVisible() const override { return true; }
-  QString name() const override { return "Video"; }
+  QString name() const override { return "Image"; }
 
   QString portCaption(PortType portType, PortIndex portIndex) const override;
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }
@@ -25,19 +29,18 @@ class VideoDisplayNode : public NodeDelegateModel {
   const NodeDataType &dataType(PortType portType, PortIndex portIndex) const override;
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
-  void initPipeline();
 
-  Q_INVOKABLE void gettingDestroyed(QQuickItem *item) {
-    qDebug() << "I'm getting destroyed" << item;
-    _controller->unlinkQtSink(item);
-  }
+  QQmlComponent embeddedComponent(QQmlEngine *engine) override;
+  QVariantMap componentInitialProperties() override;
 
-  public slots:
-  void componentLoaded(QQuickItem *item);
+  QUrl getSource();
+  void setSource(QUrl url);
+  QString getSourceFileName();
+
+  signals:
+  void sourceChanged();
 
   private:
+  std::optional<QUrl> _sourceUrl = std::nullopt;
   std::shared_ptr<SurfaceData> _content = nullptr;
-  CutieWindow *_window = nullptr;
-  std::unique_ptr<GstreamerController> _controller = nullptr;
-  QQmlEngine *_engine;
 };

@@ -12,6 +12,8 @@ qt_add_qml_module(display
   shaderEffects/Blend/Blend.qml
   shaderEffects/Blend/BlendControl.qml
   video/VideoDisplay.qml
+  image/ImageDisplay.qml
+  image/ImageDisplayControl.qml  
   Stack/Stack.qml
   Stack/StackControl.qml
 
@@ -40,6 +42,8 @@ qt_add_qml_module(display
   video/VideoDisplayNode.cpp
   video/GstreamerController.hpp
   video/GstreamerController.cpp
+  image/ImageDisplayNode.hpp
+  image/ImageDisplayNode.cpp
 
   DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieUiModule CutieDesigner.Datatypes org.freedesktop.gstreamer.Qt6GLVideoItem
   RESOURCES
@@ -78,6 +82,7 @@ target_include_directories(display
   shaderEffects
   shaderEffects/Blend
   video
+  image
 )
 
 target_link_libraries(display PUBLIC

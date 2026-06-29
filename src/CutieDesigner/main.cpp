@@ -12,6 +12,7 @@
 #include "DivisionNode.hpp"
 #include "FillNode.hpp"
 #include "GradientInputNode.hpp"
+#include "ImageDisplayNode.hpp"
 #include "MouseInputNode.hpp"
 #include "MultiplicationNode.hpp"
 #include "NumberInputNode.hpp"
@@ -24,12 +25,12 @@
 #include "SurfaceDisplayNode.hpp"
 #include "SurfaceLoader.hpp"
 #include "TextTyperNode.hpp"
+#include "TimeController.hpp"
 #include "TimeInputNode.hpp"
 #include "UkrugNode.hpp"
 #include "Vec2InputNode.hpp"
 #include "VideoDisplayNode.hpp"
 #include "WindowInputNode.hpp"
-#include "time/TimeController.hpp"
 
 #include <QQmlApplicationEngine>
 #include <QtQml>
@@ -77,6 +78,7 @@ static std::shared_ptr<NodeDelegateModelRegistry> createRegistery(QQmlEngine &en
   reg->registerModel<VideoDisplayNode>("Display");
   reg->registerModel<FillNode>("Display");
   reg->registerModel<StackNode>("Display");
+  reg->registerModel<ImageDisplayNode>("Display");
   return reg;
 }
 

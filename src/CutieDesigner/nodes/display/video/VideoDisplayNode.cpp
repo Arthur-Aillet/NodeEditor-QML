@@ -51,8 +51,8 @@ void VideoDisplayNode::setInData(std::shared_ptr<NodeData> data, PortIndex portI
 QString VideoDisplayNode::portCaption(PortType portType, PortIndex portIndex) const {
   switch (portType) {
   case PortType::In:
-    return QString();
+    return "";
   default:
-    return QString("out");
+    return "out";
   }
 }
