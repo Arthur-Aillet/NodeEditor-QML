@@ -31,6 +31,20 @@ NodeStyle NodeStyle::defaultStyle() {
   return newStyle;
 }
 
+NodeStyle::NodeStyle(QPalette const &palette) {
+  // Initialize status icons after resources are loaded
+  statusUpdated = QIcon(":/status_icons/updated.svg");
+  statusProcessing = QIcon(":/status_icons/processing.svg");
+  statusPending = QIcon(":/status_icons/pending.svg");
+  statusInvalid = QIcon(":/status_icons/failed.svg");
+  statusEmpty = QIcon(":/status_icons/empty.svg");
+  statusPartial = QIcon(":/status_icons/partial.svg");
+
+  // This configuration is stored inside the compiled unit and is loaded statically
+  loadJsonFile(":DefaultStyle.json");
+  loadPalette(palette);
+}
+
 NodeStyle::NodeStyle(QString jsonText) { loadJsonText(jsonText); }
 
 NodeStyle::NodeStyle(QJsonObject const &json) { loadJson(json); }
@@ -69,9 +83,7 @@ void NodeStyle::setNodeStyle(QString jsonText) {
   }
 
 #define NODE_STYLE_WRITE_COLOR(values, variable)                                                   \
-  {                                                                                                \
-    values[#variable] = variable.name();                                                           \
-  }
+  { values[#variable] = variable.name(); }
 
 #define NODE_STYLE_READ_FLOAT(values, variable)                                                    \
   {                                                                                                \
@@ -81,9 +93,7 @@ void NodeStyle::setNodeStyle(QString jsonText) {
   }
 
 #define NODE_STYLE_WRITE_FLOAT(values, variable)                                                   \
-  {                                                                                                \
-    values[#variable] = variable;                                                                  \
-  }
+  { values[#variable] = variable; }
 
 #define NODE_STYLE_READ_BOOL(values, variable)                                                     \
   {                                                                                                \
@@ -93,9 +103,7 @@ void NodeStyle::setNodeStyle(QString jsonText) {
   }
 
 #define NODE_STYLE_WRITE_BOOL(values, variable)                                                    \
-  {                                                                                                \
-    values[#variable] = variable;                                                                  \
-  }
+  { values[#variable] = variable; }
 
 void NodeStyle::loadJson(QJsonObject const &json) {
   QJsonValue nodeStyleValues = json["NodeStyle"];
@@ -152,6 +160,20 @@ QJsonObject NodeStyle::toJson() const {
   root["NodeStyle"] = obj;
 
   return root;
+}
+
+void NodeStyle::loadPalette(QPalette const &palette) {
+  loadJsonFile(":DefaultStyle.json");
+
+  NormalBoundaryColor = palette.text().color();
+  SelectedBoundaryColor = palette.highlight().color();
+  FontColor = palette.text().color();
+  FontColorFaded = palette.text().color().darker(120);
+  ShadowColor = palette.shadow().color();
+  GradientColor0 = palette.base().color().lighter().lighter();
+  GradientColor1 = palette.base().color().lighter();
+  GradientColor2 = palette.base().color();
+  GradientColor3 = palette.dark().color();
 }
 
 QColor NodeStyle::normalBoundaryColor() const { return NormalBoundaryColor; };

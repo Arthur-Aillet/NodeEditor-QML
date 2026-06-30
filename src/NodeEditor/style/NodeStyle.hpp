@@ -5,6 +5,7 @@
 #include <QIcon>
 #include <QtGui/QColor>
 #include <QtQmlIntegration>
+#include <qpalette.h>
 
 /**
  * Describes the position of the processing icon on the node ui
@@ -30,6 +31,7 @@ class NodeStyle : public Style {
 
   public:
   NodeStyle() = default;
+  NodeStyle(QPalette const &palette);
   static NodeStyle defaultStyle();
   NodeStyle(QString jsonText);
   NodeStyle(QJsonObject const &json);
@@ -38,6 +40,7 @@ class NodeStyle : public Style {
 
   Q_INVOKABLE static void setNodeStyle(QString jsonText);
   Q_INVOKABLE void loadJson(QJsonObject const &json) override;
+  Q_INVOKABLE void loadPalette(QPalette const &palette) override;
 
   Q_INVOKABLE QJsonObject toJson() const override;
 

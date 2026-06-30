@@ -17,5 +17,5 @@ target_include_directories(stats PUBLIC
 )
 
 target_link_libraries(stats
-  PUBLIC Qt::Core Qt::Gui Qt::Qml Qt::Quick Qt::QuickControls2 NodeEditor CutieUiModule
+  PUBLIC Qt::Core Qt::Gui Qt::Qml Qt::Quick Qt::QuickControls2 CutieUiModule
 )

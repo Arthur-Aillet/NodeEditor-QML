@@ -6,6 +6,7 @@
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
 #include <QtCore/QJsonValueRef>
+#include <QtWidgets/QApplication>
 
 // inline void initResources() { Q_INIT_RESOURCE(resources); }
 
@@ -18,6 +19,7 @@ GraphicsViewStyle::GraphicsViewStyle() {
   loadJsonFile(":DefaultStyle.json");
 }
 
+GraphicsViewStyle::GraphicsViewStyle(QPalette const &palette) { loadPalette(palette); }
 GraphicsViewStyle::GraphicsViewStyle(QString jsonText) { loadJsonText(jsonText); }
 
 void GraphicsViewStyle::setStyle(QString jsonText) {
@@ -77,6 +79,12 @@ QJsonObject GraphicsViewStyle::toJson() const {
   root["GraphicsViewStyle"] = obj;
 
   return root;
+}
+
+void GraphicsViewStyle::loadPalette(QPalette const &palette) {
+  BackgroundColor = palette.base().color();
+  FineGridColor = palette.midlight().color();
+  CoarseGridColor = palette.dark().color();
 }
 
 QColor GraphicsViewStyle::backgroundColor() const { return BackgroundColor; }

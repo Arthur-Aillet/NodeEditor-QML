@@ -205,7 +205,7 @@ Canvas {
 
         if (fullyConnected) {
             ctx.setLineDash([]);
-            ctx.lineWidth = StyleCollection.connection.lineWidth * 1.7 * scaleFactor;
+            ctx.lineWidth = StyleCollection.connection.lineWidth * scaleFactor;
             if (activeFocus) {
                 ctx.strokeStyle = StyleCollection.connection.selectedHaloColor;
                 ctx.stroke();
@@ -214,7 +214,7 @@ Canvas {
                 ctx.stroke();
             }
             ctx.strokeStyle = innerStrokeStyle(ctx);
-            ctx.lineWidth = StyleCollection.connection.lineWidth * scaleFactor;
+            ctx.lineWidth = StyleCollection.connection.lineWidth * 0.5 * scaleFactor;
             ctx.stroke();
         } else {
             ctx.setLineDash([6, 2]);

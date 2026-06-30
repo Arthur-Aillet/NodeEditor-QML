@@ -14,12 +14,14 @@ class ConnectionStyle : public Style {
 
   public:
   ConnectionStyle();
+  ConnectionStyle(QPalette const &palette);
   ConnectionStyle(QString jsonText);
   ~ConnectionStyle() = default;
 
   Q_INVOKABLE static void setConnectionStyle(QString jsonText);
   Q_INVOKABLE void loadJson(QJsonObject const &json) override;
   Q_INVOKABLE QJsonObject toJson() const override;
+  Q_INVOKABLE void loadPalette(QPalette const &palette) override;
 
   Q_INVOKABLE QColor lerpOklabColors(const QColor &first, const QColor &second,
                                      const float amount) const;

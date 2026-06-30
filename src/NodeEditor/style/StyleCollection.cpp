@@ -1,9 +1,40 @@
 #include "StyleCollection.hpp"
 #include "NodeStyle.hpp"
-#include <qtmetamacros.h>
 
 StyleCollection::StyleCollection(QObject *parent)
-    : QObject(parent), _nodeStyle(NodeStyle::defaultStyle()) {}
+    : QObject(parent), _trackApplicationPalette(true), _graphicsViewStyle(QApplication::palette()),
+      _connectionStyle(QApplication::palette()), _nodeStyle(QApplication::palette()) {}
+
+bool StyleCollection::eventFilter(QObject *obj, QEvent *event) {
+  if (event->type() == QEvent::ApplicationPaletteChange) {
+    _graphicsViewStyle.loadPalette(QApplication::palette());
+    _connectionStyle.loadPalette(QApplication::palette());
+    _nodeStyle.loadPalette(QApplication::palette());
+    emit graphicsViewStyleChanged();
+    emit connectionStyleChanged();
+    emit nodeStyleChanged();
+
+    return true;
+  } else {
+    return QObject::eventFilter(obj, event);
+  }
+}
+
+StyleCollection &StyleCollection::instance() {
+  static bool init = false;
+  static StyleCollection instance;
+  if (!init) {
+    QApplication::instance()->installEventFilter(&instance);
+    init = true;
+  }
+  return instance;
+}
+
+StyleCollection *StyleCollection::create(QQmlEngine *qmlEngine, QJSEngine *_jsEngine) {
+  auto instance = &StyleCollection::instance();
+  QJSEngine::setObjectOwnership(instance, QJSEngine::ObjectOwnership::CppOwnership);
+  return instance;
+}
 
 void StyleCollection::setGraphicsViewStyle(GraphicsViewStyle graphicsViewStyle) {
   instance()._graphicsViewStyle = graphicsViewStyle;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QPalette>
 #include <QtGui/QColor>
 #include <qqmlintegration.h>
 #include <qtmetamacros.h>
@@ -12,7 +13,7 @@ class GraphicsViewStyle : public Style {
 
   public:
   GraphicsViewStyle();
-
+  GraphicsViewStyle(QPalette const &palette);
   GraphicsViewStyle(QString jsonText);
 
   ~GraphicsViewStyle() = default;
@@ -20,6 +21,7 @@ class GraphicsViewStyle : public Style {
   public:
   Q_INVOKABLE static void setStyle(QString jsonText);
   Q_INVOKABLE void loadJson(QJsonObject const &json) override;
+  Q_INVOKABLE void loadPalette(QPalette const &palette) override;
   Q_INVOKABLE QJsonObject toJson() const override;
 
   Q_PROPERTY(QColor backgroundColor READ backgroundColor)

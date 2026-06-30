@@ -3,10 +3,12 @@
 #include "ConnectionStyle.hpp"
 #include "GraphicsViewStyle.hpp"
 #include "NodeStyle.hpp"
+
+#include <QJSEngine>
 #include <QObject>
-#include <qjsengine.h>
-#include <qqmlengine.h>
-#include <qqmlintegration.h>
+#include <QQmlEngine>
+#include <QtQmlIntegration>
+#include <QtWidgets/QApplication>
 
 class StyleCollection : public QObject {
   Q_OBJECT
@@ -14,16 +16,8 @@ class StyleCollection : public QObject {
   QML_ELEMENT
 
   public:
-  static StyleCollection &instance() {
-    static StyleCollection instance;
-    return instance;
-  }
-
-  static StyleCollection *create(QQmlEngine *qmlEngine, QJSEngine *) {
-    auto instance = &StyleCollection::instance();
-    QJSEngine::setObjectOwnership(instance, QJSEngine::ObjectOwnership::CppOwnership);
-    return instance;
-  }
+  static StyleCollection &instance();
+  static StyleCollection *create(QQmlEngine *qmlEngine, QJSEngine *_jsEngine);
 
   Q_PROPERTY(NodeStyle node MEMBER _nodeStyle NOTIFY nodeStyleChanged);
   Q_PROPERTY(ConnectionStyle connection MEMBER _connectionStyle NOTIFY connectionStyleChanged);
@@ -33,6 +27,8 @@ class StyleCollection : public QObject {
   static void setNodeStyle(NodeStyle nodeStyle);
   static void setConnectionStyle(ConnectionStyle connectionStyle);
   static void setGraphicsViewStyle(GraphicsViewStyle graphicsViewStyle);
+
+  bool eventFilter(QObject *obj, QEvent *event) override;
 
   static NodeStyle const &getNodeStyle();
   static ConnectionStyle const &getConnectionStyle();
@@ -46,6 +42,7 @@ class StyleCollection : public QObject {
   protected:
   StyleCollection(QObject *parent = nullptr);
 
+  bool _trackApplicationPalette;
   NodeStyle _nodeStyle;
   ConnectionStyle _connectionStyle;
   GraphicsViewStyle _graphicsViewStyle;

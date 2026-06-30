@@ -1,20 +1,19 @@
 #pragma once
 
+#include <QPalette>
 #include <QtCore/QFile>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
-class Style // : public QObject
-{
-  // Q_OBJECT
-
+class Style {
   public:
   virtual ~Style() = default;
 
   public:
   virtual void loadJson(QJsonObject const &json) = 0;
+  virtual void loadPalette(QPalette const &palette) = 0;
 
   virtual QJsonObject toJson() const = 0;
 

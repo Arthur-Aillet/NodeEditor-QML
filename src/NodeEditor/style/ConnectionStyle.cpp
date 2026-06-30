@@ -8,7 +8,6 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QJsonValueRef>
 
-#include <qlogging.h>
 #include <random>
 
 // inline void initResources() { Q_INIT_RESOURCE(resources); }
@@ -21,6 +20,8 @@ ConnectionStyle::ConnectionStyle() {
   // This configuration is stored inside the compiled unit and is loaded statically
   loadJsonFile(":DefaultStyle.json");
 }
+
+ConnectionStyle::ConnectionStyle(QPalette const &palette) { loadPalette(palette); }
 
 ConnectionStyle::ConnectionStyle(QString jsonText) {
   loadJsonFile(":DefaultStyle.json");
@@ -128,6 +129,17 @@ QJsonObject ConnectionStyle::toJson() const {
 
   return root;
 }
+
+void ConnectionStyle::loadPalette(QPalette const &palette) {
+  loadJsonFile(":DefaultStyle.json");
+  auto focusColor = palette.text().color();
+  SelectedColor = focusColor;
+  SelectedHaloColor = palette.highlight().color();
+  ConstructionColor = focusColor.darker();
+  NormalColor = palette.highlight().color();
+  HoveredColor = focusColor;
+}
+
 QColor ConnectionStyle::constructionColor() const { return ConstructionColor; };
 QColor ConnectionStyle::normalColor() const { return NormalColor; };
 
