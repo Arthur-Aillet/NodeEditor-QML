@@ -9,6 +9,7 @@
 #include <qobject.h>
 #include <qqmlengine.h>
 #include <qqmlintegration.h>
+#include <qtimer.h>
 #include <qtmetamacros.h>
 
 class FrequencyMonitor : public QQuickItem {
@@ -33,12 +34,12 @@ class FrequencyMonitor : public QQuickItem {
   void refreshPeriodChanged();
 
   public slots:
-  void handleAfterRendering();
+  void handleRefresh();
   void handleWindowChanged(QQuickWindow *window);
 
   protected:
   QMetaObject::Connection _windowConnection;
-  QElapsedTimer _timer;
+  QTimer _refreshTimer;
   int _fps;
   int _counter;
   int _refreshPeriod;

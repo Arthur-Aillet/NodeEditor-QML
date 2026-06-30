@@ -8,8 +8,6 @@ qt_add_qml_module(stats
   SOURCES
   ./FrequencyMonitor/FrequencyMonitor.cpp
   ./FrequencyMonitor/FrequencyMonitor.hpp
-  RESOURCES
-  ./loading.svg
 )
 
 target_include_directories(stats PUBLIC

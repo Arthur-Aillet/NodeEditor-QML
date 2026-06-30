@@ -1,10 +1,6 @@
 #include "SurfaceLoader.hpp"
 
-#include <qjsengine.h>
-#include <qlogging.h>
-#include <qobject.h>
-#include <qquickitem.h>
-#include <qvariant.h>
+#include <QJSEngine>
 
 SurfaceLoader::SurfaceLoader(QQuickItem *parent) : QQuickItem(parent) {}
 
@@ -46,8 +42,8 @@ void SurfaceLoader::createComponent(SurfaceData *surfaceDescription) {
   // }
   QJSEngine::setObjectOwnership(_surface, QJSEngine::CppOwnership);
   emit surfaceDescription->componentLoaded(_surface);
-  QObject::connect(_surface, SIGNAL(destroyed(QObject *)), surfaceDescription,
-                   SIGNAL(componentDestroyed(QObject *)));
+  connect(_surface, SIGNAL(destroyed(QObject *)), surfaceDescription,
+          SIGNAL(componentDestroyed(QObject *)));
   emit surfaceChanged();
 }
 

@@ -54,9 +54,7 @@ void GraphicsViewStyle::setStyle(QString jsonText) {
   }
 
 #define FLOW_VIEW_STYLE_WRITE_COLOR(values, variable)                                              \
-  {                                                                                                \
-    values[#variable] = variable.name();                                                           \
-  }
+  { values[#variable] = variable.name(); }
 
 void GraphicsViewStyle::loadJson(QJsonObject const &json) {
   QJsonValue nodeStyleValues = json["GraphicsViewStyle"];
