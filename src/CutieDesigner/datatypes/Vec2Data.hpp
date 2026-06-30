@@ -17,7 +17,7 @@ struct Vec2DataType : public NodeDataType {
 class Vec2Data : public NodeData {
   public:
   Vec2Data() {}
-  Vec2Data(QVector2D &v) {
+  Vec2Data(const QVector2D &v) {
     registerConvert<QVector2D>([&v]() { return v; });
     registerConvert<double>([&v]() { return v.length(); });
   }

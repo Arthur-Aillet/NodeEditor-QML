@@ -7,7 +7,7 @@
 class GradientData : public NodeData {
   public:
   GradientData() {}
-  GradientData(QGradient &gradientProp) {
+  GradientData(const QGradient &gradientProp) {
     registerConvert<QGradient>([&gradientProp]() { return gradientProp; });
   }
 

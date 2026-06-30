@@ -21,7 +21,7 @@ class ColorData : public NodeData {
 
   public:
   ColorData() {}
-  ColorData(QColor &color) {
+  ColorData(const QColor &color) {
     registerConvert<QColor>([&color]() { return color; });
     registerConvert<QGradient>([&color]() {
       QGradient g;

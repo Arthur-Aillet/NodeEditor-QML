@@ -5,7 +5,7 @@
 class TextData : public NodeData {
   public:
   TextData() {}
-  TextData(QString &text) {
+  TextData(const QString &text) {
     registerConvert<QString>([&text]() { return text; });
   }
 

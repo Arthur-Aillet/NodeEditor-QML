@@ -25,7 +25,7 @@ struct DecimalDataType : public NodeDataType {
 class DecimalData : public NodeData {
   public:
   DecimalData() {}
-  DecimalData(double &v) {
+  DecimalData(const double &v) {
     registerConvert<double>([&v]() { return v; });
     registerConvert<QString>([&v]() { return QString::number(v, 'f', 2); });
     registerConvert<QColor>([&v]() {
