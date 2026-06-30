@@ -1,7 +1,8 @@
 #include "TimeController.hpp"
-#include <qtmetamacros.h>
+#include <qtypes.h>
 
-TimeController::TimeController() : _currentPos(0), _minPos(0), _maxPos(15000), _playing(false) {}
+TimeController::TimeController()
+    : _currentTime(0.0), _minFrame(0), _maxFrame(900), _currentFrame(0), _playing(false) {}
 
 TimeController::~TimeController() {
   if (_window != nullptr)
@@ -25,7 +26,7 @@ TimeController *TimeController::init() {
 void TimeController::linkCutieWindow(CutieWindow *window) {
   instance->_window = window;
   if (instance->_window != nullptr) {
-    QObject::connect(instance->_window, SIGNAL(frameSwapped()), instance, SLOT(tickTime()));
+    QObject::connect(instance->_window, SIGNAL(frameSwapped()), instance, SLOT(frameSwapped()));
     if (instance->_playing) {
       instance->_window->startRequestRefresh(instance);
       instance->_lastPoint = std::chrono::steady_clock::now();
@@ -33,63 +34,67 @@ void TimeController::linkCutieWindow(CutieWindow *window) {
   }
 }
 
-void TimeController::tickTime() {
+void TimeController::frameSwapped() {
   auto newPoint = std::chrono::steady_clock::now();
   if (_playing) {
-    _currentPos += newPoint - _lastPoint;
-    if (_currentPos >= _maxPos) {
-      if (!_looping) {
-        _playing = false;
-        _currentPos = _maxPos;
-        emit playingChanged();
+    _currentFrame += 1;
+    _currentTime += newPoint - _lastPoint;
+
+    if (_currentFrame >= _maxFrame) {
+      if (_looping) {
+        _currentFrame = _minFrame;
+        _currentTime = std::chrono::duration<double>(_currentFrame / 60.0);
       } else {
-        _currentPos = _minPos;
+        _playing = false;
+        emit playingChanged();
       }
     }
-    emit currentPosChanged();
+    emit currentTimeChanged();
+    emit currentFrameChanged();
   }
   _lastPoint = newPoint;
 }
 
-double TimeController::getCurrentPos() { return _currentPos.count() / 1000; }
-void TimeController::setCurrentPos(double val) {
-  auto chrono = std::chrono::duration<double, std::milli>(val * 1000);
-  if (chrono == _currentPos)
+double TimeController::getCurrentTime() { return _currentTime.count(); }
+
+void TimeController::setCurrentFrame(uint newCurrentFrame) {
+  if (_currentFrame == newCurrentFrame)
     return;
-  _currentPos = std::clamp(chrono, _minPos, _maxPos);
-  emit currentPosChanged();
+  _currentFrame = std::clamp(newCurrentFrame, _minFrame, _maxFrame);
+  _currentTime = std::chrono::duration<double>(_currentFrame / 60.0);
+  emit currentTimeChanged();
+  emit currentFrameChanged();
 }
 
-double TimeController::getMinPos() { return _minPos.count() / 1000; }
-void TimeController::setMinPos(double val) {
-  auto chrono = std::chrono::duration<double, std::milli>(val * 1000);
-  if (chrono == _minPos)
+uint TimeController::getMinFrame() { return _minFrame; }
+
+void TimeController::setMinFrame(uint newMinFrame) {
+  if (_minFrame == newMinFrame || (newMinFrame > _maxFrame && _minFrame == _maxFrame))
     return;
 
-  if (chrono > _maxPos) {
-    _minPos = _maxPos;
+  if (newMinFrame > _maxFrame) {
+    _minFrame = _maxFrame;
   } else {
-    _minPos = chrono;
+    _minFrame = newMinFrame;
   }
-  emit minPosChanged();
-  if (_currentPos < _minPos)
-    setCurrentPos(_minPos.count() / 1000);
+  emit minFrameChanged();
+  if (_currentFrame < _minFrame)
+    setCurrentFrame(_minFrame);
 }
 
-double TimeController::getMaxPos() { return _maxPos.count() / 1000; }
-void TimeController::setMaxPos(double val) {
-  auto chrono = std::chrono::duration<double, std::milli>(val * 1000);
-  if (chrono == _maxPos)
+uint TimeController::getMaxFrame() { return _maxFrame; }
+void TimeController::setMaxFrame(uint newMaxFrame) {
+  if (_maxFrame == newMaxFrame || (newMaxFrame < _minFrame && _maxFrame == _minFrame))
     return;
 
-  if (chrono < _minPos) {
-    _maxPos = _minPos;
+  if (newMaxFrame < _minFrame) {
+    _maxFrame = _minFrame;
   } else {
-    _maxPos = chrono;
+    _maxFrame = newMaxFrame;
   }
-  emit maxPosChanged();
-  if (_currentPos > _maxPos)
-    setCurrentPos(_maxPos.count() / 1000);
+  emit maxFrameChanged();
+  if (_currentFrame > _maxFrame)
+    setCurrentFrame(_maxFrame);
 }
 
 bool TimeController::getPlaying() { return _playing; }
@@ -106,7 +111,7 @@ void TimeController::setPlaying(bool playing) {
 
 void TimeController::stop() {
   setPlaying(false);
-  setCurrentPos(_minPos.count() / 1000);
+  setCurrentFrame(_minFrame);
 }
 
 bool TimeController::getLooping() { return _looping; }
@@ -117,3 +122,5 @@ void TimeController::setLooping(bool looping) {
   _looping = looping;
   emit loopingChanged();
 }
+
+uint TimeController::getCurrentFrame() { return _currentFrame; }

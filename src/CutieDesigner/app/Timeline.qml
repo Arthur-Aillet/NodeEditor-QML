@@ -44,37 +44,42 @@ PaneBackground {
         SliderField {
             id: slider
             direction: FlexboxLayout.RowReverse
-            min: TimeController.minPos
-            max: TimeController.maxPos
-
+            min: TimeController.minFrame
+            max: TimeController.maxFrame
+            decimal: 0
             onValueChanged: {
-                TimeController.currentPos = value;
+                TimeController.currentFrame = value;
             }
             inner.onMoved: {
                 TimeController.playing = false;
             }
             Connections {
                 target: TimeController
-                function onCurrentPosChanged() {
-                    slider.value = TimeController.currentPos;
+                function onCurrentFrameChanged() {
+                    slider.value = TimeController.currentFrame;
                 }
             }
             Layout.fillWidth: true
         }
-
+        TextField {
+            value: Number(TimeController.currentTime).toFixed(2) + 's'
+            enabled: false
+            textField.placeholderText: "Time (s)"
+            textField.inputMethodHints: Qt.ImhDigitsOnly
+        }
         Text {
             text: "Start: "
             color: "white"
         }
         TextField {
             value: {
-                value = Number(TimeController.minPos).toFixed(2);
+                value = TimeController.minFrame;
             }
-            textField.placeholderText: "sec"
-            textField.inputMethodHints: Qt.ImhFormattedNumbersOnly
+            textField.placeholderText: "Min Frames"
+            textField.inputMethodHints: Qt.ImhDigitsOnly
             onTextChanged: {
-                TimeController.minPos = value;
-                slider.inner.value = (TimeController.currentPos - TimeController.minPos) / (TimeController.maxPos - TimeController.minPos);
+                TimeController.minFrame = Math.round(value);
+                slider.inner.value = (TimeController.currentFrame - TimeController.minFrame) / (TimeController.maxFrame - TimeController.minFrame);
             }
         }
         Text {
@@ -83,13 +88,13 @@ PaneBackground {
         }
         TextField {
             value: {
-                value = Number(TimeController.maxPos).toFixed(2);
+                value = TimeController.maxFrame;
             }
-            textField.placeholderText: "sec"
-            textField.inputMethodHints: Qt.ImhFormattedNumbersOnly
+            textField.placeholderText: "Max Frames"
+            textField.inputMethodHints: Qt.ImhDigitsOnly
             onTextChanged: {
-                TimeController.maxPos = value;
-                slider.inner.value = (TimeController.currentPos - TimeController.minPos) / (TimeController.maxPos - TimeController.minPos);
+                TimeController.maxFrame = Math.round(value);
+                slider.inner.value = (TimeController.currentFrame - TimeController.minFrame) / (TimeController.maxFrame - TimeController.minFrame);
             }
         }
     }

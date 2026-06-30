@@ -13,6 +13,7 @@ FlexboxLayout {
     property double min: 0
     property double max: 1
     property double value: 0
+    property real decimal: 2
     property alias inner: slider
     property int ease: SliderField.Linear
 
@@ -27,18 +28,18 @@ FlexboxLayout {
 
     onValueChanged: {
         slider.value = slider.easeInvFunction((value - min) / (max - min));
-        textField.text = Number(value).toFixed(2);
+        textField.text = Number(value).toFixed(sliderField.decimal);
     }
 
     TextField {
         id: textField
         Layout.preferredWidth: Math.max(40, contentWidth + 8)
         text: {
-            text = sliderField.value.toFixed(2);
+            text = sliderField.value.toFixed(sliderField.decimal);
         }
         inputMethodHints: Qt.ImhFormattedNumbersOnly
         onEditingFinished: {
-            sliderField.value = Math.max(Math.min(Number(text), sliderField.max), sliderField.min).toFixed(2);
+            sliderField.value = Math.max(Math.min(Number(text), sliderField.max), sliderField.min).toFixed(sliderField.decimal);
         }
     }
 
@@ -47,8 +48,8 @@ FlexboxLayout {
         x: 0
         from: 0
         to: 1
-        snapMode: Slider.NoSnap
-        stepSize: 0.1 / (sliderField.max - sliderField.min)
+        snapMode: Slider.SnapAlways
+        stepSize: ((1 / 10) ** sliderField.decimal) / (sliderField.max - sliderField.min)
         Layout.fillWidth: true
         Layout.fillHeight: true
 
@@ -94,7 +95,7 @@ FlexboxLayout {
             }
         }
 
-        onMoved: sliderField.value = lerp(easeInFunction(visualPosition)).toFixed(2)
+        onMoved: sliderField.value = lerp(easeInFunction(visualPosition)).toFixed(sliderField.decimal)
 
         background: Rectangle {
             x: slider.leftPadding + 5
