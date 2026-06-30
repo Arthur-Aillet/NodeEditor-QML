@@ -23,7 +23,7 @@ FlexboxLayout {
         height: 25
         color: root.value
         radius: 4
-        border.color: "grey"
+        border.color: palette.shadow
         border.width: 1
     }
     Button {

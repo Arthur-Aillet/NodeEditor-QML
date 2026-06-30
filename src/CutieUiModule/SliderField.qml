@@ -105,7 +105,7 @@ FlexboxLayout {
             width: slider.availableWidth - 10
             height: implicitHeight
             radius: 2
-            color: Qt.lighter(Qt.rgba(0.4, 0.4, 0.4), 1 + 0.2 * sliderHoverHandler.hovered + 0.2 * parent.focus)
+            color: Qt.lighter(palette.mid, 1 + 0.2 * sliderHoverHandler.hovered + 0.2 * parent.focus)
 
             HoverHandler {
                 id: sliderHoverHandler
@@ -120,7 +120,7 @@ FlexboxLayout {
                     width: 0.75
                     antialiasing: true
                     z: -1
-                    color: "grey"
+                    color: palette.buttonText
                     x: {
                         return slider.background.width * slider.easeInvFunction(0.1 * index + 0.1);
                     }
@@ -131,7 +131,7 @@ FlexboxLayout {
             Rectangle {
                 width: slider.visualPosition * parent.width
                 height: parent.height
-                color: Qt.rgba(1, 0.647058824, 0, 1)
+                color: palette.highlight
                 radius: 2
             }
         }

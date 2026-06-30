@@ -1,10 +1,9 @@
 import QtQuick
-import NodeEditor
 import "InnerShadow"
 
 Rectangle {
-    id: root
-    color: Qt.darker(StyleCollection.graphicsView.backgroundColor, 2)
+    id: paneBackground
+    color: palette.base.hslLightness > 0.5 ? palette.base : Qt.darker(palette.base, 2)
 
     Item {
         id: background
@@ -20,13 +19,13 @@ Rectangle {
             height: parent.height - 4
             x: 2
             y: 2
-            color: StyleCollection.graphicsView.backgroundColor
+            color: palette.base.hslLightness > 0.5 ? Qt.darker(palette.base, 1.2) : palette.base
         }
     }
 
     InnerShadow {
         anchors.fill: background
         source: background
-        innerShadowColor: root.color
+        innerShadowColor: paneBackground.color
     }
 }

@@ -13,12 +13,12 @@ PaneBackground {
 
         Label {
             text: "Stats"
-            color: "white"
+            color: palette.text
         }
 
         Rectangle {
             y: 20
-            color: "lightgrey"
+            color: palette.text
             implicitHeight: 1
             implicitWidth: parent.width
             anchors.horizontalCenter: parent.horizontalCenter

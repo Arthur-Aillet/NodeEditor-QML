@@ -56,7 +56,7 @@ Menu {
                 anchors.verticalCenter: parent.verticalCenter
                 width: parent.width - padding - x
                 clip: true
-                color: (!delegate.hasChildren && delegate.row === view.currentRow) ? "white" : "black"
+                color: (!delegate.hasChildren && delegate.row === view.currentRow) ? palette.brightText : palette.text
                 text: delegate.computeText()
             }
 
@@ -73,7 +73,7 @@ Menu {
                 id: background
                 height: parent.height
                 width: root.width
-                color: (view.alternatingRows && delegate.row % 2 !== 0) ? "white" : "lightgrey"
+                color: (view.alternatingRows && delegate.row % 2 !== 0) ? palette.base : palette.alternateBase
                 Rectangle {
                     x: {
                         if (!delegate.hasChildren)

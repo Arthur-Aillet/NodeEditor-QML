@@ -7,7 +7,7 @@ Text {
         id: monitor
         refreshPeriod: 500
     }
-    color: "white"
+    color: palette.text
     text: "Current fps: " + monitor.fps
     font.pixelSize: 12
     Image {

@@ -28,7 +28,7 @@ GridLayout {
             Layout.column: 0
             Layout.row: index
             text: name + ":"
-            color: "white"
+            color: palette.text
         }
     }
 

@@ -69,7 +69,7 @@ PaneBackground {
         }
         Text {
             text: "Start: "
-            color: "white"
+            color: palette.text
         }
         TextField {
             value: {
@@ -84,7 +84,7 @@ PaneBackground {
         }
         Text {
             text: "End: "
-            color: "white"
+            color: palette.text
         }
         TextField {
             value: {
