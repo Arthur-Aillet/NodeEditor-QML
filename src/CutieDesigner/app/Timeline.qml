@@ -17,12 +17,28 @@ PaneBackground {
 
         PlayPauseButton {
             playing: TimeController.playing
-            onClicked: TimeController.playing = !TimeController.playing
+            onClicked: {
+                TimeController.playing = !TimeController.playing;
+                focus = false;
+            }
         }
 
         MediaButton {
             type: MediaButton.MediaButtonType.Stop
-            onClicked: TimeController.stop()
+            onClicked: {
+                TimeController.stop();
+                focus = false;
+            }
+        }
+
+        MediaButton {
+            type: MediaButton.MediaButtonType.Loop
+            checkable: true
+            checked: TimeController.looping
+            onClicked: {
+                TimeController.looping = !TimeController.looping;
+                focus = false;
+            }
         }
 
         SliderField {

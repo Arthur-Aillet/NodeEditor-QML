@@ -1,4 +1,5 @@
 #include "TimeController.hpp"
+#include <qtmetamacros.h>
 
 TimeController::TimeController() : _currentPos(0), _minPos(0), _maxPos(15000), _playing(false) {}
 
@@ -37,9 +38,13 @@ void TimeController::tickTime() {
   if (_playing) {
     _currentPos += newPoint - _lastPoint;
     if (_currentPos >= _maxPos) {
-      _playing = false;
-      _currentPos = _maxPos;
-      emit playingChanged();
+      if (!_looping) {
+        _playing = false;
+        _currentPos = _maxPos;
+        emit playingChanged();
+      } else {
+        _currentPos = _minPos;
+      }
     }
     emit currentPosChanged();
   }
@@ -102,4 +107,13 @@ void TimeController::setPlaying(bool playing) {
 void TimeController::stop() {
   setPlaying(false);
   setCurrentPos(_minPos.count() / 1000);
+}
+
+bool TimeController::getLooping() { return _looping; }
+
+void TimeController::setLooping(bool looping) {
+  if (_looping == looping)
+    return;
+  _looping = looping;
+  emit loopingChanged();
 }

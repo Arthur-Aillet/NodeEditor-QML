@@ -10,7 +10,8 @@ Button {
         Record = 3,
         Foward = 4,
         Backward = 5,
-        PlayPause = 6
+        PlayPause = 6,
+        Loop = 7
     }
 
     property int type: 2
@@ -32,6 +33,8 @@ Button {
             return "⏮";
         case 6:
             return "⏯";
+        case 7:
+            return "⟳";
         }
     }
 }

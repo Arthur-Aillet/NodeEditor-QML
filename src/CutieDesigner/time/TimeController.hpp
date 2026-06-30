@@ -18,6 +18,7 @@ class TimeController : public QObject {
   Q_PROPERTY(double minPos READ getMinPos WRITE setMinPos NOTIFY minPosChanged)
   Q_PROPERTY(double maxPos READ getMaxPos WRITE setMaxPos NOTIFY maxPosChanged)
   Q_PROPERTY(bool playing READ getPlaying WRITE setPlaying NOTIFY playingChanged)
+  Q_PROPERTY(bool looping READ getLooping WRITE setLooping NOTIFY loopingChanged)
 
   static TimeController *create(QQmlEngine *, QJSEngine *engine);
   static TimeController *init();
@@ -41,12 +42,15 @@ class TimeController : public QObject {
   void setMaxPos(double val);
   bool getPlaying();
   void setPlaying(bool val);
+  bool getLooping();
+  void setLooping(bool val);
 
   signals:
   void currentPosChanged();
   void minPosChanged();
   void maxPosChanged();
   void playingChanged();
+  void loopingChanged();
 
   public slots:
   void tickTime();
@@ -57,5 +61,6 @@ class TimeController : public QObject {
   std::chrono::duration<double, std::milli> _maxPos;
   std::chrono::time_point<std::chrono::steady_clock> _lastPoint;
   bool _playing = false;
+  bool _looping = true;
   CutieWindow *_window = nullptr;
 };
