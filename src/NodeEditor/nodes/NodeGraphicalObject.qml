@@ -202,9 +202,10 @@ MouseArea {
             property int portId: (index < nodeObj.inPortCount) ? index : index - nodeObj.inPortCount
 
             property point pos: (painter.item as AbstractNodePainter).getPortPosition(portId, side)
-            property real radius: nodeObj.style.connectionPointDiameter * 2 // Diameter is used a the radius in the original
+            property real radius: nodeObj.style.connectionPointDiameter * 1.8 // Diameter is used a the radius in the original
 
-            x: pos.x - radius
+            // Small offset in the direction of the port for easier click
+            x: pos.x - radius + (side == NodeEditor.PortType.In ? -nodeObj.style.connectionPointDiameter : nodeObj.style.connectionPointDiameter)
             y: pos.y - radius
 
             width: radius * 2
