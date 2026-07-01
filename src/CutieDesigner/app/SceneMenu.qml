@@ -1,5 +1,6 @@
 pragma ComponentBehavior: Bound
 import QtQuick
+import QtQml.Models
 import QtQuick.Controls
 import NodeEditor
 

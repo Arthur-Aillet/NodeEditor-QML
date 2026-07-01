@@ -48,7 +48,7 @@ FlexboxLayout {
         x: 0
         from: 0
         to: 1
-        snapMode: Slider.SnapAlways
+        snapMode: Slider.NoSnap
         stepSize: ((1 / 10) ** sliderField.decimal) / (sliderField.max - sliderField.min)
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -95,7 +95,7 @@ FlexboxLayout {
             }
         }
 
-        onMoved: sliderField.value = lerp(easeInFunction(visualPosition)).toFixed(sliderField.decimal)
+        onMoved: sliderField.value = lerp(easeInFunction(visualPosition))
 
         background: Rectangle {
             x: slider.leftPadding + 5
