@@ -17,6 +17,20 @@ FlexboxLayout {
     property alias inner: slider
     property int ease: SliderField.Linear
 
+    onMinChanged: {
+        slider.value = (value - min) / (max - min);
+        if (value < min) {
+            value = min;
+        }
+    }
+
+    onMaxChanged: {
+        slider.value = (value - min) / (max - min);
+        if (value > max) {
+            value = max;
+        }
+    }
+
     enum Type {
         Linear,
         Sine,

@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Controls
+import CutieUiModule
 
 TextField {
     id: textField
-    width: Math.max(40, contentWidth + 8)
-    validator: DoubleValidator {}
+    textField.validator: DoubleValidator {}
 }

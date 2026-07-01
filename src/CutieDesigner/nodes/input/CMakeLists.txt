@@ -6,6 +6,7 @@ qt_add_qml_module(input
   ColorInput/ColorInputControl.qml
   GradientInput/GradientInputControl.qml
   NumberInput/NumberInputControl.qml
+  SliderInput/SliderInputControl.qml
   Vec2Input/Vec2InputControl.qml
 
   SOURCES
@@ -17,6 +18,8 @@ qt_add_qml_module(input
   GradientInput/GradientInputList.cpp
   NumberInput/NumberInputNode.hpp
   NumberInput/NumberInputNode.cpp
+  SliderInput/SliderInputNode.hpp
+  SliderInput/SliderInputNode.cpp
   Vec2Input/Vec2InputNode.hpp
   Vec2Input/Vec2InputNode.cpp
   MouseInput/MouseInputNode.hpp
@@ -50,6 +53,7 @@ target_include_directories(input
   MouseInput/
   SceneInput/
   WindowInput/
+  SliderInput/
   TimeInput/
 )
 

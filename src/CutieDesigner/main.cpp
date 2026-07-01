@@ -18,6 +18,7 @@
 #include "NumberInputNode.hpp"
 #include "SceneInputNode.hpp"
 #include "SinNode.hpp"
+#include "SliderInputNode.hpp"
 #include "SplitColorNode.hpp"
 #include "SplitVec2.hpp"
 #include "StackNode.hpp"
@@ -60,6 +61,7 @@ static std::shared_ptr<NodeDelegateModelRegistry> createRegistery(QQmlEngine &en
   reg->registerModel<WindowInputNode>("Input");
   reg->registerModel<SceneInputNode>("Input");
   reg->registerModel<TimeInputNode>("Input");
+  reg->registerModel<SliderInputNode>("Input");
   reg->registerModel<AdditionNode>("Process");
   reg->registerModel<DivisionNode>("Process");
   reg->registerModel<MultiplicationNode>("Process");

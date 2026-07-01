@@ -79,7 +79,6 @@ PaneBackground {
             textField.inputMethodHints: Qt.ImhDigitsOnly
             onTextChanged: {
                 TimeController.minFrame = Math.round(value);
-                slider.inner.value = (TimeController.currentFrame - TimeController.minFrame) / (TimeController.maxFrame - TimeController.minFrame);
             }
         }
         Text {
@@ -94,7 +93,6 @@ PaneBackground {
             textField.inputMethodHints: Qt.ImhDigitsOnly
             onTextChanged: {
                 TimeController.maxFrame = Math.round(value);
-                slider.inner.value = (TimeController.currentFrame - TimeController.minFrame) / (TimeController.maxFrame - TimeController.minFrame);
             }
         }
     }
