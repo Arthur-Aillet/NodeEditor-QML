@@ -1,4 +1,3 @@
-pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
 import NodeEditor
@@ -8,33 +7,29 @@ Frame {
     clip: true
     padding: 1
 
-    property alias area: areaId
+    property alias area: navigableArea
 
     NavigableArea {
-        id: areaId
+        id: navigableArea
         width: root.width
         height: root.height
         holdingItem: (draftConnectionId.selectedPort !== null) || (nodesId.selectedNodes.size !== 0)
 
         ConnectionList {
-            area: areaId
+            area: navigableArea
             nodes: nodesId
         }
 
         DraftConnection {
             id: draftConnectionId
             nodes: nodesId
-            area: areaId
+            area: navigableArea
         }
 
         NodeList {
             id: nodesId
-            area: areaId
+            area: navigableArea
             draftConnection: draftConnectionId
         }
-    }
-
-    ContextMenu.menu: SceneMenu {
-        area: areaId
     }
 }

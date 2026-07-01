@@ -21,8 +21,8 @@
     "WarningColor": [255, 179, 0],
     "ToolTipIconColor": "white",
 
-    "PenWidth": 0.75,
-    "HoveredPenWidth": 1.5,
+    "PenWidth": 1.25,
+    "HoveredPenWidth": 1.75,
 
     "ConnectionPointDiameter": 8.0,
 

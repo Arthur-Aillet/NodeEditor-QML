@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Controls
 import NodeEditor
 
 FlexboxLayout {
@@ -11,6 +12,10 @@ FlexboxLayout {
         id: graphicsView
         Layout.fillHeight: true
         Layout.fillWidth: true
+
+        ContextMenu.menu: SceneMenu {
+            area: graphicsView.area
+        }
     }
 
     Timeline {

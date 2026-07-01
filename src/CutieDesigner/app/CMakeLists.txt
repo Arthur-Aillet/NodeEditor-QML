@@ -5,6 +5,7 @@ qt_add_qml_module(app
   AppLayout.qml
   Timeline.qml
   NodeView.qml
+  SceneMenu.qml
 
   DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieDesigner.Nodes.Display CutieDesigner.Stats CutieUiModule
 )

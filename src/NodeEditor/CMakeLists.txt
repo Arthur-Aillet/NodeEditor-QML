@@ -11,8 +11,7 @@ qt_add_qml_module(NodeEditor
 
   view/GraphicsView.qml
   view/NavigableArea.qml
-  view/SceneMenu.qml
-  view/ViewBackground/ViewBackground.qml
+  view/ViewBackground.qml
 
   connections/DefaultConnection.qml
   connections/DraftConnection.qml
@@ -64,8 +63,8 @@ qt6_add_shaders(NodeEditor "NodeEditor_shaders"
   PREFIX
   "/qt/qml/NodeEditor"
   FILES
-  view/ViewBackground/viewBackground.frag
-  view/ViewBackground/viewBackground.vert
+  view/viewBackground.frag
+  view/viewBackground.vert
 )
 
 target_include_directories(NodeEditor PUBLIC
