@@ -5,20 +5,21 @@ import QtQuick.Layouts
 import CutieDesigner.Nodes.Display
 
 Item {
-    id: root
+    id: ukrugChar
+
+    required property UkrugNode node
+    required property var char
+    required property bool goingToGetDestroyed
+
     Layout.preferredWidth: 0
     Layout.preferredHeight: node.fontSize
 
     Behavior on Layout.preferredWidth {
         id: widthAnimation
         NumberAnimation {
-            duration: root.node.animationWidthSpeed
+            duration: ukrugChar.node.animationWidthSpeed
         }
     }
-
-    required property var char
-    required property bool goingToGetDestroyed
-    required property UkrugNode node
 
     UkrugPointsList {
         id: list
@@ -32,11 +33,11 @@ Item {
 
     Component.onCompleted: {
         Layout.preferredWidth = Qt.binding(function () {
-            return root.node.fontSize;
+            return ukrugChar.node.fontSize;
         });
         colorAnimation.duration = 0;
         shader.baseColor = Qt.binding(function () {
-            return root.node.baseColor;
+            return ukrugChar.node.baseColor;
         });
     }
 
@@ -74,54 +75,58 @@ Item {
         anchors.fill: parent
         source: parent
 
+        property alias node: ukrugChar.node
+
         baseColor: "transparent"
         Behavior on baseColor {
             PropertyAnimation {
                 id: colorAnimation
-                duration: root.node.animationOpacitySpeed
+                duration: ukrugChar.node.animationOpacitySpeed
             }
         }
 
-        k: root.node.k
-        circleScale: root.valid ? root.node.circleScale : 0.1 * root.node.circleScale
+        k: node.k
+        circleScale: ukrugChar.valid ? node.circleScale : 0.1 * node.circleScale
         Behavior on circleScale {
             PropertyAnimation {
-                duration: root.node.animationTransformSpeed
+                duration: ukrugChar.node.animationTransformSpeed
             }
         }
-        pointsScale: root.node.pointsScale
+        pointsScale: node.pointsScale
         Behavior on pointsScale {
             PropertyAnimation {
-                duration: root.node.animationTransformSpeed
+                duration: ukrugChar.node.animationTransformSpeed
             }
         }
-        smoothFactor: root.node.smoothFactor
-        fill: root.node.fill
+        smoothFactor: node.smoothFactor
+        fill: node.fill
         Behavior on fill {
             PropertyAnimation {
-                duration: root.node.animationTransformSpeed
+                duration: ukrugChar.node.animationTransformSpeed
             }
         }
-        substraction: root.node.substraction
-        boxArea: Qt.point((root.Layout.preferredWidth / root.node.fontSize) * root.node.boxLimitX, root.node.boxLimitY)
-        boxRadius: root.node.boxRadius
+        substraction: node.substraction
+        boxArea: Qt.point((ukrugChar.Layout.preferredWidth / node.fontSize) * node.boxLimitX, node.boxLimitY)
+        boxRadius: node.boxRadius
+
         function convertToPoint(angle, distance) {
             let vec = Qt.vector2d(Math.cos(angle), Math.sin(angle));
-            vec = vec.times(distance * root.node.pointsDistance);
+            vec = vec.times(distance * node.pointsDistance);
             return Qt.point(vec.x, vec.y);
         }
 
         property double point1angle: list.point1.angle
         property double point1distance: list.point1.distance
         point1: convertToPoint(point1angle, point1distance)
+
         Behavior on point1angle {
             PropertyAnimation {
-                duration: list.point1.animateAngle ? root.node.animationTransformSpeed : 0
+                duration: list.point1.animateAngle ? ukrugChar.node.animationTransformSpeed : 0
             }
         }
         Behavior on point1distance {
             PropertyAnimation {
-                duration: root.node.animationTransformSpeed
+                duration: ukrugChar.node.animationTransformSpeed
             }
         }
 
@@ -130,12 +135,12 @@ Item {
         point2: convertToPoint(point2angle, point2distance)
         Behavior on point2angle {
             PropertyAnimation {
-                duration: list.point2.animateAngle ? root.node.animationTransformSpeed : 0
+                duration: list.point2.animateAngle ? ukrugChar.node.animationTransformSpeed : 0
             }
         }
         Behavior on point2distance {
             PropertyAnimation {
-                duration: root.node.animationTransformSpeed
+                duration: ukrugChar.node.animationTransformSpeed
             }
         }
 
@@ -144,12 +149,12 @@ Item {
         point3: convertToPoint(point3angle, point3distance)
         Behavior on point3angle {
             PropertyAnimation {
-                duration: list.point3.animateAngle ? root.node.animationTransformSpeed : 0
+                duration: list.point3.animateAngle ? ukrugChar.node.animationTransformSpeed : 0
             }
         }
         Behavior on point3distance {
             PropertyAnimation {
-                duration: root.node.animationTransformSpeed
+                duration: ukrugChar.node.animationTransformSpeed
             }
         }
 
@@ -158,12 +163,12 @@ Item {
         point4: convertToPoint(point4angle, point4distance)
         Behavior on point4angle {
             PropertyAnimation {
-                duration: list.point4.animateAngle ? root.node.animationTransformSpeed : 0
+                duration: list.point4.animateAngle ? ukrugChar.node.animationTransformSpeed : 0
             }
         }
         Behavior on point4distance {
             PropertyAnimation {
-                duration: root.node.animationTransformSpeed
+                duration: ukrugChar.node.animationTransformSpeed
             }
         }
     }

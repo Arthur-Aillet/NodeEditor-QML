@@ -3,7 +3,6 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 FlexboxLayout {
-    id: root
     direction: FlexboxLayout.Row
     alignItems: FlexboxLayout.AlignCenter
     justifyContent: FlexboxLayout.JustifyStart

@@ -3,7 +3,7 @@ import QtQuick
 import NodeEditor
 
 Item {
-    id: root
+    id: nodeList
     required property DraftConnection draftConnection
     required property NavigableArea area
 
@@ -65,12 +65,12 @@ Item {
             required property real posX
             required property real posY
             nodeId: modelId
-            nodes: root as NodeList
+            nodes: nodeList as NodeList
             x: posX
             y: posY
 
-            draftConnection: root.draftConnection
-            area: root.area
+            draftConnection: nodeList.draftConnection
+            area: nodeList.area
         }
         model: ListModel {
             id: nodeModel

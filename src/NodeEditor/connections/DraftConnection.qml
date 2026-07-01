@@ -3,7 +3,7 @@ import QtQuick
 import NodeEditor
 
 Loader {
-    id: root
+    id: defaultConnection
 
     required property NavigableArea area
     required property NodeList nodes
@@ -64,22 +64,22 @@ Loader {
     sourceComponent: DefaultConnection {
         id: painter
 
-        property var p: root.selectedPort
+        property var sp: defaultConnection.selectedPort
 
-        area: root.area
-        nodes: root.nodes
+        area: defaultConnection.area
+        nodes: defaultConnection.nodes
 
         connection: ({
-                outNodeId: p.portType === NodeEditor.PortType.In ? NodeEditorUtils.InvalidNodeId : p.nodeId,
-                outPortIndex: p.portType === NodeEditor.PortType.In ? NodeEditorUtils.InvalidPortIndex : p.portId,
-                inNodeId: p.portType === NodeEditor.PortType.In ? p.nodeId : NodeEditorUtils.InvalidNodeId,
-                inPortIndex: p.portType === NodeEditor.PortType.In ? p.portId : NodeEditorUtils.InvalidPortIndex
+                outNodeId: sp.portType === NodeEditor.PortType.In ? NodeEditorUtils.InvalidNodeId : sp.nodeId,
+                outPortIndex: sp.portType === NodeEditor.PortType.In ? NodeEditorUtils.InvalidPortIndex : sp.portId,
+                inNodeId: sp.portType === NodeEditor.PortType.In ? sp.nodeId : NodeEditorUtils.InvalidNodeId,
+                inPortIndex: sp.portType === NodeEditor.PortType.In ? sp.portId : NodeEditorUtils.InvalidPortIndex
             })
 
         Connections {
-            target: root.area.dragArea
+            target: defaultConnection.area.dragArea
             function onReleased() {
-                root.tryToCreate();
+                defaultConnection.tryToCreate();
             }
         }
     }

@@ -8,7 +8,7 @@ import CutieDesigner.Time
 import CutieDesigner.Nodes.Display
 
 Item {
-    id: root
+    id: appLayout
     anchors.fill: parent
 
     property alias objectLoader: objectLoader
@@ -32,16 +32,16 @@ Item {
             name: "NodesFocus"
             ParentChange {
                 target: sceneContent
-                parent: root
+                parent: appLayout
             }
             ParentChange {
                 target: view
-                parent: root
+                parent: appLayout
             }
             PropertyChanges {
                 view {
                     graphicsView.area.background.opacity: 0.5
-                    anchors.fill: root
+                    anchors.fill: appLayout
                 }
                 layout {
                     visible: false
@@ -64,7 +64,7 @@ Item {
             name: "SurfaceFocus"
             ParentChange {
                 target: sceneContent
-                parent: root
+                parent: appLayout
             }
             PropertyChanges {
                 layout {
@@ -81,8 +81,8 @@ Item {
         orientation: Qt.Vertical
         Item {
             id: topView
-            implicitWidth: root.width
-            implicitHeight: root.height / 2
+            implicitWidth: appLayout.width
+            implicitHeight: appLayout.height / 2
             Item {
                 id: sceneContent
                 anchors.fill: parent
@@ -90,10 +90,10 @@ Item {
 
                 Keys.onPressed: event => {
                     if ((event.key == Qt.Key_Space) && (event.modifiers & Qt.ControlModifier)) {
-                        if (root.state != "SurfaceFocus")
-                            root.state = "SurfaceFocus";
+                        if (appLayout.state != "SurfaceFocus")
+                            appLayout.state = "SurfaceFocus";
                         else
-                            root.state = "";
+                            appLayout.state = "";
                     }
                 }
 
@@ -108,8 +108,8 @@ Item {
         }
         SplitView {
             id: editView
-            implicitWidth: root.width
-            implicitHeight: root.height / 2
+            implicitWidth: appLayout.width
+            implicitHeight: appLayout.height / 2
             orientation: Qt.Horizontal
             PaneBackground {
                 id: leftPanel
@@ -123,10 +123,10 @@ Item {
                 Keys.onPressed: event => {
                     if (event.key == Qt.Key_Space) {
                         if (event.modifiers & Qt.ControlModifier) {
-                            if (root.state != "NodesFocus") {
-                                root.state = "NodesFocus";
+                            if (appLayout.state != "NodesFocus") {
+                                appLayout.state = "NodesFocus";
                             } else {
-                                root.state = "";
+                                appLayout.state = "";
                             }
                         } else {
                             TimeController.playing = !TimeController.playing;

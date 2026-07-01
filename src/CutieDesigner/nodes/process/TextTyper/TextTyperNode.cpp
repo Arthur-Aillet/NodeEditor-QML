@@ -51,7 +51,7 @@ QQmlComponent TextTyperNode::embeddedComponent(QQmlEngine *engine) {
 
 QVariantMap TextTyperNode::componentInitialProperties() {
   QVariantMap map;
-  map["textTyper"] = QVariant::fromValue(this);
+  map["node"] = QVariant::fromValue(this);
   return map;
 }
 

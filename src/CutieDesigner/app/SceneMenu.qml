@@ -5,7 +5,7 @@ import QtQuick.Controls
 import NodeEditor
 
 Menu {
-    id: root
+    id: sceneMenu
     popupType: Popup.Window
     focus: true
 
@@ -45,7 +45,7 @@ Menu {
         boundsBehavior: Flickable.StopAtBounds
         editTriggers: TableView.NoEditTriggers
 
-        model: root.nodeMap
+        model: sceneMenu.nodeMap
         keyNavigationEnabled: true
         selectionModel: ItemSelectionModel {}
         delegate: TreeViewDelegate {
@@ -67,13 +67,13 @@ Menu {
                 if (delegate.hasChildren) {
                     return model.display;
                 }
-                return model.display.replace(root.replaceRegex, `<u>$&</u>`);
+                return model.display.replace(sceneMenu.replaceRegex, `<u>$&</u>`);
             }
 
             background: Rectangle {
                 id: background
                 height: parent.height
-                width: root.width
+                width: sceneMenu.width
                 color: (view.alternatingRows && delegate.row % 2 !== 0) ? palette.base : palette.alternateBase
                 Rectangle {
                     x: {
@@ -100,10 +100,10 @@ Menu {
                     view.toggleExpanded(row);
                 } else {
                     const name = delegate.model.display.toString();
-                    const pos = Qt.point(root.x, root.y);
+                    const pos = Qt.point(sceneMenu.x, sceneMenu.y);
 
-                    ModelInterface.createNode(name, root.area.mapToItem(root.area.inner, pos));
-                    root.close();
+                    ModelInterface.createNode(name, sceneMenu.area.mapToItem(sceneMenu.area.inner, pos));
+                    sceneMenu.close();
                 }
             }
             onClicked: activate()
@@ -120,7 +120,7 @@ Menu {
 
             if (modelIndex.parent.valid)
                 return;
-            let nextModelIndex = root.nodeMap.sibling(modelIndex.row + 1, 0, modelIndex);
+            let nextModelIndex = sceneMenu.nodeMap.sibling(modelIndex.row + 1, 0, modelIndex);
             let nextViewRow = view.rowAtIndex(nextModelIndex);
             if (nextViewRow == -1) {
                 view.contentY = view.contentHeight;

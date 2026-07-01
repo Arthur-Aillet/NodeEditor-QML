@@ -2,7 +2,7 @@ import QtQuick
 import NodeEditor
 
 Canvas {
-    id: root
+    id: defaultConnectionPainter
 
     required property NodeList nodes
     required property NavigableArea area
@@ -11,11 +11,11 @@ Canvas {
         target: ModelInterface.graph
 
         function onNodePositionUpdated(nodeId: real) {
-            if (nodeId == root.connection.inNodeId) {
-                root.inNodePos = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Position);
+            if (nodeId == defaultConnectionPainter.connection.inNodeId) {
+                defaultConnectionPainter.inNodePos = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Position);
             }
-            if (nodeId == root.connection.outNodeId) {
-                root.outNodePos = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Position);
+            if (nodeId == defaultConnectionPainter.connection.outNodeId) {
+                defaultConnectionPainter.outNodePos = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Position);
             }
         }
     }
@@ -140,11 +140,11 @@ Canvas {
         return shortestDistance;
     }
 
-    focusPolicy: root.hovered ? Qt.ClickFocus : Qt.NoFocus
+    focusPolicy: hovered ? Qt.ClickFocus : Qt.NoFocus
 
     TapHandler {
-        enabled: root.hovered
-        onTapped: root.focus = true
+        enabled: defaultConnectionPainter.hovered
+        onTapped: defaultConnectionPainter.focus = true
     }
 
     Keys.onPressed: event => {
@@ -158,12 +158,12 @@ Canvas {
 
     property bool swap: connection.inNodeId === NodeEditorUtils.InvalidNodeId
 
-    property double scaleFactor: root.area.inner.mat.m11
+    property double scaleFactor: area.inner.mat.m11
 
-    x: (Math.min(root.inPoint.x, root.outPoint.x, root.c1.x, root.c2.x)) - StyleCollection.connection.lineWidth
-    y: (Math.min(root.inPoint.y, root.outPoint.y, root.c1.y, root.c2.y)) - StyleCollection.connection.lineWidth
-    width: ((Math.max(root.inPoint.x, root.outPoint.x, root.c1.x, root.c2.x) - x) + StyleCollection.connection.lineWidth * 3) * scaleFactor
-    height: ((Math.max(root.inPoint.y, root.outPoint.y, root.c1.y, root.c2.y) - y) + StyleCollection.connection.lineWidth * 3) * scaleFactor
+    x: (Math.min(inPoint.x, outPoint.x, c1.x, c2.x)) - StyleCollection.connection.lineWidth
+    y: (Math.min(inPoint.y, outPoint.y, c1.y, c2.y)) - StyleCollection.connection.lineWidth
+    width: ((Math.max(inPoint.x, outPoint.x, c1.x, c2.x) - x) + StyleCollection.connection.lineWidth * 3) * scaleFactor
+    height: ((Math.max(inPoint.y, outPoint.y, c1.y, c2.y) - y) + StyleCollection.connection.lineWidth * 3) * scaleFactor
 
     transformOrigin: Item.TopLeft
 
@@ -179,13 +179,13 @@ Canvas {
         //     return StyleCollection.connection.selectedColor;
         if (!StyleCollection.connection.useDataDefinedColors)
             return StyleCollection.connection.normalColor;
-        if (root.inTypeColor == root.outTypeColor)
-            return root.inTypeColor;
+        if (inTypeColor == outTypeColor)
+            return inTypeColor;
 
         const gradient = ctx.createLinearGradient(scaledStartPoint.x, scaledStartPoint.y, scaledEndPoint.x, scaledEndPoint.y);
 
         for (let i = 0; i != 10; i++) {
-            const color = StyleCollection.connection.lerpOklabColors(root.inTypeColor, root.outTypeColor, i / 10);
+            const color = StyleCollection.connection.lerpOklabColors(inTypeColor, outTypeColor, i / 10);
             gradient.addColorStop(i / 10, color);
         }
 
@@ -228,16 +228,20 @@ Canvas {
     Path {
         id: path
 
-        startX: root.swap ? root.outPoint.x : root.inPoint.x
-        startY: root.swap ? root.outPoint.y : root.inPoint.y
+        property alias dc: defaultConnectionPainter
+
+        startX: dc.swap ? dc.outPoint.x : dc.inPoint.x
+        startY: dc.swap ? dc.outPoint.y : dc.inPoint.y
         PathCubic {
             id: pathCubic
-            x: root.swap ? root.inPoint.x : root.outPoint.x
-            y: root.swap ? root.inPoint.y : root.outPoint.y
-            control1X: root.swap ? root.c2.x : root.c1.x
-            control1Y: root.swap ? root.c2.y : root.c1.y
-            control2X: root.swap ? root.c1.x : root.c2.x
-            control2Y: root.swap ? root.c1.y : root.c2.y
+
+            property alias dc: defaultConnectionPainter
+            x: dc.swap ? dc.inPoint.x : dc.outPoint.x
+            y: dc.swap ? dc.inPoint.y : dc.outPoint.y
+            control1X: dc.swap ? dc.c2.x : dc.c1.x
+            control1Y: dc.swap ? dc.c2.y : dc.c1.y
+            control2X: dc.swap ? dc.c1.x : dc.c2.x
+            control2Y: dc.swap ? dc.c1.y : dc.c2.y
         }
     }
 }

@@ -6,7 +6,7 @@ import QtQuick.Layouts
 import NodeEditor
 
 AbstractNodePainter {
-    id: root
+    id: defaultNodePainter
 
     property alias strokeColor: rect.strokeColor
     property alias strokeWidth: rect.strokeWidth
@@ -15,7 +15,7 @@ AbstractNodePainter {
     readonly property int portSize: 20
 
     Connections {
-        target: root.nodeObject
+        target: defaultNodePainter.nodeObject
         function onConnectionChanged(portIndex: int, portType: int, otherNodeId: int, otherPortId: int) {
             let port = inOutRepeater.portAt(portIndex, portType);
             if (port) {
@@ -46,7 +46,7 @@ AbstractNodePainter {
 
     ShapePath {
         id: rect
-        property alias nodeObject: root.nodeObject
+        property alias nodeObject: defaultNodePainter.nodeObject
 
         strokeWidth: nodeObject.containsMouse ? nodeObject.style.hoveredPenWidth : nodeObject.style.penWidth
         strokeColor: {
@@ -67,29 +67,29 @@ AbstractNodePainter {
             x1: 0.0
             y1: 0.0
             x2: 2.0
-            y2: root.height
+            y2: defaultNodePainter.height
             stops: [
                 GradientStop {
                     position: 0.0
-                    color: root.nodeObject.style.gradientColor0
+                    color: defaultNodePainter.nodeObject.style.gradientColor0
                 },
                 GradientStop {
                     position: 0.10
-                    color: root.nodeObject.style.gradientColor1
+                    color: defaultNodePainter.nodeObject.style.gradientColor1
                 },
                 GradientStop {
                     position: 0.9
-                    color: root.nodeObject.style.gradientColor2
+                    color: defaultNodePainter.nodeObject.style.gradientColor2
                 },
                 GradientStop {
                     position: 1.0
-                    color: root.nodeObject.style.gradientColor3
+                    color: defaultNodePainter.nodeObject.style.gradientColor3
                 }
             ]
         }
         PathRectangle {
-            width: root.width
-            height: root.height
+            width: defaultNodePainter.width
+            height: defaultNodePainter.height
             radius: 3.0
         }
     }
@@ -105,36 +105,36 @@ AbstractNodePainter {
 
         Text {
             id: captionText
-            text: root.caption
+            text: defaultNodePainter.caption
             color: {
-                let col = root.nodeObject.style.fontColor;
-                if (root.nodeObject.locked)
+                let col = defaultNodePainter.nodeObject.style.fontColor;
+                if (defaultNodePainter.nodeObject.locked)
                     col = Qt.darker(col, 1.4);
                 return col;
             }
             font.bold: true
-            // font.bold: root.label == ""
-            // font.italic: root.label != ""
-            property bool active: ModelInterface.graph.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.CaptionVisible)
+            // font.bold: defaultNodePainter.label == ""
+            // font.italic: defaultNodePainter.label != ""
+            property bool active: ModelInterface.graph.nodeData(defaultNodePainter.nodeObject.nodeId, NodeEditor.NodeRole.CaptionVisible)
 
             leftPadding: 2
             rightPadding: 2
-            topPadding: root.spacing
-            bottomPadding: labelText.active ? 0 : root.spacing / 4
+            topPadding: defaultNodePainter.spacing
+            bottomPadding: labelText.active ? 0 : defaultNodePainter.spacing / 4
             visible: active
             Layout.maximumHeight: active ? height : 0
         }
 
         Text {
             id: labelText
-            text: root.label
+            text: defaultNodePainter.label
             color: {
-                let col = root.nodeObject.style.fontColor;
-                if (root.nodeObject.locked)
+                let col = defaultNodePainter.nodeObject.style.fontColor;
+                if (defaultNodePainter.nodeObject.locked)
                     col = Qt.darker(col, 1.4);
                 return col;
             }
-            property bool active: ModelInterface.graph.nodeData(root.nodeObject.nodeId, NodeEditor.NodeRole.LabelVisible)
+            property bool active: ModelInterface.graph.nodeData(defaultNodePainter.nodeObject.nodeId, NodeEditor.NodeRole.LabelVisible)
 
             visible: active
             padding: 1
@@ -152,30 +152,30 @@ AbstractNodePainter {
             Layout.minimumWidth: {
                 const maxLabelWidthOut = inOutRepeater.getMaxLabelWidth(NodeEditor.PortType.Out);
 
-                return maxLabelWidthIn + root.spacing + embedContainer.width + root.spacing + maxLabelWidthOut;
+                return maxLabelWidthIn + defaultNodePainter.spacing + embedContainer.width + defaultNodePainter.spacing + maxLabelWidthOut;
             }
             Layout.minimumHeight: {
-                const offsetForLabelNodes = content.y === 0 ? 0 : -root.spacing / 2;
-                const maxPortCount = Math.max(root.nodeObject.inPortCount, root.nodeObject.outPortCount);
-                const portsHeight = maxPortCount * (root.portSize + root.spacing);
+                const offsetForLabelNodes = content.y === 0 ? 0 : -defaultNodePainter.spacing / 2;
+                const maxPortCount = Math.max(defaultNodePainter.nodeObject.inPortCount, defaultNodePainter.nodeObject.outPortCount);
+                const portsHeight = maxPortCount * (defaultNodePainter.portSize + defaultNodePainter.spacing);
 
-                return Math.max(embedContainer.height, portsHeight + offsetForLabelNodes) + root.spacing;
+                return Math.max(embedContainer.height, portsHeight + offsetForLabelNodes) + defaultNodePainter.spacing;
             }
 
             Repeater {
                 id: inOutRepeater
-                model: root.nodeObject.inPortCount + root.nodeObject.outPortCount
+                model: defaultNodePainter.nodeObject.inPortCount + defaultNodePainter.nodeObject.outPortCount
                 delegate: DefaultPortPainter {
                     y: -content.y
-                    nodePainter: root as DefaultNodePainter
+                    nodePainter: defaultNodePainter as DefaultNodePainter
                 }
 
                 function portAt(portId: int, portType: int): var {
                     let i = 0;
-                    let target = root.nodeObject.inPortCount;
+                    let target = defaultNodePainter.nodeObject.inPortCount;
                     if (portType == NodeEditor.PortType.Out) {
-                        i += root.nodeObject.inPortCount;
-                        target += root.nodeObject.outPortCount;
+                        i += defaultNodePainter.nodeObject.inPortCount;
+                        target += defaultNodePainter.nodeObject.outPortCount;
                     }
                     for (i; i != target; i++) {
                         const port = itemAt(i) as DefaultPortPainter;
@@ -199,7 +199,7 @@ AbstractNodePainter {
             // Embedded component
             Item {
                 id: embedContainer
-                x: content.maxLabelWidthIn + root.spacing
+                x: content.maxLabelWidthIn + defaultNodePainter.spacing
                 anchors.verticalCenter: parent.verticalCenter
                 height: childrenRect.height
                 width: childrenRect.width

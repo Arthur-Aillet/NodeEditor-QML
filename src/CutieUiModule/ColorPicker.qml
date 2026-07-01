@@ -4,7 +4,7 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 
 FlexboxLayout {
-    id: root
+    id: colorPicker
     property alias value: colorDialog.selectedColor
 
     direction: FlexboxLayout.Row
@@ -21,7 +21,7 @@ FlexboxLayout {
         id: colorDisplay
         width: 35
         height: 25
-        color: root.value
+        color: colorPicker.value
         radius: 4
         border.color: palette.shadow
         border.width: 1

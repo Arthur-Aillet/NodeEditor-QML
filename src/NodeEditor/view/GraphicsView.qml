@@ -3,7 +3,6 @@ import QtQuick.Controls
 import NodeEditor
 
 Frame {
-    id: root
     clip: true
     padding: 1
 
@@ -11,8 +10,7 @@ Frame {
 
     NavigableArea {
         id: navigableArea
-        width: root.width
-        height: root.height
+        anchors.fill: parent
         holdingItem: (draftConnectionId.selectedPort !== null) || (nodesId.selectedNodes.size !== 0)
 
         ConnectionList {

@@ -1,7 +1,6 @@
 import QtQuick
 
 QtObject {
-    id: root
     property var inner: new Set()
     property int size: inner.size
 

@@ -3,20 +3,20 @@ import QtQuick
 import NodeEditor
 
 Item {
-    id: root
+    id: connectionList
 
     required property NavigableArea area
     required property NodeList nodes
 
     Connections {
-        target: root.area
+        target: connectionList.area
         function onMousePositionChanged() {
             let closestIndex = undefined;
             let closestDistance = Infinity;
 
             for (let i = 0; i < connections.count; i++) {
                 const connection = connections.itemAt(i) as DefaultConnection;
-                const dist = connection.distanceToCurve(root.area.mousePosition);
+                const dist = connection.distanceToCurve(connectionList.area.mousePosition);
                 if (dist < closestDistance) {
                     closestDistance = dist;
                     closestIndex = i;
@@ -60,8 +60,8 @@ Item {
             required property connectionId inputConnectionId
 
             connection: inputConnectionId
-            nodes: root.nodes
-            area: root.area
+            nodes: connectionList.nodes
+            area: connectionList.area
         }
 
         model: ListModel {

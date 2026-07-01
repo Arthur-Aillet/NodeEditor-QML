@@ -11,9 +11,8 @@ Item {
     property alias blurSrc4: blurredItemSource4
     property alias blurSrc5: blurredItemSource5
 
-    component BlurItem : ShaderEffect {
-        property vector2d offset: Qt.vector2d((1.0 + rootItem.blurMultiplier) / width,
-                                              (1.0 + rootItem.blurMultiplier) / height)
+    component BlurItem: ShaderEffect {
+        property vector2d offset: Qt.vector2d((1.0 + rootItem.blurMultiplier) / width, (1.0 + rootItem.blurMultiplier) / height)
         visible: false
         layer.enabled: true
         layer.smooth: true
@@ -53,7 +52,7 @@ Item {
     }
     BlurItem {
         id: blurredItemSource4
-        property Item src: priv.useBlurItem4 ?  blurredItemSource3 : null
+        property Item src: priv.useBlurItem4 ? blurredItemSource3 : null
         width: blurredItemSource3.width * 0.5
         height: blurredItemSource3.height * 0.5
     }

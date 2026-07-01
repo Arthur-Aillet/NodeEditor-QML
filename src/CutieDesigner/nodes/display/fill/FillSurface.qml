@@ -3,7 +3,7 @@ import QtQuick.Shapes
 import CutieDesigner.Nodes.Display
 
 Shape {
-    id: root
+    id: fillSurface
     anchors.fill: parent
     required property FillNode node
 
@@ -13,7 +13,7 @@ Shape {
     }
 
     Connections {
-        target: root.node
+        target: fillSurface.node
         function onGradientChanged() {
             path.computeGradient();
         }
@@ -21,26 +21,26 @@ Shape {
 
     ShapePath {
         id: path
-        startX: root.x
-        startY: root.y
+        startX: fillSurface.x
+        startY: fillSurface.y
 
         strokeWidth: 0
 
         PathLine {
-            x: root.x
-            y: root.y + root.height
+            x: fillSurface.x
+            y: fillSurface.y + fillSurface.height
         }
         PathLine {
-            x: root.x + root.width
-            y: root.y + root.height
+            x: fillSurface.x + fillSurface.width
+            y: fillSurface.y + fillSurface.height
         }
         PathLine {
-            x: root.x + root.width
-            y: root.y
+            x: fillSurface.x + fillSurface.width
+            y: fillSurface.y
         }
         PathLine {
-            x: root.x
-            y: root.y
+            x: fillSurface.x
+            y: fillSurface.y
         }
 
         Component.onCompleted: {
@@ -50,24 +50,24 @@ Shape {
         function computeGradient() {
             let stopsList = [];
 
-            for (let i = 0; i < root.node.gradient.length; i++) {
-                let s1 = stopComponent.createObject(root, {
-                    "position": root.node.gradient[i][0],
-                    "color": root.node.gradient[i][1]
+            for (let i = 0; i < fillSurface.node.gradient.length; i++) {
+                let s1 = stopComponent.createObject(fillSurface, {
+                    "position": fillSurface.node.gradient[i][0],
+                    "color": fillSurface.node.gradient[i][1]
                 });
                 stopsList.push(s1);
             }
             gradient.stops = stopsList;
-            gradient.y2 = root.y;
-            gradient.y2 = root.y + root.height;
+            gradient.y2 = fillSurface.y;
+            gradient.y2 = fillSurface.y + fillSurface.height;
         }
 
         fillGradient: LinearGradient {
             id: gradient
-            x1: root.x
-            y1: root.y
-            x2: root.x + root.width
-            y2: root.y + root.height
+            x1: fillSurface.x
+            y1: fillSurface.y
+            x2: fillSurface.x + fillSurface.width
+            y2: fillSurface.y + fillSurface.height
         }
     }
 }

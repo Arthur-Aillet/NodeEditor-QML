@@ -8,10 +8,10 @@ import CutieDesigner.Nodes.Process
 import CutieUiModule as Cute
 
 FlexboxLayout {
-    id: root
+    id: textTyper
     direction: FlexboxLayout.Column
 
-    required property TextTyperNode textTyper
+    required property TextTyperNode node
 
     Item {
         Layout.fillWidth: true
@@ -22,12 +22,12 @@ FlexboxLayout {
             id: displayArea
             width: parent.width - 20
             placeholderText: "Text"
-            text: root.textTyper.text
-            onTextEdited: root.textTyper.text = text
+            text: textTyper.node.text
+            onTextEdited: textTyper.node.text = text
             Connections {
-                target: root.textTyper
+                target: textTyper.node
                 function onTextChanged() {
-                    displayArea.text = root.textTyper.text;
+                    displayArea.text = textTyper.node.text;
                 }
             }
         }
@@ -35,12 +35,12 @@ FlexboxLayout {
             id: playBtn
             anchors.left: displayArea.right
             height: parent.height
-            playing: root.textTyper.play
-            onClicked: root.textTyper.play = !root.textTyper.play
+            playing: textTyper.node.play
+            onClicked: textTyper.node.play = !textTyper.node.play
             Connections {
-                target: root.textTyper
+                target: textTyper.node
                 function onPlayChanged() {
-                    playBtn.playing = root.textTyper.play;
+                    playBtn.playing = textTyper.node.play;
                 }
             }
         }
@@ -65,7 +65,7 @@ FlexboxLayout {
             return largest;
         }
         width: maxWidth
-        model: root.textTyper.model
+        model: textTyper.node.model
 
         ScrollBar.vertical: ScrollBar {
             anchors.right: parent.right
@@ -149,7 +149,7 @@ FlexboxLayout {
                     visible: line.name !== "Wait"
                     text: visible ? line.value.pos : ""
                     onTextEdited: {
-                        root.textTyper.model.editValue(line.index, "pos", line.toUInt(text));
+                        textTyper.node.model.editValue(line.index, "pos", line.toUInt(text));
                     }
 
                     validator: IntValidator {
@@ -163,7 +163,7 @@ FlexboxLayout {
                     visible: line.name === "Wait"
                     text: visible ? line.value.delay : ""
                     onTextEdited: {
-                        root.textTyper.model.editValue(line.index, "delay", Number(text));
+                        textTyper.node.model.editValue(line.index, "delay", Number(text));
                     }
 
                     validator: DoubleValidator {
@@ -177,7 +177,7 @@ FlexboxLayout {
                     visible: line.name === "Erase"
                     text: visible ? line.value.amount : ""
                     onTextEdited: {
-                        root.textTyper.model.editValue(line.index, "amount", line.toUInt(text));
+                        textTyper.node.model.editValue(line.index, "amount", line.toUInt(text));
                     }
 
                     validator: IntValidator {
@@ -190,7 +190,7 @@ FlexboxLayout {
                     visible: line.name === "Insert" || line.name === "Replace"
                     text: visible ? line.value.text : ""
                     onTextEdited: {
-                        root.textTyper.model.editValue(line.index, "text", text);
+                        textTyper.node.model.editValue(line.index, "text", text);
                     }
 
                     placeholderText: "text"
@@ -205,7 +205,7 @@ FlexboxLayout {
                 width: 16
                 height: 16
                 rightPadding: 6
-                onClicked: root.textTyper.model.removeEvent(line.index)
+                onClicked: textTyper.node.model.removeEvent(line.index)
                 text: "\u2717" // Unicode Character 'BALLOT X'
                 radius: 8
             }
@@ -217,7 +217,7 @@ FlexboxLayout {
         model: ["Wait", "Erase", "Insert", "Replace"]
         currentIndex: -1
         onActivated: index => {
-            root.textTyper.model.addEvent(model[index]);
+            textTyper.node.model.addEvent(model[index]);
             currentIndex = -1;
         }
     }
