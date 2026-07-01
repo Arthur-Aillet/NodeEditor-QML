@@ -25,12 +25,24 @@ Item {
         selectedNodes.clear();
     }
 
-    function moveSelectedNodes(xOffset, yOffset, excludedId) {
+    function moveSelectedNodes(xOffset: int, yOffset: int, excludedId: int, snapToGrid: bool) {
         for (let i = 0; i != nodes.count; i++) {
             const node = nodes.itemAt(i) as NodeGraphicalObject;
             if (node.selected == true && node.nodeId != excludedId) {
-                node.x += xOffset;
-                node.y += yOffset;
+                if (xOffset != 0) {
+                    if (snapToGrid) {
+                        node.x = Math.ceil((node.x + xOffset) / 5) * 5;
+                    } else {
+                        node.x += xOffset;
+                    }
+                }
+                if (yOffset != 0) {
+                    if (snapToGrid) {
+                        node.y = Math.ceil((node.y + yOffset) / 5) * 5;
+                    } else {
+                        node.y += yOffset;
+                    }
+                }
             }
         }
     }

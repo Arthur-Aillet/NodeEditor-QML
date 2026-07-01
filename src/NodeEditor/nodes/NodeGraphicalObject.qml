@@ -105,19 +105,19 @@ MouseArea {
             nodes.selectedNodes.clear();
         }
         if (event.key == Qt.Key_Left) {
-            nodes.moveSelectedNodes(-3, 0, undefined);
+            nodes.moveSelectedNodes(-5, 0, undefined, true);
             event.accepted = true;
         }
         if (event.key == Qt.Key_Right) {
-            nodes.moveSelectedNodes(3, 0, undefined);
+            nodes.moveSelectedNodes(5, 0, undefined, true);
             event.accepted = true;
         }
         if (event.key == Qt.Key_Up) {
-            nodes.moveSelectedNodes(0, -3, undefined);
+            nodes.moveSelectedNodes(0, -5, undefined, true);
             event.accepted = true;
         }
         if (event.key == Qt.Key_Down) {
-            nodes.moveSelectedNodes(0, 3, undefined);
+            nodes.moveSelectedNodes(0, 5, undefined, true);
             event.accepted = true;
         }
     }
@@ -151,7 +151,7 @@ MouseArea {
 
     onPositionChanged: mouse => {
         if (drag.active) {
-            nodes.moveSelectedNodes(x - xPrev, y - yPrev, nodeId);
+            nodes.moveSelectedNodes(x - xPrev, y - yPrev, nodeId, false);
             xPrev = x;
             yPrev = y;
         }
