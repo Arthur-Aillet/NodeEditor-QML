@@ -26,7 +26,7 @@ Item {
         anchors.fill: parent
         drag.target: navigableArea.holdingItem ? undefined : inner
         drag.filterChildren: true
-        focusPolicy: Qt.WheelFocus
+        focusPolicy: Qt.ClickFocus
 
         onPositionChanged: navigableArea.mousePosition = mapToItem(inner, mouseX, mouseY)
 
