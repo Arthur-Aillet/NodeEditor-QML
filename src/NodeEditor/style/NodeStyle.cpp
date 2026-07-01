@@ -165,15 +165,16 @@ QJsonObject NodeStyle::toJson() const {
 void NodeStyle::loadPalette(QPalette const &palette) {
   loadJsonFile(":DefaultStyle.json");
 
-  NormalBoundaryColor = palette.text().color();
+  NormalBoundaryColor =
+      palette.text().color().lightnessF() < 0.5 ? palette.dark().color() : palette.shadow().color();
   SelectedBoundaryColor = palette.highlight().color();
   FontColor = palette.text().color();
   FontColorFaded = palette.text().color().darker(120);
   ShadowColor = palette.shadow().color();
-  GradientColor0 = palette.base().color().lighter().lighter();
-  GradientColor1 = palette.base().color().lighter();
-  GradientColor2 = palette.base().color();
-  GradientColor3 = palette.dark().color();
+  GradientColor0 = palette.alternateBase().color().lighter(250);
+  GradientColor1 = palette.alternateBase().color().lighter();
+  GradientColor2 = palette.alternateBase().color();
+  GradientColor3 = palette.alternateBase().color().darker(100);
 }
 
 QColor NodeStyle::normalBoundaryColor() const { return NormalBoundaryColor; };
