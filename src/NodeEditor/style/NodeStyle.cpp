@@ -165,15 +165,25 @@ QJsonObject NodeStyle::toJson() const {
 void NodeStyle::loadPalette(QPalette const &palette) {
   loadJsonFile(":DefaultStyle.json");
 
-  NormalBoundaryColor = palette.highlight().color().darker(170);
   SelectedBoundaryColor = palette.highlight().color();
   FontColor = palette.text().color();
   FontColorFaded = palette.text().color().darker(120);
   ShadowColor = palette.shadow().color();
-  GradientColor0 = palette.alternateBase().color().lighter(150);
-  GradientColor1 = palette.alternateBase().color().lighter(100);
-  GradientColor2 = palette.alternateBase().color().darker(120);
-  GradientColor3 = palette.alternateBase().color().darker(140);
+
+  if (palette.text().color().lightnessF() > 0.5) { // Darker themes
+    NormalBoundaryColor =
+        palette.dark().color().darker(140); // palette.light().color().lighter(240);
+    GradientColor0 = palette.base().color().lighter().lighter(150);
+    GradientColor1 = palette.base().color().lighter().lighter(100);
+    GradientColor2 = palette.base().color().lighter().darker(120);
+    GradientColor3 = palette.base().color().lighter().darker(140);
+  } else {
+    NormalBoundaryColor = palette.highlight().color().darker(170);
+    GradientColor0 = palette.alternateBase().color().lighter(150);
+    GradientColor1 = palette.alternateBase().color().lighter(100);
+    GradientColor2 = palette.alternateBase().color().darker(110);
+    GradientColor3 = palette.alternateBase().color().darker(125);
+  }
 }
 
 QColor NodeStyle::normalBoundaryColor() const { return NormalBoundaryColor; };

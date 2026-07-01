@@ -27,6 +27,7 @@ class StyleCollection : public QObject {
   static void setNodeStyle(NodeStyle nodeStyle);
   static void setConnectionStyle(ConnectionStyle connectionStyle);
   static void setGraphicsViewStyle(GraphicsViewStyle graphicsViewStyle);
+  static void followApplicationPalette(bool enable);
 
   bool eventFilter(QObject *obj, QEvent *event) override;
 
@@ -42,7 +43,7 @@ class StyleCollection : public QObject {
   protected:
   StyleCollection(QObject *parent = nullptr);
 
-  bool _trackApplicationPalette;
+  bool _followApplicationPalette;
   NodeStyle _nodeStyle;
   ConnectionStyle _connectionStyle;
   GraphicsViewStyle _graphicsViewStyle;

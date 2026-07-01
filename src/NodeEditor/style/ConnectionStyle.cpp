@@ -132,12 +132,11 @@ QJsonObject ConnectionStyle::toJson() const {
 
 void ConnectionStyle::loadPalette(QPalette const &palette) {
   loadJsonFile(":DefaultStyle.json");
-  auto focusColor = palette.text().color();
-  SelectedColor = focusColor;
+  SelectedColor = palette.text().color();
   SelectedHaloColor = palette.highlight().color();
-  ConstructionColor = focusColor.darker();
+  ConstructionColor = palette.text().color().darker();
   NormalColor = palette.highlight().color();
-  HoveredColor = focusColor;
+  HoveredColor = palette.text().color();
 }
 
 QColor ConnectionStyle::constructionColor() const { return ConstructionColor; };

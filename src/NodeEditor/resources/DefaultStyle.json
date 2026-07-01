@@ -35,8 +35,8 @@
     "SelectedHaloColor": "orange",
     "HoveredColor": "lightcyan",
 
-    "LineWidth": 3.5,
-    "ConstructionLineWidth": 2.5,
+    "LineWidth": 5,
+    "ConstructionLineWidth": 2,
     "PointDiameter": 10.0,
 
     "UseDataDefinedColors": true

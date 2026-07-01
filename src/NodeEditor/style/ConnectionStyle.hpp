@@ -1,12 +1,9 @@
 #pragma once
 
-#include <QtGui/QColor>
-#include <qdebug.h>
-#include <qqmlintegration.h>
-#include <qtmetamacros.h>
-#include <qvectornd.h>
-
 #include "Style.hpp"
+
+#include <QtGui/QColor>
+#include <QtQmlIntegration>
 
 class ConnectionStyle : public Style {
   Q_GADGET

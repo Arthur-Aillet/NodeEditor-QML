@@ -175,8 +175,8 @@ Canvas {
     property point scaledEndPoint: Qt.point((pathCubic.x - x) * scaleFactor, (pathCubic.y - y) * scaleFactor)
 
     function innerStrokeStyle(ctx): color {
-        if (activeFocus)
-            return StyleCollection.connection.selectedColor;
+        // if (activeFocus)
+        //     return StyleCollection.connection.selectedColor;
         if (!StyleCollection.connection.useDataDefinedColors)
             return StyleCollection.connection.normalColor;
         if (root.inTypeColor == root.outTypeColor)
@@ -191,6 +191,7 @@ Canvas {
 
         return gradient;
     }
+
     onPaint: {
         let ctx = getContext('2d');
         ctx.clearRect(0, 0, width, height);
@@ -214,7 +215,7 @@ Canvas {
                 ctx.stroke();
             }
             ctx.strokeStyle = innerStrokeStyle(ctx);
-            ctx.lineWidth = StyleCollection.connection.lineWidth * 0.5 * scaleFactor;
+            ctx.lineWidth = StyleCollection.connection.lineWidth * 0.45 * scaleFactor;
             ctx.stroke();
         } else {
             ctx.setLineDash([6, 2]);

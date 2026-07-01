@@ -21,6 +21,7 @@
 #include "SplitColorNode.hpp"
 #include "SplitVec2.hpp"
 #include "StackNode.hpp"
+#include "StyleCollection.hpp"
 #include "SubtractionNode.hpp"
 #include "SurfaceDisplayNode.hpp"
 #include "SurfaceLoader.hpp"
@@ -33,11 +34,11 @@
 #include "WindowInputNode.hpp"
 
 #include <QQmlApplicationEngine>
+#include <QQuickItem>
 #include <QtQml>
 #include <QtWidgets/QApplication>
 #include <gst/gst.h>
 #include <memory>
-#include <qquickitem.h>
 
 // Must be run after QApplication setup
 static void setupGstreamer() {
@@ -99,6 +100,7 @@ int main(int argc, char *argv[]) {
       []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
 
   DataFlowModelInterface::init(model);
+  StyleCollection::followApplicationPalette(true);
   TimeController::init();
   engine.loadFromModule("CutieDesigner", "Main");
   TimeController::linkCutieWindow(CutieWindow::getCutieWindow(&engine));

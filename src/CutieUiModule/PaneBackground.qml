@@ -3,7 +3,7 @@ import "InnerShadow"
 
 Rectangle {
     id: paneBackground
-    color: palette.base.hslLightness > 0.5 ? palette.midlight : Qt.darker(palette.base, 2)
+    color: palette.base.hslLightness > 0.5 ? palette.midlight : Qt.darker(palette.dark, 1.4)
 
     Item {
         id: background
@@ -19,7 +19,7 @@ Rectangle {
             height: parent.height - 4
             x: 2
             y: 2
-            color: palette.base.hslLightness > 0.5 ? Qt.darker(palette.mid, 1.05) : palette.base
+            color: palette.base.hslLightness > 0.5 ? Qt.darker(palette.mid, 1.05) : palette.mid
         }
     }
 
