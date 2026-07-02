@@ -24,8 +24,6 @@ qt_add_qml_module(NodeEditor
   interface/ModelInterface.hpp
   interface/DataFlowModelInterface.cpp
   interface/DataFlowModelInterface.hpp
-  interface/RegisteryAccess.cpp
-  interface/RegisteryAccess.hpp
   interface/QmlUndoCommands.cpp
   interface/QmlUndoCommands.hpp
 
@@ -53,6 +51,8 @@ qt_add_qml_module(NodeEditor
   data/NodeDelegateModelRegistry.hpp
   data/QStringStdHash.hpp
   data/Serializable.hpp
+  data/RegisteredNodeModel.cpp
+  data/RegisteredNodeModel.hpp
 
   RESOURCES
   resources/resources.qrc

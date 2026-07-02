@@ -1,54 +1,59 @@
 #pragma once
 
 #include "NodeDelegateModel.hpp"
+#include "RegisteredNodeModel.hpp"
 
+#include <QObject>
+#include <QQmlEngine>
+#include <QtCore/QList>
 #include <QtCore/QString>
+#include <QtQmlIntegration>
 
 #include <functional>
 #include <memory>
-#include <qqmlengine.h>
-#include <set>
 #include <type_traits>
 #include <unordered_map>
 #include <utility>
 
 /// Class uses map for storing models (name, model)
-class NodeDelegateModelRegistry {
+class NodeDelegateModelRegistry : public QObject {
+  Q_OBJECT
+  QML_ELEMENT
+  QML_UNCREATABLE("")
+
   private:
   QQmlEngine *_engine;
 
   public:
+  Q_PROPERTY(RegisteredNodeModel *model READ getModel CONSTANT)
+  Q_PROPERTY(QList<QString> categories READ categories NOTIFY categoriesChanged)
+
   using RegistryItemPtr = std::unique_ptr<NodeDelegateModel>;
   using RegistryItemCreator = std::function<RegistryItemPtr()>;
+  using CategoryName = QString;
+
   using RegisteredModelCreatorsMap = std::unordered_map<QString, RegistryItemCreator>;
-  using RegisteredModelsCategoryMap = std::unordered_map<QString, QString>;
-  using CategoriesSet = std::set<QString>;
+  using Categories = QList<CategoryName>;
 
-  NodeDelegateModelRegistry(QQmlEngine *engine) : _engine(engine){};
+  NodeDelegateModelRegistry(QQmlEngine *engine, QObject *parent = nullptr)
+      : QObject(parent), _engine(engine){};
   ~NodeDelegateModelRegistry() = default;
-
   NodeDelegateModelRegistry(NodeDelegateModelRegistry const &) = delete;
-  NodeDelegateModelRegistry(NodeDelegateModelRegistry &&) = default;
-
   NodeDelegateModelRegistry &operator=(NodeDelegateModelRegistry const &) = delete;
 
-  NodeDelegateModelRegistry &operator=(NodeDelegateModelRegistry &&) = default;
-
-  public:
+  protected:
   template <typename ModelType>
   void registerModel(RegistryItemCreator creator, QString const &category = "Nodes") {
-    QString const name = computeName<ModelType>(HasStaticMethodName<ModelType>{}, creator);
-    if (!_registeredItemCreators.count(name)) {
-      _registeredItemCreators[name] = std::move(creator);
-      _categories.insert(category);
-      _registeredModelsCategory[name] = category;
+    NodeDelegateModel::ModelInfos const infos = computeInfos<ModelType>(creator);
+    if (!_registeredItemCreators.count(infos.name)) {
+      _registeredItemCreators[infos.name] = std::move(creator);
+      if (!_categories.contains(category)) {
+        _categories.push_front(category);
+        _categories.sort(Qt::CaseInsensitive);
+        emit categoriesChanged();
+      }
+      _model.registerNode(infos, category);
     }
-  }
-
-  template <typename ModelType>
-  void registerModel(QString const &category = "Nodes") {
-    RegistryItemCreator creator = [this]() { return std::make_unique<ModelType>(_engine); };
-    registerModel<ModelType>(std::move(creator), category);
   }
 
   template <typename ModelCreator>
@@ -57,6 +62,12 @@ class NodeDelegateModelRegistry {
     registerModel<ModelType>(std::forward<ModelCreator>(creator), category);
   }
 
+  public:
+  template <typename ModelType>
+  void registerModel(QString const &category = "Nodes") {
+    RegistryItemCreator creator = [this]() { return std::make_unique<ModelType>(_engine); };
+    registerModel<ModelType>(std::move(creator), category);
+  }
 #if 0
   template<typename ModelType>
   void
@@ -87,10 +98,10 @@ class NodeDelegateModelRegistry {
   std::unique_ptr<NodeDelegateModel> create(QString const &modelName);
 
   RegisteredModelCreatorsMap const &registeredModelCreators() const;
+  RegisteredNodeModel *getModel() { return &_model; }
 
-  RegisteredModelsCategoryMap const &registeredModelsCategoryAssociation() const;
-
-  CategoriesSet const &categories() const;
+  Categories const &categories() const;
+  Categories categories();
 
 #if 0
   TypeConverter
@@ -99,9 +110,8 @@ class NodeDelegateModelRegistry {
 #endif
 
   private:
-  RegisteredModelsCategoryMap _registeredModelsCategory;
-
-  CategoriesSet _categories;
+  RegisteredNodeModel _model;
+  Categories _categories;
 
   RegisteredModelCreatorsMap _registeredItemCreators;
 
@@ -111,24 +121,27 @@ class NodeDelegateModelRegistry {
 
   private:
   // If the registered ModelType class has the static member method
-  // `static QString Name();`, use it. Otherwise use the non-static
-  // method: `virtual QString name() const;`
+  // `static ModelInfos ModelInfos();`, use it. Otherwise use the non-static
+  // method: `virtual ModelInfos ModelInfos() const;`
   template <typename T, typename = void>
   struct HasStaticMethodName : std::false_type {};
 
   template <typename T>
   struct HasStaticMethodName<
-      T, typename std::enable_if<std::is_same<decltype(T::Name()), QString>::value>::type>
+      T, typename std::enable_if<
+             std::is_same<decltype(T::ModelInfos()), NodeDelegateModel::ModelInfos>::value>::type>
       : std::true_type {};
 
-  template <typename ModelType>
-  static QString computeName(std::true_type, RegistryItemCreator const &) {
-    return ModelType::Name();
+  template <typename ModelType,
+            typename std::enable_if_t<HasStaticMethodName<ModelType>::value, bool> = true>
+  static NodeDelegateModel::ModelInfos computeInfos(RegistryItemCreator const &_creator) {
+    return ModelType::ModelInfos();
   }
 
-  template <typename ModelType>
-  static QString computeName(std::false_type, RegistryItemCreator const &creator) {
-    return creator()->name();
+  template <typename ModelType,
+            typename std::enable_if_t<!HasStaticMethodName<ModelType>::value, bool> = true>
+  static NodeDelegateModel::ModelInfos computeInfos(RegistryItemCreator const &creator) {
+    return creator()->modelInfos();
   }
 
   template <typename T>
@@ -149,4 +162,8 @@ class NodeDelegateModelRegistry {
 
   template <typename CreatorResult>
   using compute_model_type_t = typename UnwrapUniquePtr<CreatorResult>::type;
+
+  public:
+  signals:
+  void categoriesChanged();
 };

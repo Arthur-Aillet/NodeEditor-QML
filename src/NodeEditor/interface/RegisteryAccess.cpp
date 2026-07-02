@@ -1,37 +1,60 @@
-#include "RegisteryAccess.hpp"
+// #include "RegisteryAccess.hpp"
+// #include "NodeDelegateModel.hpp"
+// #include <memory>
+// #include <qnamespace.h>
+// #include <qvariant.h>
 
-RegisteryAccess::RegisteryAccess() {}
+// RegisteryAccess::RegisteryAccess(QObject *parent,
+//                                  std::shared_ptr<NodeDelegateModelRegistry> registry)
+//     : QObject(parent), _registry(registry),
+//     _nodeMapModel(std::make_shared<QStandardItemModel>()),
+//       _filter("") {}
 
-RegisteryAccess::RegisteryAccess(std::shared_ptr<NodeDelegateModelRegistry> reg)
-    : registry(reg), _nodeMapModel(new QStandardItemModel()) {
-  filterNodeMapModel("");
-}
+// void RegisteryAccess::setFilter(QString filter) {
+//   if (filter == _filter) {
+//     return;
+//   }
 
-QStandardItemModel *RegisteryAccess::filterNodeMapModel(QString filter) {
-  _nodeMapModel->clear();
-  QStandardItem *root = _nodeMapModel->invisibleRootItem();
+//   _filter = filter;
+//   emit filterChanged();
+//   emit nodeMapModelChanged();
+// }
 
-  auto categoryList = QStringList(registry->categories().begin(), registry->categories().end());
-  categoryList.sort(Qt::CaseInsensitive);
-  for (const auto &category : categoryList) {
-    const auto &map = registry->registeredModelsCategoryAssociation();
-    QStringList row;
+// QString RegisteryAccess::getFilter() { return _filter; }
 
-    for (auto it = map.begin(); it != map.end(); ++it) {
-      if (it->second == category && it->first.contains(filter, Qt::CaseInsensitive)) {
-        row.push_back(it->first);
-      }
-    }
-    row.sort(Qt::CaseInsensitive);
+// QStandardItemModel *RegisteryAccess::getNodeMapModel() {
+//   _nodeMapModel->clear();
+//   QStandardItem *root = _nodeMapModel->invisibleRootItem();
 
-    if (!row.empty()) {
-      QStandardItem *categoryItem = new QStandardItem(category);
+//   const auto &categoryMap = _registry->registeredModelsCategoryAssociation();
+//   const auto &modelInfosMap = _registry->registeredModelsInfosAssociation();
 
-      for (auto val : row) {
-        categoryItem->appendRow(new QStandardItem(val));
-      }
-      root->appendRow(categoryItem);
-    }
-  }
-  return _nodeMapModel;
-}
+//   auto categoryList = QStringList(_registry->categories().begin(),
+//   _registry->categories().end()); categoryList.sort(Qt::CaseInsensitive); for (const auto
+//   &category : categoryList) {
+
+//     QStringList modelsInCategory;
+
+//     for (auto it = categoryMap.begin(); it != categoryMap.end(); ++it) {
+//       const auto &[modelName, nodeCategory] = *it;
+//       if (nodeCategory == category && modelName.contains(_filter, Qt::CaseInsensitive)) {
+//         modelsInCategory.push_back(modelName);
+//       }
+//     }
+//     modelsInCategory.sort(Qt::CaseInsensitive);
+
+//     if (!modelsInCategory.empty()) {
+//       QStandardItem *categoryItem = new QStandardItem(category);
+
+//       for (const auto &modelName : modelsInCategory) {
+//         QStandardItem *modelItem = new QStandardItem(modelName);
+//         const NodeDelegateModel::ModelInfos &modelInfos = modelInfosMap.at(modelName);
+
+//         modelItem->setData(QVariant::fromValue(modelInfos.ports), Qt::WhatsThisRole);
+//         categoryItem->appendRow(modelItem);
+//       }
+//       root->appendRow(categoryItem);
+//     }
+//   }
+//   return _nodeMapModel.get();
+// }

@@ -29,16 +29,16 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   };
 
   public:
+  Q_PROPERTY(NodeDelegateModelRegistry *registry READ getRegistry CONSTANT)
+
   DataFlowGraphModel(std::shared_ptr<NodeDelegateModelRegistry> registry,
                      QQmlEngine *engine = nullptr);
 
   std::shared_ptr<NodeDelegateModelRegistry> dataModelRegistry() { return _registry; }
+  NodeDelegateModelRegistry *getRegistry() { return _registry.get(); }
 
-  public:
   QSet<NodeId> allNodeIds() const override;
-
   QSet<ConnectionId> allConnectionIds(NodeId const nodeId) const override;
-
   QSet<ConnectionId> connections(NodeId nodeId, PortType portType,
                                  PortIndex portIndex) const override;
 

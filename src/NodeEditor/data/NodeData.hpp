@@ -15,13 +15,23 @@
  * `name` is a normal text description.
  */
 struct NodeDataType {
+  Q_GADGET
+  QML_VALUE_TYPE(nodeDataType)
+  QML_STRUCTURED_VALUE
+
+  public:
   using DataTypeId = QString;
+  NodeDataType() {}
   NodeDataType(DataTypeId _id, QString _name) : id(_id), name(_name) {}
   DataTypeId id;
   QString name;
 
+  Q_PROPERTY(DataTypeId id MEMBER id)
+  Q_PROPERTY(QString name MEMBER name)
+
+  bool operator==(const NodeDataType &other) const { return id == other.id && name == other.name; }
   // By default, each type is only compatible with itself
-  virtual QList<QString> compatibleTypes() const { return QList<DataTypeId>(id); }
+  Q_INVOKABLE virtual QList<QString> compatibleTypes() const { return QList<DataTypeId>(id); }
 };
 
 /**

@@ -6,9 +6,11 @@
 #include "Serializable.hpp"
 
 #include <QJSEngine>
+#include <QList>
 #include <QQmlComponent>
 #include <QQuickItem>
 #include <QtGui/QColor>
+#include <qqmlintegration.h>
 
 /**
  * Describes whether a node configuration is usable and defines a description message
@@ -42,6 +44,25 @@ enum class NodeProcessingStatus : int {
 
 class StyleCollection;
 
+struct PortInfo {
+  Q_GADGET
+  QML_VALUE_TYPE(portInfo)
+  QML_STRUCTURED_VALUE
+
+  public:
+  QString caption;
+  bool captionVisible;
+  NodeDataType dataType;
+  PortType portType;
+  PortIndex portIndex;
+
+  Q_PROPERTY(QString caption MEMBER caption)
+  Q_PROPERTY(bool captionVisible MEMBER captionVisible)
+  Q_PROPERTY(NodeDataType dataType MEMBER dataType)
+  Q_PROPERTY(PortType portType MEMBER portType)
+  Q_PROPERTY(PortIndex portIndex MEMBER portIndex)
+};
+
 /**
  * The class wraps Node-specific data operations and propagates it to
  * the nesting DataFlowGraphModel which is a subclass of
@@ -52,38 +73,43 @@ class NodeDelegateModel : public QObject, public Serializable {
   Q_OBJECT
 
   public:
+  struct ModelInfos {
+    QString name;
+    QList<PortInfo> ports;
+  };
+
   NodeDelegateModel(QQmlEngine *engine);
 
   virtual ~NodeDelegateModel() = default;
 
+  /// Get inital model infos
+  ModelInfos modelInfos() const;
+
   /// Name makes this model unique
   virtual QString name() const = 0;
 
-  /// Caption is used in GUI
+  /// Caption is used in GUI (defaults to name)
   virtual QString caption() const { return name(); };
-
   /// It is possible to hide caption in GUI
   virtual bool captionVisible() const { return true; }
 
-  /// Port caption is used in GUI to label individual ports
-  virtual QString portCaption(PortType, PortIndex) const { return QString(); }
-
+  virtual unsigned int nPorts(PortType portType) const = 0;
+  /// Port caption is used in GUI to label individual ports, empty by default
+  virtual QString portCaption(PortType, PortIndex) const { return ""; }
   /// It is possible to hide port caption in GUI
   virtual bool portCaptionVisible(PortType, PortIndex) const { return false; }
+  virtual ConnectionPolicy portConnectionPolicy(PortType, PortIndex) const;
 
-  /// Nicknames can be assigned to nodes and shown in GUI
-  virtual QString label() const { return QString(); }
-
+  /// Nicknames can be assigned to nodes and shown in GUI, empty by default
+  virtual QString label() const { return ""; }
   /// It is possible to hide the nickname in GUI
   virtual bool labelVisible() const { return false; }
-
   /// Controls whether the label can be edited or not
   virtual bool labelEditable() const { return false; }
 
   /// Validation State will default to Valid, but you can manipulate it by overriding in an
   /// inherited class
   virtual NodeValidationState validationState() const { return _nodeValidationState; }
-
   /// Returns the curent processing status
   virtual NodeProcessingStatus processingStatus() const { return _processingStatus; }
 
@@ -93,58 +119,29 @@ class NodeDelegateModel : public QObject, public Serializable {
   virtual NodeFlags flags() const { return _flags; }
   virtual void setFlags(NodeFlags flags) { _flags = flags; }
 
-  public:
   QJsonObject save() const override;
-
   void load(QJsonObject const &) override;
 
   void setNodeProcessingStatus(NodeProcessingStatus status);
-
   void setValidationState(const NodeValidationState &validationState);
-
-  public:
-  virtual unsigned int nPorts(PortType portType) const = 0;
 
   virtual const NodeDataType &dataType(PortType portType, PortIndex portIndex) const = 0;
 
-  virtual ConnectionPolicy portConnectionPolicy(PortType, PortIndex) const;
-
   NodeStyle const &nodeStyle() const;
-
   void setNodeStyle(NodeStyle const &style);
 
   /// Convenience helper to change the node background color.
   void setBackgroundColor(QColor const &color);
 
   QPixmap processingStatusIcon() const;
-
   void setStatusIcon(NodeProcessingStatus status, const QPixmap &pixmap);
-
   void setStatusIconStyle(ProcessingIconStyle const &style);
-
   void setProgressValue(QString new_progress) { _progressValue = new_progress; }
 
-  public:
   virtual void setInData(std::shared_ptr<NodeData> nodeData, PortIndex const portIndex) = 0;
-
   virtual std::shared_ptr<NodeData> outData(PortIndex const port) = 0;
 
-  void createComponent(QQuickItem *container, QQmlEngine *engine) {
-    QQmlComponent component = embeddedComponent(engine);
-    if (component.isNull()) {
-      return;
-    }
-    if (component.isError()) {
-      qCritical() << "Embedded Node Componenent failed to load: \n" << component.errorString();
-      return;
-    }
-    _embed = std::shared_ptr<QQuickItem>(qobject_cast<QQuickItem *>(
-        component.createWithInitialProperties(componentInitialProperties())));
-    _embed->setParentItem(container);
-    QJSEngine::setObjectOwnership(_embed.get(), QJSEngine::CppOwnership);
-    emit embeddedComponentLoaded(_embed);
-  };
-
+  void createComponent(QQuickItem *container, QQmlEngine *engine);
   virtual QQmlComponent embeddedComponent(QQmlEngine *engine) { return QQmlComponent(); };
   virtual QVariantMap componentInitialProperties() { return QVariantMap(); }
 
@@ -162,11 +159,6 @@ class NodeDelegateModel : public QObject, public Serializable {
   /// Triggers the propagation of the empty data downstream.
   // Currently acts just like dataUpdated
   void dataInvalidated(PortIndex const index);
-
-  void computingStarted();
-  void computingFinished();
-
-  /// Call this function before deleting the data associated with ports.
 
   /**
    * @brief Call this function before deleting the data associated with ports.
@@ -197,9 +189,7 @@ class NodeDelegateModel : public QObject, public Serializable {
   NodeFlags _flags;
 
   NodeValidationState _nodeValidationState;
-
   NodeProcessingStatus _processingStatus{NodeProcessingStatus::NoStatus};
-
   QString _progressValue{QString()};
 };
 

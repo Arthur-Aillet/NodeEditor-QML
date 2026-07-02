@@ -15,7 +15,4 @@ DataFlowModelInterface *DataFlowModelInterface::init(DataFlowGraphModel &_graphM
 };
 
 DataFlowModelInterface::DataFlowModelInterface(DataFlowGraphModel &_graphModel)
-    : ModelInterface(_graphModel), graphModel(_graphModel),
-      registeryAccess(graphModel.dataModelRegistry()) {}
-
-void RegisteryAccess::nodeMapModelChanged() {}
+    : ModelInterface(_graphModel), graphModel(_graphModel) {}

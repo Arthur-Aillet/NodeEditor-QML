@@ -1,8 +1,5 @@
 #include "NodeDelegateModelRegistry.hpp"
 
-#include <QtCore/QFile>
-#include <QtWidgets/QMessageBox>
-
 std::unique_ptr<NodeDelegateModel> NodeDelegateModelRegistry::create(QString const &modelName) {
   auto it = _registeredItemCreators.find(modelName);
 
@@ -18,11 +15,9 @@ NodeDelegateModelRegistry::registeredModelCreators() const {
   return _registeredItemCreators;
 }
 
-NodeDelegateModelRegistry::RegisteredModelsCategoryMap const &
-NodeDelegateModelRegistry::registeredModelsCategoryAssociation() const {
-  return _registeredModelsCategory;
+NodeDelegateModelRegistry::Categories const &NodeDelegateModelRegistry::categories() const {
+  return _categories;
 }
-
-NodeDelegateModelRegistry::CategoriesSet const &NodeDelegateModelRegistry::categories() const {
+NodeDelegateModelRegistry::Categories NodeDelegateModelRegistry::categories() {
   return _categories;
 }

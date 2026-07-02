@@ -13,7 +13,7 @@ FlexboxLayout {
         Layout.fillHeight: true
         Layout.fillWidth: true
 
-        ContextMenu.menu: SceneMenu {
+        ContextMenu.menu: NodeListMenu {
             area: graphicsView.area
         }
     }

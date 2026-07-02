@@ -2,7 +2,6 @@
 
 #include "DataFlowGraphModel.hpp"
 #include "ModelInterface.hpp"
-#include "RegisteryAccess.hpp"
 
 class DataFlowModelInterface : public ModelInterface {
   Q_OBJECT
@@ -11,10 +10,8 @@ class DataFlowModelInterface : public ModelInterface {
 
   public:
   DataFlowGraphModel &graphModel;
-  RegisteryAccess registeryAccess;
 
-  Q_PROPERTY(RegisteryAccess registery MEMBER registeryAccess NOTIFY registeryChanged)
-  Q_PROPERTY(DataFlowGraphModel *dataFlowGraph READ getDataFlowGraphModel);
+  Q_PROPERTY(DataFlowGraphModel *dataFlowGraph READ getDataFlowGraphModel CONSTANT);
 
   protected:
   DataFlowGraphModel *getDataFlowGraphModel() { return &graphModel; }

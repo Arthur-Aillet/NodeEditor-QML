@@ -1,5 +1,6 @@
 #include "NodeDelegateModel.hpp"
 
+#include "Definitions.hpp"
 #include "NodeStyle.hpp"
 #include "StyleCollection.hpp"
 
@@ -13,6 +14,28 @@ QJsonObject NodeDelegateModel::save() const {
 
   return modelJson;
 }
+
+NodeDelegateModel::ModelInfos NodeDelegateModel::modelInfos() const {
+  QList<PortInfo> ports;
+
+  auto collectPorts = [&](PortType portType) {
+    for (unsigned int index = 0; index != nPorts(portType); index++) {
+      ports.push_back({.caption = portCaption(portType, index),
+                       .captionVisible = portCaptionVisible(portType, index),
+                       .dataType = dataType(portType, index),
+                       .portType = portType,
+                       .portIndex = index});
+    }
+  };
+
+  collectPorts(PortType::In);
+  collectPorts(PortType::Out);
+
+  return ModelInfos{
+      .name = name(),
+      .ports = ports,
+  };
+};
 
 void NodeDelegateModel::load(QJsonObject const &) {
   //
@@ -94,3 +117,19 @@ void NodeDelegateModel::setNodeProcessingStatus(NodeProcessingStatus status) {
 void NodeDelegateModel::setBackgroundColor(QColor const &color) {
   _nodeStyle.setBackgroundColor(color);
 }
+
+void NodeDelegateModel::createComponent(QQuickItem *container, QQmlEngine *engine) {
+  QQmlComponent component = embeddedComponent(engine);
+  if (component.isNull()) {
+    return;
+  }
+  if (component.isError()) {
+    qCritical() << "Embedded Node Componenent failed to load: \n" << component.errorString();
+    return;
+  }
+  _embed = std::shared_ptr<QQuickItem>(qobject_cast<QQuickItem *>(
+      component.createWithInitialProperties(componentInitialProperties())));
+  _embed->setParentItem(container);
+  QJSEngine::setObjectOwnership(_embed.get(), QJSEngine::CppOwnership);
+  emit embeddedComponentLoaded(_embed);
+};
