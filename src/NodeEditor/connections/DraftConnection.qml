@@ -64,7 +64,15 @@ Loader {
     sourceComponent: DefaultConnection {
         id: painter
 
+        Component.onCompleted: {
+            forceActiveFocus();
+        }
+
         property var sp: defaultConnection.selectedPort
+
+        Keys.onEscapePressed: {
+            defaultConnection.selectedPort = null;
+        }
 
         area: defaultConnection.area
         nodes: defaultConnection.nodes

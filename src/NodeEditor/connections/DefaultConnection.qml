@@ -147,13 +147,14 @@ Canvas {
         onTapped: defaultConnectionPainter.focus = true
     }
 
-    Keys.onPressed: event => {
-        if (!fullyConnected)
-            return;
-
-        if (event.key == Qt.Key_Delete || event.key == Qt.Key_Back) {
+    Keys.onDeletePressed: {
+        if (fullyConnected)
             ModelInterface.deleteConnection(connection);
-        }
+    }
+
+    Keys.onBackPressed: {
+        if (fullyConnected)
+            ModelInterface.deleteConnection(connection);
     }
 
     property bool swap: connection.inNodeId === NodeEditorUtils.InvalidNodeId
