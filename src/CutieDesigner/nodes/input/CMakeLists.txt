@@ -8,6 +8,7 @@ qt_add_qml_module(input
   NumberInput/NumberInputControl.qml
   SliderInput/SliderInputControl.qml
   Vec2Input/Vec2InputControl.qml
+  TextInput/TextInputControl.qml
 
   SOURCES
   ColorInput/ColorInputNode.hpp
@@ -28,6 +29,8 @@ qt_add_qml_module(input
   SceneInput/SceneInputNode.cpp
   WindowInput/WindowInputNode.hpp
   WindowInput/WindowInputNode.cpp
+  TextInput/TextInputNode.hpp
+  TextInput/TextInputNode.cpp
   TimeInput/TimeInputNode.hpp
   TimeInput/TimeInputNode.cpp
 
@@ -54,6 +57,7 @@ target_include_directories(input
   SceneInput/
   WindowInput/
   SliderInput/
+  TextInput/
   TimeInput/
 )
 

@@ -33,6 +33,7 @@
 #include "Vec2InputNode.hpp"
 #include "VideoDisplayNode.hpp"
 #include "WindowInputNode.hpp"
+#include "nodes/input/TextInput/TextInputNode.hpp"
 
 #include <QQmlApplicationEngine>
 #include <QQuickItem>
@@ -60,6 +61,7 @@ static std::shared_ptr<NodeDelegateModelRegistry> createRegistery(QQmlEngine &en
   reg->registerModel<MouseInputNode>("Input");
   reg->registerModel<WindowInputNode>("Input");
   reg->registerModel<SceneInputNode>("Input");
+  reg->registerModel<TextInputNode>("Input");
   reg->registerModel<TimeInputNode>("Input");
   reg->registerModel<SliderInputNode>("Input");
   reg->registerModel<AdditionNode>("Process");
