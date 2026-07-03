@@ -146,29 +146,6 @@ Menu {
                 anchors.left: category.right
             }
         }
-        // Rectangle {
-        //     x: {
-        //         if (!delegate.hasChildren)
-        //             return 0;
-        //         const indent = delegate.isTreeNode ? (delegate.depth + 1) * delegate.indentation : 0;
-        //         return delegate.padding + indent + 4;
-        //     }
-        //     width: parent.width - delegate.padding - x
-        //     height: parent.height
-        //     color: Qt.rgba(palette.highlight.r, palette.highlight.g, palette.highlight.b, delegate.hasChildren ? 0.2 : 1)
-        //     radius: delegate.hasChildren ? 4 : 0
-        //     border.color: palette.highlight
-        //     border.width: delegate.hasChildren ? 1 : 0
-
-        //     opacity: delegate.row === view.currentRow ? 1 : 0
-        // }
-
-        // Button {
-        //     required property string name
-        //     required property string category
-
-        //     text: category + " > " + name
-        // }
     }
     component RoleData: QtObject {
         property string name
