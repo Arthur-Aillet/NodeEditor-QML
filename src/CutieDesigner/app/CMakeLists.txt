@@ -7,6 +7,7 @@ qt_add_qml_module(app
   NodeView.qml
   NodeListMenu.qml
   NodeSearchMenu.qml
+  NodePortSearchMenu.qml
 
   DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieDesigner.Nodes.Display CutieDesigner.Stats CutieUiModule
   RESOURCES

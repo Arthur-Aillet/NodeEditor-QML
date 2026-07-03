@@ -34,8 +34,6 @@ Menu {
     }
     MenuSeparator {}
 
-    contentItem.Keys.forwardTo: [searchButton]
-
     Instantiator {
         model: DataFlowModelInterface.dataFlowGraph.registry.categories
         delegate: Menu {
@@ -60,14 +58,12 @@ Menu {
                     }
                 ]
             }
-            contentItem.Keys.forwardTo: [searchButton]
 
             Instantiator {
                 model: sfpm
                 delegate: MenuItem {
                     required property string name
                     text: name
-                    contentItem.Keys.forwardTo: [searchButton]
 
                     onTriggered: {
                         const pos = Qt.point(nodeListMenu.x, nodeListMenu.y);

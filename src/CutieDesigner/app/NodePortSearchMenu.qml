@@ -9,6 +9,7 @@ Menu {
 
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
     required property NavigableArea area
+    property int portType
 
     popupType: Popup.Window
     onOpened: {

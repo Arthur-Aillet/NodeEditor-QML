@@ -6,7 +6,7 @@ TextField {
     id: textField
     textField.validator: DoubleValidator {}
 
-    //Dirty to refactor
+    //Dirty, to refactor
     signal textEdited
     Connections {
         target: textField.textField
