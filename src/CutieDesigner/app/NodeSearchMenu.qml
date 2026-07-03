@@ -33,10 +33,16 @@ Menu {
             }
         }
         onAccepted: {
-            if (list.currentIndex == -1)
-                return;
+            let name;
+            if (list.currentIndex == -1) {
+                if (list.itemAtIndex(0) == null)
+                    return;
+                name = list.itemAtIndex(0).name;
+            } else {
+                name = list.currentItem.name;
+            }
             const pos = Qt.point(nodeSearchMenu.x, nodeSearchMenu.y);
-            ModelInterface.createNode(list.currentItem.name, nodeSearchMenu.area.mapToItem(nodeSearchMenu.area.inner, pos));
+            ModelInterface.createNode(name, nodeSearchMenu.area.mapToItem(nodeSearchMenu.area.inner, pos));
             nodeSearchMenu.close();
         }
         Keys.onDownPressed: {
