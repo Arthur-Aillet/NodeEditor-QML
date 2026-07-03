@@ -6,8 +6,11 @@ qt_add_qml_module(app
   Timeline.qml
   NodeView.qml
   NodeListMenu.qml
+  NodeSearchMenu.qml
 
   DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieDesigner.Nodes.Display CutieDesigner.Stats CutieUiModule
+  RESOURCES
+  icomoon.ttf
 )
 
 target_link_directories(app
