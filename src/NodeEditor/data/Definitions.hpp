@@ -62,12 +62,10 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(NodeFlags)
  */
 enum class PortRole {
   Data = 0,                 ///< `std::shared_ptr<NodeData>`.
-  DataName = 1,             ///< `QString` describing the port data type.
-  DataType = 2,             ///< `QString` representing the port data type.
-  CompatibleTypes = 3,      ///< `QList<QString>` representing the port compatible types.
-  ConnectionPolicyRole = 4, ///< `enum` ConnectionPolicyRole
-  PortCaptionVisible = 5,   ///< `bool` for caption visibility.
-  PortCaption = 6,          ///< `QString` for port caption.
+  DataType = 1,             ///< `nodeDataType` representing the port data type.
+  ConnectionPolicyRole = 2, ///< `enum` ConnectionPolicyRole
+  PortCaptionVisible = 3,   ///< `bool` for caption visibility.
+  PortCaption = 4,          ///< `QString` for port caption.
 };
 Q_ENUM_NS(PortRole)
 

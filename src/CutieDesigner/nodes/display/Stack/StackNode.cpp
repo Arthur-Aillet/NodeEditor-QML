@@ -101,7 +101,7 @@ unsigned int StackNode::nPorts(PortType portType) const {
   }
 }
 
-const NodeDataType &StackNode::dataType(PortType _portType, PortIndex _portIndex) const {
+NodeDataType StackNode::dataType(PortType _portType, PortIndex _portIndex) const {
   return SurfaceData().type();
 }
 

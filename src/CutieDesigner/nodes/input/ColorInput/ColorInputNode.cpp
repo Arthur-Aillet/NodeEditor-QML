@@ -14,7 +14,7 @@ unsigned int ColorInputNode::nPorts(PortType portType) const {
   }
 }
 
-const NodeDataType &ColorInputNode::dataType(PortType _portType, PortIndex _portIndex) const {
+NodeDataType ColorInputNode::dataType(PortType _portType, PortIndex _portIndex) const {
   return ColorData().type();
 }
 

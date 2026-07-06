@@ -20,7 +20,7 @@ unsigned int SurfaceDisplayNode::nPorts(PortType portType) const {
   }
 }
 
-const NodeDataType &SurfaceDisplayNode::dataType(PortType, PortIndex) const {
+NodeDataType SurfaceDisplayNode::dataType(PortType, PortIndex) const {
   return SurfaceData().type();
 }
 

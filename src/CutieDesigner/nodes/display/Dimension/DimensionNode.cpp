@@ -20,7 +20,7 @@ unsigned int DimensionNode::nPorts(PortType portType) const {
   }
 }
 
-const NodeDataType &DimensionNode::dataType(PortType portType, PortIndex portIndex) const {
+NodeDataType DimensionNode::dataType(PortType portType, PortIndex portIndex) const {
   switch (portType) {
   case PortType::In:
     if (portIndex == 0)

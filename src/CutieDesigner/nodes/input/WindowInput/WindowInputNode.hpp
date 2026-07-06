@@ -18,7 +18,7 @@ class WindowInputNode : public NodeDelegateModel {
   QString label() const override { return "Cutie window dimensions"; }
 
   unsigned int nPorts(PortType portType) const override;
-  const NodeDataType &dataType(PortType portType, PortIndex portIndex) const override;
+  NodeDataType dataType(PortType portType, PortIndex portIndex) const override;
   std::shared_ptr<NodeData> outData(PortIndex port) override;
 
   QString portCaption(PortType portType, PortIndex portIndex) const override;

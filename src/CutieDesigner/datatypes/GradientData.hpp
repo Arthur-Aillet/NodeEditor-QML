@@ -8,10 +8,8 @@ class GradientData : public NodeData {
   public:
   GradientData() {}
   GradientData(const QGradient &gradientProp) {
-    registerConvert<QGradient>([&gradientProp]() { return gradientProp; });
+    registerConvert([&gradientProp]() { return gradientProp; });
   }
 
-  inline static const NodeDataType dataType = NodeDataType("gradient-01", "Gradient");
-
-  const NodeDataType &type() const override { return dataType; }
+  NodeDataType type() const override { return NodeDataType("gradient-01", "Gradient"); }
 };

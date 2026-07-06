@@ -28,7 +28,7 @@ class MouseInputNode : public NodeDelegateModel {
   QString name() const override { return "Mouse"; }
 
   unsigned int nPorts(PortType portType) const override;
-  const NodeDataType &dataType(PortType portType, PortIndex portIndex) const override;
+  NodeDataType dataType(PortType portType, PortIndex portIndex) const override;
   std::shared_ptr<NodeData> outData(PortIndex port) override;
 
   QString portCaption(PortType portType, PortIndex portIndex) const override;

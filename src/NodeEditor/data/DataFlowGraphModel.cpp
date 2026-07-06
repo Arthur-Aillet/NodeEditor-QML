@@ -1,4 +1,5 @@
 #include "DataFlowGraphModel.hpp"
+#include "ConnectionIdUtils.hpp"
 #include "Definitions.hpp"
 #include "NodeData.hpp"
 
@@ -107,16 +108,10 @@ bool DataFlowGraphModel::connectionPossible(ConnectionId const connectionId) con
     return getPortIndex(portType, connectionId) < portCount;
   };
 
-  auto getDataType = [&](PortType const portType) {
+  auto getDataType = [&](PortType const portType) -> NodeDataType {
     return portData(getNodeId(portType, connectionId), portType,
                     getPortIndex(portType, connectionId), PortRole::DataType)
-        .value<NodeDataType::DataTypeId>();
-  };
-
-  auto getDataCompatible = [&](PortType const portType) {
-    return portData(getNodeId(portType, connectionId), portType,
-                    getPortIndex(portType, connectionId), PortRole::CompatibleTypes)
-        .value<QList<NodeDataType::DataTypeId>>();
+        .value<NodeDataType>();
   };
 
   auto portVacant = [&](PortType const portType) {
@@ -130,9 +125,10 @@ bool DataFlowGraphModel::connectionPossible(ConnectionId const connectionId) con
     return connections(nodeId, portType, portIndex).empty();
   };
 
-  bool const basicChecks = getDataCompatible(PortType::Out).contains(getDataType(PortType::In)) &&
-                           portVacant(PortType::Out) && portVacant(PortType::In) &&
-                           checkPortBounds(PortType::Out) && checkPortBounds(PortType::In);
+  bool const basicChecks =
+      getDataType(PortType::Out).compatibleTypes.contains(getDataType(PortType::In).id) &&
+      portVacant(PortType::Out) && portVacant(PortType::In) && checkPortBounds(PortType::Out) &&
+      checkPortBounds(PortType::In);
 
   // In data-flow mode (this class) it's important to forbid graph loops.
   // We perform depth-first graph traversal starting from the "Input" port of
@@ -426,15 +422,7 @@ QVariant DataFlowGraphModel::portData(NodeId nodeId, PortType portType, PortInde
     break;
 
   case PortRole::DataType:
-    result = QVariant::fromValue(model->dataType(portType, portIndex).id);
-    break;
-
-  case PortRole::DataName:
-    result = QVariant::fromValue(model->dataType(portType, portIndex).name);
-    break;
-
-  case PortRole::CompatibleTypes:
-    result = QVariant::fromValue(model->dataType(portType, portIndex).compatibleTypes());
+    result = QVariant::fromValue(model->dataType(portType, portIndex));
     break;
 
   case PortRole::ConnectionPolicyRole:

@@ -18,6 +18,11 @@ MouseArea {
             search.y = mouseY;
             search.open();
         }
+        if (event.key == Qt.Key_P) {
+            portSearch.x = mouseX;
+            portSearch.y = mouseY;
+            portSearch.open();
+        }
     }
 
     GraphicsView {
@@ -32,6 +37,10 @@ MouseArea {
         }
         NodeSearchMenu {
             id: search
+            area: graphicsView.area
+        }
+        NodePortSearchMenu {
+            id: portSearch
             area: graphicsView.area
         }
     }

@@ -24,9 +24,7 @@ QVariantMap Vec2InputNode::componentInitialProperties() {
   return map;
 }
 
-const NodeDataType &Vec2InputNode::dataType(PortType, PortIndex id) const {
-  return Vec2Data().type();
-}
+NodeDataType Vec2InputNode::dataType(PortType, PortIndex id) const { return Vec2Data().type(); }
 
 std::shared_ptr<NodeData> Vec2InputNode::outData(PortIndex) { return _vecData; }
 

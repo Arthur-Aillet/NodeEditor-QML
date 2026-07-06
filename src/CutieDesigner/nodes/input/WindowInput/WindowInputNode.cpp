@@ -25,7 +25,7 @@ QString WindowInputNode::portCaption(PortType portType, PortIndex portIndex) con
   return "size";
 }
 
-const NodeDataType &WindowInputNode::dataType(PortType _portType, PortIndex _portIndex) const {
+NodeDataType WindowInputNode::dataType(PortType _portType, PortIndex _portIndex) const {
   return Vec2Data().type();
 }
 

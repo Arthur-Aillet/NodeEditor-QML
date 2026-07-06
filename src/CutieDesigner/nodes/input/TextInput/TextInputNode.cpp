@@ -35,8 +35,6 @@ QVariantMap TextInputNode::componentInitialProperties() {
   return map;
 }
 
-const NodeDataType &TextInputNode::dataType(PortType, PortIndex id) const {
-  return TextData().type();
-}
+NodeDataType TextInputNode::dataType(PortType, PortIndex id) const { return TextData().type(); }
 
 std::shared_ptr<NodeData> TextInputNode::outData(PortIndex) { return _textData; }

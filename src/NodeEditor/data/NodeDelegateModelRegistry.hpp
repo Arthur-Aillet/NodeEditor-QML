@@ -25,7 +25,7 @@ class NodeDelegateModelRegistry : public QObject {
   QQmlEngine *_engine;
 
   public:
-  Q_PROPERTY(RegisteredNodeModel *model READ getModel CONSTANT)
+  Q_PROPERTY(RegisteredNodeModel *nodesModel READ getNodesModel CONSTANT)
   Q_PROPERTY(QList<QString> categories READ categories NOTIFY categoriesChanged)
 
   using RegistryItemPtr = std::unique_ptr<NodeDelegateModel>;
@@ -52,7 +52,7 @@ class NodeDelegateModelRegistry : public QObject {
         _categories.sort(Qt::CaseInsensitive);
         emit categoriesChanged();
       }
-      _model.registerNode(infos, category);
+      _nodesModel.registerNode(infos, category);
     }
   }
 
@@ -98,7 +98,7 @@ class NodeDelegateModelRegistry : public QObject {
   std::unique_ptr<NodeDelegateModel> create(QString const &modelName);
 
   RegisteredModelCreatorsMap const &registeredModelCreators() const;
-  RegisteredNodeModel *getModel() { return &_model; }
+  RegisteredNodeModel *getNodesModel() { return &_nodesModel; }
 
   Categories const &categories() const;
   Categories categories();
@@ -110,7 +110,7 @@ class NodeDelegateModelRegistry : public QObject {
 #endif
 
   private:
-  RegisteredNodeModel _model;
+  RegisteredNodeModel _nodesModel;
   Categories _categories;
 
   RegisteredModelCreatorsMap _registeredItemCreators;

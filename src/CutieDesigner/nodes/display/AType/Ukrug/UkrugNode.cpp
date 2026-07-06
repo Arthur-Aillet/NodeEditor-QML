@@ -20,7 +20,7 @@ unsigned int UkrugNode::nPorts(PortType portType) const {
   }
 };
 
-const NodeDataType &UkrugNode::dataType(PortType portType, PortIndex portIndex) const {
+NodeDataType UkrugNode::dataType(PortType portType, PortIndex portIndex) const {
   switch (portType) {
   case NodeEditor::PortType::Out:
     return ATypeCharacterData().type();

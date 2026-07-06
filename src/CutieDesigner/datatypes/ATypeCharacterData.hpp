@@ -8,9 +8,7 @@ class ATypeCharacterData : public NodeData {
   ATypeCharacterData() {}
   ATypeCharacterData(ATypeCharacterNodeModel *character) : _character(character) {}
 
-  inline static const NodeDataType dataType = NodeDataType("atypeCharacter", "Atype Character");
-
-  const NodeDataType &type() const override { return dataType; }
+  NodeDataType type() const override { return NodeDataType("atypeCharacter", "Atype Character"); }
 
   ATypeCharacterNodeModel *getCharacter() { return _character; }
 

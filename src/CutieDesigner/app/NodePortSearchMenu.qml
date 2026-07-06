@@ -4,12 +4,13 @@ import QtQuick.Controls
 import NodeEditor
 
 Menu {
-    id: nodeSearchMenu
+    id: nodePortSearchMenu
     width: 250
 
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
     required property NavigableArea area
-    property int portType
+    property int portType: NodeEditor.PortType.In
+    property string portInfoType: "decimal"
 
     popupType: Popup.Window
     onOpened: {
@@ -20,48 +21,72 @@ Menu {
         searchField.text = "";
     }
 
-    TextField {
+    NodeSearchTextField {
         id: searchField
-        placeholderText: "Filter"
-        onTextChanged: {
-            list.currentIndex = -1;
-            sfpm.invalidate();
-        }
-        hoverEnabled: true
-        onHoveredChanged: {
-            if (hovered) {
-                forceActiveFocus(Qt.PopupFocusReason);
-            }
-        }
+        listView: list
+        sfpModel: sfpm
         onAccepted: {
             let name;
             if (list.currentIndex == -1) {
                 if (list.itemAtIndex(0) == null)
                     return;
-                name = list.itemAtIndex(0).name;
+                name = (list.itemAtIndex(0) as NodeSearchMenuItem).name;
             } else {
-                name = list.currentItem.name;
+                name = (list.currentItem as NodeSearchMenuItem).name;
             }
-            const pos = Qt.point(nodeSearchMenu.x, nodeSearchMenu.y);
-            ModelInterface.createNode(name, nodeSearchMenu.area.mapToItem(nodeSearchMenu.area.inner, pos));
-            nodeSearchMenu.close();
-        }
-        Keys.onDownPressed: {
-            list.incrementCurrentIndex();
-        }
-        Keys.onUpPressed: {
-            list.decrementCurrentIndex();
-        }
-        Keys.onTabPressed: {
-            list.incrementCurrentIndex();
-        }
-        Keys.onBacktabPressed: {
-            list.decrementCurrentIndex();
+            const pos = Qt.point(nodePortSearchMenu.x, nodePortSearchMenu.y);
+            ModelInterface.createNode(name, nodePortSearchMenu.area.mapToItem(nodePortSearchMenu.area.inner, pos));
+            nodePortSearchMenu.close();
         }
     }
+
+    readonly property var replaceRegex: RegExp(searchField.text.replace(/[\\\.\+\*\?\^\$\[\]\(\)\{\}\/\'\#\:\!\=\|]/ig, "\\$&"), 'gi')
+
+    MenuSeparator {
+        id: separator
+    }
+
+    Instantiator {
+        model: DataFlowModelInterface.dataFlowGraph.registry.nodesModel
+        delegate: NodeRoleData {
+            required property string name
+            required property string category
+            required property list<portInfo> portsInfo
+        }
+        onObjectAdded: (index, object) => {
+            let data = object as NodeRoleData;
+            for (let i = 0; i != data.portsInfo.length; i++) {
+                if (data.portsInfo[i].portType == nodePortSearchMenu.portType) {
+                    continue;
+                }
+                if (!data.portsInfo[i].dataType.compatibleTypes.includes(nodePortSearchMenu.portInfoType)) {
+                    continue;
+                }
+
+                portSearchModel.append({
+                    "name": data.name,
+                    "category": data.category,
+                    "portInfo": data.portsInfo[i]
+                });
+            }
+        }
+        onObjectRemoved: (index, object) => {
+            for (let i = portSearchModel.count; i != 0; i--) {
+                let data = object as PortRoleData;
+                if (portSearchModel.get(i).name == data.name && portSearchModel.get(i).category == data.category) {
+                    portSearchModel.remove(i);
+                }
+            }
+        }
+    }
+
+    ListModel {
+        id: portSearchModel
+    }
+
     SortFilterProxyModel {
         id: sfpm
-        model: DataFlowModelInterface.dataFlowGraph.registry.model
+        model: portSearchModel
         sorters: [
             RoleSorter {
                 roleName: "category"
@@ -74,7 +99,7 @@ Menu {
         ]
         filters: [
             FunctionFilter {
-                function filter(data: RoleData): bool {
+                function filter(data: PortRoleData): bool {
                     if (searchField.text == "")
                         return true;
                     return data["name"].toLowerCase().includes(searchField.text.toLowerCase());
@@ -83,11 +108,6 @@ Menu {
         ]
     }
 
-    readonly property var replaceRegex: RegExp(searchField.text.replace(/[\\\.\+\*\?\^\$\[\]\(\)\{\}\/\'\#\:\!\=\|]/ig, "\\$&"), 'gi')
-
-    MenuSeparator {
-        id: separator
-    }
     ListView {
         id: list
         clip: true
@@ -107,51 +127,31 @@ Menu {
 
         Keys.forwardTo: [searchField]
 
-        delegate: MouseArea {
-            id: nodeModel
-            required property string name
-            required property string category
-            required property int index
-
-            height: 25
+        delegate: NodePortSearchMenuItem {
+            currentIndex: list.currentIndex
+            replaceRegex: nodePortSearchMenu.replaceRegex
             width: list.width
-            propagateComposedEvents: true
-            hoverEnabled: true
+            required property portInfo portInfo
+            port: portInfo
+
             onEntered: {
                 list.currentIndex = index;
             }
             onPressed: {
-                const pos = Qt.point(nodeSearchMenu.x, nodeSearchMenu.y);
-                ModelInterface.createNode(name, nodeSearchMenu.area.mapToItem(nodeSearchMenu.area.inner, pos));
-                nodeSearchMenu.close();
-            }
-            Rectangle {
-                anchors.fill: parent
-                color: list.currentIndex == nodeModel.index ? palette.highlight : ((nodeModel.index % 2 !== 0) ? palette.base : palette.alternateBase)
-            }
-            Text {
-                id: category
-                text: " " + nodeModel.category + "  🞂  "
-                color: list.currentIndex == nodeModel.index ? palette.highlightedText : palette.placeholderText
-                opacity: list.currentIndex == nodeModel.index ? 1 : 0.8
-                anchors.verticalCenter: parent.verticalCenter
-            }
-            Text {
-                function computeName(): string {
-                    return nodeModel.name.replace(nodeSearchMenu.replaceRegex, `<u>$&</u>`);
-                }
-
-                text: computeName()
-                color: list.currentIndex == nodeModel.index ? palette.highlightedText : palette.text
-                opacity: list.currentIndex == nodeModel.index ? 1 : 0.8
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: category.right
+                const pos = Qt.point(nodePortSearchMenu.x, nodePortSearchMenu.y);
+                ModelInterface.createNode(name, nodePortSearchMenu.area.mapToItem(nodePortSearchMenu.area.inner, pos));
+                nodePortSearchMenu.close();
             }
         }
     }
-    component RoleData: QtObject {
+    component NodeRoleData: QtObject {
         property string name
         property string category
         property list<portInfo> portsInfo
+    }
+    component PortRoleData: QtObject {
+        property string name
+        property string category
+        property portInfo portInfo
     }
 }

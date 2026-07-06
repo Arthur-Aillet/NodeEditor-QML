@@ -4,7 +4,6 @@
 #include "Definitions.hpp"
 #include "QmlUndoCommands.hpp"
 #include <QObject>
-#include <qdebug.h>
 #include <qjsengine.h>
 #include <qloggingcategory.h>
 #include <qobject.h>

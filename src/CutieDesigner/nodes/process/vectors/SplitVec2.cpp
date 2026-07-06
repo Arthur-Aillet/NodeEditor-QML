@@ -32,7 +32,7 @@ QString SplitVec2::portCaption(PortType portType, PortIndex portIndex) const {
   }
 }
 
-const NodeDataType &SplitVec2::dataType(PortType portType, PortIndex _portIndex) const {
+NodeDataType SplitVec2::dataType(PortType portType, PortIndex _portIndex) const {
   switch (portType) {
   case PortType::In:
     return Vec2Data().type();

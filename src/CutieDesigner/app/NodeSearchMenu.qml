@@ -9,7 +9,6 @@ Menu {
 
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
     required property NavigableArea area
-    property int portType
 
     popupType: Popup.Window
     onOpened: {
@@ -20,48 +19,28 @@ Menu {
         searchField.text = "";
     }
 
-    TextField {
+    NodeSearchTextField {
         id: searchField
-        placeholderText: "Filter"
-        onTextChanged: {
-            list.currentIndex = -1;
-            sfpm.invalidate();
-        }
-        hoverEnabled: true
-        onHoveredChanged: {
-            if (hovered) {
-                forceActiveFocus(Qt.PopupFocusReason);
-            }
-        }
+        listView: list
+        sfpModel: sfpm
         onAccepted: {
             let name;
             if (list.currentIndex == -1) {
                 if (list.itemAtIndex(0) == null)
                     return;
-                name = list.itemAtIndex(0).name;
+                name = (list.itemAtIndex(0) as NodeSearchMenuItem).name;
             } else {
-                name = list.currentItem.name;
+                name = (list.currentItem as NodeSearchMenuItem).name;
             }
             const pos = Qt.point(nodeSearchMenu.x, nodeSearchMenu.y);
             ModelInterface.createNode(name, nodeSearchMenu.area.mapToItem(nodeSearchMenu.area.inner, pos));
             nodeSearchMenu.close();
         }
-        Keys.onDownPressed: {
-            list.incrementCurrentIndex();
-        }
-        Keys.onUpPressed: {
-            list.decrementCurrentIndex();
-        }
-        Keys.onTabPressed: {
-            list.incrementCurrentIndex();
-        }
-        Keys.onBacktabPressed: {
-            list.decrementCurrentIndex();
-        }
     }
+
     SortFilterProxyModel {
         id: sfpm
-        model: DataFlowModelInterface.dataFlowGraph.registry.model
+        model: DataFlowModelInterface.dataFlowGraph.registry.nodesModel
         sorters: [
             RoleSorter {
                 roleName: "category"
@@ -88,6 +67,7 @@ Menu {
     MenuSeparator {
         id: separator
     }
+
     ListView {
         id: list
         clip: true
@@ -107,16 +87,11 @@ Menu {
 
         Keys.forwardTo: [searchField]
 
-        delegate: MouseArea {
-            id: nodeModel
-            required property string name
-            required property string category
-            required property int index
-
-            height: 25
+        delegate: NodePortSearchMenuItem {
+            currentIndex: list.currentIndex
+            replaceRegex: nodeSearchMenu.replaceRegex
             width: list.width
-            propagateComposedEvents: true
-            hoverEnabled: true
+
             onEntered: {
                 list.currentIndex = index;
             }
@@ -124,28 +99,6 @@ Menu {
                 const pos = Qt.point(nodeSearchMenu.x, nodeSearchMenu.y);
                 ModelInterface.createNode(name, nodeSearchMenu.area.mapToItem(nodeSearchMenu.area.inner, pos));
                 nodeSearchMenu.close();
-            }
-            Rectangle {
-                anchors.fill: parent
-                color: list.currentIndex == nodeModel.index ? palette.highlight : ((nodeModel.index % 2 !== 0) ? palette.base : palette.alternateBase)
-            }
-            Text {
-                id: category
-                text: " " + nodeModel.category + "  🞂  "
-                color: list.currentIndex == nodeModel.index ? palette.highlightedText : palette.placeholderText
-                opacity: list.currentIndex == nodeModel.index ? 1 : 0.8
-                anchors.verticalCenter: parent.verticalCenter
-            }
-            Text {
-                function computeName(): string {
-                    return nodeModel.name.replace(nodeSearchMenu.replaceRegex, `<u>$&</u>`);
-                }
-
-                text: computeName()
-                color: list.currentIndex == nodeModel.index ? palette.highlightedText : palette.text
-                opacity: list.currentIndex == nodeModel.index ? 1 : 0.8
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: category.right
             }
         }
     }

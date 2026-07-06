@@ -75,7 +75,7 @@ void NumberInputNode::onTextEdited() {
   }
 }
 
-const NodeDataType &NumberInputNode::dataType(PortType, PortIndex id) const {
+NodeDataType NumberInputNode::dataType(PortType, PortIndex id) const {
   return DecimalData().type();
 }
 

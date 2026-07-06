@@ -37,7 +37,7 @@ unsigned int TimeInputNode::nPorts(PortType portType) const {
   }
 }
 
-const NodeDataType &TimeInputNode::dataType(PortType _portType, PortIndex portIndex) const {
+NodeDataType TimeInputNode::dataType(PortType _portType, PortIndex portIndex) const {
   return DecimalData().type();
 }
 

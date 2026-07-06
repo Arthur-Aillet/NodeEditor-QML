@@ -20,15 +20,13 @@ Item {
     }
 
     property bool connected
-    property string dataType
-    property string dataName
+    property nodeDataType dataType
     property bool captionVisible
     property string caption
 
     function queryPortInfo() {
         connected = ModelInterface.graph.connections(nodePainter.nodeObject.nodeId, side, portId).length != 0;
         dataType = ModelInterface.graph.portData(nodePainter.nodeObject.nodeId, side, portId, NodeEditor.PortRole.DataType);
-        dataName = ModelInterface.graph.portData(nodePainter.nodeObject.nodeId, side, portId, NodeEditor.PortRole.DataName);
         captionVisible = ModelInterface.graph.portData(nodePainter.nodeObject.nodeId, side, portId, NodeEditor.PortRole.PortCaptionVisible);
         caption = ModelInterface.graph.portData(nodePainter.nodeObject.nodeId, side, portId, NodeEditor.PortRole.PortCaption);
     }
@@ -55,7 +53,7 @@ Item {
 
         x: connectionPoint.x + (port.side == NodeEditor.PortType.In ? offset : -width - offset)
         y: connectionPoint.y - portLabelMetrics.ascent / 2.0 - port.style.connectionPointDiameter / 4.0
-        text: port.captionVisible ? port.caption : port.dataName
+        text: port.captionVisible ? port.caption : port.dataType.name
         color: port.connected ? port.style.fontColor : port.style.fontColorFaded
     }
 
@@ -71,7 +69,7 @@ Item {
         ShapePath {
             fillColor: {
                 if (StyleCollection.connection.useDataDefinedColors) {
-                    const color = StyleCollection.connection.typeColor(port.dataType);
+                    const color = StyleCollection.connection.typeColor(port.dataType.id);
                     if (!port.connected) {
                         color.a = 0.7;
                     }

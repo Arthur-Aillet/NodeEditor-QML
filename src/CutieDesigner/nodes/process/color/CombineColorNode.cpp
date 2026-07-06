@@ -68,7 +68,7 @@ QString CombineColorNode::portCaption(PortType portType, PortIndex portIndex) co
   return QString(CutieDesigner::getColorModeComponents(_mode)[portIndex]);
 }
 
-const NodeDataType &CombineColorNode::dataType(PortType portType, PortIndex _portIndex) const {
+NodeDataType CombineColorNode::dataType(PortType portType, PortIndex _portIndex) const {
   switch (portType) {
   case PortType::In:
     return DecimalData().type();

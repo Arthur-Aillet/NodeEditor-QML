@@ -125,7 +125,7 @@ class NodeDelegateModel : public QObject, public Serializable {
   void setNodeProcessingStatus(NodeProcessingStatus status);
   void setValidationState(const NodeValidationState &validationState);
 
-  virtual const NodeDataType &dataType(PortType portType, PortIndex portIndex) const = 0;
+  virtual NodeDataType dataType(PortType portType, PortIndex portIndex) const = 0;
 
   NodeStyle const &nodeStyle() const;
   void setNodeStyle(NodeStyle const &style);

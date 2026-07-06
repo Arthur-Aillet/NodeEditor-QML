@@ -2,10 +2,9 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
+#include <QtQmlIntegration>
 #include <any>
 #include <functional>
-#include <qlogging.h>
-#include <qqmlintegration.h>
 #include <qtmetamacros.h>
 #include <qvariant.h>
 #include <string>
@@ -21,17 +20,21 @@ struct NodeDataType {
 
   public:
   using DataTypeId = QString;
+
   NodeDataType() {}
-  NodeDataType(DataTypeId _id, QString _name) : id(_id), name(_name) {}
+  NodeDataType(DataTypeId _id, QString _name);
+  /// By default, each type is only compatible with itself
+  NodeDataType(DataTypeId _id, QString _name, std::vector<QString> _compatibleTypes);
+
   DataTypeId id;
   QString name;
+  QList<QString> compatibleTypes;
 
-  Q_PROPERTY(DataTypeId id MEMBER id)
+  Q_PROPERTY(QString id MEMBER id)
   Q_PROPERTY(QString name MEMBER name)
+  Q_PROPERTY(QList<QString> compatibleTypes MEMBER compatibleTypes)
 
-  bool operator==(const NodeDataType &other) const { return id == other.id && name == other.name; }
-  // By default, each type is only compatible with itself
-  Q_INVOKABLE virtual QList<QString> compatibleTypes() const { return QList<DataTypeId>(id); }
+  bool operator==(const NodeDataType &other) const;
 };
 
 /**
@@ -60,12 +63,12 @@ class NodeData : public QObject {
   }
 
   /// Type for inner use
-  virtual const NodeDataType &type() const = 0;
+  virtual NodeDataType type() const = 0;
 
   protected:
-  template <typename T>
-  void registerConvert(std::function<T(void)> fn) {
-    _map.insert(QMetaType::fromType<T>(), [fn]() { return std::any(fn()); });
+  template <typename Function>
+  void registerConvert(Function fn) {
+    _map.insert(QMetaType::fromType<decltype(fn())>(), [fn]() { return std::any(fn()); });
   }
 
   typedef std::function<std::any(void)> ConvertFn;

@@ -51,7 +51,7 @@ unsigned int MouseInputNode::nPorts(PortType portType) const {
 
 QString MouseInputNode::portCaption(PortType portType, PortIndex portIndex) const { return "pos"; }
 
-const NodeDataType &MouseInputNode::dataType(PortType _portType, PortIndex _portIndex) const {
+NodeDataType MouseInputNode::dataType(PortType _portType, PortIndex _portIndex) const {
   return Vec2Data().type();
 }
 

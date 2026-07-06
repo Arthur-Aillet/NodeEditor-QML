@@ -30,7 +30,7 @@ unsigned int TextTyperNode::nPorts(PortType portType) const {
   }
 }
 
-const NodeDataType &TextTyperNode::dataType(PortType portType, PortIndex portIndex) const {
+NodeDataType TextTyperNode::dataType(PortType portType, PortIndex portIndex) const {
   switch (portType) {
   case PortType::In:
     return DecimalData().type();

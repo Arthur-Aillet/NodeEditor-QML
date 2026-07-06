@@ -5,7 +5,6 @@
 
 #include <QtWidgets/QLabel>
 #include <memory>
-#include <qdebug.h>
 #include <qqmlcomponent.h>
 #include <qtimer.h>
 #include <qtmetamacros.h>
@@ -33,7 +32,7 @@ unsigned int ATypeNode::nPorts(PortType portType) const {
   }
 }
 
-const NodeDataType &ATypeNode::dataType(PortType portType, PortIndex portIndex) const {
+NodeDataType ATypeNode::dataType(PortType portType, PortIndex portIndex) const {
   switch (portType) {
   case PortType::Out:
     return _content->type();

@@ -53,7 +53,7 @@ QVariantMap SliderInputNode::componentInitialProperties() {
   return map;
 }
 
-const NodeDataType &SliderInputNode::dataType(PortType, PortIndex id) const {
+NodeDataType SliderInputNode::dataType(PortType, PortIndex id) const {
   return DecimalData().type();
 }
 

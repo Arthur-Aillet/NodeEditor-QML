@@ -5,10 +5,12 @@ qt_add_qml_module(datatypes
   ATypeCharacterData.hpp
   ColorData.hpp
   DecimalData.hpp
+  DecimalData.cpp
   GradientData.hpp
   SurfaceData.cpp
   SurfaceData.hpp
   TextData.hpp
+  Vec2Data.cpp
   Vec2Data.hpp
 )
 

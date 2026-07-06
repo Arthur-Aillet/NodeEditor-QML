@@ -8,7 +8,7 @@ unsigned int MathOperationNodeModel::nPorts(PortType portType) const {
     return 1;
 }
 
-const NodeDataType &MathOperationNodeModel::dataType(PortType, PortIndex) const {
+NodeDataType MathOperationNodeModel::dataType(PortType, PortIndex) const {
   return DecimalData().type();
 }
 

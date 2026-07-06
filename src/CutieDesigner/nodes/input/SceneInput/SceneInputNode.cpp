@@ -37,7 +37,7 @@ QString SceneInputNode::portCaption(PortType portType, PortIndex portIndex) cons
   }
 }
 
-const NodeDataType &SceneInputNode::dataType(PortType _portType, PortIndex _portIndex) const {
+NodeDataType SceneInputNode::dataType(PortType _portType, PortIndex _portIndex) const {
   return Vec2Data().type();
 }
 

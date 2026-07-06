@@ -40,7 +40,7 @@ unsigned int VideoDisplayNode::nPorts(PortType portType) const {
   }
 }
 
-const NodeDataType &VideoDisplayNode::dataType(PortType _portType, PortIndex _portIndex) const {
+NodeDataType VideoDisplayNode::dataType(PortType _portType, PortIndex _portIndex) const {
   return SurfaceData().type();
 }
 

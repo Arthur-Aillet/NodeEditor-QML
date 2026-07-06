@@ -29,7 +29,7 @@ QString CombineVec2::portCaption(PortType portType, PortIndex portIndex) const {
   }
 }
 
-const NodeDataType &CombineVec2::dataType(PortType portType, PortIndex _portIndex) const {
+NodeDataType CombineVec2::dataType(PortType portType, PortIndex _portIndex) const {
   switch (portType) {
   case PortType::In:
     return DecimalData().type();

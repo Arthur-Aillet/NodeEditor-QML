@@ -44,6 +44,7 @@ qt_add_qml_module(NodeEditor
   data/DataFlowGraphModel.cpp
   data/DataFlowGraphModel.hpp
   data/Definitions.hpp
+  data/NodeData.cpp
   data/NodeData.hpp
   data/NodeDelegateModel.cpp
   data/NodeDelegateModel.hpp

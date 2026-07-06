@@ -4,12 +4,11 @@
 
 #include "AbstractGraphModel.hpp"
 #include "ConnectionIdHash.hpp"
-#include "ConnectionIdUtils.hpp"
 #include "Definitions.hpp"
 #include "NodeDelegateModelRegistry.hpp"
 #include "Serializable.hpp"
-#include <QJsonObject>
 
+#include <QJsonObject>
 #include <QString>
 #include <qpoint.h>
 #include <qqmlintegration.h>

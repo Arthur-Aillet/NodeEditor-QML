@@ -13,7 +13,7 @@ FillNode::FillNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
 
 unsigned int FillNode::nPorts(PortType portType) const { return 1; }
 
-const NodeDataType &FillNode::dataType(PortType portType, PortIndex _portIndex) const {
+NodeDataType FillNode::dataType(PortType portType, PortIndex _portIndex) const {
   switch (portType) {
   case PortType::In:
     return GradientData().type();

@@ -44,7 +44,7 @@ class GradientInputNode : public NodeDelegateModel {
   }
 
   unsigned int nPorts(PortType portType) const override;
-  const NodeDataType &dataType(PortType portType, PortIndex portIndex) const override;
+  NodeDataType dataType(PortType portType, PortIndex portIndex) const override;
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override {};
 

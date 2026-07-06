@@ -19,9 +19,7 @@ class SurfaceData : public NodeData {
   SurfaceData() {}
   SurfaceData(std::unique_ptr<QQmlComponent> &&object, QVariantMap initialProps = {});
 
-  static inline const NodeDataType dataType = NodeDataType("object", "2D Surface");
-
-  const NodeDataType &type() const override { return dataType; }
+  NodeDataType type() const override { return NodeDataType("object", "2D Surface"); }
 
   const std::unique_ptr<QQmlComponent> &component() { return _component; };
   const QVariantMap &initialProps() { return _initialProps; };

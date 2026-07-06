@@ -19,7 +19,7 @@ class MathOperationNodeModel : public NodeDelegateModel {
   virtual unsigned int nbInputs() const { return 2; };
   unsigned int nPorts(PortType portType) const override;
 
-  const NodeDataType &dataType(PortType portType, PortIndex portIndex) const override;
+  NodeDataType dataType(PortType portType, PortIndex portIndex) const override;
   virtual bool portCaptionVisible(PortType, PortIndex) const override { return true; }
   virtual QString portCaption(PortType portType, PortIndex portIndex) const override {
     if (portType == PortType::Out)

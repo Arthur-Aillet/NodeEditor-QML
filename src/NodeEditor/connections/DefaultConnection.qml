@@ -60,14 +60,14 @@ Canvas {
         if (!fullyConnected)
             return "black";
         const dataType = ModelInterface.graph.portData(connection.inNodeId, NodeEditor.PortType.In, connection.inPortIndex, NodeEditor.PortRole.DataType);
-        return StyleCollection.connection.typeColor(dataType);
+        return StyleCollection.connection.typeColor(dataType.id);
     }
 
     property color outTypeColor: {
         if (!fullyConnected)
             return "black";
         const dataType = ModelInterface.graph.portData(connection.outNodeId, NodeEditor.PortType.Out, connection.outPortIndex, NodeEditor.PortRole.DataType);
-        return StyleCollection.connection.typeColor(dataType);
+        return StyleCollection.connection.typeColor(dataType.id);
     }
 
     property point c1

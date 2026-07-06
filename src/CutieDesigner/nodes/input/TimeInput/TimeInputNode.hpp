@@ -15,7 +15,7 @@ class TimeInputNode : public NodeDelegateModel {
   QString name() const override { return "Time"; }
 
   unsigned int nPorts(PortType portType) const override;
-  const NodeDataType &dataType(PortType portType, PortIndex portIndex) const override;
+  NodeDataType dataType(PortType portType, PortIndex portIndex) const override;
   std::shared_ptr<NodeData> outData(PortIndex port) override;
 
   QString portCaption(PortType _portType, PortIndex portIndex) const override;

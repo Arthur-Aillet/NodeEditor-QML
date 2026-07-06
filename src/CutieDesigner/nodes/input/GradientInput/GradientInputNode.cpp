@@ -14,7 +14,7 @@ unsigned int GradientInputNode::nPorts(PortType portType) const {
   }
 }
 
-const NodeDataType &GradientInputNode::dataType(PortType _portType, PortIndex _portIndex) const {
+NodeDataType GradientInputNode::dataType(PortType _portType, PortIndex _portIndex) const {
   return ColorData().type();
 }
 
