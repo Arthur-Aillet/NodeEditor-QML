@@ -60,7 +60,7 @@ NodeId DataFlowGraphModel::addNode(QString const nodeType) {
     _labels[newId] = _models[newId]->label();
     _labelsVisible[newId] = _models[newId]->labelVisible();
 
-    Q_EMIT nodeCreated(newId);
+    emit nodeCreated(newId);
 
     return newId;
   }
@@ -503,6 +503,7 @@ QJsonObject DataFlowGraphModel::saveNode(NodeId const nodeId) const {
 
   nodeJson["id"] = static_cast<qint64>(nodeId);
   nodeJson["internal-data"] = model->save();
+  nodeJson["model-name"] = model->name();
 
   auto const labelIt = _labels.find(nodeId);
   nodeJson["label"] = (labelIt != _labels.end()) ? labelIt->second : model->label();
@@ -548,15 +549,16 @@ NodeId DataFlowGraphModel::loadNode(QJsonObject const &nodeJson) {
     nodeId = newNodeId();
   }
 
-  QJsonObject const internalDataJson = nodeJson["internal-data"].toObject();
-
-  QString delegateModelName = internalDataJson["model-name"].toString();
+  QString delegateModelName = nodeJson["model-name"].toString();
 
   std::unique_ptr<NodeDelegateModel> model = _registry->create(delegateModelName);
 
   if (model) {
     connectNode(model.get(), nodeId);
     _models[nodeId] = std::move(model);
+
+    auto *restoredModel = _models[nodeId].get();
+    restoredModel->load(nodeJson["internal-data"].toObject());
 
     emit nodeCreated(nodeId);
 
@@ -565,12 +567,10 @@ NodeId DataFlowGraphModel::loadNode(QJsonObject const &nodeJson) {
 
     setNodeData(nodeId, NodeRole::Position, pos);
 
-    auto *restoredModel = _models[nodeId].get();
     _labels[nodeId] = nodeJson["label"].toString(restoredModel->label());
     _labelsVisible[nodeId] = nodeJson.contains("labelVisible") ? nodeJson["labelVisible"].toBool()
                                                                : restoredModel->labelVisible();
 
-    restoredModel->load(internalDataJson);
   } else {
     throw std::logic_error(std::string("No registered model with name ") +
                            delegateModelName.toLocal8Bit().data());

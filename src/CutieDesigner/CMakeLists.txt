@@ -1,6 +1,6 @@
 add_subdirectory(datatypes)
 add_subdirectory(time)
-#add_subdirectory(nodes)
+add_subdirectory(nodes)
 add_subdirectory(stats)
 add_subdirectory(app)
 
@@ -14,8 +14,6 @@ qt_add_qml_module(CutieDesigner
   Main.qml
 
   SOURCES
-  TimeInputNode.hpp
-
   DEPENDENCIES QtQuick CutieDesigner.App
 )
 
@@ -55,7 +53,7 @@ target_link_libraries(CutieDesigner PRIVATE
   time
   app
   ${GSTREAMER_LIBRARIES}
-  #nodes
+  nodes
 )
 
 install(TARGETS CutieDesigner

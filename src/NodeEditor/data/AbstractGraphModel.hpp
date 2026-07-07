@@ -153,7 +153,7 @@ class AbstractGraphModel : public QObject {
    *   - graph save/restore operations,
    *   - undo/redo operations after deleting the node.
    *
-   * QJsonObject must contain following fields:
+   * QJsonObject must contain at least the following fields:
    *
    *
    * ```json
@@ -167,7 +167,7 @@ class AbstractGraphModel : public QObject {
    * ```
    *
    * The function must do almost exacly the same thing as the normal addNode().
-   * The main difference is in a model-specific `inner-data` processing.
+   * The main difference is in a model-specific `internal-data` processing.
    */
   virtual NodeId loadNode(QJsonObject const &) { return 0; }
 

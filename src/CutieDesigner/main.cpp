@@ -4,10 +4,20 @@
 #include "StyleCollection.hpp"
 #include "TimeController.hpp"
 
+#include "ColorInputNode.hpp"
+#include "GradientInputNode.hpp"
+#include "MouseInputNode.hpp"
+#include "NumberInputNode.hpp"
+#include "SceneInputNode.hpp"
+#include "SliderInputNode.hpp"
+#include "TextInputNode.hpp"
+#include "TimeInputNode.hpp"
+#include "Vec2InputNode.hpp"
+#include "WindowInputNode.hpp"
+
 // #include "ATypeNode.hpp"
 // #include "AdditionNode.hpp"
 // #include "BlendNode.hpp"
-// #include "ColorInputNode.hpp"
 // #include "CombineColorNode.hpp"
 // #include "CombineVec2.hpp"
 // #include "CosNode.hpp"
@@ -15,30 +25,20 @@
 // #include "DimensionNode.hpp"
 // #include "DivisionNode.hpp"
 // #include "FillNode.hpp"
-// #include "GradientInputNode.hpp"
 // #include "ImageDisplayNode.hpp"
-// #include "MouseInputNode.hpp"
 // #include "MultiplicationNode.hpp"
-// #include "NumberInputNode.hpp"
-// #include "SceneInputNode.hpp"
 // #include "SinNode.hpp"
-// #include "SliderInputNode.hpp"
 // #include "SplitColorNode.hpp"
 // #include "SplitVec2.hpp"
 // #include "StackNode.hpp"
 // #include "SubtractionNode.hpp"
 // #include "SurfaceDisplayNode.hpp"
 // #include "SurfaceLoader.hpp"
-// #include "TextInputNode.hpp"
 // #include "TextTyperNode.hpp"
-// #include "TimeInputNode.hpp"
 // #include "UkrugNode.hpp"
-// #include "Vec2InputNode.hpp"
 // #include "VideoDisplayNode.hpp"
-// #include "WindowInputNode.hpp"
 
 #include "FileManager.hpp"
-#include "TimeInputNode.hpp"
 
 #include <QQmlApplicationEngine>
 #include <QQuickItem>
@@ -59,17 +59,18 @@ static void setupGstreamer() {
 
 static std::shared_ptr<NodeDelegateModelRegistry> createRegistery(QQmlEngine &engine) {
   auto reg = std::make_shared<NodeDelegateModelRegistry>(&engine);
-  reg->registerModel<TimeInputNode>("Input");
 
-  // reg->registerModel<ColorInputNode>("Input");
-  // reg->registerModel<GradientInputNode>("Input");
-  // reg->registerModel<NumberInputNode>("Input");
-  // reg->registerModel<Vec2InputNode>("Input");
-  // reg->registerModel<MouseInputNode>("Input");
-  // reg->registerModel<WindowInputNode>("Input");
-  // reg->registerModel<SceneInputNode>("Input");
-  // reg->registerModel<TextInputNode>("Input");
-  // reg->registerModel<TimeInputNode>("Input");
+  // Input
+  reg->registerModel<ColorInputNode>("Input");
+  reg->registerModel<GradientInputNode>("Input");
+  reg->registerModel<MouseInputNode>("Input");
+  reg->registerModel<NumberInputNode>("Input");
+  reg->registerModel<SceneInputNode>("Input");
+  reg->registerModel<TextInputNode>("Input");
+  reg->registerModel<WindowInputNode>("Input");
+  reg->registerModel<TimeInputNode>("Input");
+  reg->registerModel<Vec2InputNode>("Input");
+
   // reg->registerModel<SliderInputNode>("Input");
   // reg->registerModel<AdditionNode>("Process");
   // reg->registerModel<DivisionNode>("Process");

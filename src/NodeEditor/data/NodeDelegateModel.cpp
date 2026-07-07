@@ -7,13 +7,7 @@
 NodeDelegateModel::NodeDelegateModel(QQmlEngine *engine)
     : _nodeStyle(StyleCollection::getNodeStyle()) {}
 
-QJsonObject NodeDelegateModel::save() const {
-  QJsonObject modelJson;
-
-  modelJson["model-name"] = name();
-
-  return modelJson;
-}
+QJsonObject NodeDelegateModel::save() const { return QJsonObject(); }
 
 NodeDelegateModel::ModelInfos NodeDelegateModel::modelInfos() const {
   QList<PortInfo> ports;

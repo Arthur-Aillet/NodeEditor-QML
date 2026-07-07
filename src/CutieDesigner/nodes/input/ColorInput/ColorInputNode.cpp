@@ -5,6 +5,25 @@
 ColorInputNode::ColorInputNode(QQmlEngine *engine)
     : NodeDelegateModel(engine), _content(std::make_shared<ColorData>(_color)) {}
 
+QQmlComponent ColorInputNode::embeddedComponent(QQmlEngine *engine) {
+  return QQmlComponent(engine, "CutieDesigner.Nodes.Input", "ColorInputControl");
+}
+
+QVariantMap ColorInputNode::componentInitialProperties() {
+  return {{"node", QVariant::fromValue(this)}};
+}
+
+QJsonObject ColorInputNode::save() const {
+  QJsonObject json;
+
+  json["color"] = QJsonValue::fromVariant(_color);
+  return json;
+}
+
+void ColorInputNode::load(QJsonObject const &json) {
+  _color = json["color"].toVariant().value<QColor>();
+}
+
 unsigned int ColorInputNode::nPorts(PortType portType) const {
   switch (portType) {
   case PortType::In:

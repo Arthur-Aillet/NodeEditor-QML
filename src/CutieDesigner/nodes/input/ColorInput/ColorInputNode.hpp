@@ -4,14 +4,15 @@
 #include "NodeDelegateModel.hpp"
 
 #include <QQmlComponent>
+#include <QVariant>
 #include <QtCore/QObject>
 #include <memory>
 #include <qcolor.h>
+#include <qjsonobject.h>
 #include <qjsvalue.h>
 #include <qqmlcomponent.h>
 #include <qqmlengine.h>
 #include <qtmetamacros.h>
-#include <qvariant.h>
 
 class ColorInputNode : public NodeDelegateModel {
   Q_OBJECT
@@ -31,17 +32,14 @@ class ColorInputNode : public NodeDelegateModel {
   QString portCaption(PortType portType, PortIndex portIndex) const override { return QString(); };
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }
 
-  QQmlComponent embeddedComponent(QQmlEngine *engine) override {
-    return QQmlComponent(engine, "CutieDesigner.Nodes.Input", "ColorInputControl");
-  }
-
-  QVariantMap componentInitialProperties() override {
-    QVariantMap map;
-    map["node"] = QVariant::fromValue(this);
-    return map;
-  }
+  QQmlComponent embeddedComponent(QQmlEngine *engine) override;
+  QVariantMap componentInitialProperties() override;
 
   unsigned int nPorts(PortType portType) const override;
+
+  QJsonObject save() const override;
+  void load(QJsonObject const &) override;
+
   NodeDataType dataType(PortType portType, PortIndex portIndex) const override;
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override {};
