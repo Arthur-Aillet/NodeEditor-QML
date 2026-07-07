@@ -10,26 +10,13 @@
 NumberInputNode::NumberInputNode(QQmlEngine *engine)
     : NodeDelegateModel(engine), _numberData(std::make_shared<DecimalData>(_number)) {}
 
-QJsonObject NumberInputNode::save() const {
-  QJsonObject modelJson = NodeDelegateModel::save();
+QJsonObject NumberInputNode::save() const { return QJsonObject({{"number", _number}}); }
 
-  auto a = _numberData->repr<QString>();
-  modelJson["number"] = _numberData->repr<QString>();
+void NumberInputNode::load(QJsonObject const &json) {
+  QJsonValue value = json["number"];
 
-  return modelJson;
-}
-
-void NumberInputNode::load(QJsonObject const &p) {
-  QJsonValue v = p["number"];
-
-  if (!v.isUndefined()) {
-    QString strNum = v.toString();
-
-    bool ok = false;
-    _number = strNum.toDouble(&ok);
-    if (ok) {
-      _numberData = std::make_shared<DecimalData>(_number);
-    }
+  if (!value.isUndefined()) {
+    _number = value.toDouble();
   }
 }
 

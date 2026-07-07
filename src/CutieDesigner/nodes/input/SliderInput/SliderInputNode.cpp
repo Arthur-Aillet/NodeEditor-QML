@@ -12,25 +12,13 @@ SliderInputNode::SliderInputNode(QQmlEngine *engine)
   connect(this, &SliderInputNode::valueChanged, [&]() { emit dataUpdated(0); });
 }
 
-QJsonObject SliderInputNode::save() const {
-  QJsonObject modelJson = NodeDelegateModel::save();
+QJsonObject SliderInputNode::save() const { return QJsonObject({{"value", _value}}); }
 
-  modelJson["number"] = _valueData->repr<QString>();
+void SliderInputNode::load(QJsonObject const &json) {
+  QJsonValue value = json["value"];
 
-  return modelJson;
-}
-
-void SliderInputNode::load(QJsonObject const &p) {
-  QJsonValue v = p["number"];
-
-  if (!v.isUndefined()) {
-    QString strNum = v.toString();
-
-    bool ok = false;
-    _value = strNum.toDouble(&ok);
-    if (ok) {
-      _valueData = std::make_shared<DecimalData>(_value);
-    }
+  if (!value.isUndefined()) {
+    _value = value.toDouble();
   }
 }
 

@@ -5,6 +5,16 @@
 TextInputNode::TextInputNode(QQmlEngine *engine)
     : NodeDelegateModel(engine), _textData(std::make_shared<TextData>(_text)) {}
 
+QJsonObject TextInputNode::save() const { return QJsonObject({{"text", _text}}); }
+
+void TextInputNode::load(QJsonObject const &json) {
+  QJsonValue value = json["text"];
+
+  if (!value.isUndefined()) {
+    _text = value.toString();
+  }
+}
+
 QString TextInputNode::text() { return _text; }
 
 void TextInputNode::setText(QString text) {

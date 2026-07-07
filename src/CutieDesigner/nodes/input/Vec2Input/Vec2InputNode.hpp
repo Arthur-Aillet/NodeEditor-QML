@@ -18,6 +18,9 @@ class Vec2InputNode : public NodeDelegateModel {
   bool captionVisible() const override { return false; }
   QString name() const override { return "Vec2"; }
 
+  QJsonObject save() const override;
+  void load(QJsonObject const &p) override;
+
   unsigned int nPorts(PortType portType) const override;
   NodeDataType dataType(PortType portType, PortIndex portIndex) const override;
   std::shared_ptr<NodeData> outData(PortIndex port) override;

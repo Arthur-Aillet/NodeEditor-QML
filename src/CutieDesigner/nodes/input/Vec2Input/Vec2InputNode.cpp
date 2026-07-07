@@ -1,9 +1,25 @@
 #include "Vec2InputNode.hpp"
 #include "NodeDelegateModel.hpp"
 #include "Vec2Data.hpp"
+#include <qvariant.h>
 
 Vec2InputNode::Vec2InputNode(QQmlEngine *engine)
     : NodeDelegateModel(engine), _vecData(std::make_shared<Vec2Data>(_vec)) {}
+
+QJsonObject Vec2InputNode::save() const { return QJsonObject({{"x", _vec.x()}, {"y", _vec.y()}}); }
+
+void Vec2InputNode::load(QJsonObject const &json) {
+  QJsonValue valueX = json["x"];
+
+  if (!valueX.isUndefined()) {
+    _vec.setX(valueX.toDouble());
+  }
+
+  QJsonValue valueY = json["y"];
+  if (!valueY.isUndefined()) {
+    _vec.setY(valueY.toDouble());
+  }
+}
 
 unsigned int Vec2InputNode::nPorts(PortType portType) const {
   switch (portType) {

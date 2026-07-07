@@ -21,7 +21,11 @@ QJsonObject ColorInputNode::save() const {
 }
 
 void ColorInputNode::load(QJsonObject const &json) {
-  _color = json["color"].toVariant().value<QColor>();
+  QJsonValue value = json["color"];
+
+  if (!value.isUndefined()) {
+    _color = value.toVariant().value<QColor>();
+  }
 }
 
 unsigned int ColorInputNode::nPorts(PortType portType) const {
