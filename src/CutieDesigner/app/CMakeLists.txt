@@ -1,19 +1,20 @@
+add_subdirectory(menu)
+add_subdirectory(FileManager)
+
 qt_add_qml_module(app
   STATIC
   URI CutieDesigner.App
   QML_FILES
   AppLayout.qml
   Timeline.qml
+  TopBar.qml
   NodeView.qml
-  NodeListMenu.qml
-  NodeSearchMenu.qml
-  NodePortSearchMenu.qml
-  NodePortSearchMenuItem.qml
-  NodeSearchTextField.qml
 
-  DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieDesigner.Nodes.Display CutieDesigner.Stats CutieUiModule
-  RESOURCES
-  icomoon.ttf
+  DEPENDENCIES 
+  QtQuick QtQuick.Control QtQuick.Layout 
+  CutieDesigner.Nodes.Display CutieDesigner.Stats CutieDesigner.App.Menu CutieDesigner.App.FileManager
+  CutieUiModule
+  NodeEditor 
 )
 
 target_link_directories(app
@@ -28,10 +29,11 @@ target_link_libraries(app PRIVATE
   Qt6::Core
   Qt6::Gui
   Qt6::Quick
-  Qt6::QuickWidgets
   Qt6::Qml
   NodeEditor
   CutieUiModule
-  nodes
+  menu
+  fileManager
+  #nodes
   time
 )

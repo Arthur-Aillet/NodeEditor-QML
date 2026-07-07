@@ -1,6 +1,6 @@
 add_subdirectory(datatypes)
 add_subdirectory(time)
-add_subdirectory(nodes)
+#add_subdirectory(nodes)
 add_subdirectory(stats)
 add_subdirectory(app)
 
@@ -13,6 +13,9 @@ qt_add_qml_module(CutieDesigner
   QML_FILES
   Main.qml
 
+  SOURCES
+  TimeInputNode.hpp
+
   DEPENDENCIES QtQuick CutieDesigner.App
 )
 
@@ -23,7 +26,7 @@ target_link_directories(CutieDesigner
   ${GSTREAMER_LIBRARY_DIRS}
 )
 
-target_include_directories(CutieDesigner PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(CutieDesigner PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${GSTREAMER_INCLUDE_DIRS})
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
@@ -37,8 +40,9 @@ set_target_properties(CutieDesigner PROPERTIES
 )
 
 target_compile_definitions(CutieDesigner
-  PRIVATE $<$<CONFIG:Debug>:QT_QML_DEBUG> GLM_ENABLE_EXPERIMENTAL)
+PRIVATE $<$<CONFIG:Debug>:QT_QML_DEBUG> GLM_ENABLE_EXPERIMENTAL)
 
+target_compile_options(CutieDesigner PRIVATE ${GSTREAMER_CFLAGS})
 target_link_libraries(CutieDesigner PRIVATE
   Qt6::Core
   Qt6::Gui
@@ -48,8 +52,9 @@ target_link_libraries(CutieDesigner PRIVATE
   NodeEditor
   datatypes
   stats
-  nodes
+  time
   ${GSTREAMER_LIBRARIES}
+  #nodes
 )
 
 install(TARGETS CutieDesigner

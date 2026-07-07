@@ -1,39 +1,42 @@
-#include "ATypeNode.hpp"
-#include "AdditionNode.hpp"
-#include "BlendNode.hpp"
-#include "ColorInputNode.hpp"
-#include "CombineColorNode.hpp"
-#include "CombineVec2.hpp"
-#include "CosNode.hpp"
 #include "CutieWindow.hpp"
 #include "DataFlowModelInterface.hpp"
-#include "Definitions.hpp"
-#include "DimensionNode.hpp"
-#include "DivisionNode.hpp"
-#include "FillNode.hpp"
-#include "GradientInputNode.hpp"
-#include "ImageDisplayNode.hpp"
-#include "MouseInputNode.hpp"
-#include "MultiplicationNode.hpp"
-#include "NumberInputNode.hpp"
-#include "SceneInputNode.hpp"
-#include "SinNode.hpp"
-#include "SliderInputNode.hpp"
-#include "SplitColorNode.hpp"
-#include "SplitVec2.hpp"
-#include "StackNode.hpp"
 #include "StyleCollection.hpp"
-#include "SubtractionNode.hpp"
-#include "SurfaceDisplayNode.hpp"
-#include "SurfaceLoader.hpp"
-#include "TextTyperNode.hpp"
 #include "TimeController.hpp"
+
+// #include "ATypeNode.hpp"
+// #include "AdditionNode.hpp"
+// #include "BlendNode.hpp"
+// #include "ColorInputNode.hpp"
+// #include "CombineColorNode.hpp"
+// #include "CombineVec2.hpp"
+// #include "CosNode.hpp"
+// #include "Definitions.hpp"
+// #include "DimensionNode.hpp"
+// #include "DivisionNode.hpp"
+// #include "FillNode.hpp"
+// #include "GradientInputNode.hpp"
+// #include "ImageDisplayNode.hpp"
+// #include "MouseInputNode.hpp"
+// #include "MultiplicationNode.hpp"
+// #include "NumberInputNode.hpp"
+// #include "SceneInputNode.hpp"
+// #include "SinNode.hpp"
+// #include "SliderInputNode.hpp"
+// #include "SplitColorNode.hpp"
+// #include "SplitVec2.hpp"
+// #include "StackNode.hpp"
+// #include "SubtractionNode.hpp"
+// #include "SurfaceDisplayNode.hpp"
+// #include "SurfaceLoader.hpp"
+// #include "TextInputNode.hpp"
+// #include "TextTyperNode.hpp"
+// #include "TimeInputNode.hpp"
+// #include "UkrugNode.hpp"
+// #include "Vec2InputNode.hpp"
+// #include "VideoDisplayNode.hpp"
+// #include "WindowInputNode.hpp"
+
 #include "TimeInputNode.hpp"
-#include "UkrugNode.hpp"
-#include "Vec2InputNode.hpp"
-#include "VideoDisplayNode.hpp"
-#include "WindowInputNode.hpp"
-#include "nodes/input/TextInput/TextInputNode.hpp"
 
 #include <QQmlApplicationEngine>
 #include <QQuickItem>
@@ -53,37 +56,38 @@ static void setupGstreamer() {
 
 static std::shared_ptr<NodeDelegateModelRegistry> createRegistery(QQmlEngine &engine) {
   auto reg = std::make_shared<NodeDelegateModelRegistry>(&engine);
-
-  reg->registerModel<ColorInputNode>("Input");
-  reg->registerModel<GradientInputNode>("Input");
-  reg->registerModel<NumberInputNode>("Input");
-  reg->registerModel<Vec2InputNode>("Input");
-  reg->registerModel<MouseInputNode>("Input");
-  reg->registerModel<WindowInputNode>("Input");
-  reg->registerModel<SceneInputNode>("Input");
-  reg->registerModel<TextInputNode>("Input");
   reg->registerModel<TimeInputNode>("Input");
-  reg->registerModel<SliderInputNode>("Input");
-  reg->registerModel<AdditionNode>("Process");
-  reg->registerModel<DivisionNode>("Process");
-  reg->registerModel<MultiplicationNode>("Process");
-  reg->registerModel<SubtractionNode>("Process");
-  reg->registerModel<SinNode>("Process");
-  reg->registerModel<CosNode>("Process");
-  reg->registerModel<CombineColorNode>("Process");
-  reg->registerModel<SplitColorNode>("Process");
-  reg->registerModel<CombineVec2>("Process");
-  reg->registerModel<SplitVec2>("Process");
-  reg->registerModel<DimensionNode>("Display");
-  reg->registerModel<SurfaceDisplayNode>("Display");
-  reg->registerModel<UkrugNode>("Display");
-  reg->registerModel<ATypeNode>("Display");
-  reg->registerModel<TextTyperNode>("Process");
-  reg->registerModel<BlendNode>("Process");
-  reg->registerModel<VideoDisplayNode>("Display");
-  reg->registerModel<FillNode>("Display");
-  reg->registerModel<StackNode>("Display");
-  reg->registerModel<ImageDisplayNode>("Display");
+
+  // reg->registerModel<ColorInputNode>("Input");
+  // reg->registerModel<GradientInputNode>("Input");
+  // reg->registerModel<NumberInputNode>("Input");
+  // reg->registerModel<Vec2InputNode>("Input");
+  // reg->registerModel<MouseInputNode>("Input");
+  // reg->registerModel<WindowInputNode>("Input");
+  // reg->registerModel<SceneInputNode>("Input");
+  // reg->registerModel<TextInputNode>("Input");
+  // reg->registerModel<TimeInputNode>("Input");
+  // reg->registerModel<SliderInputNode>("Input");
+  // reg->registerModel<AdditionNode>("Process");
+  // reg->registerModel<DivisionNode>("Process");
+  // reg->registerModel<MultiplicationNode>("Process");
+  // reg->registerModel<SubtractionNode>("Process");
+  // reg->registerModel<SinNode>("Process");
+  // reg->registerModel<CosNode>("Process");
+  // reg->registerModel<CombineColorNode>("Process");
+  // reg->registerModel<SplitColorNode>("Process");
+  // reg->registerModel<CombineVec2>("Process");
+  // reg->registerModel<SplitVec2>("Process");
+  // reg->registerModel<DimensionNode>("Display");
+  // reg->registerModel<SurfaceDisplayNode>("Display");
+  // reg->registerModel<UkrugNode>("Display");
+  // reg->registerModel<ATypeNode>("Display");
+  // reg->registerModel<TextTyperNode>("Process");
+  // reg->registerModel<BlendNode>("Process");
+  // reg->registerModel<VideoDisplayNode>("Display");
+  // reg->registerModel<FillNode>("Display");
+  // reg->registerModel<StackNode>("Display");
+  // reg->registerModel<ImageDisplayNode>("Display");
   return reg;
 }
 
@@ -97,13 +101,14 @@ int main(int argc, char *argv[]) {
 
   engine.rootContext()->setContextProperty("app", &app);
 
-  auto model = DataFlowGraphModel(createRegistery(engine), &engine);
+  auto graph = DataFlowGraphModel(createRegistery(engine), &engine);
 
   QObject::connect(
       &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
       []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
 
-  DataFlowModelInterface::init(model);
+  DataFlowModelInterface::init(graph);
+
   StyleCollection::followApplicationPalette(true);
   TimeController::init();
   engine.loadFromModule("CutieDesigner", "Main");
@@ -111,21 +116,21 @@ int main(int argc, char *argv[]) {
 
   QObject &item = *engine.rootObjects().first();
 
-  auto source = model.addNode(SurfaceDisplayNode(&engine).name());
-  model.setNodeData(source, NodeRole::Position, QPointF(750, 225));
-  model.setNodeData(source, NodeRole::Type, SurfaceDisplayNode(&engine).name());
-  model.setNodeData(source, NodeRole::Flags, NodeFlag::Locked);
-  auto display = model.delegateModel<SurfaceDisplayNode>(source);
+  // auto source = model.addNode(SurfaceDisplayNode(&engine).name());
+  // model.setNodeData(source, NodeRole::Position, QPointF(750, 225));
+  // model.setNodeData(source, NodeRole::Type, SurfaceDisplayNode(&engine).name());
+  // model.setNodeData(source, NodeRole::Flags, NodeFlag::Locked);
+  // auto display = model.delegateModel<SurfaceDisplayNode>(source);
 
-  auto loader = item.property("objectLoader").value<SurfaceLoader *>();
-  QObject::connect(display, SIGNAL(contentChanged(SurfaceData *)), loader,
-                   SLOT(setSurfaceData(SurfaceData *)));
+  // auto loader = item.property("objectLoader").value<SurfaceLoader *>();
+  // QObject::connect(display, SIGNAL(contentChanged(SurfaceData *)), loader,
+  //                  SLOT(setSurfaceData(SurfaceData *)));
 
   int status = app.exec();
   gst_deinit();
 
   // Delete first surface loader to unload the visual tree
   // before the node tree to prevent missing properties
-  delete loader;
+  // delete loader;
   return status;
 }

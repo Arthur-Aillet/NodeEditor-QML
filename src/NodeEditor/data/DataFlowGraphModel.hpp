@@ -65,15 +65,15 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
 
   bool deleteNode(NodeId const nodeId) override;
 
-  QJsonObject saveNode(NodeId const) const override;
+  Q_INVOKABLE QJsonObject saveNode(NodeId const) const override;
 
-  void loadNode(QJsonObject const &nodeJson) override;
-
-  // From Serializable
-  QJsonObject save() const override;
+  Q_INVOKABLE void loadNode(QJsonObject const &nodeJson) override;
 
   // From Serializable
-  void load(QJsonObject const &json) override;
+  Q_INVOKABLE QJsonObject save() const override;
+
+  // From Serializable
+  Q_INVOKABLE void load(QJsonObject const &json) override;
 
   Q_INVOKABLE void requestComponent(NodeId nodeId, QQuickItem *container);
 

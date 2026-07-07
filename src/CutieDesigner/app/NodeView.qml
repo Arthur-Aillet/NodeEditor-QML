@@ -1,7 +1,9 @@
-pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+
+import CutieDesigner.App.Menu
+
 import NodeEditor
 
 MouseArea {

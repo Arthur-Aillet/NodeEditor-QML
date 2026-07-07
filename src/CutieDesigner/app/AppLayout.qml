@@ -5,13 +5,13 @@ import QtQuick.Controls
 import CutieUiModule
 import CutieDesigner.Stats
 import CutieDesigner.Time
-import CutieDesigner.Nodes.Display
+
+//import CutieDesigner.Nodes.Display
 
 Item {
     id: appLayout
-    anchors.fill: parent
-
-    property alias objectLoader: objectLoader
+    property ToolBar topBar
+    //property alias objectLoader: objectLoader
     property alias sceneContent: sceneContent
 
     states: [
@@ -70,6 +70,9 @@ Item {
                 layout {
                     visible: false
                 }
+                topBar {
+                    visible: false
+                }
             }
         }
     ]
@@ -77,7 +80,7 @@ Item {
     SplitView {
         id: layout
 
-        anchors.fill: parent
+        anchors.fill: appLayout
         orientation: Qt.Vertical
         Item {
             id: topView
@@ -101,9 +104,9 @@ Item {
                     id: sceneHoverHandler
                 }
 
-                SurfaceLoader {
-                    id: objectLoader
-                }
+                //SurfaceLoader {
+                //    id: objectLoader
+                //}
             }
         }
         SplitView {
