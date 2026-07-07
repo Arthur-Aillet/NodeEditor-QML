@@ -63,9 +63,9 @@ static void insertSerializedItems(QJsonObject const &json, ModelInterface *inter
 
 CreateCommand::CreateCommand(ModelInterface *interface, QString const name, QPointF const &pos)
     : _interface(interface), _sceneJson(QJsonObject()) {
-  _nodeId = _interface->graphModel.addNode(name);
-  if (_nodeId != InvalidNodeId) {
-    _interface->graphModel.setNodeData(_nodeId, NodeRole::Position, pos);
+  nodeId = _interface->graphModel.addNode(name);
+  if (nodeId != InvalidNodeId) {
+    _interface->graphModel.setNodeData(nodeId, NodeRole::Position, pos);
   } else {
     setObsolete(true);
   }
@@ -73,10 +73,10 @@ CreateCommand::CreateCommand(ModelInterface *interface, QString const name, QPoi
 
 void CreateCommand::undo() {
   QJsonArray nodesJsonArray;
-  nodesJsonArray.append(_interface->graphModel.saveNode(_nodeId));
+  nodesJsonArray.append(_interface->graphModel.saveNode(nodeId));
   _sceneJson["nodes"] = nodesJsonArray;
 
-  _interface->graphModel.deleteNode(_nodeId);
+  _interface->graphModel.deleteNode(nodeId);
 }
 
 void CreateCommand::redo() {

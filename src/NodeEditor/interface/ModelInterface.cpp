@@ -1,4 +1,5 @@
 #include "ModelInterface.hpp"
+#include "Definitions.hpp"
 
 ModelInterface::ModelInterface(AbstractGraphModel &_graphModel)
     : QObject(nullptr), graphModel(_graphModel), undoStack(QUndoStack(this)) {}
@@ -25,6 +26,8 @@ void ModelInterface::deleteConnection(ConnectionId id) {
   undoStack.push(new DisconnectCommand(this, id));
 }
 
-void ModelInterface::createNode(QString const nodeType, QPoint const &scenePos) {
-  undoStack.push(new CreateCommand(this, nodeType, scenePos));
+NodeId ModelInterface::createNode(QString const nodeType, QPoint const &scenePos) {
+  auto command = new CreateCommand(this, nodeType, scenePos);
+  undoStack.push(command);
+  return command->nodeId;
 }

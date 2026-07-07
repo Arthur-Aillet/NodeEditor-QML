@@ -57,6 +57,7 @@ Loader {
                 }
             }
         }
+        ModelInterface.graph.connectionDropped(selectedPort.nodeId, selectedPort.portType, selectedPort.portId, area.mousePosition.x, area.mousePosition.y);
         selectedPort = null;
     }
 

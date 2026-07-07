@@ -9,6 +9,8 @@ Menu {
 
     required property NavigableArea area
     required property NodeSearchMenu searchMenu
+    property real openedAtX
+    property real openedAtY
 
     cascade: true
 
@@ -26,8 +28,10 @@ Menu {
             horizontalAlignment: Text.AlignLeft
         }
         onClicked: {
-            nodeListMenu.searchMenu.x = nodeListMenu.x;
-            nodeListMenu.searchMenu.y = nodeListMenu.y;
+            nodeListMenu.searchMenu.x = nodeListMenu.openedAtX;
+            nodeListMenu.searchMenu.y = nodeListMenu.openedAtY;
+            nodeListMenu.searchMenu.openedAtX = nodeListMenu.openedAtX;
+            nodeListMenu.searchMenu.openedAtY = nodeListMenu.openedAtY;
             nodeListMenu.searchMenu.open();
             nodeListMenu.close();
         }
@@ -43,7 +47,7 @@ Menu {
 
             SortFilterProxyModel {
                 id: sfpm
-                model: DataFlowModelInterface.dataFlowGraph.registry.model
+                model: DataFlowModelInterface.dataFlowGraph.registry.nodesModel
                 sorters: [
                     RoleSorter {
                         roleName: "name"

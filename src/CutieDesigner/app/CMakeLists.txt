@@ -8,7 +8,6 @@ qt_add_qml_module(app
   NodeListMenu.qml
   NodeSearchMenu.qml
   NodePortSearchMenu.qml
-  NodeSearchMenuItem.qml
   NodePortSearchMenuItem.qml
   NodeSearchTextField.qml
 

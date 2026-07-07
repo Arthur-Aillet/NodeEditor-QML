@@ -14,9 +14,11 @@ class CreateCommand : public QUndoCommand {
   void undo() override;
   void redo() override;
 
+  public:
+  NodeId nodeId;
+
   private:
   ModelInterface *_interface;
-  NodeId _nodeId;
   QJsonObject _sceneJson;
 };
 

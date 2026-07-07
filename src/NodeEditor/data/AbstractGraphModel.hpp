@@ -210,6 +210,8 @@ class AbstractGraphModel : public QObject {
   void portsInserted(NodeId const nodeId, PortType const portType);
 
   signals:
+  void connectionDropped(NodeId const nodeId, PortType const portType, PortIndex const portIndex,
+                         int x, int y);
   void connectionCreated(ConnectionId const connectionId);
   void connectionDeleted(ConnectionId const connectionId);
   void nodeCreated(NodeId const nodeId);

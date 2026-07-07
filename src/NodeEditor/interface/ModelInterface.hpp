@@ -35,5 +35,5 @@ class ModelInterface : public QObject {
   public:
   Q_INVOKABLE void createConnection(ConnectionId const id);
   Q_INVOKABLE void deleteConnection(ConnectionId const id);
-  Q_INVOKABLE void createNode(QString const nodeType, QPoint const &scenePos);
+  Q_INVOKABLE NodeId createNode(QString const nodeType, QPoint const &scenePos);
 };

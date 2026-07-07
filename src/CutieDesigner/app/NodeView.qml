@@ -1,9 +1,11 @@
+pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import NodeEditor
 
 MouseArea {
+    id: nodeView
     property alias graphicsView: graphicsView
 
     hoverEnabled: true
@@ -16,11 +18,24 @@ MouseArea {
         if (event.key == Qt.Key_N) {
             search.x = mouseX;
             search.y = mouseY;
+            search.openedAtX = mouseY;
+            search.openedAtY = mouseY;
             search.open();
         }
-        if (event.key == Qt.Key_P) {
-            portSearch.x = mouseX;
-            portSearch.y = mouseY;
+    }
+
+    Connections {
+        target: ModelInterface.graph
+        function onConnectionDropped(nodeId: int, portType: int, portId: int, x: int, y: int) {
+            portSearch.portSide = portType;
+            portSearch.portIndex = portId;
+            portSearch.nodeIndex = nodeId;
+            portSearch.portDataType = ModelInterface.graph.portData(nodeId, portType, portId, NodeEditor.PortRole.DataType);
+            const mappedPos = graphicsView.area.inner.mapToItem(graphicsView.area, Qt.point(x, y));
+            portSearch.x = mappedPos.x;
+            portSearch.y = mappedPos.y;
+            portSearch.openedAtX = mappedPos.x;
+            portSearch.openedAtY = mappedPos.y;
             portSearch.open();
         }
     }
@@ -31,7 +46,15 @@ MouseArea {
         anchors.left: parent.left
         anchors.right: parent.right
 
-        ContextMenu.menu: NodeListMenu {
+        ContextMenu.onRequested: position => {
+            listMenu.x = position.x;
+            listMenu.y = position.y;
+            listMenu.openedAtX = position.x;
+            listMenu.openedAtY = position.y;
+            listMenu.open();
+        }
+        NodeListMenu {
+            id: listMenu
             area: graphicsView.area
             searchMenu: search
         }
