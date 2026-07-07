@@ -92,4 +92,4 @@ lib/
 notes.md
 
 # Ignore Save files
-.cute
+*.cute
