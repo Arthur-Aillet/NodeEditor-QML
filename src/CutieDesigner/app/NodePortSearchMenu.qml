@@ -88,8 +88,15 @@ Menu {
                 if (data.portsInfo[i].portType == nodePortSearchMenu.portSide) {
                     continue;
                 }
-                if (!data.portsInfo[i].dataType.compatibleTypes.includes(nodePortSearchMenu.portDataType.id)) {
-                    continue;
+                if (nodePortSearchMenu.portSide == NodeEditor.PortType.In) {
+                    if (!data.portsInfo[i].dataType.compatibleTypes.includes(nodePortSearchMenu.portDataType.id)) {
+                        continue;
+                    }
+                }
+                if (nodePortSearchMenu.portSide == NodeEditor.PortType.Out) {
+                    if (!nodePortSearchMenu.portDataType.compatibleTypes.includes(data.portsInfo[i].dataType.id)) {
+                        continue;
+                    }
                 }
 
                 portSearchModel.append({
