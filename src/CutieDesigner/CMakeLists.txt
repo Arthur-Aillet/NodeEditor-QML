@@ -43,16 +43,17 @@ target_compile_definitions(CutieDesigner
 PRIVATE $<$<CONFIG:Debug>:QT_QML_DEBUG> GLM_ENABLE_EXPERIMENTAL)
 
 target_compile_options(CutieDesigner PRIVATE ${GSTREAMER_CFLAGS})
+
 target_link_libraries(CutieDesigner PRIVATE
   Qt6::Core
   Qt6::Gui
   Qt6::Quick
-  Qt6::QuickWidgets
   Qt6::Qml
   NodeEditor
   datatypes
   stats
   time
+  app
   ${GSTREAMER_LIBRARIES}
   #nodes
 )

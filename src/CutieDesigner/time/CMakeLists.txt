@@ -16,6 +16,7 @@ target_link_directories(time
 
 target_link_libraries(time PUBLIC
   Qt6::Core
+  Qt6::QuickWidgets
   CutieUiModule
 )
 

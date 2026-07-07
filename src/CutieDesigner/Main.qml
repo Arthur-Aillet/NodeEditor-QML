@@ -1,9 +1,11 @@
 import QtQuick
 
 import CutieDesigner.App
+import CutieDesigner.App.FileManager
 import CutieUiModule
 
 CutieWindow {
+    id: cutieWindow
     width: 1400
     height: 1000
     visible: true
@@ -13,8 +15,11 @@ CutieWindow {
     //property alias objectLoader: appLayout.objectLoader
     property alias sceneContent: appLayout.sceneContent
 
+    property FileManager fileManager
+
     TopBar {
         id: topBarId
+        fileManager: cutieWindow.fileManager
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top

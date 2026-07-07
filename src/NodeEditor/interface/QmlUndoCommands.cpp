@@ -11,14 +11,12 @@
 #include <QtWidgets/QGraphicsObject>
 
 static void insertSerializedItems(QJsonObject const &json, ModelInterface *interface) {
-  AbstractGraphModel &graphModel = interface->graphModel;
-
   QJsonArray const &nodesJsonArray = json["nodes"].toArray();
 
   for (QJsonValue node : nodesJsonArray) {
     QJsonObject obj = node.toObject();
 
-    graphModel.loadNode(obj);
+    interface->graphModel->loadNode(obj);
 
     auto id = obj["id"].toInt();
     // interface->nodeGraphicsObject(id)->setZValue(1.0);
@@ -33,7 +31,7 @@ static void insertSerializedItems(QJsonObject const &json, ModelInterface *inter
     ConnectionId connId = fromJson(connJson);
 
     // Restore the connection
-    graphModel.addConnection(connId);
+    interface->graphModel->addConnection(connId);
 
     // interface->connectionGraphicsObject(connId)->setSelected(true);
   }
@@ -63,9 +61,9 @@ static void insertSerializedItems(QJsonObject const &json, ModelInterface *inter
 
 CreateCommand::CreateCommand(ModelInterface *interface, QString const name, QPointF const &pos)
     : _interface(interface), _sceneJson(QJsonObject()) {
-  nodeId = _interface->graphModel.addNode(name);
+  nodeId = interface->graphModel->addNode(name);
   if (nodeId != InvalidNodeId) {
-    _interface->graphModel.setNodeData(nodeId, NodeRole::Position, pos);
+    interface->graphModel->setNodeData(nodeId, NodeRole::Position, pos);
   } else {
     setObsolete(true);
   }
@@ -73,10 +71,10 @@ CreateCommand::CreateCommand(ModelInterface *interface, QString const name, QPoi
 
 void CreateCommand::undo() {
   QJsonArray nodesJsonArray;
-  nodesJsonArray.append(_interface->graphModel.saveNode(nodeId));
+  nodesJsonArray.append(_interface->graphModel->saveNode(nodeId));
   _sceneJson["nodes"] = nodesJsonArray;
 
-  _interface->graphModel.deleteNode(nodeId);
+  _interface->graphModel->deleteNode(nodeId);
 }
 
 void CreateCommand::redo() {
@@ -373,9 +371,9 @@ DisconnectCommand::DisconnectCommand(ModelInterface *scene, ConnectionId const c
   //
 }
 
-void DisconnectCommand::undo() { _scene->graphModel.addConnection(_connId); }
+void DisconnectCommand::undo() { _scene->graphModel->addConnection(_connId); }
 
-void DisconnectCommand::redo() { _scene->graphModel.deleteConnection(_connId); }
+void DisconnectCommand::redo() { _scene->graphModel->deleteConnection(_connId); }
 
 //------
 ConnectCommand::ConnectCommand(ModelInterface *scene, ConnectionId const connId)
@@ -383,9 +381,9 @@ ConnectCommand::ConnectCommand(ModelInterface *scene, ConnectionId const connId)
   //
 }
 
-void ConnectCommand::undo() { _scene->graphModel.deleteConnection(_connId); }
+void ConnectCommand::undo() { _scene->graphModel->deleteConnection(_connId); }
 
-void ConnectCommand::redo() { _scene->graphModel.addConnection(_connId); }
+void ConnectCommand::redo() { _scene->graphModel->addConnection(_connId); }
 
 /*
 //------

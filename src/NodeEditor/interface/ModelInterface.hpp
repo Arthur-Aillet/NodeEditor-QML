@@ -18,18 +18,18 @@ class ModelInterface : public QObject {
   QML_ELEMENT
 
   public:
-  AbstractGraphModel &graphModel;
+  std::shared_ptr<AbstractGraphModel> graphModel;
 
   static ModelInterface *create(QQmlEngine *, QJSEngine *engine);
-  static ModelInterface *init(AbstractGraphModel &_graphModel);
+  static ModelInterface *init(std::shared_ptr<AbstractGraphModel> _graphModel);
 
   Q_PROPERTY(AbstractGraphModel *graph READ getGraphModel CONSTANT);
 
   protected:
-  AbstractGraphModel *getGraphModel() { return &graphModel; }
+  AbstractGraphModel *getGraphModel() { return graphModel.get(); }
 
   inline static ModelInterface *instance = nullptr;
-  ModelInterface(AbstractGraphModel &_graphModel);
+  ModelInterface(std::shared_ptr<AbstractGraphModel> _graphModel);
   QUndoStack undoStack;
 
   public:

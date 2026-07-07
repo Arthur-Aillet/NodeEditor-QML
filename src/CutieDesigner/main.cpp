@@ -1,4 +1,5 @@
 #include "CutieWindow.hpp"
+#include "DataFlowGraphModel.hpp"
 #include "DataFlowModelInterface.hpp"
 #include "StyleCollection.hpp"
 #include "TimeController.hpp"
@@ -36,6 +37,7 @@
 // #include "VideoDisplayNode.hpp"
 // #include "WindowInputNode.hpp"
 
+#include "FileManager.hpp"
 #include "TimeInputNode.hpp"
 
 #include <QQmlApplicationEngine>
@@ -44,6 +46,7 @@
 #include <QtWidgets/QApplication>
 #include <gst/gst.h>
 #include <memory>
+#include <qvariant.h>
 
 // Must be run after QApplication setup
 static void setupGstreamer() {
@@ -101,7 +104,8 @@ int main(int argc, char *argv[]) {
 
   engine.rootContext()->setContextProperty("app", &app);
 
-  auto graph = DataFlowGraphModel(createRegistery(engine), &engine);
+  std::shared_ptr<DataFlowGraphModel> graph =
+      std::make_shared<DataFlowGraphModel>(createRegistery(engine), &engine);
 
   QObject::connect(
       &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
@@ -111,10 +115,14 @@ int main(int argc, char *argv[]) {
 
   StyleCollection::followApplicationPalette(true);
   TimeController::init();
-  engine.loadFromModule("CutieDesigner", "Main");
-  TimeController::linkCutieWindow(CutieWindow::getCutieWindow(&engine));
 
-  QObject &item = *engine.rootObjects().first();
+  FileManager fileManager(graph);
+
+  engine.setInitialProperties({{"fileManager", QVariant::fromValue(&fileManager)}});
+  engine.loadFromModule("CutieDesigner", "Main");
+
+  QObject &window = *engine.rootObjects().first();
+  TimeController::linkCutieWindow(CutieWindow::getCutieWindow(&engine));
 
   // auto source = model.addNode(SurfaceDisplayNode(&engine).name());
   // model.setNodeData(source, NodeRole::Position, QPointF(750, 225));
@@ -122,7 +130,7 @@ int main(int argc, char *argv[]) {
   // model.setNodeData(source, NodeRole::Flags, NodeFlag::Locked);
   // auto display = model.delegateModel<SurfaceDisplayNode>(source);
 
-  // auto loader = item.property("objectLoader").value<SurfaceLoader *>();
+  // auto loader = window.property("objectLoader").value<SurfaceLoader *>();
   // QObject::connect(display, SIGNAL(contentChanged(SurfaceData *)), loader,
   //                  SLOT(setSurfaceData(SurfaceData *)));
 

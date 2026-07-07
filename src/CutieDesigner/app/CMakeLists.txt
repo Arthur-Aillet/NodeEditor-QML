@@ -33,7 +33,10 @@ target_link_libraries(app PRIVATE
   NodeEditor
   CutieUiModule
   menu
-  fileManager
   #nodes
   time
+)
+
+target_link_libraries(app PUBLIC
+  fileManager
 )
