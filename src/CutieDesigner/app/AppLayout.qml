@@ -6,12 +6,12 @@ import CutieUiModule
 import CutieDesigner.Stats
 import CutieDesigner.Time
 
-//import CutieDesigner.Nodes.Display
+import CutieDesigner.Nodes.Display
 
 Item {
     id: appLayout
     property ToolBar topBar
-    //property alias objectLoader: objectLoader
+    property alias objectLoader: objectLoader
     property alias sceneContent: sceneContent
 
     states: [
@@ -104,9 +104,9 @@ Item {
                     id: sceneHoverHandler
                 }
 
-                //SurfaceLoader {
-                //    id: objectLoader
-                //}
+                SurfaceLoader {
+                    id: objectLoader
+                }
             }
         }
         SplitView {

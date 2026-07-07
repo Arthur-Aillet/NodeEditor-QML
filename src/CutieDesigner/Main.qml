@@ -12,7 +12,7 @@ CutieWindow {
     color: "black"
     title: qsTr("CutieDesigner!")
 
-    //property alias objectLoader: appLayout.objectLoader
+    property alias objectLoader: appLayout.objectLoader
     property alias sceneContent: appLayout.sceneContent
 
     property FileManager fileManager

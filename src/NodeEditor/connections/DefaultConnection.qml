@@ -7,19 +7,6 @@ Canvas {
     required property NodeList nodes
     required property NavigableArea area
 
-    Connections {
-        target: ModelInterface.graph
-
-        function onNodePositionUpdated(nodeId: real) {
-            if (nodeId == defaultConnectionPainter.connection.inNodeId) {
-                defaultConnectionPainter.inNodePos = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Position);
-            }
-            if (nodeId == defaultConnectionPainter.connection.outNodeId) {
-                defaultConnectionPainter.outNodePos = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Position);
-            }
-        }
-    }
-
     required property connectionId connection
 
     function getPortPosition(side): var {

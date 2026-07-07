@@ -33,7 +33,7 @@ target_link_libraries(app PRIVATE
   NodeEditor
   CutieUiModule
   menu
-  #nodes
+  display
   time
 )
 

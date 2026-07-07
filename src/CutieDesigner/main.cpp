@@ -15,28 +15,27 @@
 #include "Vec2InputNode.hpp"
 #include "WindowInputNode.hpp"
 
-// #include "ATypeNode.hpp"
-// #include "AdditionNode.hpp"
-// #include "BlendNode.hpp"
-// #include "CombineColorNode.hpp"
-// #include "CombineVec2.hpp"
-// #include "CosNode.hpp"
-// #include "Definitions.hpp"
-// #include "DimensionNode.hpp"
-// #include "DivisionNode.hpp"
-// #include "FillNode.hpp"
-// #include "ImageDisplayNode.hpp"
-// #include "MultiplicationNode.hpp"
-// #include "SinNode.hpp"
-// #include "SplitColorNode.hpp"
-// #include "SplitVec2.hpp"
-// #include "StackNode.hpp"
-// #include "SubtractionNode.hpp"
-// #include "SurfaceDisplayNode.hpp"
-// #include "SurfaceLoader.hpp"
-// #include "TextTyperNode.hpp"
-// #include "UkrugNode.hpp"
-// #include "VideoDisplayNode.hpp"
+#include "ATypeNode.hpp"
+#include "AdditionNode.hpp"
+#include "BlendNode.hpp"
+#include "CombineColorNode.hpp"
+#include "CombineVec2.hpp"
+#include "CosNode.hpp"
+#include "DimensionNode.hpp"
+#include "DivisionNode.hpp"
+#include "FillNode.hpp"
+#include "ImageDisplayNode.hpp"
+#include "MultiplicationNode.hpp"
+#include "SinNode.hpp"
+#include "SplitColorNode.hpp"
+#include "SplitVec2.hpp"
+#include "StackNode.hpp"
+#include "SubtractionNode.hpp"
+#include "SurfaceDisplayNode.hpp"
+#include "SurfaceLoader.hpp"
+#include "TextTyperNode.hpp"
+#include "UkrugNode.hpp"
+#include "VideoDisplayNode.hpp"
 
 #include "FileManager.hpp"
 
@@ -70,28 +69,29 @@ static std::shared_ptr<NodeDelegateModelRegistry> createRegistery(QQmlEngine &en
   reg->registerModel<WindowInputNode>("Input");
   reg->registerModel<TimeInputNode>("Input");
   reg->registerModel<Vec2InputNode>("Input");
+  reg->registerModel<SliderInputNode>("Input");
 
-  // reg->registerModel<SliderInputNode>("Input");
-  // reg->registerModel<AdditionNode>("Process");
-  // reg->registerModel<DivisionNode>("Process");
-  // reg->registerModel<MultiplicationNode>("Process");
-  // reg->registerModel<SubtractionNode>("Process");
-  // reg->registerModel<SinNode>("Process");
-  // reg->registerModel<CosNode>("Process");
-  // reg->registerModel<CombineColorNode>("Process");
-  // reg->registerModel<SplitColorNode>("Process");
-  // reg->registerModel<CombineVec2>("Process");
-  // reg->registerModel<SplitVec2>("Process");
-  // reg->registerModel<DimensionNode>("Display");
-  // reg->registerModel<SurfaceDisplayNode>("Display");
-  // reg->registerModel<UkrugNode>("Display");
-  // reg->registerModel<ATypeNode>("Display");
-  // reg->registerModel<TextTyperNode>("Process");
-  // reg->registerModel<BlendNode>("Process");
-  // reg->registerModel<VideoDisplayNode>("Display");
-  // reg->registerModel<FillNode>("Display");
-  // reg->registerModel<StackNode>("Display");
-  // reg->registerModel<ImageDisplayNode>("Display");
+  reg->registerModel<AdditionNode>("Process");
+  reg->registerModel<DivisionNode>("Process");
+  reg->registerModel<MultiplicationNode>("Process");
+  reg->registerModel<SubtractionNode>("Process");
+  reg->registerModel<SinNode>("Process");
+  reg->registerModel<CosNode>("Process");
+  reg->registerModel<CombineColorNode>("Process");
+  reg->registerModel<SplitColorNode>("Process");
+  reg->registerModel<CombineVec2>("Process");
+  reg->registerModel<SplitVec2>("Process");
+  reg->registerModel<TextTyperNode>("Process");
+
+  reg->registerModel<DimensionNode>("Display");
+  reg->registerModel<SurfaceDisplayNode>("Display");
+  reg->registerModel<UkrugNode>("Display");
+  reg->registerModel<ATypeNode>("Display");
+  reg->registerModel<BlendNode>("Process");
+  reg->registerModel<VideoDisplayNode>("Display");
+  reg->registerModel<FillNode>("Display");
+  reg->registerModel<StackNode>("Display");
+  reg->registerModel<ImageDisplayNode>("Display");
   return reg;
 }
 
@@ -125,21 +125,21 @@ int main(int argc, char *argv[]) {
   QObject &window = *engine.rootObjects().first();
   TimeController::linkCutieWindow(CutieWindow::getCutieWindow(&engine));
 
-  // auto source = model.addNode(SurfaceDisplayNode(&engine).name());
-  // model.setNodeData(source, NodeRole::Position, QPointF(750, 225));
-  // model.setNodeData(source, NodeRole::Type, SurfaceDisplayNode(&engine).name());
-  // model.setNodeData(source, NodeRole::Flags, NodeFlag::Locked);
-  // auto display = model.delegateModel<SurfaceDisplayNode>(source);
+  auto source = graph->addNode(SurfaceDisplayNode(&engine).name());
+  graph->setNodeData(source, NodeRole::Position, QPointF(750, 225));
+  graph->setNodeData(source, NodeRole::Type, SurfaceDisplayNode(&engine).name());
+  graph->setNodeData(source, NodeRole::Flags, NodeFlag::Locked);
+  auto display = graph->delegateModel<SurfaceDisplayNode>(source);
 
-  // auto loader = window.property("objectLoader").value<SurfaceLoader *>();
-  // QObject::connect(display, SIGNAL(contentChanged(SurfaceData *)), loader,
-  //                  SLOT(setSurfaceData(SurfaceData *)));
+  auto loader = window.property("objectLoader").value<SurfaceLoader *>();
+  QObject::connect(display, SIGNAL(contentChanged(SurfaceData *)), loader,
+                   SLOT(setSurfaceData(SurfaceData *)));
 
   int status = app.exec();
   gst_deinit();
 
   // Delete first surface loader to unload the visual tree
   // before the node tree to prevent missing properties
-  // delete loader;
+  delete loader;
   return status;
 }
