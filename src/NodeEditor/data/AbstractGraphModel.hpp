@@ -115,7 +115,7 @@ class AbstractGraphModel : public QObject {
    * Shyle, State, Node Position etc.
    * @see NodeRole.
    */
-  virtual bool setNodeData(NodeId nodeId, NodeRole role, QVariant value) = 0;
+  Q_INVOKABLE virtual bool setNodeData(NodeId nodeId, NodeRole role, QVariant value) = 0;
 
   Q_INVOKABLE virtual bool deleteNode(NodeId const nodeId) = 0;
 

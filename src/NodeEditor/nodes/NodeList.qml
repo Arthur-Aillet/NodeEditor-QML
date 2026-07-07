@@ -25,25 +25,20 @@ Item {
         selectedNodes.clear();
     }
 
-    function moveSelectedNodes(xOffset: int, yOffset: int, excludedId: int, snapToGrid: bool) {
-        for (let i = 0; i != nodes.count; i++) {
-            const node = nodes.itemAt(i) as NodeGraphicalObject;
-            if (node.selected == true && node.nodeId != excludedId) {
-                if (xOffset != 0) {
-                    if (snapToGrid) {
-                        node.x = Math.ceil((node.x + xOffset) / 5) * 5;
-                    } else {
-                        node.x += xOffset;
-                    }
-                }
-                if (yOffset != 0) {
-                    if (snapToGrid) {
-                        node.y = Math.ceil((node.y + yOffset) / 5) * 5;
-                    } else {
-                        node.y += yOffset;
-                    }
-                }
+    function moveSelectedNodes(xOffset: int, yOffset: int, snapToGrid: bool) {
+        for (let nodeId of selectedNodes.inner) {
+            let pos = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Position);
+            if (snapToGrid) {
+                pos.x = Math.ceil((pos.x + xOffset) / 5) * 5;
+            } else {
+                pos.x += xOffset;
             }
+            if (snapToGrid) {
+                pos.y = Math.ceil((pos.y + yOffset) / 5) * 5;
+            } else {
+                pos.y += yOffset;
+            }
+            ModelInterface.graph.setNodeData(nodeId, NodeEditor.NodeRole.Position, pos);
         }
     }
 
@@ -62,12 +57,8 @@ Item {
         delegate: NodeGraphicalObject {
             id: node
             required property real modelId
-            required property real posX
-            required property real posY
             nodeId: modelId
             nodes: nodeList as NodeList
-            x: posX
-            y: posY
 
             draftConnection: nodeList.draftConnection
             area: nodeList.area
@@ -104,9 +95,7 @@ Item {
 
         function onNodeCreated(id: real) {
             nodeModel.append({
-                "modelId": id,
-                "posX": 0,
-                "posY": 0
+                "modelId": id
             });
         }
 
@@ -120,13 +109,13 @@ Item {
         function onNodePositionUpdated(id: real) {
             const position = ModelInterface.graph.nodeData(id, NodeEditor.NodeRole.Position);
 
-            for (let i = 0; i < nodeModel.count; i++) {
-                const current = nodeModel.get(i);
-                if (current.modelId == id) {
-                    if (current.posX != position.x)
-                        current.posX = position.x;
-                    if (current.posY != position.y)
-                        current.posY = position.y;
+            for (let i = 0; i < nodes.count; i++) {
+                const current = nodes.itemAt(i) as NodeGraphicalObject;
+                if (current.nodeId == id) {
+                    if (current.x != position.x)
+                        current.x = position.x;
+                    if (current.y != position.y)
+                        current.y = position.y;
                 }
             }
         }
