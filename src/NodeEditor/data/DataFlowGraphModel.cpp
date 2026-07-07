@@ -509,6 +509,15 @@ bool DataFlowGraphModel::deleteNode(NodeId const nodeId) {
   return true;
 }
 
+bool DataFlowGraphModel::clear() {
+  for (auto &nodeId : allNodeIds()) {
+    if (!deleteNode(nodeId)) {
+      return false;
+    }
+  }
+  return true;
+}
+
 QJsonObject DataFlowGraphModel::saveNode(NodeId const nodeId) const {
   QJsonObject nodeJson;
 

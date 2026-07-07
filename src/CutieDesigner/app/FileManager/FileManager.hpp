@@ -17,8 +17,9 @@ class FileManager : public QObject {
   public:
   FileManager(std::shared_ptr<DataFlowGraphModel> model, QObject *parent = nullptr);
 
-  Q_INVOKABLE void save();
-  Q_INVOKABLE void load();
+  Q_INVOKABLE bool graphEmpty();
+  Q_INVOKABLE QString saveGraph(QUrl path);
+  Q_INVOKABLE QString loadGraph(QUrl path, bool overwrite);
 
   private:
   std::shared_ptr<DataFlowGraphModel> _model;

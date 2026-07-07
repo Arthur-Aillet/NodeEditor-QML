@@ -28,15 +28,6 @@ class AbstractGraphModel : public QObject {
   /// Generates a new unique NodeId.
   virtual NodeId newNodeId() = 0;
 
-  /// @brief Returns the full set of unique Node Ids.
-  /**
-   * Model creator is responsible for generating unique `unsigned int`
-   * Ids for all the nodes in the graph. From an Id it should be
-   * possible to trace back to the model's internal representation of
-   * the node.
-   */
-  virtual QSet<NodeId> allNodeIds() const = 0;
-
   /**
    * A collection of all input and output connections for the given `nodeId`.
    */
@@ -52,15 +43,6 @@ class AbstractGraphModel : public QObject {
 
   /// Checks if two nodes with the given `connectionId` are connected.
   virtual bool connectionExists(ConnectionId const connectionId) const = 0;
-
-  /// Creates a new node instance in the derived class.
-  /**
-   * The model is responsible for generating a unique `NodeId`.
-   * @param[in] nodeType is free to be used and interpreted by the
-   * model on its own, it helps to distinguish between possible node
-   * types and create a correct instance inside.
-   */
-  virtual NodeId addNode(QString const nodeType = QString()) = 0;
 
   /// Model decides if a conection with a given connection Id possible.
   /**
@@ -84,6 +66,26 @@ class AbstractGraphModel : public QObject {
    * scene about the changes.
    */
   virtual void addConnection(ConnectionId const connectionId) = 0;
+
+  Q_INVOKABLE virtual bool deleteConnection(ConnectionId const connectionId) = 0;
+
+  /// @brief Returns the full set of unique Node Ids.
+  /**
+   * Model creator is responsible for generating unique `unsigned int`
+   * Ids for all the nodes in the graph. From an Id it should be
+   * possible to trace back to the model's internal representation of
+   * the node.
+   */
+  virtual QSet<NodeId> allNodeIds() const = 0;
+
+  /// Creates a new node instance in the derived class.
+  /**
+   * The model is responsible for generating a unique `NodeId`.
+   * @param[in] nodeType is free to be used and interpreted by the
+   * model on its own, it helps to distinguish between possible node
+   * types and create a correct instance inside.
+   */
+  virtual NodeId addNode(QString const nodeType = QString()) = 0;
 
   /**
    * @returns `true` if there is data in the model associated with the
@@ -115,6 +117,10 @@ class AbstractGraphModel : public QObject {
    */
   virtual bool setNodeData(NodeId nodeId, NodeRole role, QVariant value) = 0;
 
+  Q_INVOKABLE virtual bool deleteNode(NodeId const nodeId) = 0;
+
+  Q_INVOKABLE virtual bool clear() = 0;
+
   /**
    * @brief Returns port-related data for requested NodeRole.
    *
@@ -135,11 +141,6 @@ class AbstractGraphModel : public QObject {
 
   Q_INVOKABLE virtual bool setPortData(NodeId nodeId, PortType portType, PortIndex index,
                                        QVariant const &value, PortRole role = PortRole::Data) = 0;
-
-  Q_INVOKABLE virtual bool deleteConnection(ConnectionId const connectionId) = 0;
-
-  Q_INVOKABLE virtual bool deleteNode(NodeId const nodeId) = 0;
-
   /**
    * Reimplement the function if you want to store/restore the node's
    * inner state during undo/redo node deletion operations.

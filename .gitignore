@@ -90,3 +90,6 @@ lib/
 .direnv
 
 notes.md
+
+# Ignore Save files
+.cute

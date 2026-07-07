@@ -11,7 +11,7 @@ qt_add_qml_module(app
   NodeView.qml
 
   DEPENDENCIES 
-  QtQuick QtQuick.Control QtQuick.Layout 
+  QtQuick QtQuick.Control QtQuick.Layout QtQuick.Dialogs
   CutieDesigner.Nodes.Display CutieDesigner.Stats CutieDesigner.App.Menu CutieDesigner.App.FileManager
   CutieUiModule
   NodeEditor 

@@ -36,37 +36,30 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   std::shared_ptr<NodeDelegateModelRegistry> dataModelRegistry() { return _registry; }
   NodeDelegateModelRegistry *getRegistry() { return _registry.get(); }
 
-  QSet<NodeId> allNodeIds() const override;
   QSet<ConnectionId> allConnectionIds(NodeId const nodeId) const override;
   QSet<ConnectionId> connections(NodeId nodeId, PortType portType,
                                  PortIndex portIndex) const override;
 
   bool connectionExists(ConnectionId const connectionId) const override;
-
-  NodeId addNode(QString const nodeType) override;
-
   bool connectionPossible(ConnectionId const connectionId) const override;
-
   void addConnection(ConnectionId const connectionId) override;
+  bool deleteConnection(ConnectionId const connectionId) override;
 
+  QSet<NodeId> allNodeIds() const override;
+  NodeId addNode(QString const nodeType) override;
   bool nodeExists(NodeId const nodeId) const override;
-
   Q_INVOKABLE QVariant nodeData(NodeId nodeId, NodeRole role) const override;
-
   bool setNodeData(NodeId nodeId, NodeRole role, QVariant value) override;
+  bool deleteNode(NodeId const nodeId) override;
+
+  bool clear() override;
 
   QVariant portData(NodeId nodeId, PortType portType, PortIndex portIndex,
                     PortRole role) const override;
-
   bool setPortData(NodeId nodeId, PortType portType, PortIndex portIndex, QVariant const &value,
                    PortRole role = PortRole::Data) override;
 
-  bool deleteConnection(ConnectionId const connectionId) override;
-
-  bool deleteNode(NodeId const nodeId) override;
-
   Q_INVOKABLE QJsonObject saveNode(NodeId const) const override;
-
   Q_INVOKABLE void loadNode(QJsonObject const &nodeJson) override;
 
   // From Serializable

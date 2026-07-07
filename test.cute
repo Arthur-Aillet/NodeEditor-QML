@@ -1,0 +1,36 @@
+{
+    "connections": [
+        {
+            "inNodeId": 1,
+            "inPortIndex": 0,
+            "outNodeId": 0,
+            "outPortIndex": 0
+        }
+    ],
+    "nodes": [
+        {
+            "id": 0,
+            "internal-data": {
+                "model-name": "Time"
+            },
+            "label": "",
+            "labelVisible": false,
+            "position": {
+                "x": 384,
+                "y": 174
+            }
+        },
+        {
+            "id": 1,
+            "internal-data": {
+                "model-name": "Time"
+            },
+            "label": "",
+            "labelVisible": false,
+            "position": {
+                "x": 501,
+                "y": 293
+            }
+        }
+    ]
+}
