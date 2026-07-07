@@ -169,7 +169,7 @@ class AbstractGraphModel : public QObject {
    * The function must do almost exacly the same thing as the normal addNode().
    * The main difference is in a model-specific `inner-data` processing.
    */
-  virtual void loadNode(QJsonObject const &) {}
+  virtual NodeId loadNode(QJsonObject const &) { return 0; }
 
   virtual bool loopsEnabled() const { return true; }
 

@@ -60,7 +60,7 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
                    PortRole role = PortRole::Data) override;
 
   Q_INVOKABLE QJsonObject saveNode(NodeId const) const override;
-  Q_INVOKABLE void loadNode(QJsonObject const &nodeJson) override;
+  Q_INVOKABLE NodeId loadNode(QJsonObject const &nodeJson) override;
 
   // From Serializable
   Q_INVOKABLE QJsonObject save() const override;
@@ -92,8 +92,8 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   void inPortDataWasSet(NodeId const, PortType const, PortIndex const);
 
   private:
-  NodeId newNodeId() override { return _nextNodeId++; }
-
+  NodeId newNodeId() override;
+  void connectNode(NodeDelegateModel *model, NodeId nodeId);
   void sendConnectionCreation(ConnectionId const connectionId);
   void sendConnectionDeletion(ConnectionId const connectionId);
 
@@ -113,19 +113,12 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   /// Function is called after detaching a connection.
   void propagateEmptyDataTo(NodeId const nodeId, PortIndex const portIndex);
 
-  private:
+  protected:
   QQmlEngine *_engine;
-
   std::shared_ptr<NodeDelegateModelRegistry> _registry;
-
-  NodeId _nextNodeId;
-
   std::unordered_map<NodeId, std::unique_ptr<NodeDelegateModel>> _models;
-
   QSet<ConnectionId> _connectivity;
-
   mutable std::unordered_map<NodeId, NodeGeometryData> _nodeGeometryData;
-
   std::unordered_map<NodeId, QString> _labels;
   std::unordered_map<NodeId, bool> _labelsVisible;
 };
