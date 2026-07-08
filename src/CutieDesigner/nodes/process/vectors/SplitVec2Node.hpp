@@ -5,10 +5,10 @@
 
 #include <memory>
 
-class SplitVec2 : public NodeDelegateModel {
+class SplitVec2Node : public NodeDelegateModel {
   public:
-  SplitVec2(QQmlEngine *engine);
-  ~SplitVec2() = default;
+  SplitVec2Node(QQmlEngine *engine);
+  ~SplitVec2Node() = default;
 
   public:
   bool captionVisible() const override { return true; }

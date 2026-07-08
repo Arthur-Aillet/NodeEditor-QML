@@ -27,10 +27,10 @@ qt_add_qml_module(process
   TextTyper/TextTyperNode.cpp
   TextTyper/TextTyperEventList.hpp
   TextTyper/TextTyperEventList.cpp
-  vectors/CombineVec2.cpp
-  vectors/CombineVec2.hpp
-  vectors/SplitVec2.cpp
-  vectors/SplitVec2.hpp
+  vectors/CombineVec2Node.cpp
+  vectors/CombineVec2Node.hpp
+  vectors/SplitVec2Node.cpp
+  vectors/SplitVec2Node.hpp
 
   DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieUiModule CutieDesigner.Datatypes
 )

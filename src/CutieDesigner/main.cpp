@@ -20,7 +20,7 @@
 #include "AdditionNode.hpp"
 #include "BlendNode.hpp"
 #include "CombineColorNode.hpp"
-#include "CombineVec2.hpp"
+#include "CombineVec2Node.hpp"
 #include "CosNode.hpp"
 #include "DimensionNode.hpp"
 #include "DivisionNode.hpp"
@@ -29,7 +29,7 @@
 #include "MultiplicationNode.hpp"
 #include "SinNode.hpp"
 #include "SplitColorNode.hpp"
-#include "SplitVec2.hpp"
+#include "SplitVec2Node.hpp"
 #include "StackNode.hpp"
 #include "SubtractionNode.hpp"
 #include "SurfaceDisplayNode.hpp"
@@ -80,8 +80,8 @@ static std::shared_ptr<NodeDelegateModelRegistry> createRegistery(QQmlEngine &en
   reg->registerModel<CosNode>("Process");
   reg->registerModel<CombineColorNode>("Process");
   reg->registerModel<SplitColorNode>("Process");
-  reg->registerModel<CombineVec2>("Process");
-  reg->registerModel<SplitVec2>("Process");
+  reg->registerModel<CombineVec2Node>("Process");
+  reg->registerModel<SplitVec2Node>("Process");
   reg->registerModel<TextTyperNode>("Process");
 
   reg->registerModel<DimensionNode>("Display");

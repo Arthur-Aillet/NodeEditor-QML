@@ -5,10 +5,10 @@
 
 #include <memory>
 
-class CombineVec2 : public NodeDelegateModel {
+class CombineVec2Node : public NodeDelegateModel {
   public:
-  CombineVec2(QQmlEngine *engine);
-  ~CombineVec2() = default;
+  CombineVec2Node(QQmlEngine *engine);
+  ~CombineVec2Node() = default;
 
   public:
   bool captionVisible() const override { return true; }

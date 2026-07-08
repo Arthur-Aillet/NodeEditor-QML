@@ -1,12 +1,12 @@
-#include "CombineVec2.hpp"
+#include "CombineVec2Node.hpp"
 #include "DecimalData.hpp"
 #include "NodeData.hpp"
 #include "Vec2Data.hpp"
 
-CombineVec2::CombineVec2(QQmlEngine *engine)
+CombineVec2Node::CombineVec2Node(QQmlEngine *engine)
     : NodeDelegateModel(engine), _vecData(std::make_shared<Vec2Data>(_vec)) {}
 
-unsigned int CombineVec2::nPorts(PortType portType) const {
+unsigned int CombineVec2Node::nPorts(PortType portType) const {
   switch (portType) {
   case PortType::In:
     return 2;
@@ -15,7 +15,7 @@ unsigned int CombineVec2::nPorts(PortType portType) const {
   }
 }
 
-QString CombineVec2::portCaption(PortType portType, PortIndex portIndex) const {
+QString CombineVec2Node::portCaption(PortType portType, PortIndex portIndex) const {
   switch (portType) {
   case PortType::In:
     switch (portIndex) {
@@ -29,7 +29,7 @@ QString CombineVec2::portCaption(PortType portType, PortIndex portIndex) const {
   }
 }
 
-NodeDataType CombineVec2::dataType(PortType portType, PortIndex _portIndex) const {
+NodeDataType CombineVec2Node::dataType(PortType portType, PortIndex _portIndex) const {
   switch (portType) {
   case PortType::In:
     return DecimalData().type();
@@ -38,9 +38,9 @@ NodeDataType CombineVec2::dataType(PortType portType, PortIndex _portIndex) cons
   }
 }
 
-std::shared_ptr<NodeData> CombineVec2::outData(PortIndex portIndex) { return _vecData; }
+std::shared_ptr<NodeData> CombineVec2Node::outData(PortIndex portIndex) { return _vecData; }
 
-void CombineVec2::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
+void CombineVec2Node::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
   double value;
 
   if (!data) {

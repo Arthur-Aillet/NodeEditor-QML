@@ -1,15 +1,15 @@
-#include "SplitVec2.hpp"
 #include "DecimalData.hpp"
+#include "SplitVec2Node.hpp"
 #include "Vec2Data.hpp"
 #include <memory>
 #include <qcolor.h>
 #include <qvectornd.h>
 
-SplitVec2::SplitVec2(QQmlEngine *engine)
+SplitVec2Node::SplitVec2Node(QQmlEngine *engine)
     : NodeDelegateModel(engine), _xData(std::make_shared<DecimalData>(_x)),
       _yData(std::make_shared<DecimalData>(_y)) {}
 
-unsigned int SplitVec2::nPorts(PortType portType) const {
+unsigned int SplitVec2Node::nPorts(PortType portType) const {
   switch (portType) {
   case PortType::In:
     return 1;
@@ -18,7 +18,7 @@ unsigned int SplitVec2::nPorts(PortType portType) const {
   }
 }
 
-QString SplitVec2::portCaption(PortType portType, PortIndex portIndex) const {
+QString SplitVec2Node::portCaption(PortType portType, PortIndex portIndex) const {
   switch (portType) {
   case PortType::Out:
     switch (portIndex) {
@@ -32,7 +32,7 @@ QString SplitVec2::portCaption(PortType portType, PortIndex portIndex) const {
   }
 }
 
-NodeDataType SplitVec2::dataType(PortType portType, PortIndex _portIndex) const {
+NodeDataType SplitVec2Node::dataType(PortType portType, PortIndex _portIndex) const {
   switch (portType) {
   case PortType::In:
     return Vec2Data().type();
@@ -41,7 +41,7 @@ NodeDataType SplitVec2::dataType(PortType portType, PortIndex _portIndex) const 
   }
 }
 
-std::shared_ptr<NodeData> SplitVec2::outData(PortIndex portIndex) {
+std::shared_ptr<NodeData> SplitVec2Node::outData(PortIndex portIndex) {
   switch (portIndex) {
   case 0:
     return _xData;
@@ -50,7 +50,7 @@ std::shared_ptr<NodeData> SplitVec2::outData(PortIndex portIndex) {
   }
 }
 
-void SplitVec2::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
+void SplitVec2Node::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
   if (!data) {
     _x = 0.0;
     _y = 0.0;
