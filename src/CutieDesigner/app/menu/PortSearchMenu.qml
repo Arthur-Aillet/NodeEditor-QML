@@ -38,11 +38,11 @@ Menu {
             if (list.currentIndex == -1) {
                 if (list.itemAtIndex(0) == null)
                     return;
-                name = (list.itemAtIndex(0) as NodePortSearchMenuItem).name;
-                portInfo = (list.itemAtIndex(0) as NodePortSearchMenuItem).port;
+                name = (list.itemAtIndex(0) as SearchMenuItem).name;
+                portInfo = (list.itemAtIndex(0) as SearchMenuItem).port;
             } else {
-                name = (list.currentItem as NodePortSearchMenuItem).name;
-                portInfo = (list.currentItem as NodePortSearchMenuItem).port;
+                name = (list.currentItem as SearchMenuItem).name;
+                portInfo = (list.currentItem as SearchMenuItem).port;
             }
             const pos = Qt.point(nodePortSearchMenu.x, nodePortSearchMenu.y);
             const newNodeId = ModelInterface.createNode(name, nodePortSearchMenu.area.mapToItem(nodePortSearchMenu.area.inner, pos));
@@ -119,7 +119,7 @@ Menu {
         id: portSearchModel
     }
 
-    SearchMenuFilter {
+    SearchFilterModel {
         id: smf
         filterText: searchField.text
         model: portSearchModel
@@ -144,7 +144,7 @@ Menu {
 
         Keys.forwardTo: [searchField]
 
-        delegate: NodePortSearchMenuItem {
+        delegate: SearchMenuItem {
             currentIndex: list.currentIndex
             replaceRegex: nodePortSearchMenu.replaceRegex
             width: list.width

@@ -29,9 +29,9 @@ Menu {
             if (list.currentIndex == -1) {
                 if (list.itemAtIndex(0) == null)
                     return;
-                name = (list.itemAtIndex(0) as NodePortSearchMenuItem).name;
+                name = (list.itemAtIndex(0) as SearchMenuItem).name;
             } else {
-                name = (list.currentItem as NodePortSearchMenuItem).name;
+                name = (list.currentItem as SearchMenuItem).name;
             }
             const pos = Qt.point(nodeSearchMenu.openedAtX, nodeSearchMenu.openedAtY);
             ModelInterface.createNode(name, nodeSearchMenu.area.mapToItem(nodeSearchMenu.area.inner, pos));
@@ -39,7 +39,7 @@ Menu {
         }
     }
 
-    SearchMenuFilter {
+    SearchFilterModel {
         id: smf
         filterText: searchField.text
         model: DataFlowModelInterface.dataFlowGraph.registry.nodesModel
@@ -70,7 +70,7 @@ Menu {
 
         Keys.forwardTo: [searchField]
 
-        delegate: NodePortSearchMenuItem {
+        delegate: SearchMenuItem {
             currentIndex: list.currentIndex
             replaceRegex: nodeSearchMenu.replaceRegex
             width: list.width

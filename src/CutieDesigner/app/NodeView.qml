@@ -64,7 +64,7 @@ MouseArea {
             id: search
             area: graphicsView.area
         }
-        NodePortSearchMenu {
+        PortSearchMenu {
             id: portSearch
             area: graphicsView.area
         }
