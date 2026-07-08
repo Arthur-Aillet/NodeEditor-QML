@@ -10,10 +10,9 @@
 #include <qtmetamacros.h>
 
 ImageDisplayNode::ImageDisplayNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
-  QVariantMap map;
-  map["node"] = QVariant::fromValue(this);
   _content = std::make_shared<SurfaceData>(
-      std::make_unique<QQmlComponent>(engine, "CutieDesigner.Nodes.Display", "ImageDisplay"), map);
+      std::make_unique<QQmlComponent>(engine, "CutieDesigner.Nodes.Display", "ImageDisplay"),
+      QVariantMap{{"node", QVariant::fromValue(this)}});
 }
 
 unsigned int ImageDisplayNode::nPorts(PortType portType) const {
@@ -41,9 +40,7 @@ QQmlComponent ImageDisplayNode::embeddedComponent(QQmlEngine *engine) {
   return QQmlComponent(engine, "CutieDesigner.Nodes.Display", "ImageDisplayControl");
 };
 QVariantMap ImageDisplayNode::componentInitialProperties() {
-  QVariantMap map;
-  map["node"] = QVariant::fromValue(this);
-  return map;
+  return {{"node", QVariant::fromValue(this)}};
 };
 
 QUrl ImageDisplayNode::getSource() {

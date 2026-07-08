@@ -4,9 +4,8 @@
 
 BlendNode::BlendNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
   auto comp = std::make_unique<QQmlComponent>(engine, "CutieDesigner.Nodes.Display", "Blend");
-  QVariantMap map;
-  map["node"] = QVariant::fromValue(this);
-  _content = std::make_shared<SurfaceData>(std::move(comp), map);
+  _content = std::make_shared<SurfaceData>(std::move(comp),
+                                           QVariantMap{{"node", QVariant::fromValue(this)}});
 }
 
 unsigned int BlendNode::nPorts(PortType portType) const {

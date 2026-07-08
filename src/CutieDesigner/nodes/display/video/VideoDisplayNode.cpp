@@ -23,9 +23,8 @@ VideoDisplayNode::VideoDisplayNode(QQmlEngine *engine) : NodeDelegateModel(engin
 
   auto comp =
       std::make_unique<QQmlComponent>(_engine, "CutieDesigner.Nodes.Display", "VideoDisplay");
-  QVariantMap map;
-  map["node"] = QVariant::fromValue(this);
-  _content = std::make_shared<SurfaceData>(std::move(comp), map);
+  _content = std::make_shared<SurfaceData>(std::move(comp),
+                                           QVariantMap{{"node", QVariant::fromValue(this)}});
   QObject::connect(_content.get(), SIGNAL(componentLoaded(QQuickItem *)), this,
                    SLOT(componentLoaded(QQuickItem *)));
   _controller = std::make_unique<GstreamerController>(_window);

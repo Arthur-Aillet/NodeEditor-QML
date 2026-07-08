@@ -49,9 +49,7 @@ class UkrugNode : public ATypeCharacterNodeModel {
   }
 
   QVariantMap componentInitialProperties() override {
-    QVariantMap map;
-    map["node"] = QVariant::fromValue(this);
-    return map;
+    return {{"node", QVariant::fromValue(this)}};
   }
 
   QQmlComponent *getComponent() override;

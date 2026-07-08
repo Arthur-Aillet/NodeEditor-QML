@@ -40,9 +40,7 @@ QQmlComponent TextInputNode::embeddedComponent(QQmlEngine *engine) {
 }
 
 QVariantMap TextInputNode::componentInitialProperties() {
-  QVariantMap map;
-  map["node"] = QVariant::fromValue(this);
-  return map;
+  return QVariantMap{{"node", QVariant::fromValue(this)}};
 }
 
 NodeDataType TextInputNode::dataType(PortType, PortIndex id) const { return TextData().type(); }

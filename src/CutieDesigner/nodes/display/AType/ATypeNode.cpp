@@ -12,9 +12,8 @@
 
 std::shared_ptr<SurfaceData> ATypeNode::createATypeSurfaceData(QQmlEngine *engine) {
   auto comp = std::make_unique<QQmlComponent>(engine, "CutieDesigner.Nodes.Display", "AType");
-  QVariantMap map;
-  map["node"] = QVariant::fromValue(this);
-  return std::make_shared<SurfaceData>(std::move(comp), map);
+  return std::make_shared<SurfaceData>(std::move(comp),
+                                       QVariantMap{{"node", QVariant::fromValue(this)}});
 }
 
 ATypeNode::ATypeNode(QQmlEngine *engine) : NodeDelegateModel(engine) {

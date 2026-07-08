@@ -93,8 +93,5 @@ void UkrugNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
 QQmlComponent *UkrugNode::getComponent() { return _component.get(); };
 
 QVariantMap UkrugNode::getAdditionalProperties() {
-  QVariantMap map;
-  map["node"] = QVariant::fromValue(this);
-  map["goingToGetDestroyed"] = false;
-  return map;
+  return {{"node", QVariant::fromValue(this)}, {"goingToGetDestroyed", false}};
 };

@@ -48,9 +48,7 @@ class StackNode : public NodeDelegateModel {
   }
 
   QVariantMap componentInitialProperties() override {
-    QVariantMap map;
-    map["node"] = QVariant::fromValue(this);
-    return map;
+    return QVariantMap{{"node", QVariant::fromValue(this)}};
   }
 
   unsigned int nPorts(PortType portType) const override;

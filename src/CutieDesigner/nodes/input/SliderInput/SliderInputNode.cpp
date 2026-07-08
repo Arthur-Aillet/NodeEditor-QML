@@ -31,9 +31,7 @@ QQmlComponent SliderInputNode::embeddedComponent(QQmlEngine *engine) {
 }
 
 QVariantMap SliderInputNode::componentInitialProperties() {
-  QVariantMap map;
-  map["node"] = QVariant::fromValue(this);
-  return map;
+  return QVariantMap{{"node", QVariant::fromValue(this)}};
 }
 
 NodeDataType SliderInputNode::dataType(PortType, PortIndex id) const {

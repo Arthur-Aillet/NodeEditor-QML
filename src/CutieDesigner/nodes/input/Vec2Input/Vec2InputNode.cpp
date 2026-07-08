@@ -35,9 +35,7 @@ QQmlComponent Vec2InputNode::embeddedComponent(QQmlEngine *engine) {
 }
 
 QVariantMap Vec2InputNode::componentInitialProperties() {
-  QVariantMap map;
-  map["node"] = QVariant::fromValue(this);
-  return map;
+  return QVariantMap{{"node", QVariant::fromValue(this)}};
 }
 
 NodeDataType Vec2InputNode::dataType(PortType, PortIndex id) const { return Vec2Data().type(); }
