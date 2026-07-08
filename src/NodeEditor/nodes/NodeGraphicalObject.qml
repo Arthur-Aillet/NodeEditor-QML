@@ -97,31 +97,6 @@ MouseArea {
         }
     }
 
-    Keys.onPressed: event => {
-        if (event.key == Qt.Key_Delete || event.key == Qt.Key_Back) {
-            for (let id of nodes.selectedNodes.inner) {
-                event.accepted = ModelInterface.graph.deleteNode(id);
-            }
-            nodes.selectedNodes.clear();
-        }
-        if (event.key == Qt.Key_Left) {
-            nodes.moveSelectedNodes(-5, 0, undefined, true);
-            event.accepted = true;
-        }
-        if (event.key == Qt.Key_Right) {
-            nodes.moveSelectedNodes(5, 0, undefined, true);
-            event.accepted = true;
-        }
-        if (event.key == Qt.Key_Up) {
-            nodes.moveSelectedNodes(0, -5, undefined, true);
-            event.accepted = true;
-        }
-        if (event.key == Qt.Key_Down) {
-            nodes.moveSelectedNodes(0, 5, undefined, true);
-            event.accepted = true;
-        }
-    }
-
     Connections {
         target: nodeObj.draftConnection
 

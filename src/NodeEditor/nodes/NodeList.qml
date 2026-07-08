@@ -9,6 +9,31 @@ Item {
 
     property alias selectedNodes: selectedNodes
 
+    Keys.onPressed: event => {
+        if (event.key == Qt.Key_Delete || event.key == Qt.Key_Back) {
+            for (let id of selectedNodes.inner) {
+                event.accepted = ModelInterface.graph.deleteNode(id);
+            }
+            selectedNodes.clear();
+        }
+        if (event.key == Qt.Key_Left) {
+            moveSelectedNodes(-5, 0, undefined, true);
+            event.accepted = true;
+        }
+        if (event.key == Qt.Key_Right) {
+            moveSelectedNodes(5, 0, undefined, true);
+            event.accepted = true;
+        }
+        if (event.key == Qt.Key_Up) {
+            moveSelectedNodes(0, -5, undefined, true);
+            event.accepted = true;
+        }
+        if (event.key == Qt.Key_Down) {
+            moveSelectedNodes(0, 5, undefined, true);
+            event.accepted = true;
+        }
+    }
+
     QSet {
         id: selectedNodes
     }
