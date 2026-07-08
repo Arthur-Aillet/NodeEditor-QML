@@ -1,0 +1,133 @@
+{
+    "connections": [
+        {
+            "inNodeId": 4,
+            "inPortIndex": 0,
+            "outNodeId": 3,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 0,
+            "inPortIndex": 0,
+            "outNodeId": 7,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 5,
+            "inPortIndex": 0,
+            "outNodeId": 2,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 2,
+            "inPortIndex": 0,
+            "outNodeId": 1,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 5,
+            "inPortIndex": 1,
+            "outNodeId": 4,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 6,
+            "inPortIndex": 0,
+            "outNodeId": 5,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 7,
+            "inPortIndex": 0,
+            "outNodeId": 6,
+            "outPortIndex": 0
+        }
+    ],
+    "nodes": [
+        {
+            "id": 3,
+            "internal-data": {
+            },
+            "label": "Cutie window dimensions",
+            "labelVisible": true,
+            "model-name": "Window",
+            "position": {
+                "x": -260,
+                "y": 212
+            }
+        },
+        {
+            "id": 7,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Fill",
+            "position": {
+                "x": 481,
+                "y": 153
+            }
+        },
+        {
+            "id": 6,
+            "internal-data": {
+                "mode": 0
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Combine Color",
+            "position": {
+                "x": 214,
+                "y": 105
+            }
+        },
+        {
+            "id": 5,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Division",
+            "position": {
+                "x": 32,
+                "y": 102
+            }
+        },
+        {
+            "id": 1,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Mouse",
+            "position": {
+                "x": -203,
+                "y": 87
+            }
+        },
+        {
+            "id": 2,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Split Vec2",
+            "position": {
+                "x": -94,
+                "y": 84
+            }
+        },
+        {
+            "id": 4,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Split Vec2",
+            "position": {
+                "x": -92,
+                "y": 218
+            }
+        }
+    ]
+}

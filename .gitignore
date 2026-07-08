@@ -93,3 +93,4 @@ notes.md
 
 # Ignore Save files
 *.cute
+!examples/*.cute
