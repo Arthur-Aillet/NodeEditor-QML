@@ -18,9 +18,25 @@ QQmlComponent SplitColorNode::embeddedComponent(QQmlEngine *engine) {
   return QQmlComponent(engine, "CutieDesigner.Nodes.Process", "ColorModeControl");
 }
 
+QJsonObject SplitColorNode::save() const {
+  QJsonObject json;
+
+  json["mode"] = _mode;
+  return json;
+}
+
+void SplitColorNode::load(QJsonObject const &json) {
+  QJsonValue value = json["mode"];
+
+  if (!value.isUndefined()) {
+    _mode = value.toVariant().value<ColorMode>();
+  }
+}
+
 void SplitColorNode::embeddedComponentLoaded(std::shared_ptr<QQuickItem> instance) {
   _embedded = instance;
   instance->setProperty("model", CutieDesigner::getColorModeNames());
+  instance->setProperty("currentIndex", _mode);
   QObject::connect(instance.get(), SIGNAL(currentModeChanged()), this, SLOT(currentModeChanged()));
 }
 
