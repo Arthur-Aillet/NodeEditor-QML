@@ -37,6 +37,9 @@ class ATypeCharacterNodeModel : public NodeDelegateModel {
   ATypeCharacterNodeModel(QQmlEngine *engine) : NodeDelegateModel(engine) {}
   ~ATypeCharacterNodeModel() = default;
 
+  QJsonObject save() const override;
+  void load(QJsonObject const &) override;
+
   Q_INVOKABLE void createCharacterObject(QQuickItem *instance, QString initialChar, int index);
   Q_INVOKABLE void destroyItem(QQuickItem *instance, int index);
   Q_INVOKABLE void setChar(QQuickItem *instance, int index, QString character);

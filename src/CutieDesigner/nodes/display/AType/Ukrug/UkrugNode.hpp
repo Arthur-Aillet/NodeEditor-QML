@@ -36,6 +36,9 @@ class UkrugNode : public ATypeCharacterNodeModel {
   QString name() const override { return QStringLiteral("Ukrug Character"); }
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }
 
+  QJsonObject save() const override;
+  void load(QJsonObject const &) override;
+
   unsigned int nPorts(PortType portType) const override;
   NodeDataType dataType(PortType portType, PortIndex portIndex) const override;
   std::shared_ptr<NodeData> outData(PortIndex port) override;

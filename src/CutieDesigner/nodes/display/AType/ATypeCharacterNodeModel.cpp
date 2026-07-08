@@ -1,6 +1,29 @@
 #include "ATypeCharacterNodeModel.hpp"
-#include <qlogging.h>
-#include <qtimer.h>
+
+#include <QColor>
+
+QJsonObject ATypeCharacterNodeModel::save() const {
+  QJsonObject json;
+
+  json["baseColor"] = QJsonValue::fromVariant(_baseColor);
+  json["fontSize"] = _fontSize;
+  json["animationOpacitySpeed"] = _animationOpacitySpeed;
+  json["animationWidthSpeed"] = _animationWidthSpeed;
+  json["animationTransformSpeed"] = _animationTransformSpeed;
+  return json;
+}
+void ATypeCharacterNodeModel::load(QJsonObject const &json) {
+  if (!json["baseColor"].isUndefined())
+    _baseColor = json["baseColor"].toVariant().value<QColor>();
+  if (!json["fontSize"].isUndefined())
+    _fontSize = json["fontSize"].toDouble();
+  if (!json["animationOpacitySpeed"].isUndefined())
+    _animationOpacitySpeed = json["animationOpacitySpeed"].toDouble();
+  if (!json["animationWidthSpeed"].isUndefined())
+    _animationWidthSpeed = json["animationWidthSpeed"].toDouble();
+  if (!json["animationTransformSpeed"].isUndefined())
+    _animationTransformSpeed = json["animationTransformSpeed"].toDouble();
+}
 
 void ATypeCharacterNodeModel::createCharacterObject(QQuickItem *instance, QString initialChar,
                                                     int index) {

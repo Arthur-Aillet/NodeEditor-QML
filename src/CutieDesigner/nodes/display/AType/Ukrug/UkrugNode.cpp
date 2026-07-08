@@ -4,12 +4,54 @@
 #include "DecimalData.hpp"
 #include <memory>
 #include <qcontainerfwd.h>
+#include <qjsonobject.h>
+#include <qobject.h>
 #include <qqmlcomponent.h>
 
 UkrugNode::UkrugNode(QQmlEngine *engine)
     : ATypeCharacterNodeModel(engine), _modelData(std::make_shared<ATypeCharacterData>(this)),
       _component(std::move(std::make_unique<QQmlComponent>(engine, "CutieDesigner.Nodes.Display",
                                                            "UkrugCharacter"))) {}
+
+QJsonObject UkrugNode::save() const {
+  QJsonObject json = ATypeCharacterNodeModel::save();
+
+  json["k"] = _k;
+  json["circleScale"] = _circleScale;
+  json["pointsScale"] = _pointsScale;
+  json["smoothFactor"] = _smoothFactor;
+  json["fill"] = _fill;
+  json["pointsDistance"] = _pointsDistance;
+  json["boxLimitX"] = _boxLimitX;
+  json["boxLimitY"] = _boxLimitY;
+  json["boxRadius"] = _boxRadius;
+  json["substraction"] = _substraction;
+  return json;
+}
+void UkrugNode::load(QJsonObject const &json) {
+  ATypeCharacterNodeModel::load(json);
+
+  if (!json["k"].isUndefined())
+    _k = json["k"].toDouble();
+  if (!json["circleScale"].isUndefined())
+    _circleScale = json["circleScale"].toDouble();
+  if (!json["pointsScale"].isUndefined())
+    _pointsScale = json["pointsScale"].toDouble();
+  if (!json["smoothFactor"].isUndefined())
+    _smoothFactor = json["smoothFactor"].toDouble();
+  if (!json["fill"].isUndefined())
+    _fill = json["fill"].toDouble();
+  if (!json["pointsDistance"].isUndefined())
+    _pointsDistance = json["pointsDistance"].toDouble();
+  if (!json["boxLimitX"].isUndefined())
+    _boxLimitX = json["boxLimitX"].toDouble();
+  if (!json["boxLimitY"].isUndefined())
+    _boxLimitY = json["boxLimitY"].toDouble();
+  if (!json["boxRadius"].isUndefined())
+    _boxRadius = json["boxRadius"].toDouble();
+  if (!json["substraction"].isUndefined())
+    _substraction = json["substraction"].toBool();
+}
 
 unsigned int UkrugNode::nPorts(PortType portType) const {
   switch (portType) {
