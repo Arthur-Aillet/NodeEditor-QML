@@ -25,6 +25,9 @@ class TextTyperNode : public NodeDelegateModel {
   bool captionVisible() const override { return true; }
   QString name() const override { return QStringLiteral("Text Typer"); }
 
+  QJsonObject save() const override;
+  void load(QJsonObject const &) override;
+
   QString portCaption(PortType type, PortIndex index) const override;
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }
 
@@ -56,7 +59,7 @@ class TextTyperNode : public NodeDelegateModel {
 
   private:
   int _currentEventIdx = 0;
-  TextTyperEventList::TypeEvent _currentEvent;
+  TextTypeEvent _currentEvent;
   TextTyperEventList _eventList;
   QTimer _timer;
   bool _playing;

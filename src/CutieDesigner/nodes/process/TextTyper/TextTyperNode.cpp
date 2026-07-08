@@ -1,9 +1,28 @@
 #include "TextTyperNode.hpp"
 #include "DecimalData.hpp"
 #include "TextData.hpp"
+#include "TextTypeEvent.hpp"
+#include <qjsonarray.h>
 
 TextTyperNode::TextTyperNode(QQmlEngine *engine)
     : NodeDelegateModel(engine), _content(std::make_shared<TextData>(_text)), _timer(QTimer()){};
+
+QJsonObject TextTyperNode::save() const {
+  QJsonObject json;
+
+  json["text"] = _text;
+  json["eventList"] = _eventList.save()["eventList"];
+  return json;
+}
+
+void TextTyperNode::load(QJsonObject const &json) {
+  QJsonValue valueText = json["text"];
+
+  if (!valueText.isUndefined()) {
+    _text = valueText.toString();
+  }
+  _eventList.load(json);
+}
 
 QString TextTyperNode::portCaption(PortType portType, PortIndex index) const {
   switch (portType) {
@@ -46,13 +65,11 @@ void TextTyperNode::setInData(std::shared_ptr<NodeData> data, PortIndex portInde
 };
 
 QQmlComponent TextTyperNode::embeddedComponent(QQmlEngine *engine) {
-  return QQmlComponent(engine, "CutieDesigner.Nodes.Process", "TextTyper");
+  return QQmlComponent(engine, "CutieDesigner.Nodes.Process", "TextTyperControl");
 }
 
 QVariantMap TextTyperNode::componentInitialProperties() {
-  QVariantMap map;
-  map["node"] = QVariant::fromValue(this);
-  return map;
+  return {{"node", QVariant::fromValue(this)}};
 }
 
 TextTyperEventList *TextTyperNode::getModel() { return &_eventList; }
@@ -79,7 +96,7 @@ void TextTyperNode::setPlay(bool playState) {
 QString TextTyperNode::getText() { return _text; }
 void TextTyperNode::setText(QString newText) {
   _text = newText;
-  Q_EMIT dataUpdated(0);
+  emit dataUpdated(0);
 }
 
 void TextTyperNode::processEvent() {
@@ -88,7 +105,7 @@ void TextTyperNode::processEvent() {
   auto visitor = overload{
       [this](const Wait &w) { processWait(); }, [this](const Erase &e) { processErase(); },
       [this](const Replace &r) { processReplace(); }, [this](const Insert &i) { processInsert(); }};
-  std::visit(visitor, _eventList.events[_currentEventIdx]);
+  std::visit(visitor, _eventList.events[_currentEventIdx].value());
 }
 
 void TextTyperNode::processNextEvent() {
@@ -100,14 +117,14 @@ void TextTyperNode::processNextEvent() {
 }
 
 void TextTyperNode::processWait() {
-  const auto &w = std::get<Wait>(_currentEvent);
+  const auto &w = std::get<Wait>(_currentEvent.value());
   _timer.connect(&_timer, SIGNAL(timeout()), this, SLOT(processNextEvent()),
                  Qt::ConnectionType::SingleShotConnection);
   _timer.start(w.delay * 1000);
 }
 
 void TextTyperNode::processErase() {
-  auto &e = std::get<Erase>(_currentEvent);
+  auto &e = std::get<Erase>(_currentEvent.value());
 
   if (e.amount == 0 || _text.isEmpty())
     return processNextEvent();
@@ -128,7 +145,7 @@ void TextTyperNode::processErase() {
 }
 
 void TextTyperNode::processReplace() {
-  auto &r = std::get<Replace>(_currentEvent);
+  auto &r = std::get<Replace>(_currentEvent.value());
 
   if (r.text.isEmpty() || _text.isEmpty())
     return processNextEvent();
@@ -150,7 +167,7 @@ void TextTyperNode::processReplace() {
 }
 
 void TextTyperNode::processInsert() {
-  auto &i = std::get<Insert>(_currentEvent);
+  auto &i = std::get<Insert>(_currentEvent.value());
 
   if (i.text.isEmpty())
     return processNextEvent();

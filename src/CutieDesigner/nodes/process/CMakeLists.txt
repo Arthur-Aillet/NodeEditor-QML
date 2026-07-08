@@ -3,7 +3,7 @@ qt_add_qml_module(process
   SHARED
   QML_FILES
 
-  TextTyper/TextTyper.qml
+  TextTyper/TextTyperControl.qml
   color/ColorModeControl.qml
 
   SOURCES
@@ -21,6 +21,8 @@ qt_add_qml_module(process
   math/MultiplicationNode.hpp
   math/SinNode.hpp
   math/CosNode.hpp
+  TextTyper/TextTypeEvent.hpp
+  TextTyper/TextTypeEvent.cpp
   TextTyper/TextTyperNode.hpp
   TextTyper/TextTyperNode.cpp
   TextTyper/TextTyperEventList.hpp

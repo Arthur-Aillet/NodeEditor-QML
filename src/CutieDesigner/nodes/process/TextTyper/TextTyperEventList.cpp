@@ -1,4 +1,6 @@
 #include "TextTyperEventList.hpp"
+#include "TextTypeEvent.hpp"
+#include <QJsonArray>
 
 using TTEL = TextTyperEventList;
 
@@ -8,37 +10,6 @@ TTEL::TextTyperEventList(const TextTyperEventList &other) : QAbstractListModel(o
 
 int TTEL::rowCount(const QModelIndex &parent) const { return events.count(); }
 
-QString TTEL::variantName(const TTEL::TypeEvent variant) const {
-  auto nameVisitor = overload{[](const Wait &w) { return QString("Wait"); },
-                              [](const Erase &e) { return QString("Erase"); },
-                              [](const Replace &r) { return QString("Replace"); },
-                              [](const Insert &i) { return QString("Insert"); }};
-  return std::visit(nameVisitor, variant);
-}
-
-static QVariant variantValue(TTEL::TypeEvent variant) {
-  auto valueVisitor = overload{[](Wait w) { return QVariant::fromValue(w); },
-                               [](Erase e) { return QVariant::fromValue(e); },
-                               [](Replace r) { return QVariant::fromValue(r); },
-                               [](Insert i) { return QVariant::fromValue(i); }};
-  return std::visit(valueVisitor, variant);
-}
-
-TTEL::TypeEvent TTEL::eventFromName(const QString name) const {
-  if (name == "Wait") {
-    return TTEL::TypeEvent(Wait{1});
-  } else if (name == "Erase") {
-    return TTEL::TypeEvent(Erase{0, 0});
-  } else if (name == "Replace") {
-    return TTEL::TypeEvent(Replace{0, ""});
-  } else if (name == "Insert") {
-    return TTEL::TypeEvent(Insert{0, ""});
-  } else {
-    qCritical() << "Invalid event tried to be created: " << name;
-    return TTEL::TypeEvent(Wait{0});
-  }
-}
-
 QVariant TTEL::data(const QModelIndex &index, int role) const {
   if (!checkIndex(index))
     return QVariant();
@@ -46,17 +17,43 @@ QVariant TTEL::data(const QModelIndex &index, int role) const {
   const auto &rowData = events.at(index.row());
   switch (static_cast<EventRoles>(role)) {
   case EventRoles::Value:
-    return variantValue(rowData);
+    return rowData.variant();
   case EventRoles::Name:
-    return variantName(rowData);
+    return rowData.name();
   }
 
   return QVariant();
 }
 
+QJsonObject TTEL::save() const {
+  QJsonArray eventArray;
+  for (const auto &event : events) {
+    eventArray.append(event.save());
+  }
+  return QJsonObject({{"eventList", QJsonValue(eventArray)}});
+}
+
+void TTEL::load(QJsonObject const &json) {
+  QJsonValue valueList = json["eventList"];
+
+  if (!valueList.isUndefined()) {
+    QJsonArray eventArray = valueList.toArray();
+    beginRemoveRows(QModelIndex(), 0, rowCount());
+    events.clear();
+    endRemoveRows();
+    beginInsertRows({}, 0, eventArray.count());
+    for (const auto &event : eventArray) {
+      TextTypeEvent newEvent;
+      newEvent.load(event.toObject());
+      events.append(newEvent);
+    }
+    endInsertRows();
+  }
+}
+
 void TTEL::addEvent(QString name) {
   beginInsertRows({}, rowCount(), rowCount());
-  events.append(eventFromName(name));
+  events.append(TextTypeEvent::fromName(name));
   endInsertRows();
 }
 
@@ -101,12 +98,12 @@ void TTEL::editValue(int index, QString attribute, QVariant value) {
           replaceLambda,
           insertLambda,
       },
-      events[index]);
+      events[index].value());
 }
 
 void TTEL::print() {
   qDebug() << "\nPrinting from TextTyperEventList::print()";
   for (const auto &event : events) {
-    qDebug() << variantName(event) << " state";
+    qDebug() << event.name() << " state";
   }
 }

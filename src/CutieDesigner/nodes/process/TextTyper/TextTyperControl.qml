@@ -58,7 +58,7 @@ FlexboxLayout {
         property double maxWidth: {
             let largest = 0;
             for (let i = 0; i != count; i++) {
-                if (itemAtIndex(i).implicitWidth > largest) {
+                if (itemAtIndex(i) && itemAtIndex(i).implicitWidth > largest) {
                     largest = itemAtIndex(i).implicitWidth;
                 }
             }
