@@ -5,12 +5,13 @@ import QtQuick.Controls
 import CutieUiModule
 import CutieDesigner.Stats
 import CutieDesigner.Time
+import CutieDesigner.App
 
 import CutieDesigner.Nodes.Display
 
 Item {
     id: appLayout
-    property ToolBar topBar
+    property TopBar topBar
     property alias objectLoader: objectLoader
     property alias sceneContent: sceneContent
 
@@ -70,8 +71,8 @@ Item {
                 layout {
                     visible: false
                 }
-                topBar {
-                    visible: false
+                appLayout {
+                    topBar.visible: false
                 }
             }
         }
