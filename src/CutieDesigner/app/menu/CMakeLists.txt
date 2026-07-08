@@ -8,7 +8,7 @@ qt_add_qml_module(menu
   NodePortSearchMenuItem.qml
   NodeSearchTextField.qml
 
-  DEPENDENCIES QtQuick QtQuick.Control QtQuick.Layout NodeEditor 
+  DEPENDENCIES QtQuick QtQuick.Controls QtQuick.Layout NodeEditor 
   RESOURCES
   icomoon.ttf
 )

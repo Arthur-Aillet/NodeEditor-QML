@@ -5,13 +5,13 @@ qt_add_qml_module(app
   STATIC
   URI CutieDesigner.App
   QML_FILES
+  TopBar.qml
   AppLayout.qml
   Timeline.qml
-  TopBar.qml
   NodeView.qml
 
   DEPENDENCIES 
-  QtQuick QtQuick.Control QtQuick.Layout QtQuick.Dialogs
+  QtQuick QtQuick.Controls QtQuick.Layout QtQuick.Dialogs
   CutieDesigner.Nodes.Display CutieDesigner.Stats CutieDesigner.App.Menu CutieDesigner.App.FileManager
   CutieUiModule
   NodeEditor 

@@ -3,9 +3,9 @@ import QtQuick
 import QtQuick.Controls
 
 import CutieUiModule
+import CutieDesigner.App
 import CutieDesigner.Stats
 import CutieDesigner.Time
-import CutieDesigner.App
 
 import CutieDesigner.Nodes.Display
 
@@ -71,8 +71,11 @@ Item {
                 layout {
                     visible: false
                 }
-                appLayout {
-                    topBar.visible: false
+            }
+            PropertyChanges {
+                target: appLayout
+                topBar {
+                    visible: false
                 }
             }
         }
