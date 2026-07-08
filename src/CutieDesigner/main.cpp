@@ -1,6 +1,7 @@
 #include "CutieWindow.hpp"
 #include "DataFlowGraphModel.hpp"
 #include "DataFlowModelInterface.hpp"
+#include "Definitions.hpp"
 #include "StyleCollection.hpp"
 #include "TimeController.hpp"
 
@@ -127,8 +128,7 @@ int main(int argc, char *argv[]) {
 
   auto source = graph->addNode(SurfaceDisplayNode(&engine).name());
   graph->setNodeData(source, NodeRole::Position, QPointF(750, 225));
-  graph->setNodeData(source, NodeRole::Type, SurfaceDisplayNode(&engine).name());
-  graph->setNodeData(source, NodeRole::Flags, NodeFlag::Locked);
+  graph->setNodeData(source, NodeRole::Flags, NodeFlags({NodeFlag::Locked}).toInt());
   auto display = graph->delegateModel<SurfaceDisplayNode>(source);
 
   auto loader = window.property("objectLoader").value<SurfaceLoader *>();

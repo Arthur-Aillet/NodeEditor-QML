@@ -64,8 +64,6 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
 
   // From Serializable
   Q_INVOKABLE QJsonObject save() const override;
-
-  // From Serializable
   Q_INVOKABLE void load(QJsonObject const &json) override;
 
   Q_INVOKABLE void requestComponent(NodeId nodeId, QQuickItem *container);

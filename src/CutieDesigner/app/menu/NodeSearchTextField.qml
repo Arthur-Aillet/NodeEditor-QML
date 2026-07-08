@@ -4,12 +4,10 @@ import QtQuick.Controls
 TextField {
     id: searchField
     required property ListView listView
-    required property SortFilterProxyModel sfpModel
 
     placeholderText: "Filter"
     onTextChanged: {
         listView.currentIndex = -1;
-        sfpModel.invalidate();
     }
     hoverEnabled: true
     onHoveredChanged: {

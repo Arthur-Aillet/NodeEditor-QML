@@ -7,6 +7,7 @@ qt_add_qml_module(menu
   NodePortSearchMenu.qml
   NodePortSearchMenuItem.qml
   NodeSearchTextField.qml
+  SearchMenuFilter.qml
 
   DEPENDENCIES QtQuick QtQuick.Controls QtQuick.Layout NodeEditor 
   RESOURCES

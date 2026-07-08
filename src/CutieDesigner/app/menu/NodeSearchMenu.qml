@@ -24,7 +24,6 @@ Menu {
     NodeSearchTextField {
         id: searchField
         listView: list
-        sfpModel: sfpm
         onAccepted: {
             let name;
             if (list.currentIndex == -1) {
@@ -40,28 +39,10 @@ Menu {
         }
     }
 
-    SortFilterProxyModel {
-        id: sfpm
+    SearchMenuFilter {
+        id: smf
+        filterText: searchField.text
         model: DataFlowModelInterface.dataFlowGraph.registry.nodesModel
-        sorters: [
-            RoleSorter {
-                roleName: "category"
-                priority: 0
-            },
-            RoleSorter {
-                roleName: "name"
-                priority: 1
-            }
-        ]
-        filters: [
-            FunctionFilter {
-                function filter(data: RoleData): bool {
-                    if (searchField.text == "")
-                        return true;
-                    return data["name"].toLowerCase().includes(searchField.text.toLowerCase());
-                }
-            }
-        ]
     }
 
     readonly property var replaceRegex: RegExp(searchField.text.replace(/[\\\.\+\*\?\^\$\[\]\(\)\{\}\/\'\#\:\!\=\|]/ig, "\\$&"), 'gi')
@@ -85,7 +66,7 @@ Menu {
             active: ScrollBar.AlwaysOn
         }
         interactive: true
-        model: sfpm
+        model: smf
 
         Keys.forwardTo: [searchField]
 
@@ -103,10 +84,5 @@ Menu {
                 nodeSearchMenu.close();
             }
         }
-    }
-    component RoleData: QtObject {
-        property string name
-        property string category
-        property list<portInfo> portsInfo
     }
 }

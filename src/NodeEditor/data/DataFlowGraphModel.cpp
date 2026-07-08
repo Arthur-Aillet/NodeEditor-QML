@@ -4,6 +4,8 @@
 #include "NodeData.hpp"
 
 #include <QJsonArray>
+#include <qjsonobject.h>
+#include <qjsonvalue.h>
 #include <qobject.h>
 #include <qqmlengine.h>
 #include <stack>
@@ -512,14 +514,16 @@ QJsonObject DataFlowGraphModel::saveNode(NodeId const nodeId) const {
   nodeJson["labelVisible"] =
       (labelVisibleIt != _labelsVisible.end()) ? labelVisibleIt->second : model->labelVisible();
 
-  {
-    QPointF const pos = nodeData(nodeId, NodeRole::Position).value<QPointF>();
+  QPointF const pos = nodeData(nodeId, NodeRole::Position).value<QPointF>();
 
-    QJsonObject posJson;
-    posJson["x"] = pos.x();
-    posJson["y"] = pos.y();
-    nodeJson["position"] = posJson;
-  }
+  QJsonObject posJson;
+  posJson["x"] = pos.x();
+  posJson["y"] = pos.y();
+  nodeJson["position"] = posJson;
+
+  auto flags = nodeData(nodeId, NodeRole::Flags).toInt();
+  if (flags != 0)
+    nodeJson["flags"] = flags;
 
   return nodeJson;
 }
@@ -570,7 +574,9 @@ NodeId DataFlowGraphModel::loadNode(QJsonObject const &nodeJson) {
     _labels[nodeId] = nodeJson["label"].toString(restoredModel->label());
     _labelsVisible[nodeId] = nodeJson.contains("labelVisible") ? nodeJson["labelVisible"].toBool()
                                                                : restoredModel->labelVisible();
-
+    if (!nodeJson["flags"].isUndefined()) {
+      setNodeData(nodeId, NodeRole::Flags, nodeJson["flags"].toInt());
+    }
   } else {
     throw std::logic_error(std::string("No registered model with name ") +
                            delegateModelName.toLocal8Bit().data());
