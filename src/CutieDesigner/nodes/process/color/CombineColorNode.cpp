@@ -19,12 +19,7 @@ QQmlComponent CombineColorNode::embeddedComponent(QQmlEngine *engine) {
   return QQmlComponent(engine, "CutieDesigner.Nodes.Process", "ColorModeControl");
 }
 
-QJsonObject CombineColorNode::save() const {
-  QJsonObject json;
-
-  json["mode"] = _mode;
-  return json;
-}
+QJsonObject CombineColorNode::save() const { return {{"mode", _mode}}; }
 
 void CombineColorNode::load(QJsonObject const &json) {
   QJsonValue value = json["mode"];

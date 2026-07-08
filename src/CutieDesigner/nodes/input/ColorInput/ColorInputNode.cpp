@@ -13,12 +13,7 @@ QVariantMap ColorInputNode::componentInitialProperties() {
   return {{"node", QVariant::fromValue(this)}};
 }
 
-QJsonObject ColorInputNode::save() const {
-  QJsonObject json;
-
-  json["color"] = QJsonValue::fromVariant(_color);
-  return json;
-}
+QJsonObject ColorInputNode::save() const { return {{"color", QJsonValue::fromVariant(_color)}}; }
 
 void ColorInputNode::load(QJsonObject const &json) {
   QJsonValue value = json["color"];

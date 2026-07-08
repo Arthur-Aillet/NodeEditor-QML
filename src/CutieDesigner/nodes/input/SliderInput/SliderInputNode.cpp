@@ -2,11 +2,6 @@
 #include "DecimalData.hpp"
 #include "NodeDelegateModel.hpp"
 
-#include <QtCore/QJsonValue>
-#include <QtGui/QDoubleValidator>
-#include <QtWidgets/QLineEdit>
-#include <qqmlcomponent.h>
-
 SliderInputNode::SliderInputNode(QQmlEngine *engine)
     : NodeDelegateModel(engine), _valueData(std::make_shared<DecimalData>(_value)) {
   connect(this, &SliderInputNode::valueChanged, [&]() { emit dataUpdated(0); });

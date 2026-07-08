@@ -18,12 +18,7 @@ QQmlComponent SplitColorNode::embeddedComponent(QQmlEngine *engine) {
   return QQmlComponent(engine, "CutieDesigner.Nodes.Process", "ColorModeControl");
 }
 
-QJsonObject SplitColorNode::save() const {
-  QJsonObject json;
-
-  json["mode"] = _mode;
-  return json;
-}
+QJsonObject SplitColorNode::save() const { return {{"mode", _mode}}; }
 
 void SplitColorNode::load(QJsonObject const &json) {
   QJsonValue value = json["mode"];

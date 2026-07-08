@@ -3,7 +3,6 @@
 #include "Serializable.hpp"
 
 #include <QQmlEngine>
-#include <qjsonobject.h>
 
 template <class... Ts>
 struct overload : Ts... {

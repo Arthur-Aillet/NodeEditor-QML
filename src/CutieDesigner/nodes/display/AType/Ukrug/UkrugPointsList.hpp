@@ -1,14 +1,6 @@
 #pragma once
 
 #include "UkrugNode.hpp"
-#include <QQmlEngine>
-#include <qdir.h>
-#include <qfile.h>
-#include <qjsonarray.h>
-#include <qjsondocument.h>
-#include <qjsonobject.h>
-#include <qobject.h>
-#include <qtmetamacros.h>
 
 struct UkrugPoint {
   Q_GADGET

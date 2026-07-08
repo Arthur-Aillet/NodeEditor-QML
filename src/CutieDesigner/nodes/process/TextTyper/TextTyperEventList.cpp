@@ -1,5 +1,6 @@
 #include "TextTyperEventList.hpp"
 #include "TextTypeEvent.hpp"
+
 #include <QJsonArray>
 
 using TTEL = TextTyperEventList;

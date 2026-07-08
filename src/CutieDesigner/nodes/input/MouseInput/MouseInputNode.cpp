@@ -2,21 +2,7 @@
 #include "NodeDelegateModel.hpp"
 #include "Vec2Data.hpp"
 
-#include <QtCore/QJsonValue>
-#include <QtGui/QDoubleValidator>
-#include <QtWidgets/QLineEdit>
-#include <qapplication.h>
-#include <qcursor.h>
-#include <qevent.h>
-#include <qlogging.h>
-#include <qobject.h>
-#include <qqmlcomponent.h>
-#include <qqmlcontext.h>
-#include <qquickwindow.h>
-#include <qvalidator.h>
-#include <qvariant.h>
-#include <qvectornd.h>
-#include <qwindow.h>
+#include <QQmlContext>
 
 static CutieWindow *getCutieWindow(QApplication *application) {
   for (auto w : application->allWindows()) {

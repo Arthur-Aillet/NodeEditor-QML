@@ -3,17 +3,6 @@
 #include "ColorData.hpp"
 #include "NodeDelegateModel.hpp"
 
-#include <QQmlComponent>
-#include <QVariant>
-#include <QtCore/QObject>
-#include <memory>
-#include <qcolor.h>
-#include <qjsonobject.h>
-#include <qjsvalue.h>
-#include <qqmlcomponent.h>
-#include <qqmlengine.h>
-#include <qtmetamacros.h>
-
 class ColorInputNode : public NodeDelegateModel {
   Q_OBJECT
   QML_ELEMENT

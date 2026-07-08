@@ -1,6 +1,4 @@
 #include "TextTypeEvent.hpp"
-#include <qjsonobject.h>
-#include <qjsonvalue.h>
 
 TextTypeEvent::TextTypeEvent() {}
 TextTypeEvent::TextTypeEvent(const QString &name) : _value(variantFromName(name)) {}

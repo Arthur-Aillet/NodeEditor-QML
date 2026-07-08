@@ -2,11 +2,10 @@
 #include "Definitions.hpp"
 
 #include <QByteArray>
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <qjsonarray.h>
-#include <qjsonobject.h>
-#include <qjsonparseerror.h>
+#include <QJsonParseError>
 
 FileManager::FileManager(std::shared_ptr<DataFlowGraphModel> model, QObject *parent)
     : QObject(parent), _model(model) {}

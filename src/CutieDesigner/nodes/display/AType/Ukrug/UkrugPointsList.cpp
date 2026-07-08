@@ -1,6 +1,5 @@
 #include "UkrugPointsList.hpp"
 #include "UkrugNode.hpp"
-#include <qmath.h>
 
 UkrugPointsList::UkrugPointsList() {
   QString fileName = ":/qt/qml/CutieDesigner/Nodes/Display/AType/Ukrug/UkrugPointsData.json";

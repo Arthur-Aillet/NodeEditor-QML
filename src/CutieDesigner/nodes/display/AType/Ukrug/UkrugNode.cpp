@@ -2,11 +2,8 @@
 #include "ATypeCharacterData.hpp"
 #include "ColorData.hpp"
 #include "DecimalData.hpp"
-#include <memory>
-#include <qcontainerfwd.h>
-#include <qjsonobject.h>
-#include <qobject.h>
-#include <qqmlcomponent.h>
+
+#include <QJsonObject>
 
 UkrugNode::UkrugNode(QQmlEngine *engine)
     : ATypeCharacterNodeModel(engine), _modelData(std::make_shared<ATypeCharacterData>(this)),

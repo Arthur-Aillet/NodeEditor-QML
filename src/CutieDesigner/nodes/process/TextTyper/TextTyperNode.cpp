@@ -2,17 +2,12 @@
 #include "DecimalData.hpp"
 #include "TextData.hpp"
 #include "TextTypeEvent.hpp"
-#include <qjsonarray.h>
 
 TextTyperNode::TextTyperNode(QQmlEngine *engine)
     : NodeDelegateModel(engine), _content(std::make_shared<TextData>(_text)), _timer(QTimer()){};
 
 QJsonObject TextTyperNode::save() const {
-  QJsonObject json;
-
-  json["text"] = _text;
-  json["eventList"] = _eventList.save()["eventList"];
-  return json;
+  return {{"text", _text}, {"eventList", _eventList.save()["eventList"]}};
 }
 
 void TextTyperNode::load(QJsonObject const &json) {
