@@ -55,8 +55,8 @@ NodeId DataFlowGraphModel::addNode(QString const nodeType) {
 
   if (model) {
     NodeId newId = newNodeId();
-    connectNode(model.get(), newId);
 
+    connectNode(model.get(), newId);
     _models[newId] = std::move(model);
 
     _labels[newId] = _models[newId]->label();
@@ -547,22 +547,29 @@ QJsonObject DataFlowGraphModel::save() const {
 }
 
 NodeId DataFlowGraphModel::loadNode(QJsonObject const &nodeJson) {
-  NodeId nodeId = nodeJson["id"].toInt();
-  const auto &nodesIds = allNodeIds();
-  if (nodesIds.contains(nodeId)) {
-    nodeId = newNodeId();
-  }
-
   QString delegateModelName = nodeJson["model-name"].toString();
 
   std::unique_ptr<NodeDelegateModel> model = _registry->create(delegateModelName);
 
   if (model) {
+    NodeId nodeId = nodeJson["id"].toInt();
+    const auto &nodesIds = allNodeIds();
+    if (nodesIds.contains(nodeId)) {
+      nodeId = newNodeId();
+    }
+
     connectNode(model.get(), nodeId);
     _models[nodeId] = std::move(model);
 
     auto *restoredModel = _models[nodeId].get();
     restoredModel->load(nodeJson["internal-data"].toObject());
+
+    _labels[nodeId] = nodeJson["label"].toString(restoredModel->label());
+    _labelsVisible[nodeId] = nodeJson.contains("labelVisible") ? nodeJson["labelVisible"].toBool()
+                                                               : restoredModel->labelVisible();
+    if (!nodeJson["flags"].isUndefined()) {
+      setNodeData(nodeId, NodeRole::Flags, nodeJson["flags"].toInt());
+    }
 
     emit nodeCreated(nodeId);
 
@@ -571,17 +578,12 @@ NodeId DataFlowGraphModel::loadNode(QJsonObject const &nodeJson) {
 
     setNodeData(nodeId, NodeRole::Position, pos);
 
-    _labels[nodeId] = nodeJson["label"].toString(restoredModel->label());
-    _labelsVisible[nodeId] = nodeJson.contains("labelVisible") ? nodeJson["labelVisible"].toBool()
-                                                               : restoredModel->labelVisible();
-    if (!nodeJson["flags"].isUndefined()) {
-      setNodeData(nodeId, NodeRole::Flags, nodeJson["flags"].toInt());
-    }
+    return nodeId;
   } else {
     throw std::logic_error(std::string("No registered model with name ") +
                            delegateModelName.toLocal8Bit().data());
   }
-  return nodeId;
+  return InvalidNodeId;
 }
 
 void DataFlowGraphModel::load(QJsonObject const &jsonDocument) {
