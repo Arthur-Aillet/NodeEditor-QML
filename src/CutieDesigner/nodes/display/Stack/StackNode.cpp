@@ -82,6 +82,20 @@ void StackNode::addEmptyPort() {
   emit portsInserted(PortType::In);
 }
 
+QJsonObject StackNode::save() const { return {{"portsCount", _surfaceList.portsCount()}}; }
+void StackNode::load(QJsonObject const &json) {
+  auto value = json["portsCount"];
+
+  if (!value.isUndefined()) {
+    for (int i = 0; i != _surfaceList.portsCount(); i++) {
+      _surfaceList.removeLastPort();
+    }
+    for (int i = 0; i != value.toInt(); i++) {
+      _surfaceList.addEmptyPort();
+    }
+  }
+}
+
 void StackNode::removeLastPort() {
   if (_surfaceList.portsCount() <= 1)
     return;
