@@ -1,7 +1,7 @@
 #include "ModelInterface.hpp"
 #include "Definitions.hpp"
 
-ModelInterface::ModelInterface(std::shared_ptr<AbstractGraphModel> _graphModel)
+ModelInterface::ModelInterface(AbstractGraphModel *_graphModel)
     : QObject(nullptr), graphModel(_graphModel), undoStack(QUndoStack(this)) {}
 
 ModelInterface *ModelInterface::create(QQmlEngine *, QJSEngine *engine) {
@@ -13,7 +13,7 @@ ModelInterface *ModelInterface::create(QQmlEngine *, QJSEngine *engine) {
   return instance;
 }
 
-ModelInterface *ModelInterface::init(std::shared_ptr<AbstractGraphModel> _graphModel) {
+ModelInterface *ModelInterface::init(AbstractGraphModel *_graphModel) {
   instance = new ModelInterface(_graphModel);
   return instance;
 };

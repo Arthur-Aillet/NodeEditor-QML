@@ -8,8 +8,6 @@ ComboBox {
     y: 50
 
     onParentChanged: {
-        if (!parent)
-            return;
         parent.anchors.verticalCenter = undefined;
         parent.anchors.top = parent.parent.top;
     }
