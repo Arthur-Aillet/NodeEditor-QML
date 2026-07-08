@@ -10,7 +10,14 @@
 FileManager::FileManager(std::shared_ptr<DataFlowGraphModel> model, QObject *parent)
     : QObject(parent), _model(model) {}
 
-bool FileManager::graphEmpty() { return _model->allNodeIds().isEmpty(); }
+bool FileManager::graphEmpty() {
+  for (auto &nodeId : _model->allNodeIds()) {
+    if (!_model->nodeData(nodeId, NodeRole::Flags).value<NodeFlags>().testFlag(NodeFlag::Locked)) {
+      return false;
+    }
+  }
+  return true;
+}
 
 static void removeStartNode(QJsonObject &json) {
   auto nodes = json["nodes"];
