@@ -9,6 +9,7 @@ Menu {
 
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
     required property NavigableArea area
+    required property GraphicsView nodeEditorView
     property int portSide
     property int portIndex
     property int nodeIndex
@@ -155,8 +156,7 @@ Menu {
                 list.currentIndex = index;
             }
             onPressed: {
-                const pos = Qt.point(nodePortSearchMenu.openedAtX, nodePortSearchMenu.openedAtY);
-                const newNodeId = ModelInterface.createNode(name, nodePortSearchMenu.area.mapToItem(nodePortSearchMenu.area.inner, pos));
+                const newNodeId = ModelInterface.createNode(name, Qt.point(0, 0));
                 let newConnection;
                 if (nodePortSearchMenu.portSide === NodeEditor.PortType.In) {
                     newConnection = {
@@ -174,6 +174,13 @@ Menu {
                     };
                 }
                 ModelInterface.createConnection(newConnection);
+                const pos = Qt.point(nodePortSearchMenu.openedAtX, nodePortSearchMenu.openedAtY);
+                let mappedPos = nodePortSearchMenu.area.mapToItem(nodePortSearchMenu.area.inner, pos);
+                const oppositeSide = nodePortSearchMenu.portSide === NodeEditor.PortType.In ? NodeEditor.PortType.Out : NodeEditor.PortType.In;
+                const portPos = nodePortSearchMenu.nodeEditorView.nodes.nodeAt(newNodeId).getPortPosition(port.portIndex, oppositeSide);
+                mappedPos.x -= portPos.x;
+                mappedPos.y -= portPos.y;
+                ModelInterface.graph.setNodeData(newNodeId, NodeEditor.NodeRole.Position, mappedPos);
                 nodePortSearchMenu.close();
             }
         }

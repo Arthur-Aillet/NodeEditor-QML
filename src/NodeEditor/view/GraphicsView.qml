@@ -7,6 +7,7 @@ Frame {
     padding: 1
 
     property alias area: navigableArea
+    property alias nodes: nodeList.nodes
 
     Keys.forwardTo: [nodeList]
 
