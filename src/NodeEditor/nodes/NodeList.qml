@@ -76,6 +76,7 @@ Item {
                 ModelInterface.createConnection(connection);
             }
             event.accepted = true;
+            nodes.nodeAt(selectedNodes.inner[0]).focus = true;
         }
 
         if (event.key == Qt.Key_Delete || event.key == Qt.Key_Back) {
