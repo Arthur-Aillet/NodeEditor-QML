@@ -31,7 +31,7 @@ class AbstractGraphModel : public QObject {
   /**
    * A collection of all input and output connections for the given `nodeId`.
    */
-  virtual QSet<ConnectionId> allConnectionIds(NodeId const nodeId) const = 0;
+  Q_INVOKABLE virtual QSet<ConnectionId> allConnectionIds(NodeId const nodeId) const = 0;
 
   /// @brief Returns all connected Node Ids for given port.
   /**

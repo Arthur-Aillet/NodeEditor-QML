@@ -16,16 +16,26 @@ Item {
     Keys.onPressed: event => {
         if (event.key == Qt.Key_C && event.modifiers & Qt.ControlModifier) {
             const selectedNodesJson = [];
-            for (let nodeId of selectedNodes.inner) {
+            const connectionsJson = new Set();
+            for (const nodeId of selectedNodes.inner) {
                 selectedNodesJson.push(ModelInterface.graph.saveNode(nodeId));
             }
+            for (const nodeId of selectedNodes.inner) {
+                for (const connection of ModelInterface.graph.allConnectionIds(nodeId)) {
+                    if (selectedNodes.has(connection.inNodeId) && selectedNodes.has(connection.outNodeId)) {
+                        connectionsJson.add(connection);
+                    }
+                }
+            }
             clipboard.content = {
-                "nodes": selectedNodesJson
+                "nodes": selectedNodesJson,
+                "connections": Array.from(connectionsJson.values())
             };
             event.accepted = true;
         }
+
         if (event.key == Qt.Key_V && event.modifiers & Qt.ControlModifier) {
-            const newNodeIds = [];
+            const nodeIdMap = new Map();
             let smallestX = Infinity;
             let smallestY = Infinity;
             let largestX = -Infinity;
@@ -37,9 +47,9 @@ Item {
             if (!copiedNodes || copiedNodes.length == 0)
                 return;
             selectedNodes.clear();
-            for (let nodeJson of copiedNodes) {
+            for (const nodeJson of copiedNodes) {
                 const newNodeId = ModelInterface.graph.loadNode(nodeJson);
-                newNodeIds.push(newNodeId);
+                nodeIdMap[nodeJson["id"]] = newNodeId;
                 const node = nodes.nodeAt(newNodeId);
                 if (node.x < smallestX)
                     smallestX = node.x;
@@ -52,12 +62,18 @@ Item {
             }
             const mediumX = smallestX + ((largestX - smallestX) / 2);
             const mediumY = smallestY + ((largestY - smallestY) / 2);
-            for (let newNodeId of newNodeIds) {
+            for (const oldId in nodeIdMap) {
+                const newNodeId = nodeIdMap[oldId];
                 const node = nodes.nodeAt(newNodeId);
                 const nodePosX = node.x - mediumX + area.mousePosition.x;
                 const nodePosY = node.y - mediumY + area.mousePosition.y;
                 ModelInterface.graph.setNodeData(newNodeId, NodeEditor.NodeRole.Position, Qt.point(nodePosX, nodePosY));
                 selectedNodes.add(newNodeId);
+            }
+            for (let connection of (clipboard.content as Object)["connections"]) {
+                connection.inNodeId = nodeIdMap[connection.inNodeId];
+                connection.outNodeId = nodeIdMap[connection.outNodeId];
+                ModelInterface.createConnection(connection);
             }
             event.accepted = true;
         }

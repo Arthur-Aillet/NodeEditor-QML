@@ -36,7 +36,7 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   std::shared_ptr<NodeDelegateModelRegistry> dataModelRegistry() { return _registry; }
   NodeDelegateModelRegistry *getRegistry() { return _registry.get(); }
 
-  QSet<ConnectionId> allConnectionIds(NodeId const nodeId) const override;
+  Q_INVOKABLE QSet<ConnectionId> allConnectionIds(NodeId const nodeId) const override;
   QSet<ConnectionId> connections(NodeId nodeId, PortType portType,
                                  PortIndex portIndex) const override;
 
