@@ -55,6 +55,9 @@ qt_add_qml_module(NodeEditor
   data/RegisteredNodeModel.cpp
   data/RegisteredNodeModel.hpp
 
+  nodes/Clipboard.hpp
+  nodes/Clipboard.cpp
+
   RESOURCES
   resources/resources.qrc
 )
@@ -78,7 +81,7 @@ target_include_directories(NodeEditor PUBLIC
 )
 
 target_link_libraries(NodeEditor
-  PUBLIC Qt6::Quick Qt6::Core vivid
+  PUBLIC Qt::Core Qt::Gui Qt::Qml Qt::Quick vivid
 )
 
 target_compile_definitions(NodeEditor PRIVATE GLM_ENABLE_EXPERIMENTAL)

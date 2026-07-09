@@ -8,24 +8,26 @@ Frame {
 
     property alias area: navigableArea
 
+    Keys.forwardTo: [nodeList]
+
     NavigableArea {
         id: navigableArea
         anchors.fill: parent
-        holdingItem: (draftConnectionId.selectedPort !== null) || (nodesId.selectedNodes.size !== 0)
+        holdingItem: (draftConnectionId.selectedPort !== null) || (nodeList.selectedNodes.size !== 0)
 
         ConnectionList {
             area: navigableArea
-            nodes: nodesId
+            nodes: nodeList
         }
 
         DraftConnection {
             id: draftConnectionId
-            nodes: nodesId
+            nodes: nodeList
             area: navigableArea
         }
 
         NodeList {
-            id: nodesId
+            id: nodeList
             area: navigableArea
             draftConnection: draftConnectionId
         }

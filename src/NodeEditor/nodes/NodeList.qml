@@ -8,8 +8,19 @@ Item {
     required property NavigableArea area
 
     property alias selectedNodes: selectedNodes
+    property int counter: 0
+    Clipboard {
+        id: clipboard
+    }
 
     Keys.onPressed: event => {
+        if (event.key == Qt.Key_C) {
+            clipboard.text = counter;
+            counter++;
+        }
+        if (event.key == Qt.Key_V) {
+            console.log(clipboard.text);
+        }
         if (event.key == Qt.Key_Delete || event.key == Qt.Key_Back) {
             for (let id of selectedNodes.inner) {
                 event.accepted = ModelInterface.graph.deleteNode(id);
