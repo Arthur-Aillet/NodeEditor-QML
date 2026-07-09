@@ -13,69 +13,85 @@ Item {
         id: clipboard
     }
 
-    Keys.onPressed: event => {
-        if (event.key == Qt.Key_C && event.modifiers & Qt.ControlModifier) {
-            const selectedNodesJson = [];
-            const connectionsJson = new Set();
-            for (const nodeId of selectedNodes.inner) {
-                selectedNodesJson.push(ModelInterface.graph.saveNode(nodeId));
-            }
-            for (const nodeId of selectedNodes.inner) {
-                for (const connection of ModelInterface.graph.allConnectionIds(nodeId)) {
-                    if (selectedNodes.has(connection.inNodeId) && selectedNodes.has(connection.outNodeId)) {
-                        connectionsJson.add(connection);
-                    }
+    function copySelectedNodes() {
+        const selectedNodesJson = [];
+        const connectionsJson = new Set();
+        for (const nodeId of selectedNodes.inner) {
+            selectedNodesJson.push(ModelInterface.graph.saveNode(nodeId));
+        }
+        for (const nodeId of selectedNodes.inner) {
+            for (const connection of ModelInterface.graph.allConnectionIds(nodeId)) {
+                if (selectedNodes.has(connection.inNodeId) && selectedNodes.has(connection.outNodeId)) {
+                    connectionsJson.add(connection);
                 }
             }
-            clipboard.content = {
-                "nodes": selectedNodesJson,
-                "connections": Array.from(connectionsJson.values())
-            };
+        }
+        clipboard.content = {
+            "nodes": selectedNodesJson,
+            "connections": Array.from(connectionsJson.values())
+        };
+    }
+
+    function pasteNodes(): bool {
+        const nodeIdMap = new Map();
+        let smallestX = Infinity;
+        let smallestY = Infinity;
+        let largestX = -Infinity;
+        let largestY = -Infinity;
+
+        if (!clipboard.content)
+            return false;
+        const copiedNodes = (clipboard.content as Object)["nodes"];
+        if (!copiedNodes || copiedNodes.length == 0)
+            return false;
+        selectedNodes.clear();
+        for (const nodeJson of copiedNodes) {
+            const newNodeId = ModelInterface.graph.loadNode(nodeJson);
+            nodeIdMap[nodeJson["id"]] = newNodeId;
+            const node = nodes.nodeAt(newNodeId);
+            if (node.x < smallestX)
+                smallestX = node.x;
+            if (node.y < smallestY)
+                smallestY = node.y;
+            if ((node.x + node.width) > largestX)
+                largestX = node.x + node.width;
+            if ((node.y + node.height) > largestY)
+                largestY = node.y + node.height;
+        }
+        const mediumX = smallestX + ((largestX - smallestX) / 2);
+        const mediumY = smallestY + ((largestY - smallestY) / 2);
+        for (const oldId in nodeIdMap) {
+            const newNodeId = nodeIdMap[oldId];
+            const node = nodes.nodeAt(newNodeId);
+            const nodePosX = node.x - mediumX + area.mousePosition.x;
+            const nodePosY = node.y - mediumY + area.mousePosition.y;
+            ModelInterface.graph.setNodeData(newNodeId, NodeEditor.NodeRole.Position, Qt.point(nodePosX, nodePosY));
+            selectedNodes.add(newNodeId);
+        }
+        for (let connection of (clipboard.content as Object)["connections"]) {
+            connection.inNodeId = nodeIdMap[connection.inNodeId];
+            connection.outNodeId = nodeIdMap[connection.outNodeId];
+            ModelInterface.createConnection(connection);
+        }
+        return true;
+    }
+
+    Keys.onPressed: event => {
+        if (event.key == Qt.Key_C && event.modifiers & Qt.ControlModifier) {
+            copySelectedNodes();
             event.accepted = true;
         }
 
-        if (event.key == Qt.Key_V && event.modifiers & Qt.ControlModifier) {
-            const nodeIdMap = new Map();
-            let smallestX = Infinity;
-            let smallestY = Infinity;
-            let largestX = -Infinity;
-            let largestY = -Infinity;
-
-            if (!clipboard.content)
-                return;
-            const copiedNodes = (clipboard.content as Object)["nodes"];
-            if (!copiedNodes || copiedNodes.length == 0)
-                return;
+        if (event.key == Qt.Key_X && event.modifiers & Qt.ControlModifier) {
+            copySelectedNodes();
+            for (let id of selectedNodes.inner) {
+                event.accepted = ModelInterface.graph.deleteNode(id);
+            }
             selectedNodes.clear();
-            for (const nodeJson of copiedNodes) {
-                const newNodeId = ModelInterface.graph.loadNode(nodeJson);
-                nodeIdMap[nodeJson["id"]] = newNodeId;
-                const node = nodes.nodeAt(newNodeId);
-                if (node.x < smallestX)
-                    smallestX = node.x;
-                if (node.y < smallestY)
-                    smallestY = node.y;
-                if ((node.x + node.width) > largestX)
-                    largestX = node.x + node.width;
-                if ((node.y + node.height) > largestY)
-                    largestY = node.y + node.height;
-            }
-            const mediumX = smallestX + ((largestX - smallestX) / 2);
-            const mediumY = smallestY + ((largestY - smallestY) / 2);
-            for (const oldId in nodeIdMap) {
-                const newNodeId = nodeIdMap[oldId];
-                const node = nodes.nodeAt(newNodeId);
-                const nodePosX = node.x - mediumX + area.mousePosition.x;
-                const nodePosY = node.y - mediumY + area.mousePosition.y;
-                ModelInterface.graph.setNodeData(newNodeId, NodeEditor.NodeRole.Position, Qt.point(nodePosX, nodePosY));
-                selectedNodes.add(newNodeId);
-            }
-            for (let connection of (clipboard.content as Object)["connections"]) {
-                connection.inNodeId = nodeIdMap[connection.inNodeId];
-                connection.outNodeId = nodeIdMap[connection.outNodeId];
-                ModelInterface.createConnection(connection);
-            }
-            event.accepted = true;
+        }
+
+        if (event.key == Qt.Key_V && event.modifiers & Qt.ControlModifier) {
+            event.accepted = pasteNodes();
             nodes.nodeAt(selectedNodes.inner[0]).focus = true;
         }
 
