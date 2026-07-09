@@ -3,22 +3,29 @@
 #include <QClipboard>
 #include <QGuiApplication>
 #include <QObject>
+#include <qjsondocument.h>
+#include <qjsonobject.h>
 
 Clipboard::Clipboard(QObject *parent) : QObject(parent) {}
 
-QString Clipboard::text() {
-  QString type = "text/cute";
+QJsonObject Clipboard::content() {
+  QString type = "text/node-graph";
   auto mime = QGuiApplication::clipboard()->mimeData(QClipboard::Clipboard);
   auto data = mime->data(type);
-  return QString::fromStdString(data.toStdString());
+  QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
+  if (jsonDoc.isNull()) {
+    return QJsonObject();
+  }
+  return jsonDoc.object();
 }
 
-void Clipboard::setText(QString text) {
-  QString type = "text/cute";
-  QByteArray csvData(text.toStdString());
+void Clipboard::setContent(QJsonObject json) {
+  QString type = "text/node-graph";
+  QJsonDocument jsonDoc(json);
+  QByteArray data = jsonDoc.toJson(QJsonDocument::Compact);
 
   QMimeData *mimeData = new QMimeData;
-  mimeData->setData(type, csvData);
+  mimeData->setData(type, data);
 
   QGuiApplication::clipboard()->setMimeData(mimeData, QClipboard::Clipboard);
 }

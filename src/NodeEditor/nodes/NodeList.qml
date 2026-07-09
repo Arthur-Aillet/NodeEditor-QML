@@ -8,19 +8,60 @@ Item {
     required property NavigableArea area
 
     property alias selectedNodes: selectedNodes
-    property int counter: 0
+
     Clipboard {
         id: clipboard
     }
 
     Keys.onPressed: event => {
-        if (event.key == Qt.Key_C) {
-            clipboard.text = counter;
-            counter++;
+        if (event.key == Qt.Key_C && event.modifiers & Qt.ControlModifier) {
+            const selectedNodesJson = [];
+            for (let nodeId of selectedNodes.inner) {
+                selectedNodesJson.push(ModelInterface.graph.saveNode(nodeId));
+            }
+            clipboard.content = {
+                "nodes": selectedNodesJson
+            };
+            event.accepted = true;
         }
-        if (event.key == Qt.Key_V) {
-            console.log(clipboard.text);
+        if (event.key == Qt.Key_V && event.modifiers & Qt.ControlModifier) {
+            const newNodeIds = [];
+            let smallestX = Infinity;
+            let smallestY = Infinity;
+            let largestX = -Infinity;
+            let largestY = -Infinity;
+
+            if (!clipboard.content)
+                return;
+            const copiedNodes = (clipboard.content as Object)["nodes"];
+            if (!copiedNodes || copiedNodes.length == 0)
+                return;
+            selectedNodes.clear();
+            for (let nodeJson of copiedNodes) {
+                const newNodeId = ModelInterface.graph.loadNode(nodeJson);
+                newNodeIds.push(newNodeId);
+                const node = nodes.nodeAt(newNodeId);
+                if (node.x < smallestX)
+                    smallestX = node.x;
+                if (node.y < smallestY)
+                    smallestY = node.y;
+                if ((node.x + node.width) > largestX)
+                    largestX = node.x + node.width;
+                if ((node.y + node.height) > largestY)
+                    largestY = node.y + node.height;
+            }
+            const mediumX = smallestX + ((largestX - smallestX) / 2);
+            const mediumY = smallestY + ((largestY - smallestY) / 2);
+            for (let newNodeId of newNodeIds) {
+                const node = nodes.nodeAt(newNodeId);
+                const nodePosX = node.x - mediumX + area.mousePosition.x;
+                const nodePosY = node.y - mediumY + area.mousePosition.y;
+                ModelInterface.graph.setNodeData(newNodeId, NodeEditor.NodeRole.Position, Qt.point(nodePosX, nodePosY));
+                selectedNodes.add(newNodeId);
+            }
+            event.accepted = true;
         }
+
         if (event.key == Qt.Key_Delete || event.key == Qt.Key_Back) {
             for (let id of selectedNodes.inner) {
                 event.accepted = ModelInterface.graph.deleteNode(id);

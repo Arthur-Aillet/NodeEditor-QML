@@ -145,7 +145,7 @@ class AbstractGraphModel : public QObject {
    * Reimplement the function if you want to store/restore the node's
    * inner state during undo/redo node deletion operations.
    */
-  virtual QJsonObject saveNode(NodeId const) const { return {}; }
+  Q_INVOKABLE virtual QJsonObject saveNode(NodeId const) const { return {}; }
 
   /**
    * Reimplement the function if you want to support:
@@ -169,7 +169,7 @@ class AbstractGraphModel : public QObject {
    * The function must do almost exacly the same thing as the normal addNode().
    * The main difference is in a model-specific `internal-data` processing.
    */
-  virtual NodeId loadNode(QJsonObject const &) { return 0; }
+  Q_INVOKABLE virtual NodeId loadNode(QJsonObject const &) { return 0; }
 
   virtual bool loopsEnabled() const { return true; }
 
