@@ -28,19 +28,19 @@ Item {
             selectedNodes.clear();
         }
         if (event.key == Qt.Key_Left) {
-            moveSelectedNodes(-5, 0, undefined, true);
+            moveSelectedNodes(-5, 0, undefined);
             event.accepted = true;
         }
         if (event.key == Qt.Key_Right) {
-            moveSelectedNodes(5, 0, undefined, true);
+            moveSelectedNodes(5, 0, undefined);
             event.accepted = true;
         }
         if (event.key == Qt.Key_Up) {
-            moveSelectedNodes(0, -5, undefined, true);
+            moveSelectedNodes(0, -5, undefined);
             event.accepted = true;
         }
         if (event.key == Qt.Key_Down) {
-            moveSelectedNodes(0, 5, undefined, true);
+            moveSelectedNodes(0, 5, undefined);
             event.accepted = true;
         }
     }
@@ -61,19 +61,11 @@ Item {
         selectedNodes.clear();
     }
 
-    function moveSelectedNodes(xOffset: int, yOffset: int, snapToGrid: bool) {
+    function moveSelectedNodes(xOffset: int, yOffset: int) {
         for (let nodeId of selectedNodes.inner) {
             let pos = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Position);
-            if (snapToGrid) {
-                pos.x = Math.ceil((pos.x + xOffset) / 5) * 5;
-            } else {
-                pos.x += xOffset;
-            }
-            if (snapToGrid) {
-                pos.y = Math.ceil((pos.y + yOffset) / 5) * 5;
-            } else {
-                pos.y += yOffset;
-            }
+            pos.x += xOffset;
+            pos.y += yOffset;
             ModelInterface.graph.setNodeData(nodeId, NodeEditor.NodeRole.Position, pos);
         }
     }

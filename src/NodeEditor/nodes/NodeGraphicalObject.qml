@@ -126,7 +126,7 @@ MouseArea {
 
     onPositionChanged: mouse => {
         if (drag.active) {
-            nodes.moveSelectedNodes(x - xPrev, y - yPrev, false);
+            nodes.moveSelectedNodes(x - xPrev, y - yPrev);
             xPrev = x;
             yPrev = y;
         }
