@@ -9,6 +9,7 @@ qt_add_qml_module(app
   AppLayout.qml
   Timeline.qml
   NodeView.qml
+  App.qml
 
   DEPENDENCIES 
   QtQuick QtQuick.Controls QtQuick.Layout QtQuick.Dialogs

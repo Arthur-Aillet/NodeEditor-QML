@@ -8,15 +8,6 @@ qt_add_executable(CutieDesigner
   main.cpp
 )
 
-qt_add_qml_module(CutieDesigner
-  URI CutieDesigner
-  QML_FILES
-  Main.qml
-
-  SOURCES
-  DEPENDENCIES QtQuick CutieDesigner.App
-)
-
 target_link_directories(CutieDesigner
   PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}

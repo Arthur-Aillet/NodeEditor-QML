@@ -121,7 +121,7 @@ int main(int argc, char *argv[]) {
   FileManager fileManager(graph);
 
   engine.setInitialProperties({{"fileManager", QVariant::fromValue(&fileManager)}});
-  engine.loadFromModule("CutieDesigner", "Main");
+  engine.loadFromModule("CutieDesigner.App", "App");
 
   QObject &window = *engine.rootObjects().first();
   TimeController::linkCutieWindow(CutieWindow::getCutieWindow(&engine));
