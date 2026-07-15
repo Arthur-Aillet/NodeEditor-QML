@@ -170,6 +170,19 @@ Item {
         }
     }
 
+    Component.onCompleted: {
+        for (let nodeId of ModelInterface.graph.allNodeIds()) {
+            nodeModel.append({
+                "modelId": nodeId
+            });
+
+            const position = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Position);
+            const current = nodes.nodeAt(nodeId);
+            current.x = position.x;
+            current.y = position.y;
+        }
+    }
+
     Connections {
         target: ModelInterface.graph
 

@@ -76,7 +76,7 @@ class AbstractGraphModel : public QObject {
    * possible to trace back to the model's internal representation of
    * the node.
    */
-  virtual QSet<NodeId> allNodeIds() const = 0;
+  Q_INVOKABLE virtual QSet<NodeId> allNodeIds() const = 0;
 
   /// Creates a new node instance in the derived class.
   /**
