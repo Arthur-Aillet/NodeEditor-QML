@@ -45,6 +45,7 @@
 #include <QtQml>
 #include <QtWidgets/QApplication>
 #include <memory>
+#include <qquickitem.h>
 #include <qvariant.h>
 
 static std::shared_ptr<NodeDelegateModelRegistry> createRegistery(QQmlEngine &engine) {
@@ -118,6 +119,9 @@ int main(int argc, char *argv[]) {
   graph->setNodeData(source, NodeRole::Position, QPointF(750, 225));
   graph->setNodeData(source, NodeRole::Flags, NodeFlags({NodeFlag::Locked}).toInt());
   auto display = graph->delegateModel<SurfaceDisplayNode>(source);
+
+  engine.rootContext()->setContextProperty("cameraHandler",
+                                           window.property("cameraHandler").value<QQuickItem *>());
 
   auto loader = window.property("objectLoader").value<SurfaceLoader *>();
   QObject::connect(display, SIGNAL(contentChanged(SurfaceData *)), loader,

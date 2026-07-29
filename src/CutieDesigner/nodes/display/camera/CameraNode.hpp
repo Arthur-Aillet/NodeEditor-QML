@@ -1,8 +1,8 @@
 #pragma once
 
-#include "CutieWindow.hpp"
 #include "NodeDelegateModel.hpp"
 #include "SurfaceData.hpp"
+#include <QProperty>
 
 class CameraNode : public NodeDelegateModel {
   Q_OBJECT
@@ -10,10 +10,11 @@ class CameraNode : public NodeDelegateModel {
   QML_UNCREATABLE("NodeDelegateModel")
 
   public:
+  Q_PROPERTY(QQuickItem *cameraHandler MEMBER _cameraHandler CONSTANT)
+
   CameraNode(QQmlEngine *engine);
   ~CameraNode() = default;
 
-  public:
   bool captionVisible() const override { return true; }
   QString name() const override { return "Camera"; }
 
@@ -28,6 +29,6 @@ class CameraNode : public NodeDelegateModel {
 
   private:
   std::shared_ptr<SurfaceData> _content = nullptr;
-  CutieWindow *_window = nullptr;
   QQmlEngine *_engine;
+  QQuickItem *_cameraHandler;
 };

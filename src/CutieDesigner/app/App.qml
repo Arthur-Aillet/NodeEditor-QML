@@ -1,6 +1,7 @@
 import QtQuick
 
 import CutieDesigner.App
+import CutieDesigner.Nodes.Display
 import CutieDesigner.App.FileManager
 import CutieUiModule
 
@@ -14,8 +15,13 @@ CutieWindow {
 
     property alias objectLoader: appLayout.objectLoader
     property alias sceneContent: appLayout.sceneContent
+    property alias cameraHandler: cameraHandler
 
     property FileManager fileManager
+
+    CameraHandler {
+        id: cameraHandler
+    }
 
     TopBar {
         id: topBarId
@@ -25,6 +31,7 @@ CutieWindow {
         anchors.top: parent.top
         height: 30
     }
+
     AppLayout {
         id: appLayout
         topBar: topBarId

@@ -11,7 +11,8 @@ qt_add_qml_module(display
   fill/FillSurface.qml
   shaderEffects/Blend/Blend.qml
   shaderEffects/Blend/BlendControl.qml
-  camera/Camera.qml
+  camera/CameraOutput.qml
+  camera/CameraHandler.qml
   image/ImageDisplay.qml
   image/ImageDisplayControl.qml
   Stack/Stack.qml

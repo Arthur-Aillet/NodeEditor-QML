@@ -10,12 +10,11 @@ qt_add_qml_module(app
   Timeline.qml
   NodeView.qml
   App.qml
-
-  DEPENDENCIES 
+  DEPENDENCIES
   QtQuick QtQuick.Controls QtQuick.Layout QtQuick.Dialogs
   CutieDesigner.Nodes.Display CutieDesigner.Stats CutieDesigner.App.Menu CutieDesigner.App.FileManager
   CutieUiModule
-  NodeEditor 
+  NodeEditor
 )
 
 target_link_directories(app
