@@ -44,18 +44,8 @@
 #include <QQuickItem>
 #include <QtQml>
 #include <QtWidgets/QApplication>
-#include <gst/gst.h>
 #include <memory>
 #include <qvariant.h>
-
-// Must be run after QApplication setup
-static void setupGstreamer() {
-  gst_init(nullptr, nullptr);
-
-  // Register qml6 gstreamer plugin
-  GstElement *sink = gst_element_factory_make("qml6glsink", NULL);
-  gst_object_unref(sink);
-}
 
 static std::shared_ptr<NodeDelegateModelRegistry> createRegistery(QQmlEngine &engine) {
   auto reg = std::make_shared<NodeDelegateModelRegistry>(&engine);
@@ -100,8 +90,6 @@ int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
   QQmlApplicationEngine engine;
 
-  setupGstreamer();
-
   QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
 
   engine.rootContext()->setContextProperty("app", &app);
@@ -136,7 +124,6 @@ int main(int argc, char *argv[]) {
                    SLOT(setSurfaceData(SurfaceData *)));
 
   int status = app.exec();
-  gst_deinit();
 
   // Delete first surface loader to unload the visual tree
   // before the node tree to prevent missing properties

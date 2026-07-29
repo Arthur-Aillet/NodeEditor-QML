@@ -1,5 +1,4 @@
 #include "VideoDisplayNode.hpp"
-#include "GstreamerController.hpp"
 #include "SurfaceData.hpp"
 
 #include <QtWidgets/QLabel>
@@ -10,10 +9,6 @@
 #include <qtimer.h>
 #include <qtmetamacros.h>
 
-void VideoDisplayNode::componentLoaded(QQuickItem *videoItem) {
-  _controller->linkQtSink(videoItem);
-}
-
 VideoDisplayNode::VideoDisplayNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
   _window = CutieWindow::getCutieWindow(engine);
   _engine = engine;
@@ -21,13 +16,9 @@ VideoDisplayNode::VideoDisplayNode(QQmlEngine *engine) : NodeDelegateModel(engin
   if (!_window)
     return;
 
-  auto comp =
-      std::make_unique<QQmlComponent>(_engine, "CutieDesigner.Nodes.Display", "VideoDisplay");
-  _content = std::make_shared<SurfaceData>(std::move(comp),
-                                           QVariantMap{{"node", QVariant::fromValue(this)}});
-  QObject::connect(_content.get(), SIGNAL(componentLoaded(QQuickItem *)), this,
-                   SLOT(componentLoaded(QQuickItem *)));
-  _controller = std::make_unique<GstreamerController>(_window);
+  _content = std::make_shared<SurfaceData>(
+      std::make_unique<QQmlComponent>(_engine, "CutieDesigner.Nodes.Display", "VideoDisplay"),
+      QVariantMap{{"node", QVariant::fromValue(this)}});
 }
 
 unsigned int VideoDisplayNode::nPorts(PortType portType) const {

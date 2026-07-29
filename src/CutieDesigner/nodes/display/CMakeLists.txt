@@ -13,7 +13,7 @@ qt_add_qml_module(display
   shaderEffects/Blend/BlendControl.qml
   video/VideoDisplay.qml
   image/ImageDisplay.qml
-  image/ImageDisplayControl.qml  
+  image/ImageDisplayControl.qml
   Stack/Stack.qml
   Stack/StackControl.qml
 
@@ -40,12 +40,10 @@ qt_add_qml_module(display
   shaderEffects/Blend/BlendNode.hpp
   video/VideoDisplayNode.hpp
   video/VideoDisplayNode.cpp
-  video/GstreamerController.hpp
-  video/GstreamerController.cpp
   image/ImageDisplayNode.hpp
   image/ImageDisplayNode.cpp
 
-  DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieUiModule CutieDesigner.Datatypes org.freedesktop.gstreamer.Qt6GLVideoItem
+  DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieUiModule CutieDesigner.Datatypes
   RESOURCES
   AType/Ukrug/UkrugPointsData.json
   AType/Ukrug/ukrug.vert.qsb
@@ -65,14 +63,10 @@ target_link_directories(display
   PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${LIB_TARGET_LINK_DIRECTORIES}
-  ${GSTREAMER_LIBRARY_DIRS}
 )
-
-target_compile_options(display PRIVATE ${GSTREAMER_CFLAGS})
 
 target_include_directories(display
   PUBLIC
-  ${GSTREAMER_INCLUDE_DIRS}
   Dimension
   AType
   AType/Ukrug
@@ -96,6 +90,5 @@ target_link_libraries(display PUBLIC
   CutieUiModule
   vivid
   datatypes
-  ${GSTREAMER_LIBRARIES}
 )
 

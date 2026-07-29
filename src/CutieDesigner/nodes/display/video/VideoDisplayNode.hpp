@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CutieWindow.hpp"
-#include "GstreamerController.hpp"
 #include "NodeDelegateModel.hpp"
 #include "SurfaceData.hpp"
 
@@ -27,17 +26,8 @@ class VideoDisplayNode : public NodeDelegateModel {
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
   void initPipeline();
 
-  Q_INVOKABLE void gettingDestroyed(QQuickItem *item) {
-    qDebug() << "I'm getting destroyed" << item;
-    _controller->unlinkQtSink(item);
-  }
-
-  public slots:
-  void componentLoaded(QQuickItem *item);
-
   private:
   std::shared_ptr<SurfaceData> _content = nullptr;
   CutieWindow *_window = nullptr;
-  std::unique_ptr<GstreamerController> _controller = nullptr;
   QQmlEngine *_engine;
 };

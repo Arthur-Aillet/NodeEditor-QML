@@ -39,13 +39,10 @@ target_link_directories(process
   PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${LIB_TARGET_LINK_DIRECTORIES}
-  ${GSTREAMER_LIBRARY_DIRS}
 )
-  
+
 target_include_directories(process
   PUBLIC
-  ${GSTREAMER_INCLUDE_DIRS}
-
   color
   math
   TextTyper
@@ -62,7 +59,6 @@ target_link_libraries(process PUBLIC
   CutieUiModule
   vivid
   datatypes
-  ${GSTREAMER_LIBRARIES}
 )
 
 target_compile_definitions(process PRIVATE GLM_ENABLE_EXPERIMENTAL)
