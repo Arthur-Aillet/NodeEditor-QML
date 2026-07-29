@@ -4,18 +4,18 @@
 #include "NodeDelegateModel.hpp"
 #include "SurfaceData.hpp"
 
-class VideoDisplayNode : public NodeDelegateModel {
+class CameraNode : public NodeDelegateModel {
   Q_OBJECT
   QML_ELEMENT
   QML_UNCREATABLE("NodeDelegateModel")
 
   public:
-  VideoDisplayNode(QQmlEngine *engine);
-  ~VideoDisplayNode() = default;
+  CameraNode(QQmlEngine *engine);
+  ~CameraNode() = default;
 
   public:
   bool captionVisible() const override { return true; }
-  QString name() const override { return "Video"; }
+  QString name() const override { return "Camera"; }
 
   QString portCaption(PortType portType, PortIndex portIndex) const override;
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }

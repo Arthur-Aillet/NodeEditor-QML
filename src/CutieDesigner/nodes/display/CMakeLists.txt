@@ -11,7 +11,7 @@ qt_add_qml_module(display
   fill/FillSurface.qml
   shaderEffects/Blend/Blend.qml
   shaderEffects/Blend/BlendControl.qml
-  video/VideoDisplay.qml
+  camera/Camera.qml
   image/ImageDisplay.qml
   image/ImageDisplayControl.qml
   Stack/Stack.qml
@@ -38,8 +38,8 @@ qt_add_qml_module(display
   surface/SurfaceLoader.cpp
   shaderEffects/Blend/BlendNode.cpp
   shaderEffects/Blend/BlendNode.hpp
-  video/VideoDisplayNode.hpp
-  video/VideoDisplayNode.cpp
+  camera/CameraNode.hpp
+  camera/CameraNode.cpp
   image/ImageDisplayNode.hpp
   image/ImageDisplayNode.cpp
 
@@ -75,7 +75,7 @@ target_include_directories(display
   Stack
   shaderEffects
   shaderEffects/Blend
-  video
+  camera
   image
 )
 
