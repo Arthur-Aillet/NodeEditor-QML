@@ -4,7 +4,11 @@
 #include "SurfaceData.hpp"
 
 #include <QUrl>
+#include <QVideoSink>
+#include <QtAVPlayer/qavplayer.h>
+#include <QtMultimediaQuick/private/qquickvideooutput_p.h>
 #include <optional>
+#include <qtmetamacros.h>
 
 class VideoDisplayNode : public NodeDelegateModel {
   Q_OBJECT
@@ -15,6 +19,7 @@ class VideoDisplayNode : public NodeDelegateModel {
   Q_PROPERTY(QUrl source READ source WRITE setSource NOTIFY sourceChanged)
   Q_PROPERTY(QString sourceFileName READ sourceFileName NOTIFY sourceChanged)
   Q_PROPERTY(bool looping READ looping WRITE setLooping NOTIFY loopingChanged)
+  Q_PROPERTY(double playbackRate READ playbackRate NOTIFY playbackRateChanged)
 
   VideoDisplayNode(QQmlEngine *engine);
   ~VideoDisplayNode() = default;
@@ -38,13 +43,21 @@ class VideoDisplayNode : public NodeDelegateModel {
   QString sourceFileName();
   bool looping();
   void setLooping(bool looping);
+  double playbackRate();
+
+  Q_INVOKABLE void newVideoOutput(QQuickVideoOutput *output);
+  Q_INVOKABLE void removeVideoOutput(QQuickVideoOutput *output);
 
   signals:
   void sourceChanged();
   void loopingChanged();
+  void playbackRateChanged();
 
   private:
+  std::vector<QQuickVideoOutput *> _sinks;
+  QAVPlayer _player;
   bool _looping = true;
   std::optional<QUrl> _sourceUrl = std::nullopt;
+  double _playbackRate = 1.0;
   std::shared_ptr<SurfaceData> _content = nullptr;
 };

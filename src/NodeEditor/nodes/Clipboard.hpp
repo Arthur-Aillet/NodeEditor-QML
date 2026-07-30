@@ -9,7 +9,7 @@ class Clipboard : public QObject {
   QML_ELEMENT
 
   public:
-  Q_PROPERTY(QJsonObject content READ content WRITE setContent CONSTANT)
+  Q_PROPERTY(QJsonObject content READ content WRITE setContent)
 
   Clipboard(QObject *parent = nullptr);
 

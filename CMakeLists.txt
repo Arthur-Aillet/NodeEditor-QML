@@ -7,17 +7,18 @@ set(FETCHCONTENT_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_subdirectory(dependencies)
-
 project(CutieDesigner VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-# set(CMAKE_PREFIX_PATH "~/Qt/6.11.0/gcc_64/")
-# set(LD_LIBRARY_PATH "~/Qt/6.11.0/gcc_64/lib")
+list(APPEND CMAKE_PREFIX_PATH "~/Qt/6.11.0/gcc_64/lib/cmake")
+# set(CMAKE_PREFIX_PATH "/usr/lib/x86_64-linux-gnu/")
+set(LD_LIBRARY_PATH "~/Qt/6.11.0/gcc_64/lib")
 set(QT_QML_GENERATE_QMLLS_INI ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick Core Gui QuickWidgets QuickControls2 Qml ShaderTools)
+find_package(Qt6 REQUIRED COMPONENTS Quick Core Gui QuickWidgets QuickControls2 Qml ShaderTools CoreTools Multimedia MultimediaQuickPrivate QmlTools)
+
+add_subdirectory(dependencies)
 
 cmake_policy(SET CMP0071 NEW)
 

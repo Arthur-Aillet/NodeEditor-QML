@@ -2,24 +2,16 @@ import QtQuick
 import CutieDesigner.Nodes.Display
 import QtMultimedia
 
-Video {
+VideoOutput {
     id: videoDisplay
     anchors.fill: parent
     required property VideoDisplayNode node
-    source: node.source
-
-    onSourceChanged: {
-        console.log("Source changed");
-        if (source) {
-            videoDisplay.play();
-            console.log("PLay");
-        }
+    objectName: "videoOutput"
+    Component.onCompleted: {
+        node.newVideoOutput(videoDisplay);
     }
 
-    playbackRate: 1
-    loops: node.looping ? MediaPlayer.Infinite : 1
-
-    Component.onCompleted: {
-        console.log("completed");
+    Component.onDestruction: {
+        node.removeVideoOutput(videoDisplay);
     }
 }

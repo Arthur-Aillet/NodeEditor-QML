@@ -24,5 +24,6 @@ FlexboxLayout {
     CheckBox {
         checked: videoDisplayControl.node.looping
         text: qsTr("looping")
+        onCheckedChanged: videoDisplayControl.node.looping = checked
     }
 }

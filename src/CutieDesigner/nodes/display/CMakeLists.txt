@@ -21,6 +21,7 @@ qt_add_qml_module(display
   Stack/StackControl.qml
 
   SOURCES
+  ${QT_AVPLAYER_SOURCES}
   AType/Ukrug/UkrugNode.hpp
   AType/Ukrug/UkrugNode.cpp
   AType/Ukrug/UkrugPointsList.hpp
@@ -55,7 +56,6 @@ qt_add_qml_module(display
   AType/Ukrug/ukrug.frag.qsb
 )
 
-
 qt6_add_shaders(display "display_shaders"
   PREFIX
     "/qt/qml/CutieDesigner/Nodes/Display"
@@ -83,7 +83,12 @@ target_include_directories(display
   camera
   image
   video
+  ${QT_AVPLAYER_DIR}/..
+  ${Qt6MultimediaQuick_PRIVATE_INCLUDE_DIRS}
+  ${Qt6Multimedia_PRIVATE_INCLUDE_DIRS}
 )
+
+target_compile_definitions(display PRIVATE QT_AVPLAYER_MULTIMEDIA)
 
 target_link_libraries(display PUBLIC
   Qt6::Core
@@ -91,10 +96,12 @@ target_link_libraries(display PUBLIC
   Qt6::Quick
   Qt6::QuickWidgets
   Qt6::Qml
+  Qt6::Multimedia
+  Qt6::MultimediaQuickPrivate
   Qt6::OpenGL
   NodeEditor
   CutieUiModule
   vivid
   datatypes
+  ${QT_AVPLAYER_LIBS}
 )
-
