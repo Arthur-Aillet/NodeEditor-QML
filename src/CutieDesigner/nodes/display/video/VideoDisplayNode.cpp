@@ -35,7 +35,7 @@ QVariantMap VideoDisplayNode::componentInitialProperties() {
   return {{"node", QVariant::fromValue(this)}};
 };
 
-QUrl VideoDisplayNode::getSource() {
+QUrl VideoDisplayNode::source() {
   if (_sourceUrl.has_value()) {
     return _sourceUrl.value();
   } else {
@@ -50,10 +50,18 @@ void VideoDisplayNode::setSource(QUrl url) {
   emit sourceChanged();
 }
 
-QString VideoDisplayNode::getSourceFileName() {
+QString VideoDisplayNode::sourceFileName() {
   if (_sourceUrl.has_value()) {
     return _sourceUrl.value().fileName();
   } else {
     return "";
   }
+}
+
+bool VideoDisplayNode::looping() { return _looping; }
+void VideoDisplayNode::setLooping(bool looping) {
+  if (looping == _looping)
+    return;
+  _looping = looping;
+  emit loopingChanged();
 }

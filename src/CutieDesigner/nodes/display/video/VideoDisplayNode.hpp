@@ -12,8 +12,9 @@ class VideoDisplayNode : public NodeDelegateModel {
   QML_UNCREATABLE("NodeDelegateModel")
 
   public:
-  Q_PROPERTY(QUrl source READ getSource WRITE setSource NOTIFY sourceChanged)
-  Q_PROPERTY(QString sourceFileName READ getSourceFileName NOTIFY sourceChanged)
+  Q_PROPERTY(QUrl source READ source WRITE setSource NOTIFY sourceChanged)
+  Q_PROPERTY(QString sourceFileName READ sourceFileName NOTIFY sourceChanged)
+  Q_PROPERTY(bool looping READ looping WRITE setLooping NOTIFY loopingChanged)
 
   VideoDisplayNode(QQmlEngine *engine);
   ~VideoDisplayNode() = default;
@@ -32,14 +33,18 @@ class VideoDisplayNode : public NodeDelegateModel {
   QQmlComponent embeddedComponent(QQmlEngine *engine) override;
   QVariantMap componentInitialProperties() override;
 
-  QUrl getSource();
+  QUrl source();
   void setSource(QUrl url);
-  QString getSourceFileName();
+  QString sourceFileName();
+  bool looping();
+  void setLooping(bool looping);
 
   signals:
   void sourceChanged();
+  void loopingChanged();
 
   private:
+  bool _looping = true;
   std::optional<QUrl> _sourceUrl = std::nullopt;
   std::shared_ptr<SurfaceData> _content = nullptr;
 };

@@ -17,6 +17,7 @@ Video {
     }
 
     playbackRate: 1
+    loops: node.looping ? MediaPlayer.Infinite : 1
 
     Component.onCompleted: {
         console.log("completed");
