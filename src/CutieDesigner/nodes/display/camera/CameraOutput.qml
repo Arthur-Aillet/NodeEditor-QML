@@ -7,7 +7,11 @@ Item {
     required property CameraNode node
 
     Component.onCompleted: {
-        (node.cameraHandler as CameraHandler).camera.start();
+        (node.cameraHandler as CameraHandler).refCount += 1;
+    }
+
+    Component.onDestruction: {
+        (node.cameraHandler as CameraHandler).refCount -= 1;
     }
 
     ShaderEffectSource {
