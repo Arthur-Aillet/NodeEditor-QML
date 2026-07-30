@@ -6,11 +6,4 @@ Image {
     anchors.fill: parent
     required property ImageDisplayNode node
     source: node.source
-
-    // Connections {
-    //     target: imageDisplay.node
-    //     function onSourceChanged() {
-    //         imageDisplay.source = imageDisplay.node.source;
-    //     }
-    // }
 }

@@ -15,6 +15,8 @@ qt_add_qml_module(display
   camera/CameraHandler.qml
   image/ImageDisplay.qml
   image/ImageDisplayControl.qml
+  video/VideoDisplay.qml
+  video/VideoDisplayControl.qml
   Stack/Stack.qml
   Stack/StackControl.qml
 
@@ -43,6 +45,8 @@ qt_add_qml_module(display
   camera/CameraNode.cpp
   image/ImageDisplayNode.hpp
   image/ImageDisplayNode.cpp
+  video/VideoDisplayNode.hpp
+  video/VideoDisplayNode.cpp
 
   DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieUiModule CutieDesigner.Datatypes
   RESOURCES
@@ -78,6 +82,7 @@ target_include_directories(display
   shaderEffects/Blend
   camera
   image
+  video
 )
 
 target_link_libraries(display PUBLIC

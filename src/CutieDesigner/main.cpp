@@ -37,6 +37,7 @@
 #include "SurfaceLoader.hpp"
 #include "TextTyperNode.hpp"
 #include "UkrugNode.hpp"
+#include "VideoDisplayNode.hpp"
 
 #include "FileManager.hpp"
 
@@ -82,6 +83,7 @@ static std::shared_ptr<NodeDelegateModelRegistry> createRegistery(QQmlEngine &en
   reg->registerModel<BlendNode>("Process");
   reg->registerModel<CameraNode>("Display");
   reg->registerModel<FillNode>("Display");
+  reg->registerModel<VideoDisplayNode>("Display");
   reg->registerModel<StackNode>("Display");
   reg->registerModel<ImageDisplayNode>("Display");
   return reg;

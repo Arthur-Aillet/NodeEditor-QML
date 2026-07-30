@@ -1,14 +1,6 @@
 #include "ImageDisplayNode.hpp"
 #include "SurfaceData.hpp"
 
-#include <QtWidgets/QLabel>
-#include <memory>
-#include <qobject.h>
-#include <qqmlcomponent.h>
-#include <qquickitem.h>
-#include <qtimer.h>
-#include <qtmetamacros.h>
-
 ImageDisplayNode::ImageDisplayNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
   _content = std::make_shared<SurfaceData>(
       std::make_unique<QQmlComponent>(engine, "CutieDesigner.Nodes.Display", "ImageDisplay"),
