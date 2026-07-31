@@ -1,0 +1,180 @@
+{
+    "connections": [
+        {
+            "inNodeId": 1,
+            "inPortIndex": 0,
+            "outNodeId": 2,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 3,
+            "inPortIndex": 1,
+            "outNodeId": 2,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 0,
+            "inPortIndex": 0,
+            "outNodeId": 3,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 4,
+            "inPortIndex": 1,
+            "outNodeId": 1,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 7,
+            "inPortIndex": 0,
+            "outNodeId": 8,
+            "outPortIndex": 3
+        },
+        {
+            "inNodeId": 3,
+            "inPortIndex": 0,
+            "outNodeId": 4,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 4,
+            "inPortIndex": 0,
+            "outNodeId": 5,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 5,
+            "inPortIndex": 0,
+            "outNodeId": 7,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 7,
+            "inPortIndex": 2,
+            "outNodeId": 9,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 7,
+            "inPortIndex": 1,
+            "outNodeId": 9,
+            "outPortIndex": 0
+        }
+    ],
+    "nodes": [
+        {
+            "id": 4,
+            "internal-data": {
+                "mode": 15
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Blend",
+            "position": {
+                "x": 252,
+                "y": 59
+            }
+        },
+        {
+            "id": 6,
+            "internal-data": {
+                "color": "#6729da"
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Color",
+            "position": {
+                "x": -379,
+                "y": 44
+            }
+        },
+        {
+            "id": 9,
+            "internal-data": {
+                "number": 1
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Number",
+            "position": {
+                "x": -446.27471923828125,
+                "y": 200.671875
+            }
+        },
+        {
+            "id": 7,
+            "internal-data": {
+                "mode": 2
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Combine Color",
+            "position": {
+                "x": -277,
+                "y": 95
+            }
+        },
+        {
+            "id": 5,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Fill",
+            "position": {
+                "x": 33,
+                "y": 67
+            }
+        },
+        {
+            "id": 3,
+            "internal-data": {
+                "mode": 13
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Blend",
+            "position": {
+                "x": 405,
+                "y": 253
+            }
+        },
+        {
+            "id": 1,
+            "internal-data": {
+                "mode": 0
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Dithering",
+            "position": {
+                "x": 32,
+                "y": 170
+            }
+        },
+        {
+            "id": 8,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Time",
+            "position": {
+                "x": -771,
+                "y": 16
+            }
+        },
+        {
+            "id": 2,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Camera",
+            "position": {
+                "x": -150,
+                "y": 263
+            }
+        }
+    ]
+}

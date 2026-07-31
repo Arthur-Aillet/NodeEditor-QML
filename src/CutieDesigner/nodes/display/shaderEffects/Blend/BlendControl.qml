@@ -7,6 +7,10 @@ ComboBox {
 
     model: ["Addition", "Average", "Color", "Color Burn", "Color Dodge", "Darken", "Darker Color", "Difference", "Divide", "Exclusion", "Hard Light", "Hue", "Lighten", "Lighter Color", "Lightness", "Negation", "Multiply", "Saturation", "Screen", "Subtract", "Soft Light", "Hard Mix", "Broken"]
 
+    Component.onCompleted: {
+        currentIndex = node.mode;
+    }
+
     onActivated: {
         if (currentIndex == (count - 1))
             node.mode = -1;

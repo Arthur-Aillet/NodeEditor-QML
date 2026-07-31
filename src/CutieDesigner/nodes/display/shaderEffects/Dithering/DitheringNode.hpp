@@ -20,6 +20,9 @@ class DitheringNode : public NodeDelegateModel {
   bool captionVisible() const override { return true; }
   QString name() const override { return "Dithering"; }
 
+  QJsonObject save() const override;
+  void load(QJsonObject const &p) override;
+
   QString portCaption(PortType portType, PortIndex portIndex) const override;
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }
 

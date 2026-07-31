@@ -8,6 +8,16 @@ BlendNode::BlendNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
                                            QVariantMap{{"node", QVariant::fromValue(this)}});
 }
 
+QJsonObject BlendNode::save() const { return QJsonObject({{"mode", _mode}}); }
+
+void BlendNode::load(QJsonObject const &json) {
+  QJsonValue value = json["mode"];
+
+  if (!value.isUndefined()) {
+    _mode = value.toInt();
+  }
+}
+
 unsigned int BlendNode::nPorts(PortType portType) const {
   switch (portType) {
   case PortType::In:

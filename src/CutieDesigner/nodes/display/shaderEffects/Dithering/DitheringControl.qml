@@ -7,6 +7,10 @@ ComboBox {
 
     model: ["4x4 Bayer", "8x8 Bayer"]
 
+    Component.onCompleted: {
+        currentIndex = node.mode;
+    }
+
     onActivated: node.mode = currentIndex
 
     onHighlightedIndexChanged: {

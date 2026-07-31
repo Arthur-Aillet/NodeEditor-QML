@@ -9,6 +9,16 @@ DitheringNode::DitheringNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
                                            QVariantMap{{"node", QVariant::fromValue(this)}});
 }
 
+QJsonObject DitheringNode::save() const { return QJsonObject({{"mode", _mode}}); }
+
+void DitheringNode::load(QJsonObject const &json) {
+  QJsonValue value = json["mode"];
+
+  if (!value.isUndefined()) {
+    _mode = value.toInt();
+  }
+}
+
 unsigned int DitheringNode::nPorts(PortType portType) const {
   switch (portType) {
   case PortType::In:
