@@ -108,6 +108,7 @@ Item {
                     id: sceneHoverHandler
                 }
 
+                clip: true
                 SurfaceLoader {
                     id: objectLoader
                 }

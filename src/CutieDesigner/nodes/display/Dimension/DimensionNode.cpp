@@ -14,7 +14,7 @@ DimensionNode::DimensionNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
 unsigned int DimensionNode::nPorts(PortType portType) const {
   switch (portType) {
   case PortType::In:
-    return 5;
+    return 6;
   default:
     return 1;
   }
@@ -60,6 +60,9 @@ void DimensionNode::setInData(std::shared_ptr<NodeData> data, PortIndex portInde
     case 4:
       _inHeight.reset();
       emit inHeightChanged();
+    case 5:
+      _rotation.reset();
+      emit inHeightChanged();
     }
   } else {
     switch (portIndex) {
@@ -83,6 +86,9 @@ void DimensionNode::setInData(std::shared_ptr<NodeData> data, PortIndex portInde
     case 4:
       _inHeight = data;
       emit inHeightChanged();
+    case 5:
+      _rotation = data;
+      emit rotationChanged();
     }
   }
 }
@@ -101,6 +107,8 @@ QString DimensionNode::portCaption(PortType portType, PortIndex portIndex) const
       return QString("width");
     case 4:
       return QString("height");
+    case 5:
+      return QString("rotation");
     }
   default:
     return QString("out");

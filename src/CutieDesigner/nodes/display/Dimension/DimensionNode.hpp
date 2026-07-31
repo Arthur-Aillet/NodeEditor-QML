@@ -17,6 +17,7 @@ class DimensionNode : public NodeDelegateModel {
   Q_PROPERTY(double inY READ inY NOTIFY inYChanged)
   Q_PROPERTY(double inWidth READ inWidth NOTIFY inWidthChanged)
   Q_PROPERTY(double inHeight READ inHeight NOTIFY inHeightChanged)
+  Q_PROPERTY(double rotation READ rotation NOTIFY rotationChanged)
 
   DimensionNode(QQmlEngine *engine);
   ~DimensionNode() = default;
@@ -55,12 +56,19 @@ class DimensionNode : public NodeDelegateModel {
     return _inHeight.lock()->repr<double>();
   }
 
+  double rotation() {
+    if (_rotation.expired())
+      return 100;
+    return _rotation.lock()->repr<double>();
+  }
+
   signals:
   void surfaceChanged();
   void inXChanged();
   void inYChanged();
   void inWidthChanged();
   void inHeightChanged();
+  void rotationChanged();
 
   private:
   std::weak_ptr<SurfaceData> _surface;
@@ -68,5 +76,6 @@ class DimensionNode : public NodeDelegateModel {
   std::weak_ptr<NodeData> _inY;
   std::weak_ptr<NodeData> _inWidth;
   std::weak_ptr<NodeData> _inHeight;
+  std::weak_ptr<NodeData> _rotation;
   std::shared_ptr<SurfaceData> _content;
 };

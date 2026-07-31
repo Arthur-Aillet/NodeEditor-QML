@@ -2,7 +2,6 @@ import QtQuick
 import CutieDesigner.Nodes.Display
 
 SurfaceLoader {
-    id: dimension
     required property DimensionNode node
 
     x: node.inX
@@ -13,6 +12,6 @@ SurfaceLoader {
     clip: true
 
     anchored: false
-
-    surfaceData: dimension.node.surface
+    rotation: node.rotation
+    surfaceData: node.surface
 }
