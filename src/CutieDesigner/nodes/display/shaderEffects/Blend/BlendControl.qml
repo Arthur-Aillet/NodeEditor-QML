@@ -5,9 +5,14 @@ import CutieDesigner.Nodes.Display
 ComboBox {
     required property BlendNode node
 
-    model: ["Addition", "Average", "Color", "Color Burn", "Color Dodge", "Darken", "Darker Color", "Difference", "Divide", "Exclusion", "Hard Light", "Hue", "Lighten", "Lighter Color", "Lightness", "Negation", "Multiply", "Saturation", "Screen", "Subtract", "Soft Light", "Broken"]
+    model: ["Addition", "Average", "Color", "Color Burn", "Color Dodge", "Darken", "Darker Color", "Difference", "Divide", "Exclusion", "Hard Light", "Hue", "Lighten", "Lighter Color", "Lightness", "Negation", "Multiply", "Saturation", "Screen", "Subtract", "Soft Light", "Hard Mix", "Broken"]
 
-    onActivated: node.mode = currentIndex
+    onActivated: {
+        if (currentIndex == (count - 1))
+            node.mode = -1;
+        else
+            node.mode = currentIndex;
+    }
 
     onHighlightedIndexChanged: {
         if (highlightedIndex < 0)

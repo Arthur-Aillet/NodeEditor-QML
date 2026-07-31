@@ -135,10 +135,12 @@ vec3 applyBlend(vec3 rgb1, vec3 rgb2) {
   case 18:
     return 1.0 - (vec3(1.0) - rgb1) * (vec3(1.0) - rgb2);
   case 19:
-    return 1.0 - abs(1.0 - rgb1 - rgb2);
-  case 20:
     return max(rgb1 - rgb2, vec3(0.0));
+  case 20:
+    return rgb1 * ((1.0 - rgb1) * rgb2 + (1.0 - (1.0 - rgb1) * (1.0 - rgb2)));
   case 21:
+    return step(rgb1, rgb2);
+  case 22:
     return rgb1 * ((1.0 - rgb1) * rgb2 + (1.0 - (1.0 - rgb1) * (1.0 - rgb2)));
   }
 }

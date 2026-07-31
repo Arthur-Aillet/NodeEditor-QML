@@ -34,6 +34,9 @@ Item {
         property rect targetRect: Qt.rect(target.x, target.y, target.width, target.height)
         property rect sourceRect: Qt.rect(source.x, source.y, source.width, source.height)
         property int mode: blend.node.mode
+        onModeChanged: {
+            console.log(mode);
+        }
 
         vertexShader: 'blend.vert.qsb'
         fragmentShader: 'blend.frag.qsb'
