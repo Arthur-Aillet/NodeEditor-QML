@@ -2,6 +2,7 @@
 #include "DataFlowGraphModel.hpp"
 #include "DataFlowModelInterface.hpp"
 #include "Definitions.hpp"
+#include "Dithering/DitheringNode.hpp"
 #include "StyleCollection.hpp"
 #include "TimeController.hpp"
 
@@ -24,6 +25,7 @@
 #include "CombineVec2Node.hpp"
 #include "CosNode.hpp"
 #include "DimensionNode.hpp"
+#include "DitheringNode.hpp"
 #include "DivisionNode.hpp"
 #include "FillNode.hpp"
 #include "ImageDisplayNode.hpp"
@@ -80,7 +82,8 @@ static std::shared_ptr<NodeDelegateModelRegistry> createRegistery(QQmlEngine &en
   reg->registerModel<SurfaceDisplayNode>("Display");
   reg->registerModel<UkrugNode>("Display");
   reg->registerModel<ATypeNode>("Display");
-  reg->registerModel<BlendNode>("Process");
+  reg->registerModel<BlendNode>("Display");
+  reg->registerModel<DitheringNode>("Display");
   reg->registerModel<CameraNode>("Display");
   reg->registerModel<FillNode>("Display");
   reg->registerModel<VideoDisplayNode>("Display");
