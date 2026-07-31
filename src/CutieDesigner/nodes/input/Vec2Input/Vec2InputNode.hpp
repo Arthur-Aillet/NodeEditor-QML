@@ -33,8 +33,8 @@ class Vec2InputNode : public NodeDelegateModel {
   QQmlComponent embeddedComponent(QQmlEngine *engine) override;
   QVariantMap componentInitialProperties() override;
 
-  double x() { return _vec.x(); }
-  double y() { return _vec.y(); }
+  double x() { return _x; }
+  double y() { return _y; }
 
   void setX(double x);
   void setY(double y);
@@ -44,6 +44,8 @@ class Vec2InputNode : public NodeDelegateModel {
   void yChanged();
 
   private:
+  double _x = 0.0;
+  double _y = 0.0;
   QVector2D _vec = {0.0, 0.0};
   std::shared_ptr<Vec2Data> _vecData;
 };

@@ -6,18 +6,20 @@
 Vec2InputNode::Vec2InputNode(QQmlEngine *engine)
     : NodeDelegateModel(engine), _vecData(std::make_shared<Vec2Data>(_vec)) {}
 
-QJsonObject Vec2InputNode::save() const { return QJsonObject({{"x", _vec.x()}, {"y", _vec.y()}}); }
+QJsonObject Vec2InputNode::save() const { return QJsonObject({{"x", _x}, {"y", _y}}); }
 
 void Vec2InputNode::load(QJsonObject const &json) {
   QJsonValue valueX = json["x"];
 
   if (!valueX.isUndefined()) {
     _vec.setX(valueX.toDouble());
+    _x = valueX.toDouble();
   }
 
   QJsonValue valueY = json["y"];
   if (!valueY.isUndefined()) {
     _vec.setY(valueY.toDouble());
+    _y = valueY.toDouble();
   }
 }
 
@@ -43,16 +45,18 @@ NodeDataType Vec2InputNode::dataType(PortType, PortIndex id) const { return Vec2
 std::shared_ptr<NodeData> Vec2InputNode::outData(PortIndex) { return _vecData; }
 
 void Vec2InputNode::setX(double x) {
-  if (x == _vec.x())
+  if (x == _x)
     return;
+  _x = x;
   _vec.setX(x);
   emit xChanged();
   emit dataUpdated(0);
 }
 
 void Vec2InputNode::setY(double y) {
-  if (y == _vec.y())
+  if (y == _y)
     return;
+  _y = y;
   _vec.setY(y);
   emit yChanged();
   emit dataUpdated(0);
