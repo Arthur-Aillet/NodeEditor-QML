@@ -58,7 +58,7 @@ class DimensionNode : public NodeDelegateModel {
 
   double rotation() {
     if (_rotation.expired())
-      return 100;
+      return 0;
     return _rotation.lock()->repr<double>();
   }
 
