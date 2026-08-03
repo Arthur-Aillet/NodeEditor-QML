@@ -9,7 +9,7 @@ GradientInputNode::GradientInputNode(QQmlEngine *engine)
       _content(std::make_shared<GradientData>(_list->gradient)) {
   QObject::connect(
       _list.get(), &GradientInputList::gradientChanged, this, [this]() { emit dataUpdated(0); },
-      Qt::DirectConnection);
+      Qt::AutoConnection);
 }
 
 unsigned int GradientInputNode::nPorts(PortType portType) const {

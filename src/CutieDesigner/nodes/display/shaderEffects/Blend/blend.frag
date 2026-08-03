@@ -158,13 +158,6 @@ void main() {
   vec3 rgb2 = color2.rgb / max(1.0 / 256.0, color2.a);
   float a = max(color1.a, color1.a * color2.a);
 
-  // Addition
-  //  fragColor = min(sourceTex + targetTex, 1.0);
-
-  // Average
-  // fragColor = 0.5 * (sourceTex + targetTex);
-
-  // ColorBurn
   vec3 result = applyBlend(rgb1, rgb2);
 
   fragColor.rgb = mix(rgb1, result.rgb, color2.a);

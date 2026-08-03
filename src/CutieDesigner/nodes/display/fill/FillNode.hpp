@@ -4,6 +4,8 @@
 #include "SurfaceData.hpp"
 
 #include <QGradient>
+#include <qdebug.h>
+#include <qvectornd.h>
 
 class FillNode : public NodeDelegateModel {
   Q_OBJECT
@@ -11,7 +13,10 @@ class FillNode : public NodeDelegateModel {
   QML_UNCREATABLE("NodeDelegateModel")
 
   public:
-  Q_PROPERTY(QList<QVariant> gradient READ getGradient NOTIFY gradientChanged)
+  Q_PROPERTY(QList<QVariant> gradient READ gradient NOTIFY gradientChanged)
+  Q_PROPERTY(QVector2D start READ start NOTIFY startChanged)
+  Q_PROPERTY(QVector2D end READ end NOTIFY endChanged)
+  Q_PROPERTY(bool endSet READ endSet NOTIFY endChanged)
 
   FillNode(QQmlEngine *engine);
   ~FillNode() = default;
@@ -28,25 +33,32 @@ class FillNode : public NodeDelegateModel {
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
-  QList<QVariant> getGradient() {
-    auto gradient = _gradient.expired() ? _defaultGradient : _gradient.lock()->repr<QGradient>();
-    QList<QVariant> newList;
-
-    for (auto &stop : gradient.stops()) {
-      QList<QVariant> newStop;
-      newStop.append(QVariant::fromValue(stop.first));
-      newStop.append(QVariant::fromValue(stop.second));
-      newList.append(QVariant::fromValue(newStop));
+  QList<QVariant> gradient();
+  QVector2D start() {
+    if (_start.expired()) {
+      return QVector2D(0, 0);
     }
-
-    return newList;
+    return _start.lock()->repr<QVector2D>();
   }
+
+  QVector2D end() {
+    if (_end.expired()) {
+      return QVector2D(0, 0);
+    }
+    return _end.lock()->repr<QVector2D>();
+  }
+
+  bool endSet() { return !_end.expired(); }
 
   signals:
   void gradientChanged();
+  void startChanged();
+  void endChanged();
 
   private:
   QGradient _defaultGradient;
   std::weak_ptr<NodeData> _gradient;
+  std::weak_ptr<NodeData> _start;
+  std::weak_ptr<NodeData> _end;
   std::shared_ptr<SurfaceData> _content;
 };

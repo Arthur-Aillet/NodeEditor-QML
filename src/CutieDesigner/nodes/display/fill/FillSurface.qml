@@ -58,16 +58,16 @@ Shape {
                 stopsList.push(s1);
             }
             gradient.stops = stopsList;
-            gradient.y2 = fillSurface.y;
-            gradient.y2 = fillSurface.y + fillSurface.height;
+            gradient.y2 += 10;
+            gradient.y2 -= 10;
         }
 
         fillGradient: LinearGradient {
             id: gradient
-            x1: fillSurface.x
-            y1: fillSurface.y
-            x2: fillSurface.x + fillSurface.width
-            y2: fillSurface.y + fillSurface.height
+            x1: fillSurface.x + fillSurface.node.start.x
+            y1: fillSurface.y + fillSurface.node.start.y
+            x2: fillSurface.x + (fillSurface.node.endSet ? fillSurface.node.end.x : fillSurface.width)
+            y2: fillSurface.y + fillSurface.node.end.y
         }
     }
 }
