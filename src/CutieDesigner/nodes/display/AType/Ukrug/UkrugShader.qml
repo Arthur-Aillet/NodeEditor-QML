@@ -8,7 +8,8 @@ ShaderEffect {
     readonly property alias iSource: shader.source
     readonly property vector3d iResolution: Qt.vector3d(width, height, 1.0)
 
-    property color baseColor: Qt.rgba(1, 1, 1, 1)
+    property color outerColor: Qt.rgba(1, 1, 1, 1)
+    property color innerColor: Qt.rgba(1, 1, 1, 1)
     property point point1: Qt.point(0, 0)
     property point point2: Qt.point(0, 0)
     property point point3: Qt.point(0, 0)
@@ -21,6 +22,7 @@ ShaderEffect {
     property point boxArea: Qt.point(1, 1)
     property real boxRadius: 0.1
     property real circleScale: 1.0
+    property real inOutFactor: 2.0
 
     cullMode: ShaderEffect.BackFaceCulling
     vertexShader: 'ukrug.vert.qsb'

@@ -9,7 +9,12 @@ GridController {
 
     model: [
         {
-            name: "Base Color",
+            name: "Inner Color",
+            type: GridController.Color,
+            property: "innerColor"
+        },
+        {
+            name: "Outer Color",
             type: GridController.Color,
             property: "baseColor"
         },
@@ -64,12 +69,16 @@ GridController {
         {
             name: "Box X",
             type: GridController.Slider,
-            property: "boxLimitX"
+            property: "boxLimitX",
+            min: 0,
+            max: 2
         },
         {
             name: "Box Y",
             type: GridController.Slider,
-            property: "boxLimitY"
+            property: "boxLimitY",
+            min: 0,
+            max: 2
         },
         {
             name: "Box Radius",
@@ -94,6 +103,14 @@ GridController {
             type: GridController.Number,
             property: "animationTransformSpeed",
             min: 0
+        },
+        {
+            name: "In Out Factor",
+            type: GridController.Slider,
+            property: "inOutFactor",
+            min: 0,
+            max: 100,
+            ease: SliderField.Quad
         },
     ]
 }

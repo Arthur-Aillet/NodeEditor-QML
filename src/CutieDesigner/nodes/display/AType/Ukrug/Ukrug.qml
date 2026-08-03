@@ -1,7 +1,11 @@
+// Created with Qt Quick Effect Maker (version 0.44), Mon Aug 3 11:21:18 2026
+
 import QtQuick
 
-ShaderEffect {
-    id: ukrugShader
+Item {
+    id: rootItem
+
+    // This is the main source for the effect
     property Item source: null
 
     property color baseColor: Qt.rgba(1, 1, 1, 1)
@@ -18,10 +22,25 @@ ShaderEffect {
     property real boxRadius: 0.1
     property real circleScale: 1
 
-    readonly property alias iSource: ukrugShader.source
-    readonly property vector3d iResolution: Qt.vector3d(width, height, 1.0)
+    ShaderEffect {
+        readonly property alias iSource: rootItem.source
+        readonly property vector3d iResolution: Qt.vector3d(width, height, 1.0)
+        readonly property alias baseColor: rootItem.baseColor
+        readonly property alias point1: rootItem.point1
+        readonly property alias point2: rootItem.point2
+        readonly property alias point3: rootItem.point3
+        readonly property alias point4: rootItem.point4
+        readonly property alias k: rootItem.k
+        readonly property alias pointsScale: rootItem.pointsScale
+        readonly property alias smoothFactor: rootItem.smoothFactor
+        readonly property alias fill: rootItem.fill
+        readonly property alias substraction: rootItem.substraction
+        readonly property alias boxArea: rootItem.boxArea
+        readonly property alias boxRadius: rootItem.boxRadius
+        readonly property alias circleScale: rootItem.circleScale
 
-    vertexShader: 'ukrug.vert.qsb'
-    fragmentShader: 'ukrug.frag.qsb'
-    anchors.fill: parent
+        vertexShader: 'ukrug.vert.qsb'
+        fragmentShader: 'ukrug.frag.qsb'
+        anchors.fill: parent
+    }
 }

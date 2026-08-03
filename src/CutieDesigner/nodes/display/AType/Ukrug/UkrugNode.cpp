@@ -4,6 +4,8 @@
 #include "DecimalData.hpp"
 
 #include <QJsonObject>
+#include <qjsonvalue.h>
+#include <qvariant.h>
 
 UkrugNode::UkrugNode(QQmlEngine *engine)
     : ATypeCharacterNodeModel(engine), _modelData(std::make_shared<ATypeCharacterData>(this)),
@@ -13,6 +15,7 @@ UkrugNode::UkrugNode(QQmlEngine *engine)
 QJsonObject UkrugNode::save() const {
   QJsonObject json = ATypeCharacterNodeModel::save();
 
+  json["innerColor"] = QJsonValue::fromVariant(_innerColor);
   json["k"] = _k;
   json["circleScale"] = _circleScale;
   json["pointsScale"] = _pointsScale;
@@ -23,11 +26,14 @@ QJsonObject UkrugNode::save() const {
   json["boxLimitY"] = _boxLimitY;
   json["boxRadius"] = _boxRadius;
   json["substraction"] = _substraction;
+  json["inOutFactor"] = _inOutFactor;
   return json;
 }
 void UkrugNode::load(QJsonObject const &json) {
   ATypeCharacterNodeModel::load(json);
 
+  if (!json["innerColor"].isUndefined())
+    _innerColor = json["innerColor"].toVariant().value<QColor>();
   if (!json["k"].isUndefined())
     _k = json["k"].toDouble();
   if (!json["circleScale"].isUndefined())
@@ -48,12 +54,14 @@ void UkrugNode::load(QJsonObject const &json) {
     _boxRadius = json["boxRadius"].toDouble();
   if (!json["substraction"].isUndefined())
     _substraction = json["substraction"].toBool();
+  if (!json["inOutFactor"].isUndefined())
+    _inOutFactor = json["inOutFactor"].toDouble();
 }
 
 unsigned int UkrugNode::nPorts(PortType portType) const {
   switch (portType) {
-  case NodeEditor::PortType::Out:
-    return 1;
+  case NodeEditor::PortType::In:
+    return 2;
   default:
     return 1;
   }
@@ -66,6 +74,7 @@ NodeDataType UkrugNode::dataType(PortType portType, PortIndex portIndex) const {
   default:
     switch (portIndex) {
     case 0:
+    case 1:
       return ColorData().type();
     default:
       return DecimalData().type();
@@ -84,6 +93,14 @@ void UkrugNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
     } else {
       _baseColorPtr = data;
       emit baseColorChanged();
+    }
+  case 1:
+    if (!data) {
+      _innerColorPtr.reset();
+      emit innerColorChanged();
+    } else {
+      _innerColorPtr = data;
+      emit innerColorChanged();
     }
   default:
     return;

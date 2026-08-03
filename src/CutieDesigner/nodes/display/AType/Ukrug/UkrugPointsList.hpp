@@ -40,7 +40,7 @@ class UkrugPointsList : public QObject {
   QJsonObject _pointsData;
   QList<UkrugPoint> _points;
 
-  double defaultOutsideDist = 4.2;
+  double defaultOutsideDist = 4.5;
 
   private:
   QColor _baseColor = "white";

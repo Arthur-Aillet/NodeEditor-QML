@@ -16,12 +16,14 @@ class UkrugNode : public ATypeCharacterNodeModel {
   QML_UNCREATABLE("NodeDelegateModel")
 
   public:
+  Q_PROPERTY(QColor innerColor MEMBER _innerColor NOTIFY innerColorChanged)
   Q_PROPERTY(double k MEMBER _k NOTIFY kChanged)
   Q_PROPERTY(double circleScale MEMBER _circleScale NOTIFY circleScaleChanged)
   Q_PROPERTY(double pointsScale MEMBER _pointsScale NOTIFY pointsScaleChanged)
   Q_PROPERTY(double pointsDistance MEMBER _pointsDistance NOTIFY pointsDistanceChanged)
   Q_PROPERTY(double smoothFactor MEMBER _smoothFactor NOTIFY smoothFactorChanged)
   Q_PROPERTY(double fill MEMBER _fill NOTIFY fillChanged)
+  Q_PROPERTY(double inOutFactor MEMBER _inOutFactor NOTIFY inOutFactorChanged)
   Q_PROPERTY(bool substraction MEMBER _substraction NOTIFY substractionChanged)
 
   Q_PROPERTY(double boxLimitX MEMBER _boxLimitX NOTIFY boxLimitXChanged)
@@ -56,6 +58,7 @@ class UkrugNode : public ATypeCharacterNodeModel {
   QVariantMap getAdditionalProperties() override;
 
   signals:
+  void innerColorChanged();
   void kChanged();
   void circleScaleChanged();
   void pointsDistanceChanged();
@@ -66,10 +69,13 @@ class UkrugNode : public ATypeCharacterNodeModel {
   void boxLimitXChanged();
   void boxLimitYChanged();
   void boxRadiusChanged();
+  void inOutFactorChanged();
 
   friend UkrugPointsList;
 
   private:
+  QColor _innerColor = "white";
+  std::weak_ptr<NodeData> _innerColorPtr;
   double _k = 0.02;
   double _circleScale = 1.0;
   double _pointsScale = 0.22;
@@ -80,6 +86,7 @@ class UkrugNode : public ATypeCharacterNodeModel {
   double _boxLimitX = 1;
   double _boxLimitY = 1;
   double _boxRadius = 0.1;
+  double _inOutFactor = 2.0;
 
   std::unique_ptr<QQmlComponent> _component;
   std::shared_ptr<ATypeCharacterData> _modelData;

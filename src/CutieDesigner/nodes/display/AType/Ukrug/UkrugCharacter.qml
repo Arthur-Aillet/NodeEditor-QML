@@ -35,8 +35,12 @@ Item {
         Layout.preferredWidth = Qt.binding(function () {
             return ukrugChar.node.fontSize;
         });
-        colorAnimation.duration = 0;
-        shader.baseColor = Qt.binding(function () {
+        innerColorAnimation.duration = 0;
+        outerColorAnimation.duration = 0;
+        shader.innerColor = Qt.binding(function () {
+            return ukrugChar.node.innerColor;
+        });
+        shader.outerColor = Qt.binding(function () {
             return ukrugChar.node.baseColor;
         });
     }
@@ -56,13 +60,17 @@ Item {
             timer.interval = node.animationWidthSpeed - node.animationOpacitySpeed;
             Layout.preferredWidth = 0;
             timer.callback = () => {
-                colorAnimation.duration = node.animationOpacitySpeed;
-                shader.baseColor = "transparent";
+                innerColorAnimation.duration = node.animationOpacitySpeed;
+                outerColorAnimation.duration = node.animationOpacitySpeed;
+                shader.innerColor = "transparent";
+                shader.outerColor = "transparent";
             };
         } else {
             timer.interval = node.animationOpacitySpeed - node.animationWidthSpeed;
-            colorAnimation.duration = node.animationOpacitySpeed;
-            shader.baseColor = "transparent";
+            innerColorAnimation.duration = node.animationOpacitySpeed;
+            outerColorAnimation.duration = node.animationOpacitySpeed;
+            shader.innerColor = "transparent";
+            shader.outerColor = "transparent";
             timer.callback = () => {
                 Layout.preferredWidth = 0;
             };
@@ -77,10 +85,18 @@ Item {
 
         property alias node: ukrugChar.node
 
-        baseColor: "transparent"
-        Behavior on baseColor {
+        innerColor: "transparent"
+        Behavior on innerColor {
             PropertyAnimation {
-                id: colorAnimation
+                id: innerColorAnimation
+                duration: ukrugChar.node.animationOpacitySpeed
+            }
+        }
+
+        outerColor: "transparent"
+        Behavior on outerColor {
+            PropertyAnimation {
+                id: outerColorAnimation
                 duration: ukrugChar.node.animationOpacitySpeed
             }
         }
@@ -105,6 +121,14 @@ Item {
                 duration: ukrugChar.node.animationTransformSpeed
             }
         }
+
+        inOutFactor: node.inOutFactor
+        Behavior on inOutFactor {
+            PropertyAnimation {
+                duration: ukrugChar.node.animationTransformSpeed
+            }
+        }
+
         substraction: node.substraction
         boxArea: Qt.point((ukrugChar.Layout.preferredWidth / node.fontSize) * node.boxLimitX, node.boxLimitY)
         boxRadius: node.boxRadius

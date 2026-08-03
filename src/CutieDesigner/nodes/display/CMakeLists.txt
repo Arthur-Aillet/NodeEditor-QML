@@ -56,14 +56,14 @@ qt_add_qml_module(display
   DEPENDENCIES QtQuick QtQuick.Layout NodeEditor CutieUiModule CutieDesigner.Datatypes
   RESOURCES
   AType/Ukrug/UkrugPointsData.json
-  AType/Ukrug/ukrug.vert.qsb
-  AType/Ukrug/ukrug.frag.qsb
-)
+  )
 
-qt6_add_shaders(display "display_shaders"
+  qt6_add_shaders(display "display_shaders"
   PREFIX
-    "/qt/qml/CutieDesigner/Nodes/Display"
+  "/qt/qml/CutieDesigner/Nodes/Display"
   FILES
+  AType/Ukrug/ukrug.vert
+  AType/Ukrug/ukrug.frag
   shaderEffects/Blend/blend.vert
   shaderEffects/Blend/blend.frag
   shaderEffects/Dithering/dithering.vert
