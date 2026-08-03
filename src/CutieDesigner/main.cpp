@@ -29,6 +29,7 @@
 #include "DivisionNode.hpp"
 #include "FillNode.hpp"
 #include "ImageDisplayNode.hpp"
+#include "MaskNode.hpp"
 #include "MultiplicationNode.hpp"
 #include "SinNode.hpp"
 #include "SplitColorNode.hpp"
@@ -82,6 +83,7 @@ static std::shared_ptr<NodeDelegateModelRegistry> createRegistery(QQmlEngine &en
   reg->registerModel<SurfaceDisplayNode>("Display");
   reg->registerModel<UkrugNode>("Display");
   reg->registerModel<ATypeNode>("Display");
+  reg->registerModel<MaskNode>("Display");
   reg->registerModel<BlendNode>("Display");
   reg->registerModel<DitheringNode>("Display");
   reg->registerModel<CameraNode>("Display");

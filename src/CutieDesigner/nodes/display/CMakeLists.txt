@@ -11,6 +11,7 @@ qt_add_qml_module(display
   fill/FillSurface.qml
   shaderEffects/Blend/Blend.qml
   shaderEffects/Blend/BlendControl.qml
+  shaderEffects/Mask/Mask.qml
   shaderEffects/Dithering/Dithering.qml
   shaderEffects/Dithering/DitheringControl.qml
   camera/CameraOutput.qml
@@ -44,6 +45,8 @@ qt_add_qml_module(display
   surface/SurfaceLoader.cpp
   shaderEffects/Blend/BlendNode.cpp
   shaderEffects/Blend/BlendNode.hpp
+  shaderEffects/Mask/MaskNode.cpp
+  shaderEffects/Mask/MaskNode.hpp
   shaderEffects/Dithering/DitheringNode.cpp
   shaderEffects/Dithering/DitheringNode.hpp
   camera/CameraNode.hpp
@@ -66,6 +69,8 @@ qt_add_qml_module(display
   AType/Ukrug/ukrug.frag
   shaderEffects/Blend/blend.vert
   shaderEffects/Blend/blend.frag
+  shaderEffects/Mask/mask.vert
+  shaderEffects/Mask/mask.frag
   shaderEffects/Dithering/dithering.vert
   shaderEffects/Dithering/dithering.frag
 )
@@ -86,6 +91,7 @@ target_include_directories(display
   Stack
   shaderEffects
   shaderEffects/Blend
+  shaderEffects/Mask
   shaderEffects/Dithering
   camera
   image
