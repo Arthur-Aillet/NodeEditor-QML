@@ -1,3 +1,4 @@
+pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
@@ -25,26 +26,61 @@ FlexboxLayout {
             text: "+"
             implicitHeight: 20
             implicitWidth: 30
-            //onClicked: stackControl.node.addEmptyPort()
+            onClicked: gradientInputControl.node.colorList.pushColor()
         }
 
         Button {
             text: "-"
             implicitHeight: 20
             implicitWidth: 30
-            //onClicked: stackControl.node.removeLastPort()
+            onClicked: gradientInputControl.node.colorList.popColor()
         }
         y: 10
     }
+    ListView {
+        boundsBehavior: Flickable.StopAtBounds
+        Layout.preferredHeight: height
+        Layout.preferredWidth: width
 
-    ColorPicker {
+        width: contentItem.childrenRect.width
+        height: contentItem.childrenRect.height > 1 ? contentItem.childrenRect.height + 15 : 1
 
-        Component.onCompleted: {
-            value = gradientInputControl.node.color;
-        }
+        model: gradientInputControl.node.colorList
 
-        onValueChanged: {
-            gradientInputControl.node.color = value;
+        delegate: FlexboxLayout {
+            id: item
+
+            required property int index
+            required property color color
+            required property real pos
+
+            gap: 10
+
+            ColorPicker {
+                Component.onCompleted: {
+                    value = item.color;
+                }
+
+                onValueChanged: {
+                    gradientInputControl.node.colorList.editColor(value, item.index);
+                }
+            }
+            TextField {
+                Component.onCompleted: {
+                    value = item.pos;
+                }
+
+                onValueChanged: {
+                    gradientInputControl.node.colorList.editPos(value, item.index);
+                }
+
+                textField.inputMethodHints: Qt.ImhFormattedNumbersOnly
+                textField.Layout.preferredWidth: Math.max(80, textField.contentWidth + 8)
+                textField.validator: DoubleValidator {
+                    bottom: 0
+                    top: 1
+                }
+            }
         }
     }
 }

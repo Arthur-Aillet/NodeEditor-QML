@@ -1,9 +1,16 @@
 #include "GradientInputNode.hpp"
-#include "ColorData.hpp"
+#include "GradientData.hpp"
+#include "GradientInputList.hpp"
 #include <memory>
+#include <qobject.h>
 
 GradientInputNode::GradientInputNode(QQmlEngine *engine)
-    : NodeDelegateModel(engine), _content(std::make_shared<ColorData>(_color)) {}
+    : NodeDelegateModel(engine), _list(std::make_shared<GradientInputList>()),
+      _content(std::make_shared<GradientData>(_list->gradient)) {
+  QObject::connect(
+      _list.get(), &GradientInputList::gradientChanged, this, [this]() { emit dataUpdated(0); },
+      Qt::DirectConnection);
+}
 
 unsigned int GradientInputNode::nPorts(PortType portType) const {
   switch (portType) {
@@ -15,7 +22,7 @@ unsigned int GradientInputNode::nPorts(PortType portType) const {
 }
 
 NodeDataType GradientInputNode::dataType(PortType _portType, PortIndex _portIndex) const {
-  return ColorData().type();
+  return GradientData().type();
 }
 
 std::shared_ptr<NodeData> GradientInputNode::outData(PortIndex _portIndex) { return _content; }

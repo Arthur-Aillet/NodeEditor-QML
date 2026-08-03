@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ColorData.hpp"
+#include "GradientData.hpp"
 #include "GradientInputList.hpp"
 #include "NodeDelegateModel.hpp"
 
@@ -19,7 +19,6 @@ class GradientInputNode : public NodeDelegateModel {
   QML_ELEMENT
   QML_UNCREATABLE("NodeDelegateModel")
 
-  Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
   Q_PROPERTY(GradientInputList *colorList READ colorList CONSTANT)
 
   public:
@@ -46,20 +45,9 @@ class GradientInputNode : public NodeDelegateModel {
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override {};
 
-  GradientInputList *colorList() { return nullptr; }
-
-  QColor color() { return _color; }
-
-  void setColor(QColor color) {
-    _color = color;
-    emit colorChanged();
-    emit dataUpdated(0);
-  }
-
-  signals:
-  void colorChanged();
+  GradientInputList *colorList() { return _list.get(); }
 
   private:
-  QColor _color = "red";
-  std::shared_ptr<ColorData> _content;
+  std::shared_ptr<GradientInputList> _list;
+  std::shared_ptr<GradientData> _content;
 };
