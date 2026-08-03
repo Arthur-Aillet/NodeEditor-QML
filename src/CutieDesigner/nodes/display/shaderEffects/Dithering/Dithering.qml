@@ -11,6 +11,7 @@ Item {
         id: loader
         surfaceData: dithering.node.surface
 
+        visible: false
         layer.enabled: true
     }
 
