@@ -3,7 +3,7 @@
 #include "DimensionNode.hpp"
 #include "NodeDelegateModel.hpp"
 #include "SurfaceData.hpp"
-#include <qcontainerfwd.h>
+#include "Vec2Data.hpp"
 
 DimensionNode::DimensionNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
   auto comp = std::make_unique<QQmlComponent>(engine, "CutieDesigner.Nodes.Display", "Dimension");
@@ -14,7 +14,7 @@ DimensionNode::DimensionNode(QQmlEngine *engine) : NodeDelegateModel(engine) {
 unsigned int DimensionNode::nPorts(PortType portType) const {
   switch (portType) {
   case PortType::In:
-    return 6;
+    return 4;
   default:
     return 1;
   }
@@ -25,6 +25,8 @@ NodeDataType DimensionNode::dataType(PortType portType, PortIndex portIndex) con
   case PortType::In:
     if (portIndex == 0)
       return SurfaceData().type();
+    if (portIndex == 1 || portIndex == 2)
+      return Vec2Data().type();
     return DecimalData().type();
   default:
     return SurfaceData().type();
@@ -46,23 +48,17 @@ void DimensionNode::setInData(std::shared_ptr<NodeData> data, PortIndex portInde
       emit surfaceChanged();
       return;
     case 1:
-      _inX.reset();
-      emit inXChanged();
+      _inPos.reset();
+      emit inPosChanged();
       return;
     case 2:
-      _inY.reset();
-      emit inYChanged();
+      _inSize.reset();
+      emit inSizeChanged();
       return;
     case 3:
-      _inWidth.reset();
-      emit inWidthChanged();
-      return;
-    case 4:
-      _inHeight.reset();
-      emit inHeightChanged();
-    case 5:
       _rotation.reset();
-      emit inHeightChanged();
+      emit rotationChanged();
+      return;
     }
   } else {
     switch (portIndex) {
@@ -72,23 +68,17 @@ void DimensionNode::setInData(std::shared_ptr<NodeData> data, PortIndex portInde
       emit surfaceChanged();
       return;
     case 1:
-      _inX = data;
-      emit inXChanged();
+      _inPos = data;
+      emit inPosChanged();
       return;
     case 2:
-      _inY = data;
-      emit inYChanged();
+      _inSize = data;
+      emit inSizeChanged();
       return;
     case 3:
-      _inWidth = data;
-      emit inWidthChanged();
-      return;
-    case 4:
-      _inHeight = data;
-      emit inHeightChanged();
-    case 5:
       _rotation = data;
       emit rotationChanged();
+      return;
     }
   }
 }
@@ -100,14 +90,10 @@ QString DimensionNode::portCaption(PortType portType, PortIndex portIndex) const
     case 0:
       return QString("in");
     case 1:
-      return QString("x");
+      return QString("pos");
     case 2:
-      return QString("y");
+      return QString("size");
     case 3:
-      return QString("width");
-    case 4:
-      return QString("height");
-    case 5:
       return QString("rotation");
     }
   default:

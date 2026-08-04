@@ -4,14 +4,17 @@ import CutieDesigner.Nodes.Display
 SurfaceLoader {
     required property DimensionNode node
 
-    x: node.inX
-    y: node.inY
-    width: node.inWidth
-    height: node.inHeight
+    x: node.inPos.x
+    y: node.inPos.y
+    width: node.inSize.x
+    height: node.inSize.y
 
     clip: true
 
     anchored: false
+    onRotationChanged: {
+        console.log("Rotation: " + rotation);
+    }
     rotation: node.rotation
     surfaceData: node.surface
 }

@@ -9,8 +9,8 @@ class MaskNode : public NodeDelegateModel {
   QML_UNCREATABLE("NodeDelegateModel")
 
   public:
-  Q_PROPERTY(SurfaceData *a READ getA NOTIFY aChanged)
-  Q_PROPERTY(SurfaceData *b READ getB NOTIFY bChanged)
+  Q_PROPERTY(SurfaceData *image READ image NOTIFY imageChanged)
+  Q_PROPERTY(SurfaceData *mask READ mask NOTIFY maskChanged)
 
   MaskNode(QQmlEngine *engine);
   ~MaskNode() = default;
@@ -27,15 +27,15 @@ class MaskNode : public NodeDelegateModel {
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
-  SurfaceData *getA() { return _a.lock().get(); }
-  SurfaceData *getB() { return _b.lock().get(); }
+  SurfaceData *image() { return _image.lock().get(); }
+  SurfaceData *mask() { return _mask.lock().get(); }
 
   signals:
-  void aChanged();
-  void bChanged();
+  void imageChanged();
+  void maskChanged();
 
   private:
-  std::weak_ptr<SurfaceData> _a;
-  std::weak_ptr<SurfaceData> _b;
+  std::weak_ptr<SurfaceData> _image;
+  std::weak_ptr<SurfaceData> _mask;
   std::shared_ptr<SurfaceData> _content;
 };

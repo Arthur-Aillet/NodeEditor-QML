@@ -5,6 +5,7 @@
 
 #include <QQmlComponent>
 #include <QtCore/QObject>
+#include <qvectornd.h>
 
 class DimensionNode : public NodeDelegateModel {
   Q_OBJECT
@@ -13,10 +14,8 @@ class DimensionNode : public NodeDelegateModel {
 
   public:
   Q_PROPERTY(SurfaceData *surface READ getSurface NOTIFY surfaceChanged)
-  Q_PROPERTY(double inX READ inX NOTIFY inXChanged)
-  Q_PROPERTY(double inY READ inY NOTIFY inYChanged)
-  Q_PROPERTY(double inWidth READ inWidth NOTIFY inWidthChanged)
-  Q_PROPERTY(double inHeight READ inHeight NOTIFY inHeightChanged)
+  Q_PROPERTY(QVector2D inPos READ inPos NOTIFY inPosChanged)
+  Q_PROPERTY(QVector2D inSize READ inSize NOTIFY inSizeChanged)
   Q_PROPERTY(double rotation READ rotation NOTIFY rotationChanged)
 
   DimensionNode(QQmlEngine *engine);
@@ -35,27 +34,16 @@ class DimensionNode : public NodeDelegateModel {
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
   SurfaceData *getSurface() { return _surface.lock().get(); }
-  double inX() {
-    if (_inX.expired())
-      return 0;
-    return _inX.lock()->repr<double>();
+  QVector2D inPos() {
+    if (_inPos.expired())
+      return QVector2D(0, 0);
+    return _inPos.lock()->repr<QVector2D>();
   }
-  double inY() {
-    if (_inY.expired())
-      return 0;
-    return _inY.lock()->repr<double>();
+  QVector2D inSize() {
+    if (_inSize.expired())
+      return QVector2D(200, 200);
+    return _inSize.lock()->repr<QVector2D>();
   }
-  double inWidth() {
-    if (_inWidth.expired())
-      return 100;
-    return _inWidth.lock()->repr<double>();
-  }
-  double inHeight() {
-    if (_inHeight.expired())
-      return 100;
-    return _inHeight.lock()->repr<double>();
-  }
-
   double rotation() {
     if (_rotation.expired())
       return 0;
@@ -64,18 +52,14 @@ class DimensionNode : public NodeDelegateModel {
 
   signals:
   void surfaceChanged();
-  void inXChanged();
-  void inYChanged();
-  void inWidthChanged();
-  void inHeightChanged();
+  void inPosChanged();
+  void inSizeChanged();
   void rotationChanged();
 
   private:
   std::weak_ptr<SurfaceData> _surface;
-  std::weak_ptr<NodeData> _inX;
-  std::weak_ptr<NodeData> _inY;
-  std::weak_ptr<NodeData> _inWidth;
-  std::weak_ptr<NodeData> _inHeight;
+  std::weak_ptr<NodeData> _inPos;
+  std::weak_ptr<NodeData> _inSize;
   std::weak_ptr<NodeData> _rotation;
   std::shared_ptr<SurfaceData> _content;
 };

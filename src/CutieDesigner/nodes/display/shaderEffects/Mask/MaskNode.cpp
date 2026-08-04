@@ -22,7 +22,7 @@ NodeDataType MaskNode::dataType(PortType _portType, PortIndex _portIndex) const 
 }
 
 std::shared_ptr<NodeData> MaskNode::outData(PortIndex _portIndex) {
-  if (_a.expired() && _b.expired())
+  if (_image.expired() && _mask.expired())
     return nullptr;
   return _content;
 }
@@ -30,20 +30,20 @@ std::shared_ptr<NodeData> MaskNode::outData(PortIndex _portIndex) {
 void MaskNode::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
   if (data == nullptr) {
     if (portIndex == 0) {
-      _a.reset();
-      emit aChanged();
+      _image.reset();
+      emit imageChanged();
     } else {
-      _b.reset();
-      emit bChanged();
+      _mask.reset();
+      emit maskChanged();
     }
     emit dataInvalidated(0);
   } else {
     if (portIndex == 0) {
-      _a = std::dynamic_pointer_cast<SurfaceData>(data);
-      emit aChanged();
+      _image = std::dynamic_pointer_cast<SurfaceData>(data);
+      emit imageChanged();
     } else {
-      _b = std::dynamic_pointer_cast<SurfaceData>(data);
-      emit bChanged();
+      _mask = std::dynamic_pointer_cast<SurfaceData>(data);
+      emit maskChanged();
     }
     emit dataUpdated(0);
   }
@@ -54,9 +54,9 @@ QString MaskNode::portCaption(PortType portType, PortIndex portIndex) const {
   case PortType::In:
     switch (portIndex) {
     case 0:
-      return QString("a");
+      return QString("image");
     default:
-      return QString("b");
+      return QString("mask");
     }
   default:
     return QString("out");
