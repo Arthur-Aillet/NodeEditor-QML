@@ -27,7 +27,7 @@ struct Wait : public Serializable {
     QJsonValue delayValue = json["delay"];
 
     if (!delayValue.isUndefined()) {
-      delay = delayValue.toInt();
+      delay = delayValue.toDouble();
     }
   }
 };
