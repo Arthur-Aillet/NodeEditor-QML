@@ -9,6 +9,9 @@ layout(std140, binding = 0) uniform buf {
   float qt_Opacity;
   vec4 maskRect;
   vec4 imageRect;
+  int mode;
+  bool inverted;
+  vec4 color;
 };
 
 void main() {
