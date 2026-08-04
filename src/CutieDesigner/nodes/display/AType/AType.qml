@@ -56,7 +56,7 @@ FlexboxLayout {
             }
         }
         for (let i = 0; i < cleanedCurrentText.length - remaining.length; i++) {
-            node.character.destroyItem(atype, commonStart.length + remaining.length + i);
+            node.character.destroyItem(atype, commonStart.length + remaining.length);
         }
     }
 

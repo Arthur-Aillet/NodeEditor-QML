@@ -2,9 +2,10 @@
 #include "DecimalData.hpp"
 #include "TextData.hpp"
 #include "TextTypeEvent.hpp"
+#include <qtmetamacros.h>
 
 TextTyperNode::TextTyperNode(QQmlEngine *engine)
-    : NodeDelegateModel(engine), _content(std::make_shared<TextData>(_text)), _timer(QTimer()){};
+    : NodeDelegateModel(engine), _content(std::make_shared<TextData>(_text)), _timer(QTimer()) {};
 
 QJsonObject TextTyperNode::save() const {
   return {{"text", _text}, {"eventList", _eventList.save()["eventList"]}};
@@ -71,6 +72,9 @@ TextTyperEventList *TextTyperNode::getModel() { return &_eventList; }
 
 bool TextTyperNode::getPlay() { return _playing; }
 void TextTyperNode::setPlay(bool playState) {
+  if (playState == _playing)
+    return;
+
   _playing = playState;
 
   if (playState) {
@@ -84,8 +88,9 @@ void TextTyperNode::setPlay(bool playState) {
   } else {
     _timer.disconnect();
     _timer.stop();
+    _currentEventIdx = 0;
   }
-  Q_EMIT playChanged();
+  emit playChanged();
 }
 
 QString TextTyperNode::getText() { return _text; }

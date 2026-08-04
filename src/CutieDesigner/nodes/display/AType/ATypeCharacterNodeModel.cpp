@@ -58,13 +58,28 @@ void ATypeCharacterNodeModel::createCharacterObject(QQuickItem *instance, QStrin
 void ATypeCharacterNodeModel::destroyItem(QQuickItem *instance, int index) {
   auto children = instance->childItems();
 
-  children.at(index)->setProperty("goingToGetDestroyed", true);
+  QQuickItem *realChild;
+  int realIndex = 0;
+
+  for (int i = 0; i != children.length(); i++) {
+    QQuickItem *currentChild = children.at(i);
+
+    if (!currentChild->property("goingToGetDestroyed").toBool()) {
+      if (realIndex == index) {
+        realChild = currentChild;
+        break;
+      }
+      realIndex += 1;
+    }
+  }
+
+  realChild->setProperty("goingToGetDestroyed", true);
 
   // Weak Pointer is a bit too overkill, but i keep it to prevent eventual crashes down the road
   QWeakPointer<QQuickItem> ptr;
 
   for (int i = 0; i != _characters.size(); i++) {
-    if (_characters[i].get() == children.at(index)) {
+    if (_characters[i].get() == realChild) {
       ptr = _characters[i].toWeakRef();
       break;
     }
