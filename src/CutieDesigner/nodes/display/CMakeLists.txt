@@ -12,6 +12,7 @@ qt_add_qml_module(display
   shaderEffects/Blend/Blend.qml
   shaderEffects/Blend/BlendControl.qml
   shaderEffects/Mask/Mask.qml
+  shaderEffects/Mask/MaskControl.qml
   shaderEffects/Dithering/Dithering.qml
   shaderEffects/Dithering/DitheringControl.qml
   camera/CameraOutput.qml
