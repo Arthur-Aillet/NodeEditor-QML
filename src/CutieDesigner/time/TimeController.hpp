@@ -12,13 +12,13 @@ class TimeController : public QObject {
   QML_ELEMENT
 
   public:
-  Q_PROPERTY(
-      uint currentFrame READ getCurrentFrame WRITE setCurrentFrame NOTIFY currentFrameChanged)
-  Q_PROPERTY(uint minFrame READ getMinFrame WRITE setMinFrame NOTIFY minFrameChanged)
-  Q_PROPERTY(uint maxFrame READ getMaxFrame WRITE setMaxFrame NOTIFY maxFrameChanged)
-  Q_PROPERTY(double currentTime READ getCurrentTime NOTIFY currentTimeChanged)
-  Q_PROPERTY(bool playing READ getPlaying WRITE setPlaying NOTIFY playingChanged)
-  Q_PROPERTY(bool looping READ getLooping WRITE setLooping NOTIFY loopingChanged)
+  Q_PROPERTY(uint currentFrame READ currentFrame WRITE setCurrentFrame NOTIFY currentFrameChanged)
+  Q_PROPERTY(uint minFrame READ minFrame WRITE setMinFrame NOTIFY minFrameChanged)
+  Q_PROPERTY(uint maxFrame READ maxFrame WRITE setMaxFrame NOTIFY maxFrameChanged)
+  Q_PROPERTY(double currentTime READ currentTime NOTIFY currentTimeChanged)
+  Q_PROPERTY(bool playing READ playing WRITE setPlaying NOTIFY playingChanged)
+  Q_PROPERTY(bool looping READ looping WRITE setLooping NOTIFY loopingChanged)
+  Q_PROPERTY(bool recording READ recording WRITE setRecording NOTIFY recordingChanged)
 
   static TimeController *create(QQmlEngine *, QJSEngine *engine);
   static TimeController *init();
@@ -34,18 +34,20 @@ class TimeController : public QObject {
 
   Q_INVOKABLE void stop();
 
-  uint getCurrentFrame();
+  uint currentFrame();
   void setCurrentFrame(uint currentFrame);
-  uint getMinFrame();
+  uint minFrame();
   void setMinFrame(uint minFrame);
-  uint getMaxFrame();
+  uint maxFrame();
   void setMaxFrame(uint maxFrame);
-  double getCurrentTime();
+  double currentTime();
 
-  bool getPlaying();
-  void setPlaying(bool val);
-  bool getLooping();
-  void setLooping(bool val);
+  bool playing();
+  void setPlaying(bool playing);
+  bool looping();
+  void setLooping(bool looping);
+  bool recording();
+  void setRecording(bool recording);
 
   signals:
   void currentFrameChanged();
@@ -54,6 +56,7 @@ class TimeController : public QObject {
   void currentTimeChanged();
   void playingChanged();
   void loopingChanged();
+  void recordingChanged();
 
   public slots:
   void frameSwapped();
@@ -66,5 +69,7 @@ class TimeController : public QObject {
   uint _maxFrame;
   bool _playing = false;
   bool _looping = true;
+  bool _recording = false;
+  std::vector<std::optional<QImage>> _frames;
   CutieWindow *_window = nullptr;
 };

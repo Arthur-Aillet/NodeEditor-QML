@@ -16,7 +16,7 @@ list(APPEND CMAKE_PREFIX_PATH "~/Qt/6.11.0/gcc_64/lib/cmake")
 set(LD_LIBRARY_PATH "~/Qt/6.11.0/gcc_64/lib")
 set(QT_QML_GENERATE_QMLLS_INI ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick Core Gui QuickWidgets QuickControls2 Qml ShaderTools CoreTools Multimedia MultimediaQuickPrivate QmlTools)
+find_package(Qt6 REQUIRED COMPONENTS Quick Core Gui QuickWidgets QuickControls2 Qml ShaderTools CoreTools Multimedia MultimediaQuickPrivate QmlTools Concurrent)
 
 add_subdirectory(dependencies)
 

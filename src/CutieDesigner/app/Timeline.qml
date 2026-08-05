@@ -41,6 +41,16 @@ PaneBackground {
             }
         }
 
+        MediaButton {
+            type: MediaButton.MediaButtonType.Record
+            checkable: true
+            checked: TimeController.recording
+            onClicked: {
+                TimeController.recording = !TimeController.recording;
+                focus = false;
+            }
+        }
+
         SliderField {
             id: slider
             direction: FlexboxLayout.RowReverse

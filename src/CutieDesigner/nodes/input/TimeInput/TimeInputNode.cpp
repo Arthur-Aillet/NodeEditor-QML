@@ -62,22 +62,21 @@ std::shared_ptr<NodeData> TimeInputNode::outData(PortIndex portIndex) {
 
   switch (portIndex) {
   case 0:
-    _outContent[portIndex] = timeController->getCurrentFrame();
+    _outContent[portIndex] = timeController->currentFrame();
     break;
   case 1:
-    _outContent[portIndex] = timeController->getMinFrame();
+    _outContent[portIndex] = timeController->minFrame();
     break;
   case 2:
-    _outContent[portIndex] = timeController->getMaxFrame();
+    _outContent[portIndex] = timeController->maxFrame();
     break;
   case 3:
-    _outContent[portIndex] =
-        (double)(timeController->getCurrentFrame() - timeController->getMinFrame()) /
-        (timeController->getMaxFrame() - timeController->getMinFrame());
+    _outContent[portIndex] = (double)(timeController->currentFrame() - timeController->minFrame()) /
+                             (timeController->maxFrame() - timeController->minFrame());
     break;
   case 4:
   default:
-    _outContent[portIndex] = timeController->getCurrentTime();
+    _outContent[portIndex] = timeController->currentTime();
     break;
   };
   return _outData[portIndex];
