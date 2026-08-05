@@ -7,7 +7,9 @@ SliderInputNode::SliderInputNode(QQmlEngine *engine)
   connect(this, &SliderInputNode::valueChanged, [&]() { emit dataUpdated(0); });
 }
 
-QJsonObject SliderInputNode::save() const { return QJsonObject({{"value", _value}}); }
+QJsonObject SliderInputNode::save() const {
+  return QJsonObject({{"value", _value}, {"min", _min}, {"max", _max}});
+}
 
 void SliderInputNode::load(QJsonObject const &json) {
   QJsonValue value = json["value"];
@@ -15,6 +17,39 @@ void SliderInputNode::load(QJsonObject const &json) {
   if (!value.isUndefined()) {
     _value = value.toDouble();
   }
+
+  QJsonValue min = json["min"];
+
+  if (!min.isUndefined()) {
+    _min = min.toDouble();
+  }
+
+  QJsonValue max = json["max"];
+
+  if (!max.isUndefined()) {
+    _max = max.toDouble();
+  }
+}
+
+void SliderInputNode::setValue(double value) {
+  if (_value == value)
+    return;
+  value = _value;
+  emit valueChanged();
+}
+
+void SliderInputNode::setMin(double min) {
+  if (_min == min)
+    return;
+  min = _min;
+  emit minChanged();
+}
+
+void SliderInputNode::setMax(double max) {
+  if (_max == max)
+    return;
+  max = _max;
+  emit maxChanged();
 }
 
 unsigned int SliderInputNode::nPorts(PortType portType) const {

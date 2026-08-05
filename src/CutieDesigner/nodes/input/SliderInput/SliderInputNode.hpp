@@ -13,9 +13,9 @@ class SliderInputNode : public NodeDelegateModel {
   QML_UNCREATABLE("NodeDelegateModel")
 
   public:
-  Q_PROPERTY(double value MEMBER _value NOTIFY valueChanged)
-  Q_PROPERTY(double min MEMBER _min NOTIFY minChanged)
-  Q_PROPERTY(double max MEMBER _max NOTIFY maxChanged)
+  Q_PROPERTY(double value READ value WRITE setValue NOTIFY valueChanged)
+  Q_PROPERTY(double min READ min WRITE setMin NOTIFY minChanged)
+  Q_PROPERTY(double max READ max WRITE setMax NOTIFY maxChanged)
 
   SliderInputNode(QQmlEngine *engine);
   ~SliderInputNode() override = default;
@@ -37,6 +37,14 @@ class SliderInputNode : public NodeDelegateModel {
 
   QQmlComponent embeddedComponent(QQmlEngine *engine) override;
   QVariantMap componentInitialProperties() override;
+
+  double value() { return _value; }
+  double min() { return _min; }
+  double max() { return _max; }
+
+  void setValue(double value);
+  void setMin(double min);
+  void setMax(double max);
 
   signals:
   void valueChanged();

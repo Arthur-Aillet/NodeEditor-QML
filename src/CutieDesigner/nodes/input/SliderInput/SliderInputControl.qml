@@ -14,18 +14,15 @@ FlexboxLayout {
     gap: 6
 
     TextField {
-        value: {
-            value = sliderInputControl.node.min;
-        }
+
+        value: sliderInputControl.node.min
         onValueChanged: {
             sliderInputControl.node.min = value;
         }
         textField.validator: DoubleValidator {}
     }
     TextField {
-        value: {
-            value = sliderInputControl.node.max;
-        }
+        value: sliderInputControl.node.max
         onValueChanged: {
             sliderInputControl.node.max = value;
         }
@@ -36,6 +33,7 @@ FlexboxLayout {
         direction: FlexboxLayout.RowReverse
         min: sliderInputControl.node.min
         max: sliderInputControl.node.max
+        value: sliderInputControl.node.value
         onValueChanged: {
             sliderInputControl.node.value = value;
         }
