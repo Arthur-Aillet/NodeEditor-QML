@@ -1,0 +1,1336 @@
+{
+    "connections": [
+        {
+            "inNodeId": 14,
+            "inPortIndex": 1,
+            "outNodeId": 3,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 60,
+            "inPortIndex": 0,
+            "outNodeId": 44,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 9,
+            "inPortIndex": 0,
+            "outNodeId": 47,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 32,
+            "inPortIndex": 2,
+            "outNodeId": 33,
+            "outPortIndex": 1
+        },
+        {
+            "inNodeId": 66,
+            "inPortIndex": 1,
+            "outNodeId": 35,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 59,
+            "inPortIndex": 1,
+            "outNodeId": 45,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 4,
+            "inPortIndex": 1,
+            "outNodeId": 6,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 52,
+            "inPortIndex": 0,
+            "outNodeId": 49,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 53,
+            "inPortIndex": 0,
+            "outNodeId": 42,
+            "outPortIndex": 3
+        },
+        {
+            "inNodeId": 45,
+            "inPortIndex": 5,
+            "outNodeId": 57,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 51,
+            "inPortIndex": 1,
+            "outNodeId": 63,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 61,
+            "inPortIndex": 0,
+            "outNodeId": 30,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 18,
+            "inPortIndex": 0,
+            "outNodeId": 12,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 24,
+            "inPortIndex": 6,
+            "outNodeId": 27,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 24,
+            "inPortIndex": 3,
+            "outNodeId": 5,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 2,
+            "inPortIndex": 0,
+            "outNodeId": 12,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 2,
+            "inPortIndex": 1,
+            "outNodeId": 12,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 4,
+            "inPortIndex": 0,
+            "outNodeId": 1,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 35,
+            "inPortIndex": 1,
+            "outNodeId": 36,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 36,
+            "inPortIndex": 0,
+            "outNodeId": 34,
+            "outPortIndex": 1
+        },
+        {
+            "inNodeId": 45,
+            "inPortIndex": 3,
+            "outNodeId": 55,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 47,
+            "inPortIndex": 0,
+            "outNodeId": 49,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 45,
+            "inPortIndex": 6,
+            "outNodeId": 58,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 40,
+            "inPortIndex": 0,
+            "outNodeId": 43,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 14,
+            "inPortIndex": 0,
+            "outNodeId": 11,
+            "outPortIndex": 3
+        },
+        {
+            "inNodeId": 31,
+            "inPortIndex": 0,
+            "outNodeId": 61,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 17,
+            "inPortIndex": 0,
+            "outNodeId": 16,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 24,
+            "inPortIndex": 0,
+            "outNodeId": 8,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 52,
+            "inPortIndex": 1,
+            "outNodeId": 50,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 9,
+            "inPortIndex": 1,
+            "outNodeId": 66,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 31,
+            "inPortIndex": 1,
+            "outNodeId": 62,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 45,
+            "inPortIndex": 1,
+            "outNodeId": 52,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 0,
+            "inPortIndex": 0,
+            "outNodeId": 23,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 32,
+            "inPortIndex": 0,
+            "outNodeId": 4,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 17,
+            "inPortIndex": 1,
+            "outNodeId": 20,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 39,
+            "inPortIndex": 2,
+            "outNodeId": 41,
+            "outPortIndex": 1
+        },
+        {
+            "inNodeId": 12,
+            "inPortIndex": 0,
+            "outNodeId": 14,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 20,
+            "inPortIndex": 0,
+            "outNodeId": 19,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 51,
+            "inPortIndex": 0,
+            "outNodeId": 17,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 45,
+            "inPortIndex": 0,
+            "outNodeId": 39,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 7,
+            "inPortIndex": 0,
+            "outNodeId": 32,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 43,
+            "inPortIndex": 0,
+            "outNodeId": 42,
+            "outPortIndex": 3
+        },
+        {
+            "inNodeId": 43,
+            "inPortIndex": 1,
+            "outNodeId": 60,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 34,
+            "inPortIndex": 0,
+            "outNodeId": 33,
+            "outPortIndex": 1
+        },
+        {
+            "inNodeId": 19,
+            "inPortIndex": 1,
+            "outNodeId": 18,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 50,
+            "inPortIndex": 0,
+            "outNodeId": 53,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 64,
+            "inPortIndex": 0,
+            "outNodeId": 1,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 32,
+            "inPortIndex": 1,
+            "outNodeId": 35,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 49,
+            "inPortIndex": 0,
+            "outNodeId": 48,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 62,
+            "inPortIndex": 0,
+            "outNodeId": 41,
+            "outPortIndex": 1
+        },
+        {
+            "inNodeId": 53,
+            "inPortIndex": 1,
+            "outNodeId": 46,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 49,
+            "inPortIndex": 1,
+            "outNodeId": 48,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 20,
+            "inPortIndex": 1,
+            "outNodeId": 12,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 8,
+            "inPortIndex": 0,
+            "outNodeId": 22,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 45,
+            "inPortIndex": 4,
+            "outNodeId": 56,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 53,
+            "inPortIndex": 2,
+            "outNodeId": 28,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 67,
+            "inPortIndex": 0,
+            "outNodeId": 24,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 24,
+            "inPortIndex": 5,
+            "outNodeId": 26,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 66,
+            "inPortIndex": 0,
+            "outNodeId": 64,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 65,
+            "inPortIndex": 0,
+            "outNodeId": 53,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 18,
+            "inPortIndex": 1,
+            "outNodeId": 2,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 36,
+            "inPortIndex": 1,
+            "outNodeId": 37,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 47,
+            "inPortIndex": 1,
+            "outNodeId": 59,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 59,
+            "inPortIndex": 0,
+            "outNodeId": 52,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 7,
+            "inPortIndex": 1,
+            "outNodeId": 51,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 64,
+            "inPortIndex": 1,
+            "outNodeId": 65,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 60,
+            "inPortIndex": 1,
+            "outNodeId": 31,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 15,
+            "inPortIndex": 0,
+            "outNodeId": 9,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 67,
+            "inPortIndex": 1,
+            "outNodeId": 66,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 23,
+            "inPortIndex": 1,
+            "outNodeId": 24,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 15,
+            "inPortIndex": 1,
+            "outNodeId": 17,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 19,
+            "inPortIndex": 0,
+            "outNodeId": 12,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 53,
+            "inPortIndex": 3,
+            "outNodeId": 54,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 24,
+            "inPortIndex": 4,
+            "outNodeId": 25,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 24,
+            "inPortIndex": 1,
+            "outNodeId": 7,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 35,
+            "inPortIndex": 0,
+            "outNodeId": 38,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 66,
+            "inPortIndex": 2,
+            "outNodeId": 33,
+            "outPortIndex": 1
+        },
+        {
+            "inNodeId": 23,
+            "inPortIndex": 0,
+            "outNodeId": 15,
+            "outPortIndex": 0
+        },
+        {
+            "inNodeId": 39,
+            "inPortIndex": 0,
+            "outNodeId": 40,
+            "outPortIndex": 0
+        }
+    ],
+    "nodes": [
+        {
+            "id": 66,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Dimension",
+            "position": {
+                "x": -447.38185831428746,
+                "y": 121.40817635184055
+            }
+        },
+        {
+            "id": 29,
+            "internal-data": {
+                "number": 2
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Number",
+            "position": {
+                "x": 593,
+                "y": 185
+            }
+        },
+        {
+            "id": 30,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Mouse",
+            "position": {
+                "x": 881,
+                "y": -401
+            }
+        },
+        {
+            "id": 41,
+            "internal-data": {
+            },
+            "label": "Scene dimensions",
+            "labelVisible": true,
+            "model-name": "Scene",
+            "position": {
+                "x": 850,
+                "y": -542
+            }
+        },
+        {
+            "id": 46,
+            "internal-data": {
+                "value": 1
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Slider",
+            "position": {
+                "x": 540.4140038389277,
+                "y": -992.1902751075129
+            }
+        },
+        {
+            "id": 56,
+            "internal-data": {
+                "value": 0.20052349334324873
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Slider",
+            "position": {
+                "x": 1391.986794819558,
+                "y": -387.61572138489123
+            }
+        },
+        {
+            "id": 5,
+            "internal-data": {
+                "value": 0
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Slider",
+            "position": {
+                "x": -218,
+                "y": 350
+            }
+        },
+        {
+            "id": 32,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Dimension",
+            "position": {
+                "x": -460,
+                "y": 277
+            }
+        },
+        {
+            "id": 12,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Sin",
+            "position": {
+                "x": -2,
+                "y": -540
+            }
+        },
+        {
+            "id": 39,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Dimension",
+            "position": {
+                "x": 1530,
+                "y": -638
+            }
+        },
+        {
+            "id": 53,
+            "internal-data": {
+                "mode": 1
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Combine Color",
+            "position": {
+                "x": 906,
+                "y": -901
+            }
+        },
+        {
+            "id": 8,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Fill",
+            "position": {
+                "x": -171,
+                "y": -13
+            }
+        },
+        {
+            "id": 17,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Addition",
+            "position": {
+                "x": 546.9999999999999,
+                "y": -541
+            }
+        },
+        {
+            "id": 48,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Camera",
+            "position": {
+                "x": 1087.2832733453497,
+                "y": -959.5269321663889
+            }
+        },
+        {
+            "id": 28,
+            "internal-data": {
+                "value": 0.39700629467468995
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Slider",
+            "position": {
+                "x": 531,
+                "y": -940
+            }
+        },
+        {
+            "id": 20,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Multiplication",
+            "position": {
+                "x": 380.07765400982896,
+                "y": -506.31886283084214
+            }
+        },
+        {
+            "id": 2,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Multiplication",
+            "position": {
+                "x": 60.79155003027472,
+                "y": -247.67982557649316
+            }
+        },
+        {
+            "id": 34,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Split Vec2",
+            "position": {
+                "x": -826,
+                "y": 445
+            }
+        },
+        {
+            "id": 27,
+            "internal-data": {
+                "value": 1
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Slider",
+            "position": {
+                "x": -213.73632642533653,
+                "y": 486.40032208178405
+            }
+        },
+        {
+            "id": 64,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "AType",
+            "position": {
+                "x": -838.7497432506008,
+                "y": 92.17150155917432
+            }
+        },
+        {
+            "id": 59,
+            "internal-data": {
+                "mode": 14
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Blend",
+            "position": {
+                "x": 2066,
+                "y": -670
+            }
+        },
+        {
+            "id": 1,
+            "internal-data": {
+                "eventList": [
+                    {
+                        "delay": 0.3,
+                        "name": "Wait"
+                    },
+                    {
+                        "name": "Replace",
+                        "pos": 0,
+                        "text": "Flea"
+                    },
+                    {
+                        "delay": 0.8,
+                        "name": "Wait"
+                    },
+                    {
+                        "name": "Replace",
+                        "pos": 0,
+                        "text": "Hope"
+                    }
+                ],
+                "text": "Flea"
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Text Typer",
+            "position": {
+                "x": -1498,
+                "y": -30
+            }
+        },
+        {
+            "id": 36,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Subtraction",
+            "position": {
+                "x": -729,
+                "y": 536
+            }
+        },
+        {
+            "id": 67,
+            "internal-data": {
+                "mode": 7
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Blend",
+            "position": {
+                "x": 113,
+                "y": 99
+            }
+        },
+        {
+            "id": 35,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Combine Vec2",
+            "position": {
+                "x": -607,
+                "y": 435
+            }
+        },
+        {
+            "id": 16,
+            "internal-data": {
+                "number": 1.8
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Number",
+            "position": {
+                "x": 367.5240602094012,
+                "y": -560.8395263030882
+            }
+        },
+        {
+            "id": 7,
+            "internal-data": {
+                "mode": 1
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Dithering",
+            "position": {
+                "x": -235,
+                "y": 223
+            }
+        },
+        {
+            "id": 60,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Multiplication",
+            "position": {
+                "x": 987,
+                "y": -598
+            }
+        },
+        {
+            "id": 14,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Multiplication",
+            "position": {
+                "x": -109,
+                "y": -650
+            }
+        },
+        {
+            "id": 25,
+            "internal-data": {
+                "value": 1
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Slider",
+            "position": {
+                "x": -213.33647684576601,
+                "y": 402.5752324309914
+            }
+        },
+        {
+            "id": 49,
+            "internal-data": {
+                "mode": 16
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Blend",
+            "position": {
+                "x": 1247.2832733453497,
+                "y": -961.5269321663889
+            }
+        },
+        {
+            "id": 26,
+            "internal-data": {
+                "value": 0.05388230733216819
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Slider",
+            "position": {
+                "x": -211.74857680382593,
+                "y": 441.31172683303225
+            }
+        },
+        {
+            "id": 45,
+            "internal-data": {
+                "inverted": true,
+                "mode": 1
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Mask",
+            "position": {
+                "x": 1720,
+                "y": -645
+            }
+        },
+        {
+            "id": 6,
+            "internal-data": {
+                "animationOpacitySpeed": 250,
+                "animationTransformSpeed": 250,
+                "animationWidthSpeed": 100,
+                "baseColor": "#f07c07ee",
+                "boxLimitX": 0.9979964602040244,
+                "boxLimitY": 0.6961887866156002,
+                "boxRadius": 0.1,
+                "circleScale": 0.8471200169525959,
+                "fill": 1,
+                "fontSize": 140,
+                "inOutFactor": 2,
+                "innerColor": "#fe0202",
+                "k": 0.028064377808970947,
+                "pointsDistance": 0.35898246908784365,
+                "pointsScale": 0.25880020538908033,
+                "smoothFactor": 0.03190909407117885,
+                "substraction": true
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Ukrug Character",
+            "position": {
+                "x": -1360.5497600860733,
+                "y": 271.9339631986039
+            }
+        },
+        {
+            "id": 22,
+            "internal-data": {
+                "color": "#ffffff"
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Color",
+            "position": {
+                "x": -415.9999999999999,
+                "y": 10
+            }
+        },
+        {
+            "id": 38,
+            "internal-data": {
+                "number": 50
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Number",
+            "position": {
+                "x": -902.7763349370944,
+                "y": 528.4621324401169
+            }
+        },
+        {
+            "id": 9,
+            "internal-data": {
+                "portsCount": 3
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Stack",
+            "position": {
+                "x": 548.1459587238819,
+                "y": -116.0784024362456
+            }
+        },
+        {
+            "id": 33,
+            "internal-data": {
+            },
+            "label": "Scene dimensions",
+            "labelVisible": true,
+            "model-name": "Scene",
+            "position": {
+                "x": -969,
+                "y": 395
+            }
+        },
+        {
+            "id": 62,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Split Vec2",
+            "position": {
+                "x": 984.2453431761564,
+                "y": -454.5920385597617
+            }
+        },
+        {
+            "id": 40,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Image",
+            "position": {
+                "x": 1284,
+                "y": -638
+            }
+        },
+        {
+            "id": 54,
+            "internal-data": {
+                "value": 0.6152592117818013
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Slider",
+            "position": {
+                "x": 540.986788210138,
+                "y": -876.7579568762276
+            }
+        },
+        {
+            "id": 50,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Fill",
+            "position": {
+                "x": 1238,
+                "y": -833
+            }
+        },
+        {
+            "id": 55,
+            "internal-data": {
+                "value": 0.12886667039430771
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Slider",
+            "position": {
+                "x": 1396.280448440227,
+                "y": -427.46132585577107
+            }
+        },
+        {
+            "id": 65,
+            "internal-data": {
+                "animationOpacitySpeed": 250,
+                "animationTransformSpeed": 250,
+                "animationWidthSpeed": 100,
+                "baseColor": "#c600ca",
+                "boxLimitX": 2,
+                "boxLimitY": 2,
+                "boxRadius": 0.15439799294488574,
+                "circleScale": 1,
+                "fill": 1,
+                "fontSize": 140,
+                "inOutFactor": 2.373765476101913,
+                "innerColor": "#02ddfe",
+                "k": 0.10521710357928214,
+                "pointsDistance": 0.3491381211886779,
+                "pointsScale": 0.22,
+                "smoothFactor": 0.2939343922951787,
+                "substraction": true
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Ukrug Character",
+            "position": {
+                "x": -1718.9523159060434,
+                "y": 280.80801542156075
+            }
+        },
+        {
+            "id": 58,
+            "internal-data": {
+                "value": 0.7908280869016643
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Slider",
+            "position": {
+                "x": 1388.8283137942874,
+                "y": -304.67663445645053
+            }
+        },
+        {
+            "id": 19,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Multiplication",
+            "position": {
+                "x": 284.5686979050062,
+                "y": -428.96123445554804
+            }
+        },
+        {
+            "id": 11,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Time",
+            "position": {
+                "x": -312,
+                "y": -696
+            }
+        },
+        {
+            "id": 61,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Split Vec2",
+            "position": {
+                "x": 995,
+                "y": -371
+            }
+        },
+        {
+            "id": 57,
+            "internal-data": {
+                "value": 0.03919463719333202
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Slider",
+            "position": {
+                "x": 1382.8283137942874,
+                "y": -349.16590473580936
+            }
+        },
+        {
+            "id": 52,
+            "internal-data": {
+                "mode": 12
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Blend",
+            "position": {
+                "x": 1465.8448177258344,
+                "y": -806.8501707672158
+            }
+        },
+        {
+            "id": 31,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Division",
+            "position": {
+                "x": 1100,
+                "y": -466
+            }
+        },
+        {
+            "id": 24,
+            "internal-data": {
+                "inverted": true,
+                "mode": 2
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Mask",
+            "position": {
+                "x": 132,
+                "y": 278
+            }
+        },
+        {
+            "id": 18,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Multiplication",
+            "position": {
+                "x": 197.64817850151775,
+                "y": -322.36673494546903
+            }
+        },
+        {
+            "id": 37,
+            "internal-data": {
+                "number": 130
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Number",
+            "position": {
+                "x": -903,
+                "y": 572
+            }
+        },
+        {
+            "id": 44,
+            "internal-data": {
+                "number": 3000
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Number",
+            "position": {
+                "x": 787,
+                "y": -614
+            }
+        },
+        {
+            "id": 63,
+            "internal-data": {
+                "number": 1
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Number",
+            "position": {
+                "x": 316.9391317787904,
+                "y": -138.93008914382312
+            }
+        },
+        {
+            "id": 3,
+            "internal-data": {
+                "number": 3.14
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Number",
+            "position": {
+                "x": -318.4212601582491,
+                "y": -493.0065140239867
+            }
+        },
+        {
+            "id": 43,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Multiplication",
+            "position": {
+                "x": 1047,
+                "y": -698
+            }
+        },
+        {
+            "id": 51,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Addition",
+            "position": {
+                "x": 476.73886255224636,
+                "y": -262.57344582023745
+            }
+        },
+        {
+            "id": 23,
+            "internal-data": {
+                "portsCount": 2
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Stack",
+            "position": {
+                "x": 500,
+                "y": 36
+            }
+        },
+        {
+            "id": 15,
+            "internal-data": {
+                "mode": 0
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Dithering",
+            "position": {
+                "x": 744.745175822209,
+                "y": -57.75951796026118
+            }
+        },
+        {
+            "id": 42,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Time",
+            "position": {
+                "x": 500.86527452479413,
+                "y": -827.353313013384
+            }
+        },
+        {
+            "id": 4,
+            "internal-data": {
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "AType",
+            "position": {
+                "x": -845.1184844970703,
+                "y": 194.9921875
+            }
+        },
+        {
+            "id": 47,
+            "internal-data": {
+                "mode": 16
+            },
+            "label": "",
+            "labelVisible": false,
+            "model-name": "Blend",
+            "position": {
+                "x": 2283.0187556592996,
+                "y": -737.2814169707767
+            }
+        }
+    ]
+}
