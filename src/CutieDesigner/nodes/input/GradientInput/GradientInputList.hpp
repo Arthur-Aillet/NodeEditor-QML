@@ -1,17 +1,22 @@
 #pragma once
 
+#include "Serializable.hpp"
+
+#include <QtQmlIntegration>
 #include <qabstractitemmodel.h>
 #include <qbrush.h>
-#include <qqmlintegration.h>
-#include <qtmetamacros.h>
 
-class GradientInputList : public QAbstractListModel {
+class GradientInputList : public QAbstractListModel, public Serializable {
   Q_OBJECT
   QML_ELEMENT
 
   public:
   int rowCount(const QModelIndex &parent = QModelIndex()) const override;
   int portsCount() const;
+
+  QJsonObject save() const override;
+  void load(QJsonObject const &) override;
+
   QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
   Q_INVOKABLE void pushColor();
   Q_INVOKABLE void popColor();

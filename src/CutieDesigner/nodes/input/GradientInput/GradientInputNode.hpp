@@ -29,6 +29,9 @@ class GradientInputNode : public NodeDelegateModel {
   bool captionVisible() const override { return false; }
   QString name() const override { return "Gradient"; }
 
+  QJsonObject save() const override;
+  void load(QJsonObject const &p) override;
+
   QString portCaption(PortType portType, PortIndex portIndex) const override { return QString(); };
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }
 

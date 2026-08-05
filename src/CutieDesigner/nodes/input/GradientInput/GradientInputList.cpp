@@ -1,4 +1,42 @@
 #include "GradientInputList.hpp"
+#include <qjsonvalue.h>
+#include <qvariant.h>
+
+QJsonObject GradientInputList::save() const {
+  QJsonArray stops;
+  for (const auto &stop : _gradientStops) {
+    stops.append(
+        QJsonObject({{"pos", stop.first}, {"color", QJsonValue::fromVariant(stop.second)}}));
+  }
+  return QJsonObject({{"stops", QJsonValue(stops)}});
+}
+
+void GradientInputList::load(QJsonObject const &json) {
+  QJsonValue stops = json["stops"];
+
+  if (!stops.isUndefined()) {
+    QJsonArray array = stops.toArray();
+    beginRemoveRows(QModelIndex(), 0, rowCount());
+    _gradientStops.clear();
+    endRemoveRows();
+    beginInsertRows({}, 0, array.count());
+    for (const auto &value : array) {
+      QJsonValue colorJson = value.toObject()["color"];
+      QJsonValue posJson = value.toObject()["pos"];
+      double pos = 0.0;
+      QColor color = "red";
+
+      if (!colorJson.isUndefined()) {
+        color = colorJson.toVariant().value<QColor>();
+      }
+      if (!posJson.isUndefined()) {
+        pos = posJson.toDouble();
+      }
+      _gradientStops.append(QGradientStop(pos, color));
+    }
+    endInsertRows();
+  }
+}
 
 int GradientInputList::rowCount(const QModelIndex &parent) const { return _gradientStops.size(); }
 

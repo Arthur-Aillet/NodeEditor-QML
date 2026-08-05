@@ -12,6 +12,10 @@ GradientInputNode::GradientInputNode(QQmlEngine *engine)
       Qt::AutoConnection);
 }
 
+QJsonObject GradientInputNode::save() const { return {{"stops", _list->save()["stops"]}}; }
+
+void GradientInputNode::load(QJsonObject const &json) { _list->load(json); }
+
 unsigned int GradientInputNode::nPorts(PortType portType) const {
   switch (portType) {
   case PortType::In:
