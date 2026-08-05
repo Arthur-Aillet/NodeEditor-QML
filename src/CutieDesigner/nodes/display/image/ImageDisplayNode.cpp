@@ -11,6 +11,18 @@ ImageDisplayNode::ImageDisplayNode(QQmlEngine *engine) : NodeDelegateModel(engin
       QVariantMap{{"node", QVariant::fromValue(this)}});
 }
 
+QJsonObject ImageDisplayNode::save() const {
+  return QJsonObject({{"source", _sourceUrl->toDisplayString()}});
+}
+
+void ImageDisplayNode::load(QJsonObject const &json) {
+  QJsonValue source = json["source"];
+
+  if (!source.isUndefined()) {
+    _sourceUrl = source.toString();
+  }
+}
+
 unsigned int ImageDisplayNode::nPorts(PortType portType) const {
   switch (portType) {
   case PortType::In:
@@ -69,7 +81,7 @@ QVariantMap ImageDisplayNode::componentInitialProperties() {
   return {{"node", QVariant::fromValue(this)}};
 };
 
-QUrl ImageDisplayNode::getSource() {
+QUrl ImageDisplayNode::source() {
   if (_sourceUrl.has_value()) {
     return _sourceUrl.value();
   } else {
@@ -84,7 +96,7 @@ void ImageDisplayNode::setSource(QUrl url) {
   emit sourceChanged();
 }
 
-QString ImageDisplayNode::getSourceFileName() {
+QString ImageDisplayNode::sourceFileName() {
   if (_sourceUrl.has_value()) {
     return _sourceUrl.value().fileName();
   } else {

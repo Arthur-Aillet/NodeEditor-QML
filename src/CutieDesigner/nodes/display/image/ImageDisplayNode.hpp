@@ -12,8 +12,8 @@ class ImageDisplayNode : public NodeDelegateModel {
   QML_UNCREATABLE("NodeDelegateModel")
 
   public:
-  Q_PROPERTY(QUrl source READ getSource WRITE setSource NOTIFY sourceChanged)
-  Q_PROPERTY(QString sourceFileName READ getSourceFileName NOTIFY sourceChanged)
+  Q_PROPERTY(QUrl source READ source WRITE setSource NOTIFY sourceChanged)
+  Q_PROPERTY(QString sourceFileName READ sourceFileName NOTIFY sourceChanged)
   Q_PROPERTY(QVector2D pos MEMBER _pos NOTIFY posChanged)
   Q_PROPERTY(QVector2D size MEMBER _size NOTIFY sizeChanged)
   Q_PROPERTY(bool sizeSet MEMBER _sizeSet NOTIFY sizeChanged)
@@ -24,6 +24,9 @@ class ImageDisplayNode : public NodeDelegateModel {
 
   bool captionVisible() const override { return true; }
   QString name() const override { return "Image"; }
+
+  QJsonObject save() const override;
+  void load(QJsonObject const &p) override;
 
   QString portCaption(PortType portType, PortIndex portIndex) const override;
   bool portCaptionVisible(PortType, PortIndex) const override { return true; }
@@ -36,9 +39,9 @@ class ImageDisplayNode : public NodeDelegateModel {
   QQmlComponent embeddedComponent(QQmlEngine *engine) override;
   QVariantMap componentInitialProperties() override;
 
-  QUrl getSource();
+  QUrl source();
   void setSource(QUrl url);
-  QString getSourceFileName();
+  QString sourceFileName();
 
   bool tile();
   void setTile(bool tile);
