@@ -21,6 +21,9 @@ qt_add_qml_module(process
   math/MultiplicationNode.hpp
   math/SinNode.hpp
   math/CosNode.hpp
+  math/MinNode.hpp
+  math/MaxNode.hpp
+  math/ModNode.hpp
   TextTyper/TextTypeEvent.hpp
   TextTyper/TextTypeEvent.cpp
   TextTyper/TextTyperNode.hpp

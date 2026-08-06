@@ -17,8 +17,8 @@ void SurfaceLoader::createComponent(SurfaceData *surfaceDescription) {
     return;
   }
 
-  QQuickItem *nextItem = nullptr;
-  bool loaderReached = false;
+  // QQuickItem *nextItem = nullptr;
+  // bool loaderReached = false;
 
   // if (parentItem() != nullptr)
   //   for (auto sibling : parentItem()->children()) {

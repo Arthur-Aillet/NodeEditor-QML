@@ -3,6 +3,9 @@
 #include "DataFlowModelInterface.hpp"
 #include "Definitions.hpp"
 #include "Dithering/DitheringNode.hpp"
+#include "MaxNode.hpp"
+#include "MinNode.hpp"
+#include "ModNode.hpp"
 #include "StyleCollection.hpp"
 #include "TimeController.hpp"
 
@@ -73,6 +76,9 @@ static std::shared_ptr<NodeDelegateModelRegistry> createRegistery(QQmlEngine &en
   reg->registerModel<SubtractionNode>("Process");
   reg->registerModel<SinNode>("Process");
   reg->registerModel<CosNode>("Process");
+  reg->registerModel<MinNode>("Process");
+  reg->registerModel<MaxNode>("Process");
+  reg->registerModel<ModNode>("Process");
   reg->registerModel<CombineColorNode>("Process");
   reg->registerModel<SplitColorNode>("Process");
   reg->registerModel<CombineVec2Node>("Process");

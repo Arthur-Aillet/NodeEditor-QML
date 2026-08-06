@@ -12,9 +12,6 @@ SurfaceLoader {
     clip: true
 
     anchored: false
-    onRotationChanged: {
-        console.log("Rotation: " + rotation);
-    }
     rotation: node.rotation
     surfaceData: node.surface
 }

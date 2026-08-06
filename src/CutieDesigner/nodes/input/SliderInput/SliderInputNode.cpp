@@ -3,9 +3,7 @@
 #include "NodeDelegateModel.hpp"
 
 SliderInputNode::SliderInputNode(QQmlEngine *engine)
-    : NodeDelegateModel(engine), _valueData(std::make_shared<DecimalData>(_value)) {
-  connect(this, &SliderInputNode::valueChanged, [&]() { emit dataUpdated(0); });
-}
+    : NodeDelegateModel(engine), _valueData(std::make_shared<DecimalData>(_value)) {}
 
 QJsonObject SliderInputNode::save() const {
   return QJsonObject({{"value", _value}, {"min", _min}, {"max", _max}});
@@ -34,21 +32,22 @@ void SliderInputNode::load(QJsonObject const &json) {
 void SliderInputNode::setValue(double value) {
   if (_value == value)
     return;
-  value = _value;
+  _value = value;
   emit valueChanged();
+  emit dataUpdated(0);
 }
 
 void SliderInputNode::setMin(double min) {
   if (_min == min)
     return;
-  min = _min;
+  _min = min;
   emit minChanged();
 }
 
 void SliderInputNode::setMax(double max) {
   if (_max == max)
     return;
-  max = _max;
+  _max = max;
   emit maxChanged();
 }
 

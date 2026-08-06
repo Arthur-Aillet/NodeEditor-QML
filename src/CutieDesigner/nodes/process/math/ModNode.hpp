@@ -5,17 +5,17 @@
 
 #include <QtCore/QObject>
 
-class DivisionNode : public MathOperationNodeModel {
+class ModNode : public MathOperationNodeModel {
   public:
-  DivisionNode(QQmlEngine *engine) : MathOperationNodeModel(engine) {}
-  virtual ~DivisionNode() {}
+  ModNode(QQmlEngine *engine) : MathOperationNodeModel(engine) {}
+  virtual ~ModNode() {}
 
   public:
-  QString caption() const override { return "div"; }
+  QString caption() const override { return "mod"; }
 
   bool portCaptionVisible(PortType _portType, PortIndex _portIndex) const override { return true; }
 
-  QString name() const override { return "Division"; }
+  QString name() const override { return "Mod"; }
 
   private:
   void compute() override {
@@ -27,22 +27,12 @@ class DivisionNode : public MathOperationNodeModel {
     NodeValidationState state;
     if (n2 && (n2->repr<double>() == 0.0)) {
       state._state = NodeValidationState::State::Error;
-      state._stateMessage = QStringLiteral("Division by zero error");
+      state._stateMessage = QStringLiteral("Mod by zero error");
       setValidationState(state);
       _resultPtr.reset();
-    } else if (n2 && (n2->repr<double>() < 1e-5)) {
-      state._state = NodeValidationState::State::Warning;
-      state._stateMessage = QStringLiteral("Very small divident. Result might overflow");
-      setValidationState(state);
-      if (n1) {
-        _result = n1->repr<double>() / n2->repr<double>();
-        _resultPtr = std::make_shared<DecimalData>(_result);
-      } else {
-        _resultPtr.reset();
-      }
     } else if (n1 && n2) {
       setValidationState(state);
-      _result = n1->repr<double>() / n2->repr<double>();
+      _result = std::fmod(n1->repr<double>(), n2->repr<double>());
       _resultPtr = std::make_shared<DecimalData>(_result);
     } else {
       NodeValidationState state;
