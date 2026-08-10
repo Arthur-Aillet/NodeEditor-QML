@@ -2,12 +2,12 @@
 
 #include "StyleCollection.hpp"
 
-#include "vivid/color.h"
-
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
 #include <QtCore/QJsonValueRef>
 
+#include <qcolor.h>
+#include <qvectornd.h>
 #include <random>
 
 // inline void initResources() { Q_INIT_RESOURCE(resources); }
@@ -67,7 +67,9 @@ void ConnectionStyle::setConnectionStyle(QString jsonText) {
   }
 
 #define CONNECTION_STYLE_WRITE_COLOR(values, variable)                                             \
-  { values[#variable] = variable.name(); }
+  {                                                                                                \
+    values[#variable] = variable.name();                                                           \
+  }
 
 #define CONNECTION_STYLE_READ_FLOAT(values, variable)                                              \
   {                                                                                                \
@@ -78,7 +80,9 @@ void ConnectionStyle::setConnectionStyle(QString jsonText) {
   }
 
 #define CONNECTION_STYLE_WRITE_FLOAT(values, variable)                                             \
-  { values[#variable] = variable; }
+  {                                                                                                \
+    values[#variable] = variable;                                                                  \
+  }
 
 #define CONNECTION_STYLE_READ_BOOL(values, variable)                                               \
   {                                                                                                \
@@ -89,7 +93,9 @@ void ConnectionStyle::setConnectionStyle(QString jsonText) {
   }
 
 #define CONNECTION_STYLE_WRITE_BOOL(values, variable)                                              \
-  { values[#variable] = variable; }
+  {                                                                                                \
+    values[#variable] = variable;                                                                  \
+  }
 
 void ConnectionStyle::loadJson(QJsonObject const &json) {
   QJsonValue nodeStyleValues = json["ConnectionStyle"];
@@ -176,10 +182,64 @@ bool ConnectionStyle::operator==(const ConnectionStyle &other) const {
          PointDiameter == other.PointDiameter && UseDataDefinedColors == other.UseDataDefinedColors;
 }
 
+//
+// Copyright (c) 2020 Björn Ottosson
+// Permission is hereby granted, free of charge, to any person obtaining a copy of
+// this software and associated documentation files (the "Software"), to deal in
+// the Software without restriction, including without limitation the rights to
+// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+// of the Software, and to permit persons to whom the Software is furnished to do
+// so, subject to the following conditions:
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
+// c.f. https://bottosson.github.io/posts/oklab/
+//
+
+static QVector3D toOklab(const QColor color) {
+  const float l =
+      0.4122214708f * color.redF() + 0.5363325363f * color.greenF() + 0.0514459929f * color.blueF();
+  const float m =
+      0.2119034982f * color.redF() + 0.6806995451f * color.greenF() + 0.1073969566f * color.blueF();
+  const float s =
+      0.0883024619f * color.redF() + 0.2817188376f * color.greenF() + 0.6299787005f * color.blueF();
+
+  const float l_ = std::cbrtf(l);
+  const float m_ = std::cbrtf(m);
+  const float s_ = std::cbrtf(s);
+
+  return {
+      0.2104542553f * l_ + 0.7936177850f * m_ - 0.0040720468f * s_,
+      1.9779984951f * l_ - 2.4285922050f * m_ + 0.4505937099f * s_,
+      0.0259040371f * l_ + 0.7827717662f * m_ - 0.8086757660f * s_,
+  };
+}
+
+const QColor fromOklab(const QVector3D &oklab) {
+  const float l_ = oklab.x() + 0.3963377774f * oklab.y() + 0.2158037573f * oklab.z();
+  const float m_ = oklab.x() - 0.1055613458f * oklab.y() - 0.0638541728f * oklab.z();
+  const float s_ = oklab.x() - 0.0894841775f * oklab.y() - 1.2914855480f * oklab.z();
+
+  const float l = l_ * l_ * l_;
+  const float m = m_ * m_ * m_;
+  const float s = s_ * s_ * s_;
+
+  return QColor::fromRgbF(+4.0767416621f * l - 3.3077115913f * m + 0.2309699292f * s,
+                          -1.2684380046f * l + 2.6097574011f * m - 0.3413193965f * s,
+                          -0.0041960863f * l - 0.7034186147f * m + 1.7076147010f * s);
+}
+
 QColor ConnectionStyle::lerpOklabColors(const QColor &first, const QColor &second,
                                         const float amount) const {
-  const auto oklabFirst = vivid::Color(first.rgb()).oklab();
-  const auto oklabSecond = vivid::Color(second.rgb()).oklab();
-  const auto lerped = lerp(oklabFirst, oklabSecond, amount).rgb().value();
-  return QColor::fromRgbF(lerped.x, lerped.y, lerped.z);
+  const auto oklabFirst = toOklab(first);
+  const auto oklabSecond = toOklab(second);
+  const auto lerped = oklabFirst + amount * (oklabSecond - oklabFirst);
+  return fromOklab(lerped);
 }

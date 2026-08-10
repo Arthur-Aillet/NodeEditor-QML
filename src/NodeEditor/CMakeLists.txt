@@ -81,7 +81,7 @@ target_include_directories(NodeEditor PUBLIC
 )
 
 target_link_libraries(NodeEditor
-  PUBLIC Qt::Core Qt::Gui Qt::Qml Qt::Quick vivid
+  PUBLIC Qt::Core Qt::Gui Qt::Qml Qt::Quick
 )
 
 target_compile_definitions(NodeEditor PRIVATE GLM_ENABLE_EXPERIMENTAL)
