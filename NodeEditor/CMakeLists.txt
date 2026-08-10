@@ -1,6 +1,6 @@
 qt_add_qml_module(NodeEditor
   SHARED
-  URI src
+  URI NodeEditor
   QML_FILES
   nodes/DefaultNodePainter.qml
   nodes/NodeGraphicalObject.qml

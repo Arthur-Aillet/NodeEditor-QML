@@ -10,6 +10,6 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Quick Qml ShaderTools)
 qt_policy(SET QTP0001 NEW)
 qt_policy(SET QTP0004 NEW)
 
-add_subdirectory(src)
+add_subdirectory(NodeEditor)
 
 #set(CMAKE_CXX_CLANG_TIDY clang-tidy-19 -config-file=${CMAKE_SOURCE_DIR}/.clang-tidy)
