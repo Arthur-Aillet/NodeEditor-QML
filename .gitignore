@@ -88,3 +88,5 @@ lib/
 .vscode
 .cache
 .direnv
+
+examples/*/build/
