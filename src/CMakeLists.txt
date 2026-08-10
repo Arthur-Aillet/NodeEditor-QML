@@ -1,6 +1,6 @@
 qt_add_qml_module(NodeEditor
   SHARED
-  URI NodeEditor
+  URI src
   QML_FILES
   nodes/DefaultNodePainter.qml
   nodes/NodeGraphicalObject.qml
@@ -80,6 +80,6 @@ target_include_directories(NodeEditor PUBLIC
 )
 
 target_link_libraries(NodeEditor
-  PUBLIC Qt::Core Qt::Gui Qt::Qml Qt::Quick
+  PRIVATE Qt::Core Qt::Gui Qt::Qml Qt::Quick
 )
 
