@@ -27,6 +27,13 @@ qt_add_qml_module(calculator
   QML_FILES
   App.qml
 
+  SOURCES
+  AdditionNode.hpp
+  DecimalData.cpp
+  DecimalData.hpp
+  MathOperationNodeModel.cpp
+  MathOperationNodeModel.hpp
+
   IMPORTS
     TARGET NodeEditor
 )

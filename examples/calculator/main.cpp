@@ -1,3 +1,5 @@
+#include "AdditionNode.hpp"
+
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
@@ -16,6 +18,8 @@ int main(int argc, char *argv[]) {
       []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
 
   auto reg = std::make_shared<NodeDelegateModelRegistry>(&engine);
+
+  reg->registerModel<AdditionNode>("Operation");
 
   std::shared_ptr<DataFlowGraphModel> graph = std::make_shared<DataFlowGraphModel>(reg, &engine);
 
