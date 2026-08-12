@@ -20,14 +20,8 @@ class MathOperationNodeModel : public NodeDelegateModel {
   unsigned int nPorts(PortType portType) const override;
 
   NodeDataType dataType(PortType portType, PortIndex portIndex) const override;
-  virtual bool portCaptionVisible(PortType, PortIndex) const override { return true; }
-  virtual QString portCaption(PortType portType, PortIndex portIndex) const override {
-    if (portType == PortType::Out)
-      return "out";
-    if (nbInputs() == 1)
-      return "in";
-    return QString((char)('a' + portIndex));
-  }
+  virtual bool portCaptionVisible(PortType portType, PortIndex portIndex) const override;
+  virtual QString portCaption(PortType portType, PortIndex portIndex) const override;
 
   std::shared_ptr<NodeData> outData(PortIndex port) override;
 

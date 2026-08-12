@@ -86,7 +86,6 @@ Q_ENUM_NS(ConnectionPolicy)
 enum class PortType {
   In = 0,  ///< Input node port (from the left).
   Out = 1, ///< Output node port (from the right).
-  None = 2
 };
 Q_ENUM_NS(PortType)
 

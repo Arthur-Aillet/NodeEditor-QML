@@ -49,7 +49,7 @@ void AbstractGraphModel::portsDeleted(NodeId const nodeId, PortType const portTy
   }
 
   _shiftedByDynamicPortsConnections.clear();
-  Q_EMIT nodePortsUpdated(nodeId, portType);
+  emit nodePortsUpdated(nodeId, portType);
 }
 
 void AbstractGraphModel::portsAboutToBeInserted(NodeId const nodeId, PortType const portType,
@@ -90,5 +90,5 @@ void AbstractGraphModel::portsInserted(NodeId const nodeId, PortType const portT
   }
 
   _shiftedByDynamicPortsConnections.clear();
-  Q_EMIT nodePortsUpdated(nodeId, portType);
+  emit nodePortsUpdated(nodeId, portType);
 }

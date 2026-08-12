@@ -8,8 +8,20 @@ unsigned int MathOperationNodeModel::nPorts(PortType portType) const {
     return 1;
 }
 
-NodeDataType MathOperationNodeModel::dataType(PortType, PortIndex) const {
+NodeDataType MathOperationNodeModel::dataType(PortType _portType, PortIndex _portIndex) const {
   return DecimalData().type();
+}
+
+bool MathOperationNodeModel::portCaptionVisible(PortType _portType, PortIndex _portIndex) const {
+  return true;
+}
+
+QString MathOperationNodeModel::portCaption(PortType portType, PortIndex portIndex) const {
+  if (portType == PortType::Out)
+    return "out";
+  if (nbInputs() == 1)
+    return "in";
+  return QString((char)('a' + portIndex));
 }
 
 std::shared_ptr<NodeData> MathOperationNodeModel::outData(PortIndex) { return _resultPtr; }

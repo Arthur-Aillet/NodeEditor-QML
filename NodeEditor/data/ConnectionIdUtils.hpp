@@ -32,30 +32,12 @@ inline PortIndex getPortIndex(PortType portType, ConnectionId connectionId) {
 }
 
 inline PortType oppositePort(PortType port) {
-  PortType result = PortType::None;
-
-  switch (port) {
-  case PortType::In:
-    result = PortType::Out;
-    break;
-
-  case PortType::Out:
-    result = PortType::In;
-    break;
-
-  case PortType::None:
-    result = PortType::None;
-    break;
-
-  default:
-    break;
-  }
-  return result;
+  if (port == PortType::In)
+    return PortType::Out;
+  return PortType::In;
 }
 
 inline bool isPortIndexValid(PortIndex index) { return index != InvalidPortIndex; }
-
-inline bool isPortTypeValid(PortType portType) { return portType != PortType::None; }
 
 /**
  * Creates a connection Id instance filled just on one side.
