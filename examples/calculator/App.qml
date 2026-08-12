@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+
 import NodeEditor
 
 ApplicationWindow {
@@ -7,7 +8,7 @@ ApplicationWindow {
     height: 400
     visible: true
     color: "black"
-    GraphicsView {
+    DefaultControlsView {
         anchors.fill: parent
     }
 }

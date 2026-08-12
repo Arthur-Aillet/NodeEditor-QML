@@ -2,6 +2,18 @@ qt_add_qml_module(NodeEditor
   SHARED
   URI NodeEditor
   QML_FILES
+  connections/DefaultConnection.qml
+  connections/DraftConnection.qml
+  connections/ConnectionList.qml
+
+  controls/DefaultControlsView.qml
+  controls/NodeListMenu.qml
+  controls/NodeSearchMenu.qml
+  controls/NodeSearchTextField.qml
+  controls/PortSearchMenu.qml
+  controls/SearchFilterModel.qml
+  controls/SearchMenuItem.qml
+
   nodes/DefaultNodePainter.qml
   nodes/NodeGraphicalObject.qml
   nodes/AbstractNodePainter.qml
@@ -13,9 +25,6 @@ qt_add_qml_module(NodeEditor
   view/NavigableArea.qml
   view/ViewBackground.qml
 
-  connections/DefaultConnection.qml
-  connections/DraftConnection.qml
-  connections/ConnectionList.qml
 
   DEPENDENCIES QtQuick
 
@@ -59,6 +68,7 @@ qt_add_qml_module(NodeEditor
   nodes/Clipboard.cpp
 
   RESOURCES
+  controls/icomoon.ttf
   resources/resources.qrc
 )
 
