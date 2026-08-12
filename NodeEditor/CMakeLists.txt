@@ -19,7 +19,6 @@ qt_add_qml_module(NodeEditor
   nodes/AbstractNodePainter.qml
   nodes/DefaultPortPainter.qml
   nodes/NodeList.qml
-  nodes/QSet.qml
 
   view/GraphicsView.qml
   view/NavigableArea.qml

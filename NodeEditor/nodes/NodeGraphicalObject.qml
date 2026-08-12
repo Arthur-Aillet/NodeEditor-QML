@@ -24,6 +24,13 @@ MouseArea {
     property int flags
     property bool locked: flags & NodeEditor.NodeFlags.Locked
 
+    Component.onCompleted: {
+        const json = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Style);
+        style.loadJson(json);
+        style = style;
+        loadFlags();
+    }
+
     Connections {
         target: nodeObj
         function onPortsChanged(type: int) {
@@ -35,25 +42,18 @@ MouseArea {
         }
     }
 
+    Connections {
+        target: nodeObj.nodes
+        function onSelectedNodesContentChanged() {
+            nodeObj.selected = nodeObj.nodes.selectedNodes.has(nodeObj.nodeId);
+        }
+    }
+
     function loadFlags() {
         flags = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Flags);
     }
 
-    Component.onCompleted: {
-        const json = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Style);
-        style.loadJson(json);
-        style = style;
-        loadFlags();
-    }
-
     property bool selected: false
-
-    Connections {
-        target: nodeObj.nodes.selectedNodes
-        function onChanged() {
-            nodeObj.selected = nodeObj.nodes.selectedNodes.has(nodeObj.nodeId);
-        }
-    }
 
     property bool waitForClick: false
     property bool waitForFocus: false
@@ -65,6 +65,7 @@ MouseArea {
         if (waitForFocus) {
             nodes.selectedNodes.clear();
             nodes.selectedNodes.add(nodeId);
+            nodeObj.nodes.selectedNodesContentChanged();
         }
         waitForFocus = false;
     }
@@ -72,7 +73,8 @@ MouseArea {
     onClicked: mouse => {
         if (mouse.modifiers & Qt.ShiftModifier) {
             if (selected && !waitForClick) {
-                nodes.selectedNodes.remove(nodeId);
+                nodes.selectedNodes.delete(nodeId);
+                nodeObj.nodes.selectedNodesContentChanged();
             }
         }
         waitForClick = false;
@@ -85,12 +87,14 @@ MouseArea {
         if (mouse.modifiers & Qt.ShiftModifier) {
             if (!selected) {
                 nodes.selectedNodes.add(nodeId);
+                nodeObj.nodes.selectedNodesContentChanged();
                 waitForClick = true;
             }
         } else {
             if (focus) {
                 nodes.selectedNodes.clear();
                 nodes.selectedNodes.add(nodeId);
+                nodeObj.nodes.selectedNodesContentChanged();
             } else {
                 waitForFocus = true;
             }
@@ -105,6 +109,7 @@ MouseArea {
                 nodeObj.focusPolicy = Qt.StrongFocus;
             } else {
                 nodeObj.nodes.selectedNodes.clear();
+                nodeObj.nodes.selectedNodesContentChanged();
                 nodeObj.focus = false;
                 nodeObj.focusPolicy = Qt.NoFocus;
             }

@@ -7,7 +7,9 @@ Item {
     required property DraftConnection draftConnection
     required property NavigableArea area
 
-    property alias selectedNodes: selectedNodes
+    property var selectedNodes: new Set()
+
+    signal selectedNodesContentChanged
 
     Clipboard {
         id: clipboard
@@ -16,10 +18,10 @@ Item {
     function copySelectedNodes() {
         const selectedNodesJson = [];
         const connectionsJson = new Set();
-        for (const nodeId of selectedNodes.inner) {
+        for (const nodeId of selectedNodes) {
             selectedNodesJson.push(ModelInterface.graph.saveNode(nodeId));
         }
-        for (const nodeId of selectedNodes.inner) {
+        for (const nodeId of selectedNodes) {
             for (const connection of ModelInterface.graph.allConnectionIds(nodeId)) {
                 if (selectedNodes.has(connection.inNodeId) && selectedNodes.has(connection.outNodeId)) {
                     connectionsJson.add(connection);
@@ -68,6 +70,7 @@ Item {
             ModelInterface.graph.setNodeData(newNodeId, NodeEditor.NodeRole.Position, Qt.point(nodePosX, nodePosY));
             selectedNodes.add(newNodeId);
         }
+        selectedNodesContentChanged();
         for (let connection of (clipboard.content as Object)["connections"]) {
             connection.inNodeId = nodeIdMap[connection.inNodeId];
             connection.outNodeId = nodeIdMap[connection.outNodeId];
@@ -84,22 +87,24 @@ Item {
 
         if (event.key == Qt.Key_X && event.modifiers & Qt.ControlModifier) {
             copySelectedNodes();
-            for (let id of selectedNodes.inner) {
+            for (let id of selectedNodes) {
                 event.accepted = ModelInterface.graph.deleteNode(id);
             }
             selectedNodes.clear();
+            selectedNodesContentChanged();
         }
 
         if (event.key == Qt.Key_V && event.modifiers & Qt.ControlModifier) {
             event.accepted = pasteNodes();
-            nodes.nodeAt(selectedNodes.inner[0]).focus = true;
+            nodes.nodeAt(selectedNodes[0]).focus = true;
         }
 
         if (event.key == Qt.Key_Delete || event.key == Qt.Key_Back) {
-            for (let id of selectedNodes.inner) {
+            for (let id of selectedNodes) {
                 event.accepted = ModelInterface.graph.deleteNode(id);
             }
             selectedNodes.clear();
+            selectedNodesContentChanged();
         }
         if (event.key == Qt.Key_Left) {
             moveSelectedNodes(-5, 0, undefined);
@@ -119,10 +124,6 @@ Item {
         }
     }
 
-    QSet {
-        id: selectedNodes
-    }
-
     property alias nodes: nodes
 
     function loseFocus() {
@@ -133,10 +134,11 @@ Item {
             }
         }
         selectedNodes.clear();
+        selectedNodesContentChanged();
     }
 
     function moveSelectedNodes(xOffset: int, yOffset: int) {
-        for (let nodeId of selectedNodes.inner) {
+        for (let nodeId of selectedNodes) {
             let pos = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Position);
             pos.x += xOffset;
             pos.y += yOffset;
