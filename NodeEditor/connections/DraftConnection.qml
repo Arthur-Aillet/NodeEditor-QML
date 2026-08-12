@@ -14,7 +14,6 @@ Loader {
 
     function tryToCreate() {
         const oppositeCount = selectedPort.portType === NodeEditor.PortType.In ? NodeEditor.NodeRole.OutPortCount : NodeEditor.NodeRole.InPortCount;
-        const oppositeSide = selectedPort.portType === NodeEditor.PortType.In ? NodeEditor.PortType.Out : NodeEditor.PortType.In;
 
         for (let i = 0; i < nodes.nodes.count; ++i) {
             const node = nodes.nodes.itemAt(i) as NodeGraphicalObject;
@@ -23,7 +22,7 @@ Loader {
                 if (ports < 1)
                     continue;
                 for (let j = 0; j < ports; j++) {
-                    const relativePortPos = node.getPortPosition(j, oppositeSide);
+                    const relativePortPos = node.getPortPosition(j, NodeEditorUtils.oppositePort(selectedPort.portType));
 
                     const pos = Qt.point(relativePortPos.x + node.x, relativePortPos.y + node.y);
                     const diff = Qt.vector2d(pos.x - area.mousePosition.x, pos.y - area.mousePosition.y);

@@ -130,6 +130,13 @@ class NodeEditorUtils : public QObject {
   inline PortIndex invalidPortIndex() const { return InvalidPortIndex; }
   inline NodeId invalidNodeId() const { return InvalidNodeId; }
   inline GroupId invalidGroupId() const { return InvalidGroupId; }
+
+  public:
+  Q_INVOKABLE inline PortType oppositePort(PortType type) {
+    if (type == PortType::In)
+      return PortType::Out;
+    return PortType::In;
+  }
 };
 
 /**

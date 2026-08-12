@@ -181,8 +181,8 @@ Menu {
                 }
                 ModelInterface.createConnection(newConnection);
                 let mappedPos = nodePortSearchMenu.area.mapToItem(nodePortSearchMenu.area.inner, nodePortSearchMenu.openedAt);
-                const oppositeSide = nodePortSearchMenu.portSide === NodeEditor.PortType.In ? NodeEditor.PortType.Out : NodeEditor.PortType.In;
-                const portPos = nodePortSearchMenu.graphicsView.nodes.nodeAt(newNodeId).getPortPosition(port.portIndex, oppositeSide);
+                const newNode = nodePortSearchMenu.graphicsView.nodes.nodeAt(newNodeId);
+                const portPos = newNode.getPortPosition(port.portIndex, NodeEditorUtils.oppositePort(nodePortSearchMenu.portSide));
                 mappedPos.x -= portPos.x;
                 mappedPos.y -= portPos.y;
                 ModelInterface.graph.setNodeData(newNodeId, NodeEditor.NodeRole.Position, mappedPos);

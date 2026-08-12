@@ -31,12 +31,6 @@ inline PortIndex getPortIndex(PortType portType, ConnectionId connectionId) {
   return index;
 }
 
-inline PortType oppositePort(PortType port) {
-  if (port == PortType::In)
-    return PortType::Out;
-  return PortType::In;
-}
-
 inline bool isPortIndexValid(PortIndex index) { return index != InvalidPortIndex; }
 
 /**
