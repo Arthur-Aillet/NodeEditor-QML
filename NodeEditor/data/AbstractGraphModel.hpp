@@ -35,10 +35,10 @@ class AbstractGraphModel : public QObject {
 
   /// @brief Returns all connected Node Ids for given port.
   /**
-   * The returned set of nodes and port indices correspond to the type
-   * opposite to the given `portType`.
+   * The returned set of nodes and port indices correspond to the side
+   * opposite to the given `portSide`.
    */
-  Q_INVOKABLE virtual QSet<ConnectionId> connections(NodeId nodeId, PortType portType,
+  Q_INVOKABLE virtual QSet<ConnectionId> connections(NodeId nodeId, PortSide portSide,
                                                      PortIndex index) const = 0;
 
   /// Checks if two nodes with the given `connectionId` are connected.
@@ -127,7 +127,7 @@ class AbstractGraphModel : public QObject {
    * @returns Port Data Type, Port Data, Connection Policy, Port
    * Caption.
    */
-  Q_INVOKABLE virtual QVariant portData(NodeId nodeId, PortType portType, PortIndex index,
+  Q_INVOKABLE virtual QVariant portData(NodeId nodeId, PortSide portSide, PortIndex index,
                                         PortRole role) const = 0;
 
   /**
@@ -135,11 +135,11 @@ class AbstractGraphModel : public QObject {
    * standard `QVariant AbstractGraphModel::portData(...)` function.
    */
   template <typename T>
-  T portData(NodeId nodeId, PortType portType, PortIndex index, PortRole role) const {
-    return portData(nodeId, portType, index, role).value<T>();
+  T portData(NodeId nodeId, PortSide portSide, PortIndex index, PortRole role) const {
+    return portData(nodeId, portSide, index, role).value<T>();
   }
 
-  Q_INVOKABLE virtual bool setPortData(NodeId nodeId, PortType portType, PortIndex index,
+  Q_INVOKABLE virtual bool setPortData(NodeId nodeId, PortSide portSide, PortIndex index,
                                        QVariant const &value, PortRole role = PortRole::Data) = 0;
   /**
    * Reimplement the function if you want to store/restore the node's
@@ -179,18 +179,18 @@ class AbstractGraphModel : public QObject {
    * deleted. It must be called right before the model removes its old port data.
    *
    * @param nodeId Defines the node to be modified
-   * @param portType Is either PortType::In or PortType::Out
+   * @param portSide Is either PortSide::In or PortSide::Out
    * @param first Index of the first port to be removed
    * @param last Index of the last port to be removed
    */
-  void portsAboutToBeDeleted(NodeId const nodeId, PortType const portType, PortIndex const first,
+  void portsAboutToBeDeleted(NodeId const nodeId, PortSide const portSide, PortIndex const first,
                              PortIndex const last);
 
   /**
    * Signal emitted when model no longer has the old data associated with the
    * given port indices and when the node must be repainted.
    */
-  void portsDeleted(NodeId const nodeId, PortType const portType);
+  void portsDeleted(NodeId const nodeId, PortSide const portSide);
 
   /**
    * Signal emitted when model is about to create new ports on the given node.
@@ -201,24 +201,24 @@ class AbstractGraphModel : public QObject {
    * index. For such connections the new "post-insertion" addresses are computed
    * and stored until the function AbstractGraphModel::portsInserted is called.
    */
-  void portsAboutToBeInserted(NodeId const nodeId, PortType const portType, PortIndex const first,
+  void portsAboutToBeInserted(NodeId const nodeId, PortSide const portSide, PortIndex const first,
                               PortIndex const last);
 
   /**
    * Function re-creates the connections that were shifted during the port
    * insertion. After that the node is updated.
    */
-  void portsInserted(NodeId const nodeId, PortType const portType);
+  void portsInserted(NodeId const nodeId, PortSide const portSide);
 
   signals:
-  void connectionDropped(NodeId const nodeId, PortType const portType, PortIndex const portIndex,
+  void connectionDropped(NodeId const nodeId, PortSide const portSide, PortIndex const portIndex,
                          int x, int y);
   void connectionCreated(ConnectionId const connectionId);
   void connectionDeleted(ConnectionId const connectionId);
   void nodeCreated(NodeId const nodeId);
   void nodeDeleted(NodeId const nodeId);
   void nodeUpdated(NodeId const nodeId);
-  void nodePortsUpdated(NodeId const nodeId, PortType const portType);
+  void nodePortsUpdated(NodeId const nodeId, PortSide const portSide);
   void nodeFlagsUpdated(NodeId const nodeId);
   void nodePositionUpdated(NodeId const nodeId);
   void modelReset();

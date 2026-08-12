@@ -13,7 +13,7 @@ Canvas {
         let nodeId;
         let portIndex;
 
-        if (side == NodeEditor.PortType.In) {
+        if (side == NodeEditor.PortSide.In) {
             nodeId = connection.inNodeId;
             portIndex = connection.inPortIndex;
         } else {
@@ -35,25 +35,25 @@ Canvas {
     property point inPoint: {
         if (connection.inNodeId === NodeEditorUtils.InvalidNodeId)
             return area.mousePosition;
-        return getPortPosition(NodeEditor.PortType.In);
+        return getPortPosition(NodeEditor.PortSide.In);
     }
     property point outPoint: {
         if (connection.outNodeId === NodeEditorUtils.InvalidNodeId)
             return area.mousePosition;
-        return getPortPosition(NodeEditor.PortType.Out);
+        return getPortPosition(NodeEditor.PortSide.Out);
     }
 
     property color inTypeColor: {
         if (!fullyConnected)
             return "black";
-        const dataType = ModelInterface.graph.portData(connection.inNodeId, NodeEditor.PortType.In, connection.inPortIndex, NodeEditor.PortRole.DataType);
+        const dataType = ModelInterface.graph.portData(connection.inNodeId, NodeEditor.PortSide.In, connection.inPortIndex, NodeEditor.PortRole.DataType);
         return StyleCollection.connection.typeColor(dataType.id);
     }
 
     property color outTypeColor: {
         if (!fullyConnected)
             return "black";
-        const dataType = ModelInterface.graph.portData(connection.outNodeId, NodeEditor.PortType.Out, connection.outPortIndex, NodeEditor.PortRole.DataType);
+        const dataType = ModelInterface.graph.portData(connection.outNodeId, NodeEditor.PortSide.Out, connection.outPortIndex, NodeEditor.PortRole.DataType);
         return StyleCollection.connection.typeColor(dataType.id);
     }
 

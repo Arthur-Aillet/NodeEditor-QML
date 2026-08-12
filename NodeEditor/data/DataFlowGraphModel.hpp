@@ -37,7 +37,7 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   NodeDelegateModelRegistry *getRegistry() { return _registry.get(); }
 
   Q_INVOKABLE QSet<ConnectionId> allConnectionIds(NodeId const nodeId) const override;
-  QSet<ConnectionId> connections(NodeId nodeId, PortType portType,
+  QSet<ConnectionId> connections(NodeId nodeId, PortSide portSide,
                                  PortIndex portIndex) const override;
 
   bool connectionExists(ConnectionId const connectionId) const override;
@@ -54,9 +54,9 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
 
   bool clear() override;
 
-  QVariant portData(NodeId nodeId, PortType portType, PortIndex portIndex,
+  QVariant portData(NodeId nodeId, PortSide portSide, PortIndex portIndex,
                     PortRole role) const override;
-  bool setPortData(NodeId nodeId, PortType portType, PortIndex portIndex, QVariant const &value,
+  bool setPortData(NodeId nodeId, PortSide portSide, PortIndex portIndex, QVariant const &value,
                    PortRole role = PortRole::Data) override;
 
   Q_INVOKABLE QJsonObject saveNode(NodeId const) const override;
@@ -87,7 +87,7 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   bool loopsEnabled() const override { return false; }
 
   signals:
-  void inPortDataWasSet(NodeId const, PortType const, PortIndex const);
+  void inPortDataWasSet(NodeId const, PortSide const, PortIndex const);
 
   private:
   NodeId newNodeId() override;

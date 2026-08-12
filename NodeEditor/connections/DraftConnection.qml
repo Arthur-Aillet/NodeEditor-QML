@@ -13,7 +13,7 @@ Loader {
     active: selectedPort !== null
 
     function tryToCreate() {
-        const oppositeCount = selectedPort.portType === NodeEditor.PortType.In ? NodeEditor.NodeRole.OutPortCount : NodeEditor.NodeRole.InPortCount;
+        const oppositeCount = selectedPort.portSide === NodeEditor.PortSide.In ? NodeEditor.NodeRole.OutPortCount : NodeEditor.NodeRole.InPortCount;
 
         for (let i = 0; i < nodes.nodes.count; ++i) {
             const node = nodes.nodes.itemAt(i) as NodeGraphicalObject;
@@ -22,7 +22,7 @@ Loader {
                 if (ports < 1)
                     continue;
                 for (let j = 0; j < ports; j++) {
-                    const relativePortPos = node.getPortPosition(j, NodeEditorUtils.oppositePort(selectedPort.portType));
+                    const relativePortPos = node.getPortPosition(j, NodeEditorUtils.oppositeSide(selectedPort.portSide));
 
                     const pos = Qt.point(relativePortPos.x + node.x, relativePortPos.y + node.y);
                     const diff = Qt.vector2d(pos.x - area.mousePosition.x, pos.y - area.mousePosition.y);
@@ -32,7 +32,7 @@ Loader {
 
                     if (dist < tolerance) {
                         let newConnection;
-                        if (selectedPort.portType === NodeEditor.PortType.In) {
+                        if (selectedPort.portSide === NodeEditor.PortSide.In) {
                             newConnection = {
                                 inNodeId: selectedPort.nodeId,
                                 inPortIndex: selectedPort.portId,
@@ -56,7 +56,7 @@ Loader {
                 }
             }
         }
-        ModelInterface.graph.connectionDropped(selectedPort.nodeId, selectedPort.portType, selectedPort.portId, area.mousePosition.x, area.mousePosition.y);
+        ModelInterface.graph.connectionDropped(selectedPort.nodeId, selectedPort.portSide, selectedPort.portId, area.mousePosition.x, area.mousePosition.y);
         selectedPort = null;
     }
 
@@ -78,10 +78,10 @@ Loader {
         nodes: defaultConnection.nodes
 
         connection: ({
-                outNodeId: sp.portType === NodeEditor.PortType.In ? NodeEditorUtils.InvalidNodeId : sp.nodeId,
-                outPortIndex: sp.portType === NodeEditor.PortType.In ? NodeEditorUtils.InvalidPortIndex : sp.portId,
-                inNodeId: sp.portType === NodeEditor.PortType.In ? sp.nodeId : NodeEditorUtils.InvalidNodeId,
-                inPortIndex: sp.portType === NodeEditor.PortType.In ? sp.portId : NodeEditorUtils.InvalidPortIndex
+                outNodeId: sp.portSide === NodeEditor.PortSide.In ? NodeEditorUtils.InvalidNodeId : sp.nodeId,
+                outPortIndex: sp.portSide === NodeEditor.PortSide.In ? NodeEditorUtils.InvalidPortIndex : sp.portId,
+                inNodeId: sp.portSide === NodeEditor.PortSide.In ? sp.nodeId : NodeEditorUtils.InvalidNodeId,
+                inPortIndex: sp.portSide === NodeEditor.PortSide.In ? sp.portId : NodeEditorUtils.InvalidPortIndex
             })
 
         Connections {

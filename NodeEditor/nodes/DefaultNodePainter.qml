@@ -16,8 +16,8 @@ AbstractNodePainter {
 
     Connections {
         target: defaultNodePainter.nodeObject
-        function onConnectionChanged(portIndex: int, portType: int, otherNodeId: int, otherPortId: int) {
-            let port = inOutRepeater.portAt(portIndex, portType);
+        function onConnectionChanged(portIndex: int, portSide: int, otherNodeId: int, otherPortId: int) {
+            let port = inOutRepeater.portAt(portIndex, portSide);
             if (port) {
                 port.portConnectionChanged();
             }
@@ -25,7 +25,7 @@ AbstractNodePainter {
     }
 
     override property Item embeddedComponentContainer: embedContainer
-    override property var getPortPosition: (portIndex, portType) => {
+    override property var getPortPosition: (portIndex, portSide) => {
         const step = spacing + portSize;
 
         let totalHeight = content.y;
@@ -35,7 +35,7 @@ AbstractNodePainter {
         totalHeight += step * (portIndex + 1);
         totalHeight -= spacing / 2;
 
-        if (portType == NodeEditor.PortType.In) {
+        if (portSide == NodeEditor.PortSide.In) {
             return Qt.point(0, totalHeight);
         }
         return Qt.point(content.width, totalHeight);
@@ -146,11 +146,11 @@ AbstractNodePainter {
 
         Item {
             id: content
-            property real maxLabelWidthIn: inOutRepeater.getMaxLabelWidth(NodeEditor.PortType.In)
+            property real maxLabelWidthIn: inOutRepeater.getMaxLabelWidth(NodeEditor.PortSide.In)
 
             Layout.fillWidth: true
             Layout.minimumWidth: {
-                const maxLabelWidthOut = inOutRepeater.getMaxLabelWidth(NodeEditor.PortType.Out);
+                const maxLabelWidthOut = inOutRepeater.getMaxLabelWidth(NodeEditor.PortSide.Out);
 
                 return maxLabelWidthIn + defaultNodePainter.spacing + embedContainer.width + defaultNodePainter.spacing + maxLabelWidthOut;
             }
@@ -170,10 +170,10 @@ AbstractNodePainter {
                     nodePainter: defaultNodePainter as DefaultNodePainter
                 }
 
-                function portAt(portId: int, portType: int): var {
+                function portAt(portId: int, portSide: int): var {
                     let i = 0;
                     let target = defaultNodePainter.nodeObject.inPortCount;
-                    if (portType == NodeEditor.PortType.Out) {
+                    if (portSide == NodeEditor.PortSide.Out) {
                         i += defaultNodePainter.nodeObject.inPortCount;
                         target += defaultNodePainter.nodeObject.outPortCount;
                     }

@@ -12,11 +12,11 @@ GraphicsView {
 
     Connections {
         target: ModelInterface.graph
-        function onConnectionDropped(nodeId: int, portType: int, portId: int, x: int, y: int) {
-            portSearch.portSide = portType;
+        function onConnectionDropped(nodeId: int, portSide: int, portId: int, x: int, y: int) {
+            portSearch.portSide = portSide;
             portSearch.portIndex = portId;
             portSearch.nodeIndex = nodeId;
-            portSearch.portDataType = ModelInterface.graph.portData(nodeId, portType, portId, NodeEditor.PortRole.DataType);
+            portSearch.portDataType = ModelInterface.graph.portData(nodeId, portSide, portId, NodeEditor.PortRole.DataType);
             portSearch.openAt(controlledView.mapPos(Qt.point(x, y)));
         }
     }

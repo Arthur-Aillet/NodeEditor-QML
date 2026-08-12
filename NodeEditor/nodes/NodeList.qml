@@ -189,17 +189,17 @@ Item {
         target: ModelInterface.graph
 
         function onConnectionCreated(connection: connectionId) {
-            nodes.nodeAt(connection.inNodeId).connectionChanged(connection.inPortIndex, NodeEditor.PortType.In, connection.outNodeId, connection.outPortIndex);
-            nodes.nodeAt(connection.outNodeId).connectionChanged(connection.outPortIndex, NodeEditor.PortType.Out, connection.inNodeId, connection.inPortIndex);
+            nodes.nodeAt(connection.inNodeId).connectionChanged(connection.inPortIndex, NodeEditor.PortSide.In, connection.outNodeId, connection.outPortIndex);
+            nodes.nodeAt(connection.outNodeId).connectionChanged(connection.outPortIndex, NodeEditor.PortSide.Out, connection.inNodeId, connection.inPortIndex);
         }
 
         function onConnectionDeleted(connection: connectionId) {
-            nodes.nodeAt(connection.inNodeId).connectionChanged(connection.inPortIndex, NodeEditor.PortType.In, connection.outNodeId, connection.outPortIndex);
-            nodes.nodeAt(connection.outNodeId).connectionChanged(connection.outPortIndex, NodeEditor.PortType.Out, connection.inNodeId, connection.inPortIndex);
+            nodes.nodeAt(connection.inNodeId).connectionChanged(connection.inPortIndex, NodeEditor.PortSide.In, connection.outNodeId, connection.outPortIndex);
+            nodes.nodeAt(connection.outNodeId).connectionChanged(connection.outPortIndex, NodeEditor.PortSide.Out, connection.inNodeId, connection.inPortIndex);
         }
 
-        function onNodePortsUpdated(nodeId: int, portType: int) {
-            nodes.nodeAt(nodeId).portsChanged(portType);
+        function onNodePortsUpdated(nodeId: int, portSide: int) {
+            nodes.nodeAt(nodeId).portsChanged(portSide);
         }
 
         function onNodeFlagsUpdated(id: real) {

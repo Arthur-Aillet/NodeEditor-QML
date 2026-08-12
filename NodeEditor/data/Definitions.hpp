@@ -83,11 +83,11 @@ Q_ENUM_NS(ConnectionPolicy)
 /**
  * Used for distinguishing input and output node ports.
  */
-enum class PortType {
+enum class PortSide {
   In = 0,  ///< Input node port (from the left).
   Out = 1, ///< Output node port (from the right).
 };
-Q_ENUM_NS(PortType)
+Q_ENUM_NS(PortSide)
 
 using PortCount = unsigned int;
 
@@ -106,7 +106,7 @@ using NodeRole = NodeEditor::NodeRole;
 using GroupId = NodeEditor::GroupId;
 using NodeId = NodeEditor::NodeId;
 using PortIndex = NodeEditor::PortIndex;
-using PortType = NodeEditor::PortType;
+using PortSide = NodeEditor::PortSide;
 using PortCount = NodeEditor::PortCount;
 using ConnectionPolicy = NodeEditor::ConnectionPolicy;
 using PortRole = NodeEditor::PortRole;
@@ -132,10 +132,10 @@ class NodeEditorUtils : public QObject {
   inline GroupId invalidGroupId() const { return InvalidGroupId; }
 
   public:
-  Q_INVOKABLE inline PortType oppositePort(PortType type) {
-    if (type == PortType::In)
-      return PortType::Out;
-    return PortType::In;
+  Q_INVOKABLE inline PortSide oppositeSide(PortSide side) {
+    if (side == PortSide::In)
+      return PortSide::Out;
+    return PortSide::In;
   }
 };
 

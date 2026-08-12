@@ -54,7 +54,7 @@ Menu {
             const pos = Qt.point(nodePortSearchMenu.x, nodePortSearchMenu.y);
             const newNodeId = ModelInterface.createNode(name, nodePortSearchMenu.area.mapToItem(nodePortSearchMenu.area.inner, pos));
             let newConnection;
-            if (nodePortSearchMenu.portSide === NodeEditor.PortType.In) {
+            if (nodePortSearchMenu.portSide === NodeEditor.PortSide.In) {
                 newConnection = {
                     inNodeId: nodePortSearchMenu.nodeIndex,
                     inPortIndex: nodePortSearchMenu.portIndex,
@@ -91,15 +91,15 @@ Menu {
         onObjectAdded: (index, object) => {
             let data = object as NodeRoleData;
             for (let i = 0; i != data.portsInfo.length; i++) {
-                if (data.portsInfo[i].portType == nodePortSearchMenu.portSide) {
+                if (data.portsInfo[i].portSide == nodePortSearchMenu.portSide) {
                     continue;
                 }
-                if (nodePortSearchMenu.portSide == NodeEditor.PortType.In) {
+                if (nodePortSearchMenu.portSide == NodeEditor.PortSide.In) {
                     if (!data.portsInfo[i].dataType.compatibleTypes.includes(nodePortSearchMenu.portDataType.id)) {
                         continue;
                     }
                 }
-                if (nodePortSearchMenu.portSide == NodeEditor.PortType.Out) {
+                if (nodePortSearchMenu.portSide == NodeEditor.PortSide.Out) {
                     if (!nodePortSearchMenu.portDataType.compatibleTypes.includes(data.portsInfo[i].dataType.id)) {
                         continue;
                     }
@@ -164,7 +164,7 @@ Menu {
             onPressed: {
                 const newNodeId = ModelInterface.createNode(name, Qt.point(0, 0));
                 let newConnection;
-                if (nodePortSearchMenu.portSide === NodeEditor.PortType.In) {
+                if (nodePortSearchMenu.portSide === NodeEditor.PortSide.In) {
                     newConnection = {
                         inNodeId: nodePortSearchMenu.nodeIndex,
                         inPortIndex: nodePortSearchMenu.portIndex,
@@ -182,7 +182,7 @@ Menu {
                 ModelInterface.createConnection(newConnection);
                 let mappedPos = nodePortSearchMenu.area.mapToItem(nodePortSearchMenu.area.inner, nodePortSearchMenu.openedAt);
                 const newNode = nodePortSearchMenu.graphicsView.nodes.nodeAt(newNodeId);
-                const portPos = newNode.getPortPosition(port.portIndex, NodeEditorUtils.oppositePort(nodePortSearchMenu.portSide));
+                const portPos = newNode.getPortPosition(port.portIndex, NodeEditorUtils.oppositeSide(nodePortSearchMenu.portSide));
                 mappedPos.x -= portPos.x;
                 mappedPos.y -= portPos.y;
                 ModelInterface.graph.setNodeData(newNodeId, NodeEditor.NodeRole.Position, mappedPos);

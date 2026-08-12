@@ -46,7 +46,7 @@ MouseArea {
             if (!nodeMenuItem.port.captionVisible)
                 return nodeMenuItem.port.dataType.name;
             if (nodeMenuItem.port.caption == "") {
-                return (nodeMenuItem.port.portType == NodeEditor.PortType.In ? "in" : "out");
+                return (nodeMenuItem.port.portSide == NodeEditor.PortSide.In ? "in" : "out");
             }
             return nodeMenuItem.port.caption;
         }

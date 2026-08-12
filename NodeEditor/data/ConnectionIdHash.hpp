@@ -33,8 +33,8 @@ struct hash<std::pair<NodeId, PortIndex>> {
 };
 
 template <>
-struct hash<std::tuple<NodeId, PortType, PortIndex>> {
-  using Key = std::tuple<NodeId, PortType, PortIndex>;
+struct hash<std::tuple<NodeId, PortSide, PortIndex>> {
+  using Key = std::tuple<NodeId, PortSide, PortIndex>;
 
   inline std::size_t operator()(Key const &key) const {
     std::size_t h = 0;

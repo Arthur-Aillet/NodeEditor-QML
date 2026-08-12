@@ -10,8 +10,8 @@ Item {
     width: portLabel.width + portLabel.offset
 
     property var style: nodePainter.nodeObject.style
-    property int side: (index < nodePainter.nodeObject.inPortCount) ? NodeEditor.PortType.In : NodeEditor.PortType.Out
-    property int portId: side == NodeEditor.PortType.In ? index : index - nodePainter.nodeObject.inPortCount
+    property int side: (index < nodePainter.nodeObject.inPortCount) ? NodeEditor.PortSide.In : NodeEditor.PortSide.Out
+    property int portId: side == NodeEditor.PortSide.In ? index : index - nodePainter.nodeObject.inPortCount
 
     signal portConnectionChanged
 
@@ -35,8 +35,8 @@ Item {
 
     Connections {
         target: port.nodePainter.nodeObject
-        function onPortsChanged(type: int) {
-            if (type == port.side) {
+        function onPortsChanged(side: int) {
+            if (side == port.side) {
                 port.queryPortInfo();
             }
         }
@@ -51,7 +51,7 @@ Item {
             font.family: portLabel.font.family
         }
 
-        x: connectionPoint.x + (port.side == NodeEditor.PortType.In ? offset : -width - offset)
+        x: connectionPoint.x + (port.side == NodeEditor.PortSide.In ? offset : -width - offset)
         y: connectionPoint.y - portLabelMetrics.ascent / 2.0 - port.style.connectionPointDiameter / 4.0
         text: port.captionVisible ? port.caption : port.dataType.name
         color: port.connected ? port.style.fontColor : port.style.fontColorFaded
@@ -89,7 +89,7 @@ Item {
                     property var connectionPossible: {
                         if (painter.draftConnection.selectedPort === null)
                             return false;
-                        if (painter.draftConnection.selectedPort.portType === NodeEditor.PortType.In) {
+                        if (painter.draftConnection.selectedPort.portSide === NodeEditor.PortSide.In) {
                             return ModelInterface.graph.connectionPossible({
                                 inNodeId: painter.draftConnection.selectedPort.nodeId,
                                 inPortIndex: painter.draftConnection.selectedPort.portId,
@@ -106,7 +106,7 @@ Item {
                         }
                     }
 
-                    when: painter.draftConnection.selectedPort !== null && painter.draftConnection.selectedPort.portType !== port.side
+                    when: painter.draftConnection.selectedPort !== null && painter.draftConnection.selectedPort.portSide !== port.side
                     value: {
                         const pos = Qt.point(painter.nodeObject.x + connectionPoint.x, painter.nodeObject.y + connectionPoint.y);
                         const diff = Qt.vector2d(painter.area.mousePosition.x - pos.x, painter.area.mousePosition.y - pos.y);

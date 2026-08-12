@@ -12,18 +12,18 @@ QJsonObject NodeDelegateModel::save() const { return QJsonObject(); }
 NodeDelegateModel::ModelInfos NodeDelegateModel::modelInfos() const {
   QList<PortInfo> ports;
 
-  auto collectPorts = [&](PortType portType) {
-    for (unsigned int index = 0; index != nPorts(portType); index++) {
-      ports.push_back({.caption = portCaption(portType, index),
-                       .captionVisible = portCaptionVisible(portType, index),
-                       .dataType = dataType(portType, index),
-                       .portType = portType,
+  auto collectPorts = [&](PortSide portSide) {
+    for (unsigned int index = 0; index != nPorts(portSide); index++) {
+      ports.push_back({.caption = portCaption(portSide, index),
+                       .captionVisible = portCaptionVisible(portSide, index),
+                       .dataType = dataType(portSide, index),
+                       .portSide = portSide,
                        .portIndex = index});
     }
   };
 
-  collectPorts(PortType::In);
-  collectPorts(PortType::Out);
+  collectPorts(PortSide::In);
+  collectPorts(PortSide::Out);
 
   return ModelInfos{
       .name = name(),
@@ -39,11 +39,11 @@ void NodeDelegateModel::setValidationState(const NodeValidationState &validation
   _nodeValidationState = validationState;
 }
 
-ConnectionPolicy NodeDelegateModel::portConnectionPolicy(PortType portType, PortIndex) const {
-  switch (portType) {
-  case PortType::In:
+ConnectionPolicy NodeDelegateModel::portConnectionPolicy(PortSide portSide, PortIndex) const {
+  switch (portSide) {
+  case PortSide::In:
     return ConnectionPolicy::Replace;
-  case PortType::Out:
+  case PortSide::Out:
   default:
     return ConnectionPolicy::Many;
   }

@@ -1,11 +1,11 @@
 #include "AbstractGraphModel.hpp"
 #include "ConnectionIdUtils.hpp"
 
-void AbstractGraphModel::portsAboutToBeDeleted(NodeId const nodeId, PortType const portType,
+void AbstractGraphModel::portsAboutToBeDeleted(NodeId const nodeId, PortSide const portSide,
                                                PortIndex const first, PortIndex const last) {
   _shiftedByDynamicPortsConnections.clear();
 
-  auto portCountRole = portType == PortType::In ? NodeRole::InPortCount : NodeRole::OutPortCount;
+  auto portCountRole = portSide == PortSide::In ? NodeRole::InPortCount : NodeRole::OutPortCount;
 
   unsigned int portCount = nodeData(nodeId, portCountRole).toUInt();
 
@@ -18,7 +18,7 @@ void AbstractGraphModel::portsAboutToBeDeleted(NodeId const nodeId, PortType con
   auto clampedLast = std::min(last, portCount - 1);
 
   for (PortIndex portIndex = first; portIndex <= clampedLast; ++portIndex) {
-    QSet<ConnectionId> conns = connections(nodeId, portType, portIndex);
+    QSet<ConnectionId> conns = connections(nodeId, portSide, portIndex);
 
     for (auto connectionId : conns) {
       deleteConnection(connectionId);
@@ -28,11 +28,11 @@ void AbstractGraphModel::portsAboutToBeDeleted(NodeId const nodeId, PortType con
   size_t const nRemovedPorts = clampedLast - first + 1;
 
   for (PortIndex portIndex = clampedLast + 1; portIndex < portCount; ++portIndex) {
-    QSet<ConnectionId> conns = connections(nodeId, portType, portIndex);
+    QSet<ConnectionId> conns = connections(nodeId, portSide, portIndex);
 
     for (auto connectionId : conns) {
       // Erases the information about the port on one side;
-      auto c = makeIncompleteConnectionId(connectionId, portType);
+      auto c = makeIncompleteConnectionId(connectionId, portSide);
 
       c = makeCompleteConnectionId(c, nodeId, portIndex - static_cast<PortIndex>(nRemovedPorts));
 
@@ -43,20 +43,20 @@ void AbstractGraphModel::portsAboutToBeDeleted(NodeId const nodeId, PortType con
   }
 }
 
-void AbstractGraphModel::portsDeleted(NodeId const nodeId, PortType const portType) {
+void AbstractGraphModel::portsDeleted(NodeId const nodeId, PortSide const portSide) {
   for (auto const connectionId : _shiftedByDynamicPortsConnections) {
     addConnection(connectionId);
   }
 
   _shiftedByDynamicPortsConnections.clear();
-  emit nodePortsUpdated(nodeId, portType);
+  emit nodePortsUpdated(nodeId, portSide);
 }
 
-void AbstractGraphModel::portsAboutToBeInserted(NodeId const nodeId, PortType const portType,
+void AbstractGraphModel::portsAboutToBeInserted(NodeId const nodeId, PortSide const portSide,
                                                 PortIndex const first, PortIndex const last) {
   _shiftedByDynamicPortsConnections.clear();
 
-  auto portCountRole = portType == PortType::In ? NodeRole::InPortCount : NodeRole::OutPortCount;
+  auto portCountRole = portSide == PortSide::In ? NodeRole::InPortCount : NodeRole::OutPortCount;
 
   unsigned int portCount = nodeData(nodeId, portCountRole).toUInt();
 
@@ -69,11 +69,11 @@ void AbstractGraphModel::portsAboutToBeInserted(NodeId const nodeId, PortType co
   size_t const nNewPorts = last - first + 1;
 
   for (PortIndex portIndex = first; portIndex < portCount; ++portIndex) {
-    QSet<ConnectionId> conns = connections(nodeId, portType, portIndex);
+    QSet<ConnectionId> conns = connections(nodeId, portSide, portIndex);
 
     for (auto connectionId : conns) {
       // Erases the information about the port on one side;
-      auto c = makeIncompleteConnectionId(connectionId, portType);
+      auto c = makeIncompleteConnectionId(connectionId, portSide);
 
       c = makeCompleteConnectionId(c, nodeId, portIndex + static_cast<PortIndex>(nNewPorts));
 
@@ -84,11 +84,11 @@ void AbstractGraphModel::portsAboutToBeInserted(NodeId const nodeId, PortType co
   }
 }
 
-void AbstractGraphModel::portsInserted(NodeId const nodeId, PortType const portType) {
+void AbstractGraphModel::portsInserted(NodeId const nodeId, PortSide const portSide) {
   for (auto const connectionId : _shiftedByDynamicPortsConnections) {
     addConnection(connectionId);
   }
 
   _shiftedByDynamicPortsConnections.clear();
-  emit nodePortsUpdated(nodeId, portType);
+  emit nodePortsUpdated(nodeId, portSide);
 }

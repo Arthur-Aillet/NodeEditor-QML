@@ -7,24 +7,24 @@
 #include <iostream>
 #include <string>
 
-inline PortIndex getNodeId(PortType portType, ConnectionId connectionId) {
+inline PortIndex getNodeId(PortSide portSide, ConnectionId connectionId) {
   NodeId id = InvalidNodeId;
 
-  if (portType == PortType::Out) {
+  if (portSide == PortSide::Out) {
     id = connectionId.outNodeId;
-  } else if (portType == PortType::In) {
+  } else if (portSide == PortSide::In) {
     id = connectionId.inNodeId;
   }
 
   return id;
 }
 
-inline PortIndex getPortIndex(PortType portType, ConnectionId connectionId) {
+inline PortIndex getPortIndex(PortSide portSide, ConnectionId connectionId) {
   PortIndex index = InvalidPortIndex;
 
-  if (portType == PortType::Out) {
+  if (portSide == PortSide::Out) {
     index = connectionId.outPortIndex;
-  } else if (portType == PortType::In) {
+  } else if (portSide == PortSide::In) {
     index = connectionId.inPortIndex;
   }
 
@@ -37,9 +37,9 @@ inline bool isPortIndexValid(PortIndex index) { return index != InvalidPortIndex
  * Creates a connection Id instance filled just on one side.
  */
 inline ConnectionId makeIncompleteConnectionId(NodeId const connectedNodeId,
-                                               PortType const connectedPort,
+                                               PortSide const connectedPort,
                                                PortIndex const connectedPortIndex) {
-  return (connectedPort == PortType::In)
+  return (connectedPort == PortSide::In)
              ? ConnectionId{InvalidNodeId, InvalidPortIndex, connectedNodeId, connectedPortIndex}
              : ConnectionId{connectedNodeId, connectedPortIndex, InvalidNodeId, InvalidPortIndex};
 }
@@ -49,8 +49,8 @@ inline ConnectionId makeIncompleteConnectionId(NodeId const connectedNodeId,
  * data on the given side
  */
 inline ConnectionId makeIncompleteConnectionId(ConnectionId connectionId,
-                                               PortType const portToDisconnect) {
-  if (portToDisconnect == PortType::Out) {
+                                               PortSide const portToDisconnect) {
+  if (portToDisconnect == PortSide::Out) {
     connectionId.outNodeId = InvalidNodeId;
     connectionId.outPortIndex = InvalidPortIndex;
   } else {

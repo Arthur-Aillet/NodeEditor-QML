@@ -17,11 +17,11 @@ class MathOperationNodeModel : public NodeDelegateModel {
 
   public:
   virtual unsigned int nbInputs() const { return 2; };
-  unsigned int nPorts(PortType portType) const override;
+  unsigned int nPorts(PortSide portSide) const override;
 
-  NodeDataType dataType(PortType portType, PortIndex portIndex) const override;
-  virtual bool portCaptionVisible(PortType portType, PortIndex portIndex) const override;
-  virtual QString portCaption(PortType portType, PortIndex portIndex) const override;
+  NodeDataType dataType(PortSide portSide, PortIndex portIndex) const override;
+  virtual bool portCaptionVisible(PortSide portSide, PortIndex portIndex) const override;
+  virtual QString portCaption(PortSide portSide, PortIndex portIndex) const override;
 
   std::shared_ptr<NodeData> outData(PortIndex port) override;
 

@@ -53,13 +53,13 @@ struct PortInfo {
   QString caption;
   bool captionVisible;
   NodeDataType dataType;
-  PortType portType;
+  PortSide portSide;
   PortIndex portIndex;
 
   Q_PROPERTY(QString caption MEMBER caption)
   Q_PROPERTY(bool captionVisible MEMBER captionVisible)
   Q_PROPERTY(NodeDataType dataType MEMBER dataType)
-  Q_PROPERTY(PortType portType MEMBER portType)
+  Q_PROPERTY(PortSide portSide MEMBER portSide)
   Q_PROPERTY(PortIndex portIndex MEMBER portIndex)
 };
 
@@ -93,12 +93,12 @@ class NodeDelegateModel : public QObject, public Serializable {
   /// It is possible to hide caption in GUI
   virtual bool captionVisible() const { return true; }
 
-  virtual unsigned int nPorts(PortType portType) const = 0;
+  virtual unsigned int nPorts(PortSide portSide) const = 0;
   /// Port caption is used in GUI to label individual ports, empty by default
-  virtual QString portCaption(PortType, PortIndex) const { return ""; }
+  virtual QString portCaption(PortSide, PortIndex) const { return ""; }
   /// It is possible to hide port caption in GUI
-  virtual bool portCaptionVisible(PortType, PortIndex) const { return false; }
-  virtual ConnectionPolicy portConnectionPolicy(PortType, PortIndex) const;
+  virtual bool portCaptionVisible(PortSide, PortIndex) const { return false; }
+  virtual ConnectionPolicy portConnectionPolicy(PortSide, PortIndex) const;
 
   /// Nicknames can be assigned to nodes and shown in GUI, empty by default
   virtual QString label() const { return ""; }
@@ -125,7 +125,7 @@ class NodeDelegateModel : public QObject, public Serializable {
   void setNodeProcessingStatus(NodeProcessingStatus status);
   void setValidationState(const NodeValidationState &validationState);
 
-  virtual NodeDataType dataType(PortType portType, PortIndex portIndex) const = 0;
+  virtual NodeDataType dataType(PortSide portSide, PortIndex portIndex) const = 0;
 
   NodeStyle const &nodeStyle() const;
   void setNodeStyle(NodeStyle const &style);
@@ -165,23 +165,23 @@ class NodeDelegateModel : public QObject, public Serializable {
    * The function notifies the Graph Model and makes it remove and recompute the
    * affected connection addresses.
    */
-  void portsAboutToBeDeleted(PortType const portType, PortIndex const first, PortIndex const last);
+  void portsAboutToBeDeleted(PortSide const portSide, PortIndex const first, PortIndex const last);
 
   /// Call this function when data and port moditications are finished.
-  void portsDeleted(PortType const portType);
+  void portsDeleted(PortSide const portSide);
 
   /**
    * @brief Call this function before inserting the data associated with ports.
    * The function notifies the Graph Model and makes it recompute the affected
    * connection addresses.
    */
-  void portsAboutToBeInserted(PortType const portType, PortIndex const first, PortIndex const last);
+  void portsAboutToBeInserted(PortSide const portSide, PortIndex const first, PortIndex const last);
 
   /// Call this function when data and port moditications are finished.
-  void portsInserted(PortType const portType);
+  void portsInserted(PortSide const portSide);
 
   /// Call this function when you want to refresh the ports names.
-  void portsNameChanged(PortType const portType);
+  void portsNameChanged(PortSide const portSide);
 
   private:
   std::shared_ptr<QQuickItem> _embed{nullptr};

@@ -7,8 +7,8 @@ MouseArea {
     opacity: selected ? 1 : style.opacity
     focusPolicy: Qt.StrongFocus
 
-    signal connectionChanged(portIndex: int, portType: int, otherNodeId: int, otherPortId: int)
-    signal portsChanged(type: int)
+    signal connectionChanged(portIndex: int, portSide: int, otherNodeId: int, otherPortId: int)
+    signal portsChanged(side: int)
 
     required property DraftConnection draftConnection
     required property NavigableArea area
@@ -33,10 +33,10 @@ MouseArea {
 
     Connections {
         target: nodeObj
-        function onPortsChanged(type: int) {
-            if (type == NodeEditor.PortType.In) {
+        function onPortsChanged(side: int) {
+            if (side == NodeEditor.PortSide.In) {
                 nodeObj.inPortCount = ModelInterface.graph.nodeData(nodeObj.nodeId, NodeEditor.NodeRole.InPortCount);
-            } else if (type == NodeEditor.PortType.Out) {
+            } else if (side == NodeEditor.PortSide.Out) {
                 nodeObj.outPortCount = ModelInterface.graph.nodeData(nodeObj.nodeId, NodeEditor.NodeRole.OutPortCount);
             }
         }
@@ -178,14 +178,14 @@ MouseArea {
         model: nodeObj.inPortCount + nodeObj.outPortCount
         delegate: MouseArea {
             required property int index
-            property var side: (index < nodeObj.inPortCount) ? NodeEditor.PortType.In : NodeEditor.PortType.Out
+            property var side: (index < nodeObj.inPortCount) ? NodeEditor.PortSide.In : NodeEditor.PortSide.Out
             property int portId: (index < nodeObj.inPortCount) ? index : index - nodeObj.inPortCount
 
             property point pos: (painter.item as AbstractNodePainter).getPortPosition(portId, side)
             property real radius: nodeObj.style.connectionPointDiameter * 1.8 // Diameter is used a the radius in the original
 
             // Small offset in the direction of the port for easier click
-            x: pos.x - radius + (side == NodeEditor.PortType.In ? -nodeObj.style.connectionPointDiameter : nodeObj.style.connectionPointDiameter)
+            x: pos.x - radius + (side == NodeEditor.PortSide.In ? -nodeObj.style.connectionPointDiameter : nodeObj.style.connectionPointDiameter)
             y: pos.y - radius
 
             width: radius * 2
@@ -194,7 +194,7 @@ MouseArea {
             onPressed: nodeObj.draftConnection.selectedPort = {
                 "portId": portId,
                 "nodeId": nodeObj.nodeId,
-                "portType": side
+                "portSide": side
             }
         }
     }
