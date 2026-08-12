@@ -30,11 +30,3 @@ qt_add_qml_module(calculator
   IMPORTS
     TARGET NodeEditor
 )
-
-target_include_directories(calculator PUBLIC ../../NodeEditor)
-
-target_link_directories(calculator
-  PUBLIC
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  ${LIB_TARGET_LINK_DIRECTORIES}
-)
