@@ -6,8 +6,8 @@ import NodeEditor
 GraphicsView {
     id: controlledView
 
-    function mapPos(x: int, y: int): point {
-        return area.inner.mapToItem(area, Qt.point(x, y));
+    function mapPos(pos: point): point {
+        return area.inner.mapToItem(area, pos);
     }
 
     Connections {
@@ -17,32 +17,19 @@ GraphicsView {
             portSearch.portIndex = portId;
             portSearch.nodeIndex = nodeId;
             portSearch.portDataType = ModelInterface.graph.portData(nodeId, portType, portId, NodeEditor.PortRole.DataType);
-            const mappedPos = controlledView.mapPos(x, y);
-            portSearch.x = mappedPos.x;
-            portSearch.y = mappedPos.y;
-            portSearch.openedAtX = mappedPos.x;
-            portSearch.openedAtY = mappedPos.y;
-            portSearch.open();
+            portSearch.openAt(controlledView.mapPos(Qt.point(x, y)));
         }
     }
 
     Keys.onPressed: event => {
         if (event.key == Qt.Key_N) {
             const mappedPos = mapPos(area.mousePosition.x, area.mousePosition.y);
-            search.x = mappedPos.x;
-            search.y = mappedPos.y;
-            search.openedAtX = mappedPos.x;
-            search.openedAtY = mappedPos.y;
-            search.open();
+            search.openAt(mappedPos);
         }
     }
 
     ContextMenu.onRequested: position => {
-        listMenu.x = position.x;
-        listMenu.y = position.y;
-        listMenu.openedAtX = position.x;
-        listMenu.openedAtY = position.y;
-        listMenu.open();
+        listMenu.openAt(position);
     }
 
     NodeListMenu {

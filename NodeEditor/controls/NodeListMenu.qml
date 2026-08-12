@@ -9,10 +9,16 @@ Menu {
 
     required property NavigableArea area
     required property NodeSearchMenu searchMenu
-    property real openedAtX
-    property real openedAtY
+    property point openedAt
 
     cascade: true
+
+    function openAt(pos: point) {
+        x = pos.x;
+        y = pos.y;
+        openedAt = pos;
+        open();
+    }
 
     FontLoader {
         id: iconFont
@@ -28,11 +34,7 @@ Menu {
             horizontalAlignment: Text.AlignLeft
         }
         onClicked: {
-            nodeListMenu.searchMenu.x = nodeListMenu.openedAtX;
-            nodeListMenu.searchMenu.y = nodeListMenu.openedAtY;
-            nodeListMenu.searchMenu.openedAtX = nodeListMenu.openedAtX;
-            nodeListMenu.searchMenu.openedAtY = nodeListMenu.openedAtY;
-            nodeListMenu.searchMenu.open();
+            nodeListMenu.searchMenu.openAt(nodeListMenu.openedAt);
             nodeListMenu.close();
         }
     }

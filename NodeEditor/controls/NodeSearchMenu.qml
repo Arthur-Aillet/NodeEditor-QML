@@ -9,8 +9,14 @@ Menu {
 
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
     required property NavigableArea area
-    property real openedAtX
-    property real openedAtY
+    property point openedAt
+
+    function openAt(pos: point) {
+        x = pos.x;
+        y = pos.y;
+        openedAt = pos;
+        open();
+    }
 
     popupType: Popup.Window
     onOpened: {
@@ -33,8 +39,7 @@ Menu {
             } else {
                 name = (list.currentItem as SearchMenuItem).name;
             }
-            const pos = Qt.point(nodeSearchMenu.openedAtX, nodeSearchMenu.openedAtY);
-            ModelInterface.createNode(name, nodeSearchMenu.area.mapToItem(nodeSearchMenu.area.inner, pos));
+            ModelInterface.createNode(name, nodeSearchMenu.area.mapToItem(nodeSearchMenu.area.inner, nodeSearchMenu.openedAt));
             nodeSearchMenu.close();
         }
     }
@@ -79,8 +84,7 @@ Menu {
                 list.currentIndex = index;
             }
             onPressed: {
-                const pos = Qt.point(nodeSearchMenu.openedAtX, nodeSearchMenu.openedAtY);
-                ModelInterface.createNode(name, nodeSearchMenu.area.mapToItem(nodeSearchMenu.area.inner, pos));
+                ModelInterface.createNode(name, nodeSearchMenu.area.mapToItem(nodeSearchMenu.area.inner, nodeSearchMenu.openedAt));
                 nodeSearchMenu.close();
             }
         }

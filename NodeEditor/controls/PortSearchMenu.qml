@@ -14,8 +14,14 @@ Menu {
     property int portIndex
     property int nodeIndex
     property nodeDataType portDataType
-    property real openedAtX
-    property real openedAtY
+    property point openedAt
+
+    function openAt(pos: point) {
+        x = pos.x;
+        y = pos.y;
+        openedAt = pos;
+        open();
+    }
 
     popupType: Popup.Window
     onOpened: {
@@ -174,8 +180,7 @@ Menu {
                     };
                 }
                 ModelInterface.createConnection(newConnection);
-                const pos = Qt.point(nodePortSearchMenu.openedAtX, nodePortSearchMenu.openedAtY);
-                let mappedPos = nodePortSearchMenu.area.mapToItem(nodePortSearchMenu.area.inner, pos);
+                let mappedPos = nodePortSearchMenu.area.mapToItem(nodePortSearchMenu.area.inner, nodePortSearchMenu.openedAt);
                 const oppositeSide = nodePortSearchMenu.portSide === NodeEditor.PortType.In ? NodeEditor.PortType.Out : NodeEditor.PortType.In;
                 const portPos = nodePortSearchMenu.graphicsView.nodes.nodeAt(newNodeId).getPortPosition(port.portIndex, oppositeSide);
                 mappedPos.x -= portPos.x;
