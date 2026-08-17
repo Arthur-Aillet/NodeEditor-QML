@@ -9,7 +9,7 @@ Shape {
 
     virtual property Item embeddedComponentContainer: null
 
-    virtual property var getPortPosition: portIndex => {
+    virtual property var getPortPosition: (portIndex, portSide) => {
         console.error("\"getPortPosition\": Implementation missing");
     }
 
