@@ -2,14 +2,15 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Shapes
 import QtQuick.Layouts
+import QtQuick.Effects
 
 import NodeEditor
 
 AbstractNodePainter {
     id: defaultNodePainter
 
-    property alias strokeColor: rect.strokeColor
-    property alias strokeWidth: rect.strokeWidth
+    property alias strokeColor: rectPath.strokeColor
+    property alias strokeWidth: rectPath.strokeWidth
 
     readonly property int spacing: 10
     readonly property int portSize: 20
@@ -44,8 +45,18 @@ AbstractNodePainter {
     width: column.width
     height: column.height
 
+    RectangularShadow {
+        anchors.fill: defaultNodePainter
+        z: -1
+        offset.y: 4
+        radius: 3.0
+        blur: 20
+        spread: 6
+        color: defaultNodePainter.nodeObject.style.shadowEnabled ? defaultNodePainter.nodeObject.style.shadowColor : "transparent"
+    }
+
     ShapePath {
-        id: rect
+        id: rectPath
         property alias nodeObject: defaultNodePainter.nodeObject
 
         strokeWidth: nodeObject.containsMouse ? nodeObject.style.hoveredPenWidth : nodeObject.style.penWidth

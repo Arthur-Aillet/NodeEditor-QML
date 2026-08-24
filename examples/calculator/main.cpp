@@ -3,6 +3,7 @@
 #include "DivisionNode.hpp"
 #include "InputNode.hpp"
 #include "MultiplicationNode.hpp"
+#include "StyleCollection.hpp"
 #include "SubtractionNode.hpp"
 
 #include "DataFlowGraphModel.hpp"
@@ -16,7 +17,7 @@ int main(int argc, char *argv[]) {
   QCoreApplication::setApplicationName("Calculator");
 
   QGuiApplication app(argc, argv);
-
+  StyleCollection::followApplicationPalette(false);
   QQmlApplicationEngine engine;
   QObject::connect(
       &engine, &QQmlApplicationEngine::objectCreationFailed, &app,

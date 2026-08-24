@@ -11,7 +11,7 @@
     "GradientColor1": [80, 80, 80],
     "GradientColor2": [64, 64, 64],
     "GradientColor3": [58, 58, 58],
-    "ShadowColor": [20, 20, 20],
+    "ShadowColor": [30, 30, 30],
     "ShadowEnabled": true,
     "FontColor" : "white",
     "FontColorFaded" : "gray",
