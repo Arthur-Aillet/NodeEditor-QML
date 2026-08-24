@@ -10,14 +10,13 @@ class SubtractionNode : public MathOperationNodeModel {
 
   public:
   QString caption() const override { return "sub"; }
+  QString name() const override { return "Subtraction"; }
 
   virtual bool portCaptionVisible(PortSide portSide, PortIndex portIndex) const override {
     Q_UNUSED(portSide);
     Q_UNUSED(portIndex);
     return true;
   }
-
-  QString name() const override { return "Subtraction"; }
 
   private:
   void compute() override {

@@ -12,7 +12,6 @@ class MultiplicationNode : public MathOperationNodeModel {
 
   public:
   QString caption() const override { return "mult"; }
-
   QString name() const override { return "Multiplication"; }
 
   private:

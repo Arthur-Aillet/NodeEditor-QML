@@ -12,10 +12,9 @@ class DivisionNode : public MathOperationNodeModel {
 
   public:
   QString caption() const override { return "div"; }
+  QString name() const override { return "Division"; }
 
   bool portCaptionVisible(PortSide _portSide, PortIndex _portIndex) const override { return true; }
-
-  QString name() const override { return "Division"; }
 
   private:
   void compute() override {

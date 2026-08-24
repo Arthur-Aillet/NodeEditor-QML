@@ -5,6 +5,7 @@
 
 DisplayNode::DisplayNode(QQmlEngine *engine) : NodeDelegateModel(engine) {}
 
+QString DisplayNode::caption() const { return "display"; };
 QString DisplayNode::name() const { return "Display"; }
 
 unsigned int DisplayNode::nPorts(PortSide portSide) const {

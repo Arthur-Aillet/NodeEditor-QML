@@ -4,8 +4,8 @@ import QtQuick.Controls
 import NodeEditor
 
 ApplicationWindow {
-    width: 400
-    height: 400
+    width: 600
+    height: 600
     visible: true
     color: "black"
     DefaultControlsView {

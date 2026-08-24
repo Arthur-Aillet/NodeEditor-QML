@@ -19,8 +19,9 @@ class InputNode : public NodeDelegateModel {
   InputNode(QQmlEngine *engine);
   ~InputNode() = default;
 
-  public:
+  QString caption() const override;
   QString name() const override;
+
   unsigned int nPorts(PortSide portSide) const override;
 
   NodeDataType dataType(PortSide portSide, PortIndex portIndex) const override;
@@ -28,7 +29,6 @@ class InputNode : public NodeDelegateModel {
   QString portCaption(PortSide portSide, PortIndex portIndex) const override;
 
   std::shared_ptr<NodeData> outData(PortIndex port) override;
-
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
   QQmlComponent embeddedComponent(QQmlEngine *engine) override;
