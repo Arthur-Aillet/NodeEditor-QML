@@ -24,7 +24,9 @@ QString MathOperationNodeModel::portCaption(PortSide portSide, PortIndex portInd
   return QString((char)('a' + portIndex));
 }
 
-std::shared_ptr<NodeData> MathOperationNodeModel::outData(PortIndex) { return _resultPtr; }
+std::shared_ptr<NodeData> MathOperationNodeModel::outData(PortIndex _portIndex) {
+  return _resultPtr;
+}
 
 void MathOperationNodeModel::setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) {
   if (!data) {

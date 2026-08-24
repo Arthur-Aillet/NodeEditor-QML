@@ -23,7 +23,7 @@ class MathOperationNodeModel : public NodeDelegateModel {
   virtual bool portCaptionVisible(PortSide portSide, PortIndex portIndex) const override;
   virtual QString portCaption(PortSide portSide, PortIndex portIndex) const override;
 
-  std::shared_ptr<NodeData> outData(PortIndex port) override;
+  std::shared_ptr<NodeData> outData(PortIndex portIndex) override;
 
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 

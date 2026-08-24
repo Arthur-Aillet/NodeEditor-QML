@@ -26,13 +26,22 @@ qt_add_qml_module(calculator
 
   QML_FILES
   App.qml
+  DisplayControl.qml
+  InputControl.qml
 
   SOURCES
   AdditionNode.hpp
   DecimalData.cpp
   DecimalData.hpp
+  DisplayNode.cpp
+  DisplayNode.hpp
+  DivisionNode.hpp
+  InputNode.cpp
+  InputNode.hpp
   MathOperationNodeModel.cpp
   MathOperationNodeModel.hpp
+  MultiplicationNode.hpp
+  SubtractionNode.hpp
 
   IMPORTS
     TARGET NodeEditor
