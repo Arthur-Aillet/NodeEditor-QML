@@ -11,8 +11,10 @@ class DataFlowContext : public AbstractContext {
   public:
   Q_PROPERTY(DataFlowGraphModel *dataFlowGraphModel READ dataFlowGraphModel CONSTANT)
 
-  DataFlowContext(DataFlowGraphModel *graphModel, QQmlEngine *engine)
-      : _dataFlowGraphModel(graphModel), AbstractContext(graphModel, engine) {};
+  DataFlowContext(DataFlowGraphModel *graphModel)
+      : _dataFlowGraphModel(graphModel),
+        AbstractContext(graphModel, graphModel->registry()->engine()) {};
+  ~DataFlowContext() = default;
 
   protected:
   DataFlowGraphModel *dataFlowGraphModel() { return _dataFlowGraphModel; }

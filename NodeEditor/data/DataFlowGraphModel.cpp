@@ -3,12 +3,13 @@
 #include "Definitions.hpp"
 #include "NodeData.hpp"
 
+#include <QQmlEngine>
+#include <qqmlengine.h>
+#include <qsharedpointer.h>
 #include <stack>
 
-DataFlowGraphModel::DataFlowGraphModel(NodeDelegateModelRegistry *registry, QQmlEngine *engine)
-    : _registry(registry), _engine(engine) {
-  setParent(engine);
-  _registry->setParent(this);
+DataFlowGraphModel::DataFlowGraphModel(NodeDelegateModelRegistry *registry) : _registry(registry) {
+  setParent(registry);
 }
 
 QSet<NodeId> DataFlowGraphModel::allNodeIds() const {
@@ -610,7 +611,7 @@ void DataFlowGraphModel::load(QJsonObject const &jsonDocument) {
 }
 
 void DataFlowGraphModel::createEmbed(NodeId nodeId, QQuickItem *container) const {
-  _models.at(nodeId)->createComponent(container, _engine);
+  _models.at(nodeId)->createComponent(container, _registry->engine());
 }
 
 void DataFlowGraphModel::onOutPortDataUpdated(NodeId const nodeId, PortIndex const portIndex) {

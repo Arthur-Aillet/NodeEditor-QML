@@ -35,11 +35,12 @@ class NodeDelegateModelRegistry : public QObject {
   using RegisteredModelCreatorsMap = std::unordered_map<QString, RegistryItemCreator>;
   using Categories = QList<CategoryName>;
 
-  NodeDelegateModelRegistry(QQmlEngine *engine, QObject *parent = nullptr)
-      : QObject(parent), _engine(engine) {};
+  NodeDelegateModelRegistry(QQmlEngine *engine) : QObject(engine), _engine(engine) {};
   ~NodeDelegateModelRegistry() = default;
   NodeDelegateModelRegistry(NodeDelegateModelRegistry const &) = delete;
   NodeDelegateModelRegistry &operator=(NodeDelegateModelRegistry const &) = delete;
+
+  QQmlEngine *engine() { return _engine; };
 
   protected:
   template <typename ModelType>

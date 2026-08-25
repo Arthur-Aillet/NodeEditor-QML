@@ -28,7 +28,7 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   public:
   Q_PROPERTY(NodeDelegateModelRegistry *registry READ registry CONSTANT)
 
-  DataFlowGraphModel(NodeDelegateModelRegistry *registry, QQmlEngine *engine);
+  DataFlowGraphModel(NodeDelegateModelRegistry *registry);
 
   NodeDelegateModelRegistry *registry() { return _registry; }
 
@@ -108,7 +108,6 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   void propagateEmptyDataTo(NodeId const nodeId, PortIndex const portIndex);
 
   protected:
-  QQmlEngine *_engine;
   NodeDelegateModelRegistry *_registry;
   std::unordered_map<NodeId, std::unique_ptr<NodeDelegateModel>> _models;
   QSet<ConnectionId> _connectivity;

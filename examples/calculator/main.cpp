@@ -13,8 +13,6 @@
 #include <QQmlApplicationEngine>
 #include <QVariant>
 
-#include <qlogging.h>
-
 int main(int argc, char *argv[]) {
   QCoreApplication::setOrganizationName("examples");
   QCoreApplication::setApplicationName("Calculator");
@@ -33,8 +31,8 @@ int main(int argc, char *argv[]) {
   reg->registerModel<MultiplicationNode>("Operation");
   reg->registerModel<SubtractionNode>("Operation");
 
-  const auto graph = new DataFlowGraphModel(reg, &engine);
-  const auto context = new DataFlowContext(graph, &engine);
+  const auto graph = new DataFlowGraphModel(reg);
+  const auto context = new DataFlowContext(graph);
 
   engine.setInitialProperties(QVariantMap({{"dataFlowContext", QVariant::fromValue(context)}}));
   engine.loadFromModule("examples.calculator", "App");

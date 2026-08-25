@@ -6,9 +6,6 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QJsonValueRef>
 
-#include <QtCore/QDebug>
-#include <qdiriterator.h>
-
 // inline void initResources() { Q_INIT_RESOURCE(resources); }
 
 NodeStyle NodeStyle::defaultStyle() {
