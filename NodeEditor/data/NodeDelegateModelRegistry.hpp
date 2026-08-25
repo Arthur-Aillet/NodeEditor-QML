@@ -19,7 +19,7 @@
 class NodeDelegateModelRegistry : public QObject {
   Q_OBJECT
   QML_ELEMENT
-  QML_UNCREATABLE("")
+  QML_UNCREATABLE("Nodes must be created from C++")
 
   private:
   QQmlEngine *_engine;
@@ -36,7 +36,7 @@ class NodeDelegateModelRegistry : public QObject {
   using Categories = QList<CategoryName>;
 
   NodeDelegateModelRegistry(QQmlEngine *engine, QObject *parent = nullptr)
-      : QObject(parent), _engine(engine){};
+      : QObject(parent), _engine(engine) {};
   ~NodeDelegateModelRegistry() = default;
   NodeDelegateModelRegistry(NodeDelegateModelRegistry const &) = delete;
   NodeDelegateModelRegistry &operator=(NodeDelegateModelRegistry const &) = delete;

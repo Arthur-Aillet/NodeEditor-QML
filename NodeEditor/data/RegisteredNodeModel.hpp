@@ -9,7 +9,7 @@
 class RegisteredNodeModel : public QAbstractListModel {
   Q_OBJECT
   QML_ELEMENT
-  QML_UNCREATABLE("")
+  QML_UNCREATABLE("Created by the DataFlow registry")
 
   public:
   RegisteredNodeModel() = default;
