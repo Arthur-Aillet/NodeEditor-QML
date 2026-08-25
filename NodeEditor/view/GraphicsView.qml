@@ -7,7 +7,7 @@ Frame {
     clip: true
     padding: 1
 
-    required property NodeEditorContext context
+    required property AbstractContext context
 
     property alias area: navigableArea
     property alias nodes: nodeList.nodes

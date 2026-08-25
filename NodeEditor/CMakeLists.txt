@@ -2,9 +2,10 @@ qt_add_qml_module(NodeEditor
   SHARED
   URI NodeEditor
   QML_FILES
+  connections/ConnectionList.qml
+  connections/ConnectionPainter.qml
   connections/DefaultConnection.qml
   connections/DraftConnection.qml
-  connections/ConnectionList.qml
 
   controls/DefaultControlsView.qml
   controls/NodeListMenu.qml
@@ -52,7 +53,7 @@ qt_add_qml_module(NodeEditor
   data/NodeDelegateModel.hpp
   data/NodeDelegateModelRegistry.cpp
   data/NodeDelegateModelRegistry.hpp
-  data/NodeEditorContext.hpp
+  data/AbstractContext.hpp
   data/QStringStdHash.hpp
   data/Serializable.hpp
   data/RegisteredNodeModel.cpp

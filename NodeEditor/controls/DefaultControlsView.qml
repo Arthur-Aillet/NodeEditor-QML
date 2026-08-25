@@ -7,7 +7,7 @@ GraphicsView {
     id: controlledView
 
     required property DataFlowContext dataFlowContext
-    context: dataFlowContext as NodeEditorContext
+    context: dataFlowContext as AbstractContext
 
     function mapPos(pos: point): point {
         return area.inner.mapToItem(area, pos);

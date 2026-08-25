@@ -12,7 +12,7 @@ MouseArea {
 
     required property DraftConnection draftConnection
     required property NavigableArea area
-    required property NodeEditorContext context
+    required property AbstractContext context
     required property NodeList nodes
     required property int nodeId
 

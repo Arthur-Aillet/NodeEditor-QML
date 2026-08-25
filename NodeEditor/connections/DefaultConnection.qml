@@ -6,7 +6,7 @@ Canvas {
 
     required property NodeList nodes
     required property NavigableArea area
-    required property NodeEditorContext nodeContext
+    required property AbstractContext nodeContext
 
     required property connectionId connection
 

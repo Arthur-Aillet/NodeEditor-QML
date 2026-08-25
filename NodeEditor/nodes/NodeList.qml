@@ -6,7 +6,7 @@ Item {
     id: nodeList
     required property DraftConnection draftConnection
     required property NavigableArea area
-    required property NodeEditorContext context
+    required property AbstractContext context
 
     property var selectedNodes: new Set()
 

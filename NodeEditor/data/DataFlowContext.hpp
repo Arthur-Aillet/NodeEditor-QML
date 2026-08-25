@@ -1,9 +1,9 @@
 #pragma once
 
+#include "AbstractContext.hpp"
 #include "DataFlowGraphModel.hpp"
-#include "NodeEditorContext.hpp"
 
-class DataFlowContext : public NodeEditorContext {
+class DataFlowContext : public AbstractContext {
   Q_OBJECT
   QML_ELEMENT
   QML_UNCREATABLE("Context need to be provied from C++")
@@ -12,7 +12,7 @@ class DataFlowContext : public NodeEditorContext {
   Q_PROPERTY(DataFlowGraphModel *dataFlowGraphModel READ dataFlowGraphModel CONSTANT)
 
   DataFlowContext(DataFlowGraphModel *graphModel, QQmlEngine *engine)
-      : _dataFlowGraphModel(graphModel), NodeEditorContext(graphModel, engine) {};
+      : _dataFlowGraphModel(graphModel), AbstractContext(graphModel, engine) {};
 
   protected:
   DataFlowGraphModel *dataFlowGraphModel() { return _dataFlowGraphModel; }

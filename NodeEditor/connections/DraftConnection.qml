@@ -7,7 +7,7 @@ Loader {
 
     required property NavigableArea area
     required property NodeList nodes
-    required property NodeEditorContext context
+    required property AbstractContext context
 
     property var selectedPort: null
 

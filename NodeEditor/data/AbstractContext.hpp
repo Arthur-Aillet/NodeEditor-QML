@@ -9,7 +9,7 @@
 #include <QtQml>
 #include <QtQmlIntegration>
 
-class NodeEditorContext : public QObject {
+class AbstractContext : public QObject {
   Q_OBJECT
   QML_ELEMENT
   QML_UNCREATABLE("Context need to be provied from C++")
@@ -20,7 +20,7 @@ class NodeEditorContext : public QObject {
   Q_PROPERTY(QQmlComponent *connectionPainter READ connectionPainter CONSTANT)
   // Q_PROPERTY(StyleCollection styleCollection MEMBER _styleCollection CONSTANT)
 
-  NodeEditorContext(AbstractGraphModel *graphModel, QQmlEngine *engine)
+  AbstractContext(AbstractGraphModel *graphModel, QQmlEngine *engine)
       : _graphModel(graphModel), QObject(engine) {
     _nodePainter = std::make_unique<QQmlComponent>(engine, "NodeEditor", "DefaultNodePainter");
     _connectionPainter =
