@@ -14,7 +14,7 @@ class DataFlowContext : public NodeEditorContext {
   DataFlowContext(DataFlowGraphModel *graphModel, QQmlEngine *engine)
       : _dataFlowGraphModel(graphModel), NodeEditorContext(graphModel, engine) {};
 
-  private:
+  protected:
   DataFlowGraphModel *dataFlowGraphModel() { return _dataFlowGraphModel; }
 
   DataFlowGraphModel *_dataFlowGraphModel;

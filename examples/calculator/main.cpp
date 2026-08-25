@@ -34,9 +34,8 @@ int main(int argc, char *argv[]) {
   reg->registerModel<MultiplicationNode>("Operation");
   reg->registerModel<SubtractionNode>("Operation");
 
-  std::shared_ptr<DataFlowGraphModel> graph = std::make_shared<DataFlowGraphModel>(reg, &engine);
-
-  const auto context = new DataFlowContext(graph.get(), &engine);
+  const auto graph = new DataFlowGraphModel(reg, &engine);
+  const auto context = new DataFlowContext(graph, &engine);
 
   engine.setInitialProperties(QVariantMap({{"dataFlowContext", QVariant::fromValue(context)}}));
   engine.loadFromModule("examples.calculator", "App");

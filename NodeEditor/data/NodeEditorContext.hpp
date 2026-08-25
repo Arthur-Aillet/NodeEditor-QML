@@ -28,7 +28,7 @@ class NodeEditorContext : public QObject {
     // _styleCollection = std::make_unique<StyleCollection>();
   };
 
-  private:
+  protected:
   AbstractGraphModel *graphModel() { return _graphModel; }
   QQmlComponent *nodePainter() { return _nodePainter.get(); }
   QQmlComponent *connectionPainter() { return _connectionPainter.get(); }

@@ -158,19 +158,13 @@ MouseArea {
     Loader {
         id: painter
 
-        property url nodePainterUrl
-
-        onNodePainterUrlChanged: {
-            const initialProperties = {
+        Component.onCompleted: {
+            setSource(nodeObj.context.nodePainter.url, {
                 nodeObject: nodeObj,
                 area: nodeObj.area,
                 draftConnection: nodeObj.draftConnection,
                 context: nodeObj.context
-            };
-            setSource(nodePainterUrl, initialProperties);
-        }
-        Component.onCompleted: {
-            nodePainterUrl = "DefaultNodePainter.qml";
+            });
         }
         onItemChanged: nodeObj.context.graphModel.createEmbed(nodeObj.nodeId, (item as AbstractNodePainter).embeddedComponentContainer)
     }
