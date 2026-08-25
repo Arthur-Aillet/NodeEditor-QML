@@ -8,6 +8,16 @@ InputNode::InputNode(QQmlEngine *engine)
 QString InputNode::caption() const { return "in"; };
 QString InputNode::name() const { return "Input"; }
 
+QJsonObject InputNode::save() const { return QJsonObject({{"value", _value}}); }
+
+void InputNode::load(QJsonObject const &json) {
+  QJsonValue value = json["value"];
+
+  if (!value.isUndefined()) {
+    _value = value.toDouble();
+  }
+}
+
 unsigned int InputNode::nPorts(PortSide portSide) const {
   if (portSide == PortSide::Out) {
     return 1;

@@ -23,6 +23,9 @@ class InputNode : public NodeDelegateModel {
   QString caption() const override;
   QString name() const override;
 
+  QJsonObject save() const override;
+  void load(QJsonObject const &p) override;
+
   unsigned int nPorts(PortSide portSide) const override;
 
   NodeDataType dataType(PortSide portSide, PortIndex portIndex) const override;
