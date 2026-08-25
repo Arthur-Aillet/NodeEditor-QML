@@ -61,11 +61,10 @@ Loader {
         selectedPort = null;
     }
 
-    // TODO: Default Connection will also become a ConnectionObject + ConnectionPainter, just like Nodes
-    sourceComponent: DefaultConnection {
+    sourceComponent: ConnectionObject {
         id: painter
 
-        nodeContext: draftConnection.context
+        context: draftConnection.context
 
         Component.onCompleted: {
             forceActiveFocus();

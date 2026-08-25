@@ -2,9 +2,10 @@ qt_add_qml_module(NodeEditor
   SHARED
   URI NodeEditor
   QML_FILES
+  connections/AbstractConnectionPainter.qml
   connections/ConnectionList.qml
-  connections/ConnectionPainter.qml
-  connections/DefaultConnection.qml
+  connections/ConnectionObject.qml
+  connections/DefaultConnectionPainter.qml
   connections/DraftConnection.qml
 
   controls/DefaultControlsView.qml

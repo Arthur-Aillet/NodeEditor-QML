@@ -16,7 +16,7 @@ Item {
             let closestDistance = Infinity;
 
             for (let i = 0; i < connections.count; i++) {
-                const connection = connections.itemAt(i) as DefaultConnection;
+                const connection = connections.itemAt(i) as ConnectionObject;
                 const dist = connection.distanceToCurve(connectionList.area.mousePosition);
                 if (dist < closestDistance) {
                     closestDistance = dist;
@@ -56,12 +56,11 @@ Item {
     Repeater {
         id: connections
 
-        // TODO: Default Connection will also become a ConnectionObject + ConnectionPainter, just like Nodes
-        delegate: DefaultConnection {
+        delegate: ConnectionObject {
             required property connectionId inputConnectionId
 
             connection: inputConnectionId
-            nodeContext: connectionList.context
+            context: connectionList.context
             nodes: connectionList.nodes
             area: connectionList.area
         }
