@@ -5,9 +5,11 @@
 
 #include <stack>
 
-DataFlowGraphModel::DataFlowGraphModel(std::shared_ptr<NodeDelegateModelRegistry> registry,
-                                       QQmlEngine *engine)
-    : _registry(std::move(registry)), _engine(engine) {}
+DataFlowGraphModel::DataFlowGraphModel(NodeDelegateModelRegistry *registry, QQmlEngine *engine)
+    : _registry(registry), _engine(engine) {
+  setParent(engine);
+  _registry->setParent(this);
+}
 
 QSet<NodeId> DataFlowGraphModel::allNodeIds() const {
   QSet<NodeId> nodeIds;

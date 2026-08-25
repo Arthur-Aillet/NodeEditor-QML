@@ -1,6 +1,7 @@
 #include "NodeDelegateModelRegistry.hpp"
 
-std::unique_ptr<NodeDelegateModel> NodeDelegateModelRegistry::create(QString const &modelName) {
+std::unique_ptr<NodeDelegateModel>
+NodeDelegateModelRegistry::create(QString const &modelName) const {
   auto it = _registeredItemCreators.find(modelName);
 
   if (it != _registeredItemCreators.end()) {

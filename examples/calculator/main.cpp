@@ -13,7 +13,6 @@
 #include <QQmlApplicationEngine>
 #include <QVariant>
 
-#include <memory>
 #include <qlogging.h>
 
 int main(int argc, char *argv[]) {
@@ -25,7 +24,7 @@ int main(int argc, char *argv[]) {
       &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
       []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
 
-  auto reg = std::make_shared<NodeDelegateModelRegistry>(&engine);
+  const auto reg = new NodeDelegateModelRegistry(&engine);
 
   reg->registerModel<AdditionNode>("Operation");
   reg->registerModel<InputNode>("Input");

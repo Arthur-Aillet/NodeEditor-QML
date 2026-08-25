@@ -95,7 +95,7 @@ class NodeDelegateModelRegistry : public QObject {
 
 #endif
 
-  std::unique_ptr<NodeDelegateModel> create(QString const &modelName);
+  std::unique_ptr<NodeDelegateModel> create(QString const &modelName) const;
 
   RegisteredModelCreatorsMap const &registeredModelCreators() const;
   RegisteredNodeModel *getNodesModel() { return &_nodesModel; }

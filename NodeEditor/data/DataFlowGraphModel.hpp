@@ -26,12 +26,11 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   };
 
   public:
-  Q_PROPERTY(NodeDelegateModelRegistry *registry READ getRegistry CONSTANT)
+  Q_PROPERTY(NodeDelegateModelRegistry *registry READ registry CONSTANT)
 
-  DataFlowGraphModel(std::shared_ptr<NodeDelegateModelRegistry> registry, QQmlEngine *engine);
+  DataFlowGraphModel(NodeDelegateModelRegistry *registry, QQmlEngine *engine);
 
-  std::shared_ptr<NodeDelegateModelRegistry> dataModelRegistry() { return _registry; }
-  NodeDelegateModelRegistry *getRegistry() { return _registry.get(); }
+  NodeDelegateModelRegistry *registry() { return _registry; }
 
   Q_INVOKABLE QSet<ConnectionId> allConnectionIds(NodeId const nodeId) const override;
   QSet<ConnectionId> connections(NodeId nodeId, PortSide portSide,
@@ -110,7 +109,7 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
 
   protected:
   QQmlEngine *_engine;
-  std::shared_ptr<NodeDelegateModelRegistry> _registry;
+  NodeDelegateModelRegistry *_registry;
   std::unordered_map<NodeId, std::unique_ptr<NodeDelegateModel>> _models;
   QSet<ConnectionId> _connectivity;
   mutable std::unordered_map<NodeId, NodeGeometryData> _nodeGeometryData;
