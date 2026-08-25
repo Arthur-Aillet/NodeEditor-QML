@@ -83,7 +83,9 @@ void NodeStyle::setNodeStyle(QString jsonText) {
   }
 
 #define NODE_STYLE_WRITE_COLOR(values, variable)                                                   \
-  { values[#variable] = variable.name(); }
+  {                                                                                                \
+    values[#variable] = variable.name();                                                           \
+  }
 
 #define NODE_STYLE_READ_FLOAT(values, variable)                                                    \
   {                                                                                                \
@@ -93,7 +95,9 @@ void NodeStyle::setNodeStyle(QString jsonText) {
   }
 
 #define NODE_STYLE_WRITE_FLOAT(values, variable)                                                   \
-  { values[#variable] = variable; }
+  {                                                                                                \
+    values[#variable] = variable;                                                                  \
+  }
 
 #define NODE_STYLE_READ_BOOL(values, variable)                                                     \
   {                                                                                                \
@@ -103,7 +107,9 @@ void NodeStyle::setNodeStyle(QString jsonText) {
   }
 
 #define NODE_STYLE_WRITE_BOOL(values, variable)                                                    \
-  { values[#variable] = variable; }
+  {                                                                                                \
+    values[#variable] = variable;                                                                  \
+  }
 
 void NodeStyle::loadJson(QJsonObject const &json) {
   QJsonValue nodeStyleValues = json["NodeStyle"];

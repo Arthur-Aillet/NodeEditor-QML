@@ -4,6 +4,7 @@
 #include "DivisionNode.hpp"
 #include "InputNode.hpp"
 #include "MultiplicationNode.hpp"
+#include "StyleCollection.hpp"
 #include "SubtractionNode.hpp"
 
 #include "DataFlowGraphModel.hpp"

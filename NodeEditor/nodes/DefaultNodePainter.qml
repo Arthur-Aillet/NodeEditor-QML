@@ -49,9 +49,10 @@ AbstractNodePainter {
         anchors.fill: defaultNodePainter
         z: -1
         offset.y: 4
+        opacity: 0.4
         radius: 3.0
-        blur: 20
-        spread: 6
+        blur: 17
+        spread: 5
         color: defaultNodePainter.nodeObject.style.shadowEnabled ? defaultNodePainter.nodeObject.style.shadowColor : "transparent"
     }
 
