@@ -1,7 +1,6 @@
 #include "InputNode.hpp"
 #include "DecimalData.hpp"
 #include "Definitions.hpp"
-#include <qtmetamacros.h>
 
 InputNode::InputNode(QQmlEngine *engine)
     : NodeDelegateModel(engine), _value(0), _valuePtr(std::make_shared<DecimalData>(_value)) {}

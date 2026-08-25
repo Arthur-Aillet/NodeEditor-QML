@@ -2,9 +2,10 @@
 
 #include "Definitions.hpp"
 #include "NodeDelegateModel.hpp"
+
 #include <memory>
-#include <qqmlintegration.h>
-#include <qtmetamacros.h>
+
+#include <QtQmlIntegration>
 
 class DecimalData;
 

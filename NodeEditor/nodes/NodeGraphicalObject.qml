@@ -12,11 +12,12 @@ MouseArea {
 
     required property DraftConnection draftConnection
     required property NavigableArea area
+    required property NodeEditorContext context
     required property NodeList nodes
     required property int nodeId
 
-    property int inPortCount: ModelInterface.graph.nodeData(nodeObj.nodeId, NodeEditor.NodeRole.InPortCount)
-    property int outPortCount: ModelInterface.graph.nodeData(nodeObj.nodeId, NodeEditor.NodeRole.OutPortCount)
+    property int inPortCount: context.graphModel.nodeData(nodeObj.nodeId, NodeEditor.NodeRole.InPortCount)
+    property int outPortCount: context.graphModel.nodeData(nodeObj.nodeId, NodeEditor.NodeRole.OutPortCount)
 
     property var getPortPosition: (painter.item as AbstractNodePainter).getPortPosition
 
@@ -25,7 +26,7 @@ MouseArea {
     property bool locked: flags & NodeEditor.NodeFlags.Locked
 
     Component.onCompleted: {
-        const json = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Style);
+        const json = context.graphModel.nodeData(nodeId, NodeEditor.NodeRole.Style);
         style.loadJson(json);
         style = style;
         loadFlags();
@@ -35,9 +36,9 @@ MouseArea {
         target: nodeObj
         function onPortsChanged(side: int) {
             if (side == NodeEditor.PortSide.In) {
-                nodeObj.inPortCount = ModelInterface.graph.nodeData(nodeObj.nodeId, NodeEditor.NodeRole.InPortCount);
+                nodeObj.inPortCount = nodeObj.context.graphModel.nodeData(nodeObj.nodeId, NodeEditor.NodeRole.InPortCount);
             } else if (side == NodeEditor.PortSide.Out) {
-                nodeObj.outPortCount = ModelInterface.graph.nodeData(nodeObj.nodeId, NodeEditor.NodeRole.OutPortCount);
+                nodeObj.outPortCount = nodeObj.context.graphModel.nodeData(nodeObj.nodeId, NodeEditor.NodeRole.OutPortCount);
             }
         }
     }
@@ -50,7 +51,7 @@ MouseArea {
     }
 
     function loadFlags() {
-        flags = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Flags);
+        flags = context.graphModel.nodeData(nodeId, NodeEditor.NodeRole.Flags);
     }
 
     property bool selected: false
@@ -163,14 +164,15 @@ MouseArea {
             const initialProperties = {
                 nodeObject: nodeObj,
                 area: nodeObj.area,
-                draftConnection: nodeObj.draftConnection
+                draftConnection: nodeObj.draftConnection,
+                context: nodeObj.context
             };
             setSource(nodePainterUrl, initialProperties);
         }
         Component.onCompleted: {
             nodePainterUrl = "DefaultNodePainter.qml";
         }
-        onItemChanged: DataFlowModelInterface.dataFlowGraph.requestComponent(nodeObj.nodeId, (item as AbstractNodePainter).embeddedComponentContainer)
+        onItemChanged: nodeObj.context.graphModel.createEmbed(nodeObj.nodeId, (item as AbstractNodePainter).embeddedComponentContainer)
     }
 
     // Port Interaction points

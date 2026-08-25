@@ -6,6 +6,7 @@ Canvas {
 
     required property NodeList nodes
     required property NavigableArea area
+    required property NodeEditorContext nodeContext
 
     required property connectionId connection
 
@@ -46,14 +47,14 @@ Canvas {
     property color inTypeColor: {
         if (!fullyConnected)
             return "black";
-        const dataType = ModelInterface.graph.portData(connection.inNodeId, NodeEditor.PortSide.In, connection.inPortIndex, NodeEditor.PortRole.DataType);
+        const dataType = defaultConnectionPainter.nodeContext.graphModel.portData(connection.inNodeId, NodeEditor.PortSide.In, connection.inPortIndex, NodeEditor.PortRole.DataType);
         return StyleCollection.connection.typeColor(dataType.id);
     }
 
     property color outTypeColor: {
         if (!fullyConnected)
             return "black";
-        const dataType = ModelInterface.graph.portData(connection.outNodeId, NodeEditor.PortSide.Out, connection.outPortIndex, NodeEditor.PortRole.DataType);
+        const dataType = defaultConnectionPainter.nodeContext.graphModel.portData(connection.outNodeId, NodeEditor.PortSide.Out, connection.outPortIndex, NodeEditor.PortRole.DataType);
         return StyleCollection.connection.typeColor(dataType.id);
     }
 
@@ -136,12 +137,12 @@ Canvas {
 
     Keys.onDeletePressed: {
         if (fullyConnected)
-            ModelInterface.deleteConnection(connection);
+            nodeContext.graphModel.deleteConnection(connection);
     }
 
     Keys.onBackPressed: {
         if (fullyConnected)
-            ModelInterface.deleteConnection(connection);
+            nodeContext.graphModel.deleteConnection(connection);
     }
 
     property bool swap: connection.inNodeId === NodeEditorUtils.InvalidNodeId

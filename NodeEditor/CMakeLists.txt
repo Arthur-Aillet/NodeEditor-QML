@@ -28,13 +28,6 @@ qt_add_qml_module(NodeEditor
   DEPENDENCIES QtQuick
 
   SOURCES
-  interface/ModelInterface.cpp
-  interface/ModelInterface.hpp
-  interface/DataFlowModelInterface.cpp
-  interface/DataFlowModelInterface.hpp
-  interface/QmlUndoCommands.cpp
-  interface/QmlUndoCommands.hpp
-
   style/ConnectionStyle.cpp
   style/ConnectionStyle.hpp
   style/NodeStyle.cpp
@@ -49,6 +42,7 @@ qt_add_qml_module(NodeEditor
   data/AbstractGraphModel.hpp
   data/ConnectionIdHash.hpp
   data/ConnectionIdUtils.hpp
+  data/DataFlowContext.hpp
   data/DataFlowGraphModel.cpp
   data/DataFlowGraphModel.hpp
   data/Definitions.hpp
@@ -58,6 +52,7 @@ qt_add_qml_module(NodeEditor
   data/NodeDelegateModel.hpp
   data/NodeDelegateModelRegistry.cpp
   data/NodeDelegateModelRegistry.hpp
+  data/NodeEditorContext.hpp
   data/QStringStdHash.hpp
   data/Serializable.hpp
   data/RegisteredNodeModel.cpp

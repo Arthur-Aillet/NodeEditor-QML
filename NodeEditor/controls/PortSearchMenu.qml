@@ -4,10 +4,11 @@ import QtQuick.Controls
 import NodeEditor
 
 Menu {
-    id: nodePortSearchMenu
+    id: portSearchMenu
     width: 250
 
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
+    required property DataFlowContext context
     required property NavigableArea area
     required property GraphicsView graphicsView
     property int portSide
@@ -51,13 +52,17 @@ Menu {
                 name = (list.currentItem as SearchMenuItem).name;
                 portInfo = (list.currentItem as SearchMenuItem).port;
             }
-            const pos = Qt.point(nodePortSearchMenu.x, nodePortSearchMenu.y);
-            const newNodeId = ModelInterface.createNode(name, nodePortSearchMenu.area.mapToItem(nodePortSearchMenu.area.inner, pos));
+            const pos = Qt.point(portSearchMenu.x, portSearchMenu.y);
+            const newNodeId = portSearchMenu.context.graphModel.addNode(name);
+            if (newNodeId != NodeEditorUtils.InvalidNodeId) {
+                const mappedPos = portSearchMenu.area.mapToItem(portSearchMenu.area.inner, pos);
+                portSearchMenu.context.graphModel.setNodeData(newNodeId, NodeEditor.NodeRole.Position, mappedPos);
+            }
             let newConnection;
-            if (nodePortSearchMenu.portSide === NodeEditor.PortSide.In) {
+            if (portSearchMenu.portSide === NodeEditor.PortSide.In) {
                 newConnection = {
-                    inNodeId: nodePortSearchMenu.nodeIndex,
-                    inPortIndex: nodePortSearchMenu.portIndex,
+                    inNodeId: portSearchMenu.nodeIndex,
+                    inPortIndex: portSearchMenu.portIndex,
                     outNodeId: newNodeId,
                     outPortIndex: portInfo.portIndex
                 };
@@ -65,12 +70,12 @@ Menu {
                 newConnection = {
                     inNodeId: newNodeId,
                     inPortIndex: portInfo.portIndex,
-                    outNodeId: nodePortSearchMenu.nodeIndex,
-                    outPortIndex: nodePortSearchMenu.portIndex
+                    outNodeId: portSearchMenu.nodeIndex,
+                    outPortIndex: portSearchMenu.portIndex
                 };
             }
-            ModelInterface.createConnection(newConnection);
-            nodePortSearchMenu.close();
+            portSearchMenu.context.graphModel.addConnection(newConnection);
+            portSearchMenu.close();
         }
     }
 
@@ -82,7 +87,7 @@ Menu {
 
     Instantiator {
         id: instanciator
-        model: DataFlowModelInterface.dataFlowGraph.registry.nodesModel
+        model: portSearchMenu.context.dataFlowGraphModel.registry.nodesModel
         delegate: NodeRoleData {
             required property string name
             required property string category
@@ -91,16 +96,16 @@ Menu {
         onObjectAdded: (index, object) => {
             let data = object as NodeRoleData;
             for (let i = 0; i != data.portsInfo.length; i++) {
-                if (data.portsInfo[i].portSide == nodePortSearchMenu.portSide) {
+                if (data.portsInfo[i].portSide == portSearchMenu.portSide) {
                     continue;
                 }
-                if (nodePortSearchMenu.portSide == NodeEditor.PortSide.In) {
-                    if (!data.portsInfo[i].dataType.compatibleTypes.includes(nodePortSearchMenu.portDataType.id)) {
+                if (portSearchMenu.portSide == NodeEditor.PortSide.In) {
+                    if (!data.portsInfo[i].dataType.compatibleTypes.includes(portSearchMenu.portDataType.id)) {
                         continue;
                     }
                 }
-                if (nodePortSearchMenu.portSide == NodeEditor.PortSide.Out) {
-                    if (!nodePortSearchMenu.portDataType.compatibleTypes.includes(data.portsInfo[i].dataType.id)) {
+                if (portSearchMenu.portSide == NodeEditor.PortSide.Out) {
+                    if (!portSearchMenu.portDataType.compatibleTypes.includes(data.portsInfo[i].dataType.id)) {
                         continue;
                     }
                 }
@@ -153,7 +158,7 @@ Menu {
 
         delegate: SearchMenuItem {
             currentIndex: list.currentIndex
-            replaceRegex: nodePortSearchMenu.replaceRegex
+            replaceRegex: portSearchMenu.replaceRegex
             width: list.width
             required property portInfo portInfo
             port: portInfo
@@ -162,12 +167,12 @@ Menu {
                 list.currentIndex = index;
             }
             onPressed: {
-                const newNodeId = ModelInterface.createNode(name, Qt.point(0, 0));
+                const newNodeId = portSearchMenu.context.graphModel.addNode(name);
                 let newConnection;
-                if (nodePortSearchMenu.portSide === NodeEditor.PortSide.In) {
+                if (portSearchMenu.portSide === NodeEditor.PortSide.In) {
                     newConnection = {
-                        inNodeId: nodePortSearchMenu.nodeIndex,
-                        inPortIndex: nodePortSearchMenu.portIndex,
+                        inNodeId: portSearchMenu.nodeIndex,
+                        inPortIndex: portSearchMenu.portIndex,
                         outNodeId: newNodeId,
                         outPortIndex: port.portIndex
                     };
@@ -175,18 +180,18 @@ Menu {
                     newConnection = {
                         inNodeId: newNodeId,
                         inPortIndex: port.portIndex,
-                        outNodeId: nodePortSearchMenu.nodeIndex,
-                        outPortIndex: nodePortSearchMenu.portIndex
+                        outNodeId: portSearchMenu.nodeIndex,
+                        outPortIndex: portSearchMenu.portIndex
                     };
                 }
-                ModelInterface.createConnection(newConnection);
-                let mappedPos = nodePortSearchMenu.area.mapToItem(nodePortSearchMenu.area.inner, nodePortSearchMenu.openedAt);
-                const newNode = nodePortSearchMenu.graphicsView.nodes.nodeAt(newNodeId);
-                const portPos = newNode.getPortPosition(port.portIndex, NodeEditorUtils.oppositeSide(nodePortSearchMenu.portSide));
+                portSearchMenu.context.graphModel.addConnection(newConnection);
+                let mappedPos = portSearchMenu.area.mapToItem(portSearchMenu.area.inner, portSearchMenu.openedAt);
+                const newNode = portSearchMenu.graphicsView.nodes.nodeAt(newNodeId);
+                const portPos = newNode.getPortPosition(port.portIndex, NodeEditorUtils.oppositeSide(portSearchMenu.portSide));
                 mappedPos.x -= portPos.x;
                 mappedPos.y -= portPos.y;
-                ModelInterface.graph.setNodeData(newNodeId, NodeEditor.NodeRole.Position, mappedPos);
-                nodePortSearchMenu.close();
+                portSearchMenu.context.graphModel.setNodeData(newNodeId, NodeEditor.NodeRole.Position, mappedPos);
+                portSearchMenu.close();
             }
         }
     }

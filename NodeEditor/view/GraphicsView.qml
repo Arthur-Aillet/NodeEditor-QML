@@ -3,8 +3,11 @@ import QtQuick.Controls
 import NodeEditor
 
 Frame {
+    id: view
     clip: true
     padding: 1
+
+    required property NodeEditorContext context
 
     property alias area: navigableArea
     property alias nodes: nodeList.nodes
@@ -19,18 +22,21 @@ Frame {
         ConnectionList {
             area: navigableArea
             nodes: nodeList
+            context: view.context
         }
 
         DraftConnection {
             id: draftConnectionId
             nodes: nodeList
             area: navigableArea
+            context: view.context
         }
 
         NodeList {
             id: nodeList
             area: navigableArea
             draftConnection: draftConnectionId
+            context: view.context
         }
     }
 }

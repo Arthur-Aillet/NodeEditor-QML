@@ -3,10 +3,11 @@ import QtQuick
 import NodeEditor
 
 Loader {
-    id: defaultConnection
+    id: draftConnection
 
     required property NavigableArea area
     required property NodeList nodes
+    required property NodeEditorContext context
 
     property var selectedPort: null
 
@@ -18,7 +19,7 @@ Loader {
         for (let i = 0; i < nodes.nodes.count; ++i) {
             const node = nodes.nodes.itemAt(i) as NodeGraphicalObject;
             if (node.nodeId != selectedPort.nodeId) {
-                const ports = ModelInterface.graph.nodeData(node.nodeId, oppositeCount);
+                const ports = context.graphModel.nodeData(node.nodeId, oppositeCount);
                 if (ports < 1)
                     continue;
                 for (let j = 0; j < ports; j++) {
@@ -47,8 +48,8 @@ Loader {
                                 outPortIndex: selectedPort.portId
                             };
                         }
-                        if (ModelInterface.graph.connectionPossible(newConnection)) {
-                            ModelInterface.createConnection(newConnection);
+                        if (context.graphModel.connectionPossible(newConnection)) {
+                            context.graphModel.addConnection(newConnection);
                         }
                         selectedPort = null;
                         return;
@@ -56,7 +57,7 @@ Loader {
                 }
             }
         }
-        ModelInterface.graph.connectionDropped(selectedPort.nodeId, selectedPort.portSide, selectedPort.portId, area.mousePosition.x, area.mousePosition.y);
+        context.graphModel.connectionDropped(selectedPort.nodeId, selectedPort.portSide, selectedPort.portId, area.mousePosition.x, area.mousePosition.y);
         selectedPort = null;
     }
 
@@ -64,18 +65,20 @@ Loader {
     sourceComponent: DefaultConnection {
         id: painter
 
+        nodeContext: draftConnection.context
+
         Component.onCompleted: {
             forceActiveFocus();
         }
 
-        property var sp: defaultConnection.selectedPort
+        property var sp: draftConnection.selectedPort
 
         Keys.onEscapePressed: {
-            defaultConnection.selectedPort = null;
+            draftConnection.selectedPort = null;
         }
 
-        area: defaultConnection.area
-        nodes: defaultConnection.nodes
+        area: draftConnection.area
+        nodes: draftConnection.nodes
 
         connection: ({
                 outNodeId: sp.portSide === NodeEditor.PortSide.In ? NodeEditorUtils.InvalidNodeId : sp.nodeId,
@@ -85,9 +88,9 @@ Loader {
             })
 
         Connections {
-            target: defaultConnection.area.dragArea
+            target: draftConnection.area.dragArea
             function onReleased() {
-                defaultConnection.tryToCreate();
+                draftConnection.tryToCreate();
             }
         }
     }

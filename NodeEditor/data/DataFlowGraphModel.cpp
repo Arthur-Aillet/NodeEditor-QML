@@ -607,8 +607,8 @@ void DataFlowGraphModel::load(QJsonObject const &jsonDocument) {
   }
 }
 
-void DataFlowGraphModel::requestComponent(NodeId nodeId, QQuickItem *container) {
-  _models[nodeId]->createComponent(container, _engine);
+void DataFlowGraphModel::createEmbed(NodeId nodeId, QQuickItem *container) const {
+  _models.at(nodeId)->createComponent(container, _engine);
 }
 
 void DataFlowGraphModel::onOutPortDataUpdated(NodeId const nodeId, PortIndex const portIndex) {

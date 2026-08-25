@@ -6,6 +6,7 @@ Item {
     id: nodeList
     required property DraftConnection draftConnection
     required property NavigableArea area
+    required property NodeEditorContext context
 
     property var selectedNodes: new Set()
 
@@ -19,10 +20,10 @@ Item {
         const selectedNodesJson = [];
         const connectionsJson = new Set();
         for (const nodeId of selectedNodes) {
-            selectedNodesJson.push(ModelInterface.graph.saveNode(nodeId));
+            selectedNodesJson.push(nodeList.context.graphModel.saveNode(nodeId));
         }
         for (const nodeId of selectedNodes) {
-            for (const connection of ModelInterface.graph.allConnectionIds(nodeId)) {
+            for (const connection of nodeList.context.graphModel.allConnectionIds(nodeId)) {
                 if (selectedNodes.has(connection.inNodeId) && selectedNodes.has(connection.outNodeId)) {
                     connectionsJson.add(connection);
                 }
@@ -48,7 +49,7 @@ Item {
             return false;
         selectedNodes.clear();
         for (const nodeJson of copiedNodes) {
-            const newNodeId = ModelInterface.graph.loadNode(nodeJson);
+            const newNodeId = nodeList.context.graphModel.loadNode(nodeJson);
             nodeIdMap[nodeJson["id"]] = newNodeId;
             const node = nodes.nodeAt(newNodeId);
             if (node.x < smallestX)
@@ -67,14 +68,14 @@ Item {
             const node = nodes.nodeAt(newNodeId);
             const nodePosX = node.x - mediumX + area.mousePosition.x;
             const nodePosY = node.y - mediumY + area.mousePosition.y;
-            ModelInterface.graph.setNodeData(newNodeId, NodeEditor.NodeRole.Position, Qt.point(nodePosX, nodePosY));
+            nodeList.context.graphModel.setNodeData(newNodeId, NodeEditor.NodeRole.Position, Qt.point(nodePosX, nodePosY));
             selectedNodes.add(newNodeId);
         }
         selectedNodesContentChanged();
         for (let connection of (clipboard.content as Object)["connections"]) {
             connection.inNodeId = nodeIdMap[connection.inNodeId];
             connection.outNodeId = nodeIdMap[connection.outNodeId];
-            ModelInterface.createConnection(connection);
+            nodeList.context.graphModel.addConnection(connection);
         }
         return true;
     }
@@ -88,7 +89,7 @@ Item {
         if (event.key == Qt.Key_X && event.modifiers & Qt.ControlModifier) {
             copySelectedNodes();
             for (let id of selectedNodes) {
-                event.accepted = ModelInterface.graph.deleteNode(id);
+                event.accepted = nodeList.context.graphModel.deleteNode(id);
             }
             selectedNodes.clear();
             selectedNodesContentChanged();
@@ -101,7 +102,7 @@ Item {
 
         if (event.key == Qt.Key_Delete || event.key == Qt.Key_Back) {
             for (let id of selectedNodes) {
-                event.accepted = ModelInterface.graph.deleteNode(id);
+                event.accepted = nodeList.context.graphModel.deleteNode(id);
             }
             selectedNodes.clear();
             selectedNodesContentChanged();
@@ -139,10 +140,10 @@ Item {
 
     function moveSelectedNodes(xOffset: int, yOffset: int) {
         for (let nodeId of selectedNodes) {
-            let pos = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Position);
+            let pos = nodeList.context.graphModel.nodeData(nodeId, NodeEditor.NodeRole.Position);
             pos.x += xOffset;
             pos.y += yOffset;
-            ModelInterface.graph.setNodeData(nodeId, NodeEditor.NodeRole.Position, pos);
+            nodeList.context.graphModel.setNodeData(nodeId, NodeEditor.NodeRole.Position, pos);
         }
     }
 
@@ -166,6 +167,7 @@ Item {
 
             draftConnection: nodeList.draftConnection
             area: nodeList.area
+            context: nodeList.context
         }
         model: ListModel {
             id: nodeModel
@@ -173,12 +175,12 @@ Item {
     }
 
     Component.onCompleted: {
-        for (let nodeId of ModelInterface.graph.allNodeIds()) {
+        for (let nodeId of nodeList.context.graphModel.allNodeIds()) {
             nodeModel.append({
                 "modelId": nodeId
             });
 
-            const position = ModelInterface.graph.nodeData(nodeId, NodeEditor.NodeRole.Position);
+            const position = nodeList.context.graphModel.nodeData(nodeId, NodeEditor.NodeRole.Position);
             const current = nodes.nodeAt(nodeId);
             current.x = position.x;
             current.y = position.y;
@@ -186,7 +188,7 @@ Item {
     }
 
     Connections {
-        target: ModelInterface.graph
+        target: nodeList.context.graphModel
 
         function onConnectionCreated(connection: connectionId) {
             nodes.nodeAt(connection.inNodeId).connectionChanged(connection.inPortIndex, NodeEditor.PortSide.In, connection.outNodeId, connection.outPortIndex);
@@ -224,7 +226,7 @@ Item {
         }
 
         function onNodePositionUpdated(id: real) {
-            const position = ModelInterface.graph.nodeData(id, NodeEditor.NodeRole.Position);
+            const position = nodeList.context.graphModel.nodeData(id, NodeEditor.NodeRole.Position);
 
             for (let i = 0; i < nodes.count; i++) {
                 const current = nodes.itemAt(i) as NodeGraphicalObject;

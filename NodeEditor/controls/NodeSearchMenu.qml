@@ -8,6 +8,7 @@ Menu {
     width: 250
 
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
+    required property DataFlowContext context
     required property NavigableArea area
     property point openedAt
 
@@ -39,7 +40,10 @@ Menu {
             } else {
                 name = (list.currentItem as SearchMenuItem).name;
             }
-            ModelInterface.createNode(name, nodeSearchMenu.area.mapToItem(nodeSearchMenu.area.inner, nodeSearchMenu.openedAt));
+            const nodeId = nodeSearchMenu.context.graphModel.addNode(name);
+            if (nodeId != NodeEditorUtils.InvalidNodeId) {
+                nodeSearchMenu.context.graphModel.setNodeData(nodeId, NodeEditor.NodeRole.Position, nodeSearchMenu.area.mapToItem(nodeSearchMenu.area.inner, nodeSearchMenu.openedAt));
+            }
             nodeSearchMenu.close();
         }
     }
@@ -47,7 +51,7 @@ Menu {
     SearchFilterModel {
         id: smf
         filterText: searchField.text
-        model: DataFlowModelInterface.dataFlowGraph.registry.nodesModel
+        model: nodeSearchMenu.context.dataFlowGraphModel.registry.nodesModel
     }
 
     readonly property var replaceRegex: RegExp(searchField.text.replace(/[\\\.\+\*\?\^\$\[\]\(\)\{\}\/\'\#\:\!\=\|]/ig, "\\$&"), 'gi')
@@ -84,7 +88,10 @@ Menu {
                 list.currentIndex = index;
             }
             onPressed: {
-                ModelInterface.createNode(name, nodeSearchMenu.area.mapToItem(nodeSearchMenu.area.inner, nodeSearchMenu.openedAt));
+                const nodeId = nodeSearchMenu.context.graphModel.addNode(name);
+                if (nodeId != NodeEditorUtils.InvalidNodeId) {
+                    nodeSearchMenu.context.graphModel.setNodeData(nodeId, NodeEditor.NodeRole.Position, nodeSearchMenu.area.mapToItem(nodeSearchMenu.area.inner, nodeSearchMenu.openedAt));
+                }
                 nodeSearchMenu.close();
             }
         }

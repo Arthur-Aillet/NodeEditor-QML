@@ -7,6 +7,7 @@ Item {
 
     required property NavigableArea area
     required property NodeList nodes
+    required property NodeEditorContext context
 
     Connections {
         target: connectionList.area
@@ -30,7 +31,7 @@ Item {
     }
 
     Connections {
-        target: ModelInterface.graph
+        target: connectionList.context.graphModel
 
         function equal(fst: connectionId, snd: connectionId): bool {
             return fst.outNodeId == snd.outNodeId && fst.outPortIndex == snd.outPortIndex && fst.inNodeId == snd.inNodeId && fst.inPortIndex == snd.inPortIndex;
@@ -60,6 +61,7 @@ Item {
             required property connectionId inputConnectionId
 
             connection: inputConnectionId
+            nodeContext: connectionList.context
             nodes: connectionList.nodes
             area: connectionList.area
         }

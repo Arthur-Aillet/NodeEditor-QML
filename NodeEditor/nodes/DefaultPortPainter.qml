@@ -16,7 +16,7 @@ Item {
     signal portConnectionChanged
 
     onPortConnectionChanged: {
-        connected = ModelInterface.graph.connections(nodePainter.nodeObject.nodeId, side, portId).length != 0;
+        connected = nodePainter.context.graphModel.connections(nodePainter.nodeObject.nodeId, side, portId).length != 0;
     }
 
     property bool connected
@@ -25,10 +25,10 @@ Item {
     property string caption
 
     function queryPortInfo() {
-        connected = ModelInterface.graph.connections(nodePainter.nodeObject.nodeId, side, portId).length != 0;
-        dataType = ModelInterface.graph.portData(nodePainter.nodeObject.nodeId, side, portId, NodeEditor.PortRole.DataType);
-        captionVisible = ModelInterface.graph.portData(nodePainter.nodeObject.nodeId, side, portId, NodeEditor.PortRole.PortCaptionVisible);
-        caption = ModelInterface.graph.portData(nodePainter.nodeObject.nodeId, side, portId, NodeEditor.PortRole.PortCaption);
+        connected = nodePainter.context.graphModel.connections(nodePainter.nodeObject.nodeId, side, portId).length != 0;
+        dataType = nodePainter.context.graphModel.portData(nodePainter.nodeObject.nodeId, side, portId, NodeEditor.PortRole.DataType);
+        captionVisible = nodePainter.context.graphModel.portData(nodePainter.nodeObject.nodeId, side, portId, NodeEditor.PortRole.PortCaptionVisible);
+        caption = nodePainter.context.graphModel.portData(nodePainter.nodeObject.nodeId, side, portId, NodeEditor.PortRole.PortCaption);
     }
 
     Component.onCompleted: port.queryPortInfo()
@@ -90,14 +90,14 @@ Item {
                         if (painter.draftConnection.selectedPort === null)
                             return false;
                         if (painter.draftConnection.selectedPort.portSide === NodeEditor.PortSide.In) {
-                            return ModelInterface.graph.connectionPossible({
+                            return port.nodePainter.context.graphModel.connectionPossible({
                                 inNodeId: painter.draftConnection.selectedPort.nodeId,
                                 inPortIndex: painter.draftConnection.selectedPort.portId,
                                 outNodeId: painter.nodeObject.nodeId,
                                 outPortIndex: port.portId
                             });
                         } else {
-                            return ModelInterface.graph.connectionPossible({
+                            return port.nodePainter.context.graphModel.connectionPossible({
                                 inNodeId: painter.nodeObject.nodeId,
                                 inPortIndex: port.portId,
                                 outNodeId: painter.draftConnection.selectedPort.nodeId,

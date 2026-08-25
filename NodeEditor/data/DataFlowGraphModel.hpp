@@ -10,10 +10,8 @@
 
 #include <QJsonObject>
 #include <QString>
-#include <qpoint.h>
-#include <qqmlintegration.h>
-#include <qsize.h>
-#include <qtmetamacros.h>
+#include <QtQmlIntegration>
+
 #include <unordered_map>
 
 class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
@@ -30,8 +28,7 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   public:
   Q_PROPERTY(NodeDelegateModelRegistry *registry READ getRegistry CONSTANT)
 
-  DataFlowGraphModel(std::shared_ptr<NodeDelegateModelRegistry> registry,
-                     QQmlEngine *engine = nullptr);
+  DataFlowGraphModel(std::shared_ptr<NodeDelegateModelRegistry> registry, QQmlEngine *engine);
 
   std::shared_ptr<NodeDelegateModelRegistry> dataModelRegistry() { return _registry; }
   NodeDelegateModelRegistry *getRegistry() { return _registry.get(); }
@@ -66,7 +63,7 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   Q_INVOKABLE QJsonObject save() const override;
   Q_INVOKABLE void load(QJsonObject const &json) override;
 
-  Q_INVOKABLE void requestComponent(NodeId nodeId, QQuickItem *container);
+  Q_INVOKABLE void createEmbed(NodeId nodeId, QQuickItem *container) const override;
 
   /**
    * Fetches the NodeDelegateModel for the given `nodeId` and tries to cast the

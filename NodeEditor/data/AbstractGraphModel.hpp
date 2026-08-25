@@ -7,8 +7,8 @@
 #include "ConnectionIdHash.hpp"
 #include "Definitions.hpp"
 
-#include <qqmlintegration.h>
-#include <qtmetamacros.h>
+#include <QQuickItem>
+#include <QtQmlIntegration>
 
 /**
  * The central class in the Model-View approach. It delivers all kinds
@@ -42,7 +42,7 @@ class AbstractGraphModel : public QObject {
                                                      PortIndex index) const = 0;
 
   /// Checks if two nodes with the given `connectionId` are connected.
-  virtual bool connectionExists(ConnectionId const connectionId) const = 0;
+  Q_INVOKABLE virtual bool connectionExists(ConnectionId const connectionId) const = 0;
 
   /// Model decides if a conection with a given connection Id possible.
   /**
@@ -65,7 +65,7 @@ class AbstractGraphModel : public QObject {
    * In the derived classes user must emite the signal to notify the
    * scene about the changes.
    */
-  virtual void addConnection(ConnectionId const connectionId) = 0;
+  Q_INVOKABLE virtual void addConnection(ConnectionId const connectionId) = 0;
 
   Q_INVOKABLE virtual bool deleteConnection(ConnectionId const connectionId) = 0;
 
@@ -85,13 +85,13 @@ class AbstractGraphModel : public QObject {
    * model on its own, it helps to distinguish between possible node
    * types and create a correct instance inside.
    */
-  virtual NodeId addNode(QString const nodeType = QString()) = 0;
+  Q_INVOKABLE virtual NodeId addNode(QString const nodeType = QString()) = 0;
 
   /**
    * @returns `true` if there is data in the model associated with the
    * given `nodeId`.
    */
-  virtual bool nodeExists(NodeId const nodeId) const = 0;
+  Q_INVOKABLE virtual bool nodeExists(NodeId const nodeId) const = 0;
 
   /// @brief Returns node-related data for requested NodeRole.
   /**
@@ -171,7 +171,9 @@ class AbstractGraphModel : public QObject {
    */
   Q_INVOKABLE virtual NodeId loadNode(QJsonObject const &) { return 0; }
 
-  virtual bool loopsEnabled() const { return true; }
+  Q_INVOKABLE virtual bool loopsEnabled() const { return true; }
+
+  Q_INVOKABLE virtual void createEmbed(NodeId nodeId, QQuickItem *container) const { return; };
 
   public slots:
   /**

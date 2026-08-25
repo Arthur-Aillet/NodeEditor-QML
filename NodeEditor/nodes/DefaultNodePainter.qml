@@ -105,9 +105,9 @@ AbstractNodePainter {
         }
     }
 
-    property string label: ModelInterface.graph.nodeData(nodeObject.nodeId, NodeEditor.NodeRole.Label)
-    property bool labelEditable: ModelInterface.graph.nodeData(nodeObject.nodeId, NodeEditor.NodeRole.LabelEditable)
-    property string caption: ModelInterface.graph.nodeData(nodeObject.nodeId, NodeEditor.NodeRole.Caption)
+    property string label: context.graphModel.nodeData(nodeObject.nodeId, NodeEditor.NodeRole.Label)
+    property bool labelEditable: context.graphModel.nodeData(nodeObject.nodeId, NodeEditor.NodeRole.LabelEditable)
+    property string caption: context.graphModel.nodeData(nodeObject.nodeId, NodeEditor.NodeRole.Caption)
 
     FlexboxLayout {
         id: column
@@ -126,7 +126,7 @@ AbstractNodePainter {
             font.bold: true
             // font.bold: defaultNodePainter.label == ""
             // font.italic: defaultNodePainter.label != ""
-            property bool active: ModelInterface.graph.nodeData(defaultNodePainter.nodeObject.nodeId, NodeEditor.NodeRole.CaptionVisible)
+            property bool active: defaultNodePainter.context.graphModel.nodeData(defaultNodePainter.nodeObject.nodeId, NodeEditor.NodeRole.CaptionVisible)
 
             leftPadding: 2
             rightPadding: 2
@@ -145,7 +145,7 @@ AbstractNodePainter {
                     col = Qt.darker(col, 1.4);
                 return col;
             }
-            property bool active: ModelInterface.graph.nodeData(defaultNodePainter.nodeObject.nodeId, NodeEditor.NodeRole.LabelVisible)
+            property bool active: defaultNodePainter.context.graphModel.nodeData(defaultNodePainter.nodeObject.nodeId, NodeEditor.NodeRole.LabelVisible)
 
             visible: active
             padding: 1

@@ -1,23 +1,24 @@
 #include "AdditionNode.hpp"
+#include "DataFlowContext.hpp"
 #include "DisplayNode.hpp"
 #include "DivisionNode.hpp"
 #include "InputNode.hpp"
 #include "MultiplicationNode.hpp"
-#include "StyleCollection.hpp"
 #include "SubtractionNode.hpp"
 
 #include "DataFlowGraphModel.hpp"
-#include "DataFlowModelInterface.hpp"
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QVariant>
+
+#include <memory>
+#include <qlogging.h>
 
 int main(int argc, char *argv[]) {
   QCoreApplication::setOrganizationName("examples");
   QCoreApplication::setApplicationName("Calculator");
-
   QGuiApplication app(argc, argv);
-  StyleCollection::followApplicationPalette(false);
   QQmlApplicationEngine engine;
   QObject::connect(
       &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
@@ -34,8 +35,9 @@ int main(int argc, char *argv[]) {
 
   std::shared_ptr<DataFlowGraphModel> graph = std::make_shared<DataFlowGraphModel>(reg, &engine);
 
-  DataFlowModelInterface::init(graph.get());
+  const auto context = new DataFlowContext(graph.get(), &engine);
 
+  engine.setInitialProperties(QVariantMap({{"dataFlowContext", QVariant::fromValue(context)}}));
   engine.loadFromModule("examples.calculator", "App");
 
   return app.exec();

@@ -6,6 +6,7 @@ Shape {
     required property NodeGraphicalObject nodeObject
     required property NavigableArea area
     required property DraftConnection draftConnection
+    required property NodeEditorContext context
 
     virtual property Item embeddedComponentContainer: null
 

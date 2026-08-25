@@ -7,6 +7,7 @@ Menu {
     id: nodeListMenu
     popupType: Popup.Window
 
+    required property DataFlowContext context
     required property NavigableArea area
     required property NodeSearchMenu searchMenu
     property point openedAt
@@ -41,7 +42,7 @@ Menu {
     MenuSeparator {}
 
     Instantiator {
-        model: DataFlowModelInterface.dataFlowGraph.registry.categories
+        model: nodeListMenu.context.dataFlowGraphModel.registry.categories
         delegate: Menu {
             id: categoryMenu
             required property string modelData
@@ -49,7 +50,7 @@ Menu {
 
             SortFilterProxyModel {
                 id: sfpm
-                model: DataFlowModelInterface.dataFlowGraph.registry.nodesModel
+                model: nodeListMenu.context.dataFlowGraphModel.registry.nodesModel
                 sorters: [
                     RoleSorter {
                         roleName: "name"
@@ -73,7 +74,10 @@ Menu {
 
                     onTriggered: {
                         const pos = Qt.point(nodeListMenu.x, nodeListMenu.y);
-                        ModelInterface.createNode(name, nodeListMenu.area.mapToItem(nodeListMenu.area.inner, pos));
+                        const nodeId = nodeListMenu.context.graphModel.addNode(name);
+                        if (nodeId != NodeEditorUtils.InvalidNodeId) {
+                            nodeListMenu.context.graphModel.setNodeData(nodeId, NodeEditor.NodeRole.Position, nodeListMenu.area.mapToItem(nodeListMenu.area.inner, pos));
+                        }
                         nodeListMenu.close();
                     }
                 }

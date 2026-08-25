@@ -6,17 +6,20 @@ import NodeEditor
 GraphicsView {
     id: controlledView
 
+    required property DataFlowContext dataFlowContext
+    context: dataFlowContext as NodeEditorContext
+
     function mapPos(pos: point): point {
         return area.inner.mapToItem(area, pos);
     }
 
     Connections {
-        target: ModelInterface.graph
+        target: controlledView.context.graphModel
         function onConnectionDropped(nodeId: int, portSide: int, portId: int, x: int, y: int) {
             portSearch.portSide = portSide;
             portSearch.portIndex = portId;
             portSearch.nodeIndex = nodeId;
-            portSearch.portDataType = ModelInterface.graph.portData(nodeId, portSide, portId, NodeEditor.PortRole.DataType);
+            portSearch.portDataType = controlledView.context.graphModel.portData(nodeId, portSide, portId, NodeEditor.PortRole.DataType);
             portSearch.openAt(controlledView.mapPos(Qt.point(x, y)));
         }
     }
@@ -36,16 +39,19 @@ GraphicsView {
         id: listMenu
         area: controlledView.area
         searchMenu: search
+        context: controlledView.dataFlowContext
     }
 
     NodeSearchMenu {
         id: search
         area: controlledView.area
+        context: controlledView.dataFlowContext
     }
 
     PortSearchMenu {
         id: portSearch
         area: controlledView.area
         graphicsView: controlledView
+        context: controlledView.dataFlowContext
     }
 }

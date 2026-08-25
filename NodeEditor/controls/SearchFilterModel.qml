@@ -3,7 +3,6 @@ import NodeEditor
 
 SortFilterProxyModel {
     id: sfpm
-    model: DataFlowModelInterface.dataFlowGraph.registry.nodesModel
     required property string filterText
     onFilterTextChanged: {
         invalidate();
