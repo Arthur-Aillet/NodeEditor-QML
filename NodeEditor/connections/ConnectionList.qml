@@ -6,7 +6,7 @@ Item {
     id: connectionList
 
     required property NavigableArea area
-    required property NodeList nodes
+    required property NodeList nodeList
     required property AbstractContext context
 
     Connections {
@@ -61,7 +61,7 @@ Item {
 
             connection: inputConnectionId
             context: connectionList.context
-            nodes: connectionList.nodes
+            nodeList: connectionList.nodeList
             area: connectionList.area
         }
 

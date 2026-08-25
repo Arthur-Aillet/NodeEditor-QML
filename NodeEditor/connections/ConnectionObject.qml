@@ -3,7 +3,7 @@ import NodeEditor
 
 Item {
     id: connectionObject
-    required property NodeList nodes
+    required property NodeList nodeList
     required property NavigableArea area
     required property AbstractContext context
 
@@ -32,8 +32,8 @@ Item {
             portIndex = connection.outPortIndex;
         }
 
-        for (let i = 0; i != nodes.nodes.count; i++) {
-            const node = nodes.nodes.itemAt(i) as NodeObject;
+        for (let i = 0; i != nodeList.nodes.count; i++) {
+            const node = nodeList.nodes.itemAt(i) as NodeObject;
 
             if (node.nodeId == nodeId) {
                 const portPos = node.getPortPosition(portIndex, side);
