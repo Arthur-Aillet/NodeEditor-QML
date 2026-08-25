@@ -17,7 +17,7 @@ qt_add_qml_module(NodeEditor
   controls/SearchMenuItem.qml
 
   nodes/DefaultNodePainter.qml
-  nodes/NodeGraphicalObject.qml
+  nodes/NodeObject.qml
   nodes/AbstractNodePainter.qml
   nodes/DefaultPortPainter.qml
   nodes/NodeList.qml

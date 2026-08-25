@@ -129,7 +129,7 @@ Item {
 
     function loseFocus() {
         for (let i = 0; i != nodes.count; i++) {
-            const node = nodes.itemAt(i) as NodeGraphicalObject;
+            const node = nodes.itemAt(i) as NodeObject;
             if (node.focus == true) {
                 return;
             }
@@ -152,14 +152,14 @@ Item {
 
         function nodeAt(nodeId: int): var {
             for (let i = 0; i != count; i++) {
-                const node = itemAt(i) as NodeGraphicalObject;
+                const node = itemAt(i) as NodeObject;
                 if ((node).nodeId == nodeId)
                     return node;
             }
             return undefined;
         }
 
-        delegate: NodeGraphicalObject {
+        delegate: NodeObject {
             id: node
             required property real modelId
             nodeId: modelId
@@ -206,7 +206,7 @@ Item {
 
         function onNodeFlagsUpdated(id: real) {
             for (let i = 0; i < nodes.count; i++) {
-                const current = nodes.itemAt(i) as NodeGraphicalObject;
+                const current = nodes.itemAt(i) as NodeObject;
                 if (current.nodeId == id)
                     current.loadFlags();
             }
@@ -229,7 +229,7 @@ Item {
             const position = nodeList.context.graphModel.nodeData(id, NodeEditor.NodeRole.Position);
 
             for (let i = 0; i < nodes.count; i++) {
-                const current = nodes.itemAt(i) as NodeGraphicalObject;
+                const current = nodes.itemAt(i) as NodeObject;
                 if (current.nodeId == id) {
                     if (current.x != position.x)
                         current.x = position.x;

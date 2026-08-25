@@ -33,7 +33,7 @@ Item {
         }
 
         for (let i = 0; i != nodes.nodes.count; i++) {
-            const node = nodes.nodes.itemAt(i) as NodeGraphicalObject;
+            const node = nodes.nodes.itemAt(i) as NodeObject;
 
             if (node.nodeId == nodeId) {
                 const portPos = node.getPortPosition(portIndex, side);

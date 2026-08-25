@@ -17,7 +17,7 @@ Loader {
         const oppositeCount = selectedPort.portSide === NodeEditor.PortSide.In ? NodeEditor.NodeRole.OutPortCount : NodeEditor.NodeRole.InPortCount;
 
         for (let i = 0; i < nodes.nodes.count; ++i) {
-            const node = nodes.nodes.itemAt(i) as NodeGraphicalObject;
+            const node = nodes.nodes.itemAt(i) as NodeObject;
             if (node.nodeId != selectedPort.nodeId) {
                 const ports = context.graphModel.nodeData(node.nodeId, oppositeCount);
                 if (ports < 1)

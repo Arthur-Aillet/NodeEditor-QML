@@ -3,7 +3,7 @@ import QtQuick.Shapes
 import NodeEditor
 
 Shape {
-    required property NodeGraphicalObject nodeObject
+    required property NodeObject nodeObject
     required property NavigableArea area
     required property DraftConnection draftConnection
     required property AbstractContext context
