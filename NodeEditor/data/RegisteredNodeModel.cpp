@@ -1,6 +1,8 @@
 #include "RegisteredNodeModel.hpp"
 #include <qvariant.h>
 
+using namespace NodeEditor;
+
 int RegisteredNodeModel::rowCount(const QModelIndex &parent) const { return _nodes.size(); }
 
 QVariant RegisteredNodeModel::data(const QModelIndex &index, int role) const {

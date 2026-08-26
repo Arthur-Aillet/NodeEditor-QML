@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
       &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
       []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
 
-  const auto reg = new NodeDelegateModelRegistry(&engine);
+  const auto reg = new NodeEditor::NodeDelegateModelRegistry(&engine);
 
   reg->registerModel<AdditionNode>("Operation");
   reg->registerModel<InputNode>("Input");
@@ -31,8 +31,8 @@ int main(int argc, char *argv[]) {
   reg->registerModel<MultiplicationNode>("Operation");
   reg->registerModel<SubtractionNode>("Operation");
 
-  const auto graph = new DataFlowGraphModel(reg);
-  const auto context = new DataFlowContext(graph);
+  const auto graph = new NodeEditor::DataFlowGraphModel(reg);
+  const auto context = new NodeEditor::DataFlowContext(graph);
 
   engine.setInitialProperties(QVariantMap({{"dataFlowContext", QVariant::fromValue(context)}}));
   engine.loadFromModule("examples.calculator", "App");

@@ -4,6 +4,8 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QJsonValueRef>
 
+using namespace NodeEditor;
+
 // inline void initResources() { Q_INIT_RESOURCE(resources); }
 
 NodeStyle NodeStyle::defaultStyle() {

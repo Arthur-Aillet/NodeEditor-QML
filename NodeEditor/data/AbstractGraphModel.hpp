@@ -10,6 +10,7 @@
 #include <QQuickItem>
 #include <QtQmlIntegration>
 
+namespace NodeEditor {
 /**
  * The central class in the Model-View approach. It delivers all kinds
  * of information from the backing user data structures that represent
@@ -228,5 +229,6 @@ class AbstractGraphModel : public QObject {
   private:
   std::vector<ConnectionId> _shiftedByDynamicPortsConnections;
 };
+}; // namespace NodeEditor
 
-Q_DECLARE_INTERFACE(AbstractGraphModel, "AbstractGraphModel")
+Q_DECLARE_INTERFACE(NodeEditor::AbstractGraphModel, "AbstractGraphModel")

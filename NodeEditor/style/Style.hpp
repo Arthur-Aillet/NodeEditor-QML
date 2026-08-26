@@ -7,6 +7,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
+namespace NodeEditor {
 class Style {
   public:
   virtual ~Style() = default;
@@ -38,3 +39,4 @@ class Style {
     loadJsonFromByteArray(file.readAll());
   }
 };
+} // namespace NodeEditor

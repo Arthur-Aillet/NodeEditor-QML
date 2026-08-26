@@ -14,9 +14,10 @@
 
 #include <unordered_map>
 
+namespace NodeEditor {
 class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   Q_OBJECT
-  QML_IMPLEMENTS_INTERFACES(AbstractGraphModel)
+  QML_IMPLEMENTS_INTERFACES(NodeEditor::AbstractGraphModel)
   QML_ANONYMOUS
 
   public:
@@ -26,7 +27,7 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   };
 
   public:
-  Q_PROPERTY(NodeDelegateModelRegistry *registry READ registry CONSTANT)
+  Q_PROPERTY(NodeEditor::NodeDelegateModelRegistry *registry READ registry CONSTANT)
 
   DataFlowGraphModel(NodeDelegateModelRegistry *registry);
 
@@ -115,3 +116,4 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   std::unordered_map<NodeId, QString> _labels;
   std::unordered_map<NodeId, bool> _labelsVisible;
 };
+} // namespace NodeEditor

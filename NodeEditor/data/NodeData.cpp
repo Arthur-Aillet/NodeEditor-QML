@@ -1,5 +1,7 @@
 #include "NodeData.hpp"
 
+using namespace NodeEditor;
+
 // By default, each type is only compatible with itself
 NodeDataType::NodeDataType(DataTypeId _id, QString _name)
     : id(_id), name(_name), compatibleTypes() {

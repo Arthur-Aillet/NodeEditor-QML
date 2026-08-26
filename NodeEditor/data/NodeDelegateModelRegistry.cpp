@@ -1,5 +1,7 @@
 #include "NodeDelegateModelRegistry.hpp"
 
+using namespace NodeEditor;
+
 std::unique_ptr<NodeDelegateModel>
 NodeDelegateModelRegistry::create(QString const &modelName) const {
   auto it = _registeredItemCreators.find(modelName);

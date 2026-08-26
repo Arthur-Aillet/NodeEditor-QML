@@ -10,6 +10,7 @@
 #include <QtQmlIntegration>
 #include <QtWidgets/QApplication>
 
+namespace NodeEditor {
 class StyleCollection : public QObject {
   Q_OBJECT
   QML_ELEMENT
@@ -17,9 +18,11 @@ class StyleCollection : public QObject {
   public:
   StyleCollection(QObject *parent = nullptr);
 
-  Q_PROPERTY(NodeStyle node READ nodeStyle NOTIFY nodeStyleChanged);
-  Q_PROPERTY(ConnectionStyle connection READ connectionStyle NOTIFY connectionStyleChanged);
-  Q_PROPERTY(GraphicsViewStyle graphicsView READ graphicsViewStyle NOTIFY graphicsViewStyleChanged);
+  Q_PROPERTY(NodeEditor::NodeStyle node READ nodeStyle NOTIFY nodeStyleChanged);
+  Q_PROPERTY(
+      NodeEditor::ConnectionStyle connection READ connectionStyle NOTIFY connectionStyleChanged);
+  Q_PROPERTY(NodeEditor::GraphicsViewStyle graphicsView READ graphicsViewStyle NOTIFY
+                 graphicsViewStyleChanged);
 
   void setNodeStyle(NodeStyle nodeStyle);
   void setConnectionStyle(ConnectionStyle connectionStyle);
@@ -43,3 +46,4 @@ class StyleCollection : public QObject {
   ConnectionStyle _connectionStyle;
   GraphicsViewStyle _graphicsViewStyle;
 };
+} // namespace NodeEditor

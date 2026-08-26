@@ -3,6 +3,8 @@
 #include "DecimalData.hpp"
 #include "MathOperationNodeModel.hpp"
 
+using namespace NodeEditor;
+
 class AdditionNode : public MathOperationNodeModel {
   public:
   AdditionNode(QQmlEngine *engine) : MathOperationNodeModel(engine) {}

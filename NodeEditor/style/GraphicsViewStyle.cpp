@@ -6,6 +6,8 @@
 #include <QtCore/QJsonValueRef>
 #include <QtWidgets/QApplication>
 
+using namespace NodeEditor;
+
 // inline void initResources() { Q_INIT_RESOURCE(resources); }
 
 GraphicsViewStyle::GraphicsViewStyle() {

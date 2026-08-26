@@ -2,8 +2,8 @@
 
 #include <QObject>
 #include <QtQmlIntegration>
-#include <qqmlintegration.h>
 
+namespace NodeEditor {
 class Clipboard : public QObject {
   Q_OBJECT
   QML_ELEMENT
@@ -16,3 +16,4 @@ class Clipboard : public QObject {
   QJsonObject content();
   void setContent(QJsonObject text);
 };
+}; // namespace NodeEditor

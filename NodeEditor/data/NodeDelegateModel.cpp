@@ -1,9 +1,10 @@
 #include "NodeDelegateModel.hpp"
-
 #include "Definitions.hpp"
 #include "NodeStyle.hpp"
 
 #include <optional>
+
+using namespace NodeEditor;
 
 NodeDelegateModel::NodeDelegateModel(QQmlEngine *engine) {}
 

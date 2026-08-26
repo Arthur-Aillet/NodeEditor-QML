@@ -9,7 +9,9 @@
 
 class DecimalData;
 
-class DisplayNode : public NodeDelegateModel {
+using namespace NodeEditor;
+
+class DisplayNode : public NodeEditor::NodeDelegateModel {
   Q_OBJECT
   QML_ELEMENT
   QML_UNCREATABLE("Nodes must be created from C++")

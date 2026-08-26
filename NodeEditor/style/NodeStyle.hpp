@@ -3,10 +3,11 @@
 #include "Style.hpp"
 
 #include <QIcon>
+#include <QPalette>
 #include <QtGui/QColor>
 #include <QtQmlIntegration>
-#include <qpalette.h>
 
+namespace NodeEditor {
 /**
  * Describes the position of the processing icon on the node ui
  */
@@ -146,3 +147,4 @@ class NodeStyle : public Style {
 
   float Opacity;
 };
+} // namespace NodeEditor

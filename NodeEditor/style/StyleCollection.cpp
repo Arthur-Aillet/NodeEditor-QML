@@ -3,6 +3,8 @@
 #include "GraphicsViewStyle.hpp"
 #include "NodeStyle.hpp"
 
+using namespace NodeEditor;
+
 StyleCollection::StyleCollection(QObject *parent)
     : QObject(parent), _followApplicationPalette(true), _graphicsViewStyle(QApplication::palette()),
       _connectionStyle(QApplication::palette()), _nodeStyle(QApplication::palette()) {

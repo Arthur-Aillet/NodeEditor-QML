@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 
+namespace NodeEditor {
 inline PortIndex getNodeId(PortSide portSide, ConnectionId connectionId) {
   NodeId id = InvalidNodeId;
 
@@ -113,3 +114,4 @@ inline ConnectionId fromJson(QJsonObject const &connJson) {
 
   return connId;
 }
+}; // namespace NodeEditor

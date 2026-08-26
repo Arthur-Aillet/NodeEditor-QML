@@ -1,6 +1,8 @@
 #include "AbstractGraphModel.hpp"
 #include "ConnectionIdUtils.hpp"
 
+using namespace NodeEditor;
+
 void AbstractGraphModel::portsAboutToBeDeleted(NodeId const nodeId, PortSide const portSide,
                                                PortIndex const first, PortIndex const last) {
   _shiftedByDynamicPortsConnections.clear();

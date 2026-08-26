@@ -15,17 +15,18 @@
 #include <unordered_map>
 #include <utility>
 
+namespace NodeEditor {
 /// Class uses map for storing models (name, model)
 class NodeDelegateModelRegistry : public QObject {
   Q_OBJECT
   QML_ELEMENT
-  QML_UNCREATABLE("Nodes must be created from C++")
+  QML_UNCREATABLE("Nodes are registered from C++")
 
   private:
   QQmlEngine *_engine;
 
   public:
-  Q_PROPERTY(RegisteredNodeModel *nodesModel READ getNodesModel CONSTANT)
+  Q_PROPERTY(NodeEditor::RegisteredNodeModel *nodesModel READ getNodesModel CONSTANT)
   Q_PROPERTY(QList<QString> categories READ categories NOTIFY categoriesChanged)
 
   using RegistryItemPtr = std::unique_ptr<NodeDelegateModel>;
@@ -168,3 +169,4 @@ class NodeDelegateModelRegistry : public QObject {
   signals:
   void categoriesChanged();
 };
+}; // namespace NodeEditor

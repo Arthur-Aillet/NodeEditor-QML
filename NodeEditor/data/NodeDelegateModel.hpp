@@ -14,6 +14,7 @@
 
 #include <optional>
 
+namespace NodeEditor {
 /**
  * Describes whether a node configuration is usable and defines a description message
  */
@@ -59,8 +60,8 @@ struct PortInfo {
   Q_PROPERTY(QString caption MEMBER caption)
   Q_PROPERTY(bool captionVisible MEMBER captionVisible)
   Q_PROPERTY(NodeDataType dataType MEMBER dataType)
-  Q_PROPERTY(PortSide portSide MEMBER portSide)
-  Q_PROPERTY(PortIndex portIndex MEMBER portIndex)
+  Q_PROPERTY(NodeEditor::PortSide portSide MEMBER portSide)
+  Q_PROPERTY(NodeEditor::PortIndex portIndex MEMBER portIndex)
 };
 
 /**
@@ -190,5 +191,6 @@ class NodeDelegateModel : public QObject, public Serializable {
   QString _progressValue{QString()};
 };
 
-Q_DECLARE_METATYPE(NodeValidationState)
-Q_DECLARE_METATYPE(NodeProcessingStatus)
+} // namespace NodeEditor
+Q_DECLARE_METATYPE(NodeEditor::NodeValidationState)
+Q_DECLARE_METATYPE(NodeEditor::NodeProcessingStatus)

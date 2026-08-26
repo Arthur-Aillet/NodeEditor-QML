@@ -6,6 +6,8 @@
 #include <QVariant>
 #include <stack>
 
+using namespace NodeEditor;
+
 DataFlowGraphModel::DataFlowGraphModel(NodeDelegateModelRegistry *registry) : _registry(registry) {
   setParent(registry);
 }

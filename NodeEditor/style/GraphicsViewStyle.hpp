@@ -7,6 +7,7 @@
 
 #include "Style.hpp"
 
+namespace NodeEditor {
 class GraphicsViewStyle : public Style {
   Q_GADGET
   QML_VALUE_TYPE(graphicsViewStyle)
@@ -38,3 +39,4 @@ class GraphicsViewStyle : public Style {
   QColor FineGridColor;
   QColor CoarseGridColor;
 };
+} // namespace NodeEditor

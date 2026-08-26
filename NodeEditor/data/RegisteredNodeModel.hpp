@@ -1,11 +1,12 @@
 #pragma once
 
 #include "NodeDelegateModel.hpp"
+
 #include <QObject>
 #include <QtQmlIntegration>
-#include <qnamespace.h>
 #include <vector>
 
+namespace NodeEditor {
 class RegisteredNodeModel : public QAbstractListModel {
   Q_OBJECT
   QML_ELEMENT
@@ -35,3 +36,4 @@ class RegisteredNodeModel : public QAbstractListModel {
   protected:
   std::vector<std::pair<NodeDelegateModel::ModelInfos, QString>> _nodes;
 };
+} // namespace NodeEditor

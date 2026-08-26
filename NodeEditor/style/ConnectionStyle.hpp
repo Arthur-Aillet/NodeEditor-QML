@@ -5,6 +5,7 @@
 #include <QtGui/QColor>
 #include <QtQmlIntegration>
 
+namespace NodeEditor {
 class ConnectionStyle : public Style {
   Q_GADGET
   QML_VALUE_TYPE(connectionStyle)
@@ -62,3 +63,4 @@ class ConnectionStyle : public Style {
 
   bool UseDataDefinedColors;
 };
+} // namespace NodeEditor

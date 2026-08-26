@@ -2,6 +2,8 @@
 
 #include "NodeData.hpp"
 
+using namespace NodeEditor;
+
 struct DecimalDataType : public NodeDataType {
   DecimalDataType();
 };

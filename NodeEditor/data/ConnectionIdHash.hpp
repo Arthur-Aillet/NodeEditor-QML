@@ -15,8 +15,8 @@ inline void hash_combine(std::size_t &seed, const T &v, Rest... rest) {
 
 namespace std {
 template <>
-struct hash<ConnectionId> {
-  inline std::size_t operator()(ConnectionId const &id) const {
+struct hash<NodeEditor::ConnectionId> {
+  inline std::size_t operator()(NodeEditor::ConnectionId const &id) const {
     std::size_t h = 0;
     hash_combine(h, id.outNodeId, id.outPortIndex, id.inNodeId, id.inPortIndex);
     return h;
@@ -24,8 +24,9 @@ struct hash<ConnectionId> {
 };
 
 template <>
-struct hash<std::pair<NodeId, PortIndex>> {
-  inline std::size_t operator()(std::pair<NodeId, PortIndex> const &nodePort) const {
+struct hash<std::pair<NodeEditor::NodeId, NodeEditor::PortIndex>> {
+  inline std::size_t
+  operator()(std::pair<NodeEditor::NodeId, NodeEditor::PortIndex> const &nodePort) const {
     std::size_t h = 0;
     hash_combine(h, nodePort.first, nodePort.second);
     return h;
@@ -33,8 +34,8 @@ struct hash<std::pair<NodeId, PortIndex>> {
 };
 
 template <>
-struct hash<std::tuple<NodeId, PortSide, PortIndex>> {
-  using Key = std::tuple<NodeId, PortSide, PortIndex>;
+struct hash<std::tuple<NodeEditor::NodeId, NodeEditor::PortSide, NodeEditor::PortIndex>> {
+  using Key = std::tuple<NodeEditor::NodeId, NodeEditor::PortSide, NodeEditor::PortIndex>;
 
   inline std::size_t operator()(Key const &key) const {
     std::size_t h = 0;
@@ -42,5 +43,4 @@ struct hash<std::tuple<NodeId, PortSide, PortIndex>> {
     return h;
   }
 };
-
 } // namespace std

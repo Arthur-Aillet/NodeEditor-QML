@@ -8,6 +8,8 @@
 #include <qvectornd.h>
 #include <random>
 
+using namespace NodeEditor;
+
 // inline void initResources() { Q_INIT_RESOURCE(resources); }
 
 ConnectionStyle::ConnectionStyle() {

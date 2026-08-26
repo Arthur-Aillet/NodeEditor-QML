@@ -5,10 +5,9 @@
 #include <QtQmlIntegration>
 #include <any>
 #include <functional>
-#include <qtmetamacros.h>
-#include <qvariant.h>
 #include <string>
 
+namespace NodeEditor {
 /**
  * `id` represents an internal unique data type for the given port.
  * `name` is a normal text description.
@@ -75,5 +74,6 @@ class NodeData : public QObject {
 
   QHash<QMetaType, ConvertFn> _map;
 };
+}; // namespace NodeEditor
 
-Q_DECLARE_INTERFACE(NodeData, "NodeData")
+Q_DECLARE_INTERFACE(NodeEditor::NodeData, "NodeData")

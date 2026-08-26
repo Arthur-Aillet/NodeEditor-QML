@@ -9,7 +9,7 @@
 
 class DecimalData;
 
-class InputNode : public NodeDelegateModel {
+class InputNode : public NodeEditor::NodeDelegateModel {
   Q_OBJECT
   QML_ELEMENT
   QML_UNCREATABLE("Nodes must be created from C++")
@@ -26,14 +26,18 @@ class InputNode : public NodeDelegateModel {
   QJsonObject save() const override;
   void load(QJsonObject const &p) override;
 
-  unsigned int nPorts(PortSide portSide) const override;
+  unsigned int nPorts(NodeEditor::PortSide portSide) const override;
 
-  NodeDataType dataType(PortSide portSide, PortIndex portIndex) const override;
-  bool portCaptionVisible(PortSide portSide, PortIndex portIndex) const override;
-  QString portCaption(PortSide portSide, PortIndex portIndex) const override;
+  NodeEditor::NodeDataType dataType(NodeEditor::PortSide portSide,
+                                    NodeEditor::PortIndex portIndex) const override;
+  bool portCaptionVisible(NodeEditor::PortSide portSide,
+                          NodeEditor::PortIndex portIndex) const override;
+  QString portCaption(NodeEditor::PortSide portSide,
+                      NodeEditor::PortIndex portIndex) const override;
 
-  std::shared_ptr<NodeData> outData(PortIndex port) override;
-  void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
+  std::shared_ptr<NodeEditor::NodeData> outData(NodeEditor::PortIndex port) override;
+  void setInData(std::shared_ptr<NodeEditor::NodeData> data,
+                 NodeEditor::PortIndex portIndex) override;
 
   QQmlComponent embeddedComponent(QQmlEngine *engine) override;
   QVariantMap componentInitialProperties() override;

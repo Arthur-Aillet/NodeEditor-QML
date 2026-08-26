@@ -100,19 +100,6 @@ using NodeId = unsigned int;
 /// Unique Id associated with each node group.
 using GroupId = unsigned int;
 
-}; // namespace NodeEditor
-
-using NodeRole = NodeEditor::NodeRole;
-using GroupId = NodeEditor::GroupId;
-using NodeId = NodeEditor::NodeId;
-using PortIndex = NodeEditor::PortIndex;
-using PortSide = NodeEditor::PortSide;
-using PortCount = NodeEditor::PortCount;
-using ConnectionPolicy = NodeEditor::ConnectionPolicy;
-using PortRole = NodeEditor::PortRole;
-using NodeFlag = NodeEditor::NodeFlag;
-using NodeFlags = NodeEditor::NodeFlags;
-
 static constexpr PortIndex InvalidPortIndex = std::numeric_limits<PortIndex>::max();
 static constexpr NodeId InvalidNodeId = std::numeric_limits<NodeId>::max();
 static constexpr GroupId InvalidGroupId = std::numeric_limits<GroupId>::max();
@@ -169,3 +156,4 @@ inline void invertConnection(ConnectionId &id) {
   std::swap(id.outNodeId, id.inNodeId);
   std::swap(id.outPortIndex, id.inPortIndex);
 }
+}; // namespace NodeEditor

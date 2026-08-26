@@ -6,6 +6,8 @@
 #include <qjsondocument.h>
 #include <qjsonobject.h>
 
+using namespace NodeEditor;
+
 Clipboard::Clipboard(QObject *parent) : QObject(parent) {}
 
 QJsonObject Clipboard::content() {

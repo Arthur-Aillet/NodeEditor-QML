@@ -11,17 +11,18 @@
 #include <QtQmlIntegration>
 #include <qqmlcomponent.h>
 
+namespace NodeEditor {
 class AbstractContext : public QObject {
   Q_OBJECT
   QML_ELEMENT
   QML_UNCREATABLE("Context need to be provied from C++")
 
   public:
-  Q_PROPERTY(AbstractGraphModel *graphModel READ graphModel CONSTANT)
+  Q_PROPERTY(NodeEditor::AbstractGraphModel *graphModel READ graphModel CONSTANT)
   Q_PROPERTY(QQmlComponent *nodePainter READ nodePainter NOTIFY nodePainterChanged)
   Q_PROPERTY(
       QQmlComponent *connectionPainter READ connectionPainter NOTIFY connectionPainterChanged)
-  Q_PROPERTY(StyleCollection *styles READ styleCollection NOTIFY styleCollectionChanged)
+  Q_PROPERTY(NodeEditor::StyleCollection *styles READ styleCollection NOTIFY styleCollectionChanged)
 
   AbstractContext(AbstractGraphModel *graphModel, QQmlEngine *engine)
       : _graphModel(graphModel), QObject(engine) {
@@ -64,3 +65,4 @@ class AbstractContext : public QObject {
   std::unique_ptr<QQmlComponent> _connectionPainter;
   StyleCollection *_styleCollection;
 };
+}; // namespace NodeEditor
