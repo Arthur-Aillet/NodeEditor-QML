@@ -64,7 +64,6 @@ qt_add_qml_module(NodeEditor
   nodes/Clipboard.cpp
 
   RESOURCES
-  controls/icomoon.ttf
   resources/resources.qrc
 )
 

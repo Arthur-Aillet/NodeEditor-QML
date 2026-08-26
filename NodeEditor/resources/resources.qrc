@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource prefix="/NodeEditor/">
         <file>DefaultStyle.json</file>
         <file>info-tooltip.svg</file>
         <file>status_icons/empty.svg</file>
@@ -10,5 +10,6 @@
         <file>status_icons/updated.svg</file>
         <file>padlock-lock.png</file>
         <file>padlock-unlock.png</file>
+        <file>icomoon.ttf</file>
     </qresource>
 </RCC>

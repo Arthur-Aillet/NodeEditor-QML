@@ -16,13 +16,13 @@ ConnectionStyle::ConnectionStyle() {
   // initResources();
 
   // This configuration is stored inside the compiled unit and is loaded statically
-  loadJsonFile(":DefaultStyle.json");
+  loadJsonFile(":/NodeEditor/DefaultStyle.json");
 }
 
 ConnectionStyle::ConnectionStyle(QPalette const &palette) { loadPalette(palette); }
 
 ConnectionStyle::ConnectionStyle(QString jsonText) {
-  loadJsonFile(":DefaultStyle.json");
+  loadJsonFile(":/NodeEditor/DefaultStyle.json");
   loadJsonText(jsonText);
 }
 
@@ -129,7 +129,7 @@ QJsonObject ConnectionStyle::toJson() const {
 }
 
 void ConnectionStyle::loadPalette(QPalette const &palette) {
-  loadJsonFile(":DefaultStyle.json");
+  loadJsonFile(":/NodeEditor/DefaultStyle.json");
   SelectedColor = palette.text().color();
   SelectedHaloColor = palette.highlight().color();
   ConstructionColor = palette.text().color().darker();

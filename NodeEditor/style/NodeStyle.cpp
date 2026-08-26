@@ -14,29 +14,29 @@ NodeStyle NodeStyle::defaultStyle() {
   // initResources();
 
   // Initialize status icons after resources are loaded
-  newStyle.statusUpdated = QIcon(":/status_icons/updated.svg");
-  newStyle.statusProcessing = QIcon(":/status_icons/processing.svg");
-  newStyle.statusPending = QIcon(":/status_icons/pending.svg");
-  newStyle.statusInvalid = QIcon(":/status_icons/failed.svg");
-  newStyle.statusEmpty = QIcon(":/status_icons/empty.svg");
-  newStyle.statusPartial = QIcon(":/status_icons/partial.svg");
+  newStyle.statusUpdated = QIcon(":/NodeEditor/status_icons/updated.svg");
+  newStyle.statusProcessing = QIcon(":/NodeEditor/status_icons/processing.svg");
+  newStyle.statusPending = QIcon(":/NodeEditor/status_icons/pending.svg");
+  newStyle.statusInvalid = QIcon(":/NodeEditor/status_icons/failed.svg");
+  newStyle.statusEmpty = QIcon(":/NodeEditor/status_icons/empty.svg");
+  newStyle.statusPartial = QIcon(":/NodeEditor/status_icons/partial.svg");
 
   // This configuration is stored inside the compiled unit and is loaded statically
-  newStyle.loadJsonFile(":DefaultStyle.json");
+  newStyle.loadJsonFile(":/NodeEditor/DefaultStyle.json");
   return newStyle;
 }
 
 NodeStyle::NodeStyle(QPalette const &palette) {
   // Initialize status icons after resources are loaded
-  statusUpdated = QIcon(":/status_icons/updated.svg");
-  statusProcessing = QIcon(":/status_icons/processing.svg");
-  statusPending = QIcon(":/status_icons/pending.svg");
-  statusInvalid = QIcon(":/status_icons/failed.svg");
-  statusEmpty = QIcon(":/status_icons/empty.svg");
-  statusPartial = QIcon(":/status_icons/partial.svg");
+  statusUpdated = QIcon(":/NodeEditor/status_icons/updated.svg");
+  statusProcessing = QIcon(":/NodeEditor/status_icons/processing.svg");
+  statusPending = QIcon(":/NodeEditor/status_icons/pending.svg");
+  statusInvalid = QIcon(":/NodeEditor/status_icons/failed.svg");
+  statusEmpty = QIcon(":/NodeEditor/status_icons/empty.svg");
+  statusPartial = QIcon(":/NodeEditor/status_icons/partial.svg");
 
   // This configuration is stored inside the compiled unit and is loaded statically
-  loadJsonFile(":DefaultStyle.json");
+  loadJsonFile(":/NodeEditor/DefaultStyle.json");
   loadPalette(palette);
 }
 
@@ -158,7 +158,7 @@ QJsonObject NodeStyle::toJson() const {
 }
 
 void NodeStyle::loadPalette(QPalette const &palette) {
-  loadJsonFile(":DefaultStyle.json");
+  loadJsonFile(":/NodeEditor/DefaultStyle.json");
 
   SelectedBoundaryColor = palette.highlight().color();
   FontColor = palette.text().color();

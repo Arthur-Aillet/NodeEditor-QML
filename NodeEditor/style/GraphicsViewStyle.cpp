@@ -14,7 +14,7 @@ GraphicsViewStyle::GraphicsViewStyle() {
   // initResources();
 
   // This configuration is stored inside the compiled unit and is loaded statically
-  loadJsonFile(":DefaultStyle.json");
+  loadJsonFile(":/NodeEditor/DefaultStyle.json");
 }
 
 GraphicsViewStyle::GraphicsViewStyle(QPalette const &palette) { loadPalette(palette); }

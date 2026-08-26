@@ -23,7 +23,7 @@ Menu {
 
     FontLoader {
         id: iconFont
-        source: "icomoon.ttf"
+        source: "/NodeEditor/icomoon.ttf"
     }
 
     Button {
