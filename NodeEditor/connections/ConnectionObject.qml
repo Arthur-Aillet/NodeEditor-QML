@@ -3,10 +3,9 @@ import NodeEditor
 
 Item {
     id: connectionObject
-    required property NodeList nodeList
     required property NavigableArea area
     required property AbstractContext context
-
+    required property NodeList nodeList
     required property connectionId connection
 
     property bool hovered: false
@@ -76,7 +75,8 @@ Item {
         id: loader
         Component.onCompleted: {
             setSource(connectionObject.context.connectionPainter.url, {
-                obj: connectionObject
+                obj: connectionObject,
+                style: connectionObject.context.styles.connection
             });
         }
     }

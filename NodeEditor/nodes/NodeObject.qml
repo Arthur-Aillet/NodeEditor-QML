@@ -16,8 +16,8 @@ MouseArea {
     required property NodeList nodes
     required property int nodeId
 
-    property int inPortCount: context.graphModel.nodeData(nodeObj.nodeId, NodeEditor.NodeRole.InPortCount)
-    property int outPortCount: context.graphModel.nodeData(nodeObj.nodeId, NodeEditor.NodeRole.OutPortCount)
+    property int inPortCount: context.graphModel.nodeData(nodeId, NodeEditor.NodeRole.InPortCount)
+    property int outPortCount: context.graphModel.nodeData(nodeId, NodeEditor.NodeRole.OutPortCount)
 
     property var getPortPosition: (painter.item as AbstractNodePainter).getPortPosition
 
@@ -69,7 +69,7 @@ MouseArea {
         if (waitForFocus) {
             nodes.selectedNodes.clear();
             nodes.selectedNodes.add(nodeId);
-            nodeObj.nodes.selectedNodesSize = nodeObj.nodes.selectedNodes.size;
+            nodes.selectedNodesSize = nodes.selectedNodes.size;
         }
         waitForFocus = false;
     }
@@ -78,7 +78,7 @@ MouseArea {
         if (mouse.modifiers & Qt.ShiftModifier) {
             if (selected && !waitForClick) {
                 nodes.selectedNodes.delete(nodeId);
-                nodeObj.nodes.selectedNodesSize = nodeObj.nodes.selectedNodes.size;
+                nodes.selectedNodesSize = nodes.selectedNodes.size;
             }
         }
         waitForClick = false;
@@ -91,14 +91,14 @@ MouseArea {
         if (mouse.modifiers & Qt.ShiftModifier) {
             if (!selected) {
                 nodes.selectedNodes.add(nodeId);
-                nodeObj.nodes.selectedNodesSize = nodeObj.nodes.selectedNodes.size;
+                nodes.selectedNodesSize = nodes.selectedNodes.size;
                 waitForClick = true;
             }
         } else {
             if (focus) {
                 nodes.selectedNodes.clear();
                 nodes.selectedNodes.add(nodeId);
-                nodeObj.nodes.selectedNodesSize = nodeObj.nodes.selectedNodes.size;
+                nodes.selectedNodesSize = nodes.selectedNodes.size;
             } else {
                 waitForFocus = true;
             }

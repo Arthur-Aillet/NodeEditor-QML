@@ -64,17 +64,15 @@ Loader {
     sourceComponent: ConnectionObject {
         id: painter
 
-        context: draftConnection.context
-
-        property var sp: draftConnection.selectedPort
-
         Keys.onEscapePressed: {
             draftConnection.selectedPort = null;
         }
 
         area: draftConnection.area
+        context: draftConnection.context
         nodeList: draftConnection.nodeList
 
+        property var sp: draftConnection.selectedPort
         connection: ({
                 outNodeId: sp.portSide === NodeEditor.PortSide.In ? NodeEditorUtils.InvalidNodeId : sp.nodeId,
                 outPortIndex: sp.portSide === NodeEditor.PortSide.In ? NodeEditorUtils.InvalidPortIndex : sp.portId,

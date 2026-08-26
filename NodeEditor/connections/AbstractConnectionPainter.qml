@@ -3,6 +3,7 @@ import NodeEditor
 
 Canvas {
     required property ConnectionObject obj
+    required property connectionStyle style
 
     virtual property rect boundingBox
 
