@@ -10,7 +10,9 @@
 #include <QQmlComponent>
 #include <QQuickItem>
 #include <QtGui/QColor>
-#include <qqmlintegration.h>
+#include <QtQmlIntegration>
+
+#include <optional>
 
 /**
  * Describes whether a node configuration is usable and defines a description message
@@ -41,8 +43,6 @@ enum class NodeProcessingStatus : int {
   Failed = 5,     ///< The last computation ended with an error.
   Partial = 6,    ///< Computation finished incompletely; only partial results are available.
 };
-
-class StyleCollection;
 
 struct PortInfo {
   Q_GADGET
@@ -127,11 +127,8 @@ class NodeDelegateModel : public QObject, public Serializable {
 
   virtual NodeDataType dataType(PortSide portSide, PortIndex portIndex) const = 0;
 
-  NodeStyle const &nodeStyle() const;
-  void setNodeStyle(NodeStyle const &style);
-
-  /// Convenience helper to change the node background color.
-  void setBackgroundColor(QColor const &color);
+  std::optional<NodeStyle> const &nodeStyle() const;
+  void setNodeStyle(std::optional<NodeStyle> const &style);
 
   QPixmap processingStatusIcon() const;
   void setStatusIcon(NodeProcessingStatus status, const QPixmap &pixmap);
@@ -185,7 +182,7 @@ class NodeDelegateModel : public QObject, public Serializable {
 
   private:
   std::shared_ptr<QQuickItem> _embed{nullptr};
-  NodeStyle _nodeStyle;
+  std::optional<NodeStyle> _nodeStyle = {};
   NodeFlags _flags;
 
   NodeValidationState _nodeValidationState;

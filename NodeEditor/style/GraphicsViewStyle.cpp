@@ -1,7 +1,5 @@
 #include "GraphicsViewStyle.hpp"
 
-#include "StyleCollection.hpp"
-
 #include <QtCore/QFile>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
@@ -21,12 +19,6 @@ GraphicsViewStyle::GraphicsViewStyle() {
 
 GraphicsViewStyle::GraphicsViewStyle(QPalette const &palette) { loadPalette(palette); }
 GraphicsViewStyle::GraphicsViewStyle(QString jsonText) { loadJsonText(jsonText); }
-
-void GraphicsViewStyle::setStyle(QString jsonText) {
-  GraphicsViewStyle style(jsonText);
-
-  StyleCollection::setGraphicsViewStyle(style);
-}
 
 #ifdef STYLE_DEBUG
 #define FLOW_VIEW_STYLE_CHECK_UNDEFINED_VALUE(v, variable)                                         \
@@ -56,7 +48,9 @@ void GraphicsViewStyle::setStyle(QString jsonText) {
   }
 
 #define FLOW_VIEW_STYLE_WRITE_COLOR(values, variable)                                              \
-  { values[#variable] = variable.name(); }
+  {                                                                                                \
+    values[#variable] = variable.name();                                                           \
+  }
 
 void GraphicsViewStyle::loadJson(QJsonObject const &json) {
   QJsonValue nodeStyleValues = json["GraphicsViewStyle"];

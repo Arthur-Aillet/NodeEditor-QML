@@ -15,7 +15,6 @@ class ConnectionStyle : public Style {
   ConnectionStyle(QString jsonText);
   ~ConnectionStyle() = default;
 
-  Q_INVOKABLE static void setConnectionStyle(QString jsonText);
   Q_INVOKABLE void loadJson(QJsonObject const &json) override;
   Q_INVOKABLE QJsonObject toJson() const override;
   Q_INVOKABLE void loadPalette(QPalette const &palette) override;

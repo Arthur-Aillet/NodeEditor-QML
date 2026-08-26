@@ -38,7 +38,6 @@ class NodeStyle : public Style {
 
   virtual ~NodeStyle() = default;
 
-  Q_INVOKABLE static void setNodeStyle(QString jsonText);
   Q_INVOKABLE void loadJson(QJsonObject const &json) override;
   Q_INVOKABLE void loadPalette(QPalette const &palette) override;
 

@@ -1,7 +1,5 @@
 #include "NodeStyle.hpp"
 
-#include "StyleCollection.hpp"
-
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
 #include <QtCore/QJsonValueRef>
@@ -45,12 +43,6 @@ NodeStyle::NodeStyle(QPalette const &palette) {
 NodeStyle::NodeStyle(QString jsonText) { loadJsonText(jsonText); }
 
 NodeStyle::NodeStyle(QJsonObject const &json) { loadJson(json); }
-
-void NodeStyle::setNodeStyle(QString jsonText) {
-  NodeStyle style(jsonText);
-
-  StyleCollection::setNodeStyle(style);
-}
 
 #ifdef STYLE_DEBUG
 #define NODE_STYLE_CHECK_UNDEFINED_VALUE(v, variable)                                              \

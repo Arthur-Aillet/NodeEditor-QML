@@ -19,7 +19,6 @@ class GraphicsViewStyle : public Style {
   ~GraphicsViewStyle() = default;
 
   public:
-  Q_INVOKABLE static void setStyle(QString jsonText);
   Q_INVOKABLE void loadJson(QJsonObject const &json) override;
   Q_INVOKABLE void loadPalette(QPalette const &palette) override;
   Q_INVOKABLE QJsonObject toJson() const override;

@@ -9,6 +9,7 @@ MouseArea {
     required property int index
     required property int currentIndex
     required property var replaceRegex
+    property color typeColor: "black"
 
     height: 25
     propagateComposedEvents: true
@@ -55,7 +56,7 @@ MouseArea {
                 return "transparent";
             if (nodeMenuItem.currentIndex == nodeMenuItem.index)
                 return palette.highlightedText;
-            return StyleCollection.connection.typeColor(nodeMenuItem.port.dataType.id);
+            return nodeMenuItem.typeColor;
         }
         opacity: nodeMenuItem.currentIndex == nodeMenuItem.index ? 1 : 0.8
         anchors.verticalCenter: parent.verticalCenter

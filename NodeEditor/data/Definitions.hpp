@@ -29,7 +29,7 @@ enum class NodeRole {
   Size = 2,              ///< `QSize` for resizable nodes.
   CaptionVisible = 3,    ///< `bool` for caption visibility.
   Caption = 4,           ///< `QString` for node caption.
-  Style = 5,             ///< Custom NodeStyle as QJsonDocument
+  Style = 5,             ///< Custom NodeStyle or empty object if undefined
   InternalData = 6,      ///< Node-stecific user data as QJsonObject
   InPortCount = 7,       ///< `unsigned int`
   OutPortCount = 9,      ///< `unsigned int`

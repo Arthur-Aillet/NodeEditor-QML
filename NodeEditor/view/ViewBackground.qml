@@ -1,5 +1,4 @@
 import QtQuick
-import NodeEditor
 
 Item {
     property alias zoom: shader.zoom
@@ -14,9 +13,9 @@ Item {
 
         property real zoom: 1
         property point translate: Qt.point(0., 0.)
-        property color backgroundColor: StyleCollection.graphicsView.backgroundColor
-        property color fineGridColor: StyleCollection.graphicsView.fineGridColor
-        property color coarseGridColor: StyleCollection.graphicsView.coarseGridColor
+        property color backgroundColor
+        property color fineGridColor
+        property color coarseGridColor
 
         fragmentShader: 'viewBackground.frag.qsb'
         vertexShader: 'viewBackground.vert.qsb'

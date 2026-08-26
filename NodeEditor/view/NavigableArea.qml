@@ -13,11 +13,15 @@ Item {
     property alias inner: inner
     property alias background: background
     property alias dragArea: dragArea
+    property graphicsViewStyle style
 
     ViewBackground {
         id: background
         zoom: inner.mat.m11
         translate: Qt.point(inner.mat.m14 + inner.x, inner.mat.m24 + inner.y)
+        backgroundColor: navigableArea.style.backgroundColor
+        fineGridColor: navigableArea.style.fineGridColor
+        coarseGridColor: navigableArea.style.coarseGridColor
     }
 
     MouseArea {

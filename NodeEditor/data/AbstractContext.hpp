@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AbstractGraphModel.hpp"
+#include "StyleCollection.hpp"
 
 #include <memory>
 
@@ -18,15 +19,26 @@ class AbstractContext : public QObject {
   Q_PROPERTY(AbstractGraphModel *graphModel READ graphModel CONSTANT)
   Q_PROPERTY(QQmlComponent *nodePainter READ nodePainter CONSTANT)
   Q_PROPERTY(QQmlComponent *connectionPainter READ connectionPainter CONSTANT)
-  // Q_PROPERTY(StyleCollection styleCollection MEMBER _styleCollection CONSTANT)
+  Q_PROPERTY(StyleCollection *styles READ styleCollection NOTIFY styleCollectionChanged)
 
   AbstractContext(AbstractGraphModel *graphModel, QQmlEngine *engine)
       : _graphModel(graphModel), QObject(engine) {
     _nodePainter = std::make_unique<QQmlComponent>(engine, "NodeEditor", "DefaultNodePainter");
     _connectionPainter =
         std::make_unique<QQmlComponent>(engine, "NodeEditor", "DefaultConnectionPainter");
-    // _styleCollection = std::make_unique<StyleCollection>();
+    _styleCollection = new StyleCollection(this);
   };
+
+  StyleCollection *styleCollection() { return _styleCollection; }
+  void setStyleCollection(StyleCollection *styleCollection) {
+    _styleCollection = styleCollection;
+    _styleCollection->setParent(this);
+    emit styleCollectionChanged();
+  }
+
+  public:
+  signals:
+  void styleCollectionChanged();
 
   protected:
   AbstractGraphModel *graphModel() { return _graphModel; }
@@ -36,5 +48,5 @@ class AbstractContext : public QObject {
   AbstractGraphModel *_graphModel;
   std::unique_ptr<QQmlComponent> _nodePainter;
   std::unique_ptr<QQmlComponent> _connectionPainter;
-  // std::unique_ptr<StyleCollection> _styleCollection;
+  StyleCollection *_styleCollection;
 };

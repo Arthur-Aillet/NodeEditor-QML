@@ -68,8 +68,8 @@ Item {
 
         ShapePath {
             fillColor: {
-                if (StyleCollection.connection.useDataDefinedColors) {
-                    const color = StyleCollection.connection.typeColor(port.dataType.id);
+                if (port.nodePainter.nodeObject.context.styles.connection.useDataDefinedColors) {
+                    const color = port.nodePainter.nodeObject.context.styles.connection.typeColor(port.dataType.id);
                     if (!port.connected) {
                         color.a = 0.7;
                     }

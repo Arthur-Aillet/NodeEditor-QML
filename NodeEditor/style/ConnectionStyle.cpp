@@ -1,7 +1,5 @@
 #include "ConnectionStyle.hpp"
 
-#include "StyleCollection.hpp"
-
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
 #include <QtCore/QJsonValueRef>
@@ -26,12 +24,6 @@ ConnectionStyle::ConnectionStyle(QPalette const &palette) { loadPalette(palette)
 ConnectionStyle::ConnectionStyle(QString jsonText) {
   loadJsonFile(":DefaultStyle.json");
   loadJsonText(jsonText);
-}
-
-void ConnectionStyle::setConnectionStyle(QString jsonText) {
-  ConnectionStyle style(jsonText);
-
-  StyleCollection::setConnectionStyle(style);
 }
 
 #ifdef STYLE_DEBUG

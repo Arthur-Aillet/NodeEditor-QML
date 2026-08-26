@@ -5,24 +5,24 @@
 
 StyleCollection::StyleCollection(QObject *parent)
     : QObject(parent), _followApplicationPalette(true), _graphicsViewStyle(QApplication::palette()),
-      _connectionStyle(QApplication::palette()), _nodeStyle(QApplication::palette()) {}
+      _connectionStyle(QApplication::palette()), _nodeStyle(QApplication::palette()) {
+  QApplication::instance()->installEventFilter(this);
+}
 
 void StyleCollection::followApplicationPalette(bool enable) {
-  auto &instance = StyleCollection::instance();
-
-  if (enable == instance._followApplicationPalette)
+  if (enable == _followApplicationPalette)
     return;
 
-  instance._followApplicationPalette = enable;
+  _followApplicationPalette = enable;
   if (enable) {
     auto palette = QApplication::palette();
-    instance.setConnectionStyle(ConnectionStyle(palette));
-    instance.setGraphicsViewStyle(GraphicsViewStyle(palette));
-    instance.setNodeStyle(NodeStyle(palette));
+    setConnectionStyle(ConnectionStyle(palette));
+    setGraphicsViewStyle(GraphicsViewStyle(palette));
+    setNodeStyle(NodeStyle(palette));
   } else {
-    instance.setConnectionStyle(ConnectionStyle());
-    instance.setGraphicsViewStyle(GraphicsViewStyle());
-    instance.setNodeStyle(NodeStyle::defaultStyle());
+    setConnectionStyle(ConnectionStyle());
+    setGraphicsViewStyle(GraphicsViewStyle());
+    setNodeStyle(NodeStyle::defaultStyle());
   }
 }
 
@@ -39,37 +39,21 @@ bool StyleCollection::eventFilter(QObject *obj, QEvent *event) {
   }
 }
 
-StyleCollection &StyleCollection::instance() {
-  static StyleCollection instance;
-  return instance;
-}
-
-StyleCollection *StyleCollection::create(QQmlEngine *qmlEngine, QJSEngine *_jsEngine) {
-  auto instance = &StyleCollection::instance();
-  QJSEngine::setObjectOwnership(instance, QJSEngine::ObjectOwnership::CppOwnership);
-  QApplication::instance()->installEventFilter(instance);
-  return instance;
-}
-
 void StyleCollection::setGraphicsViewStyle(GraphicsViewStyle graphicsViewStyle) {
-  instance()._graphicsViewStyle = graphicsViewStyle;
-  emit instance().graphicsViewStyleChanged();
+  _graphicsViewStyle = graphicsViewStyle;
+  emit graphicsViewStyleChanged();
 }
 
 void StyleCollection::setConnectionStyle(ConnectionStyle connectionStyle) {
-  instance()._connectionStyle = connectionStyle;
-  emit instance().connectionStyleChanged();
+  _connectionStyle = connectionStyle;
+  emit connectionStyleChanged();
 }
 
 void StyleCollection::setNodeStyle(NodeStyle nodeStyle) {
-  instance()._nodeStyle = nodeStyle;
-  emit instance().nodeStyleChanged();
+  _nodeStyle = nodeStyle;
+  emit nodeStyleChanged();
 }
 
-NodeStyle const &StyleCollection::getNodeStyle() { return instance()._nodeStyle; }
-
-ConnectionStyle const &StyleCollection::getConnectionStyle() { return instance()._connectionStyle; }
-
-GraphicsViewStyle const &StyleCollection::getGraphicsViewStyle() {
-  return instance()._graphicsViewStyle;
-}
+NodeStyle const &StyleCollection::nodeStyle() { return _nodeStyle; }
+ConnectionStyle const &StyleCollection::connectionStyle() { return _connectionStyle; }
+GraphicsViewStyle const &StyleCollection::graphicsViewStyle() { return _graphicsViewStyle; }

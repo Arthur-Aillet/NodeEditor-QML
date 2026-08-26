@@ -8,14 +8,14 @@ AbstractConnectionPainter {
         if (!obj.fullyConnected)
             return "black";
         const dataType = obj.context.graphModel.portData(obj.connection.inNodeId, NodeEditor.PortSide.In, obj.connection.inPortIndex, NodeEditor.PortRole.DataType);
-        return StyleCollection.connection.typeColor(dataType.id);
+        return obj.context.styles.connection.typeColor(dataType.id);
     }
 
     property color outTypeColor: {
         if (!obj.fullyConnected)
             return "black";
         const dataType = obj.context.graphModel.portData(obj.connection.outNodeId, NodeEditor.PortSide.Out, obj.connection.outPortIndex, NodeEditor.PortRole.DataType);
-        return StyleCollection.connection.typeColor(dataType.id);
+        return obj.context.styles.connection.typeColor(dataType.id);
     }
 
     property point c1
@@ -112,14 +112,14 @@ AbstractConnectionPainter {
     height: obj.height * scaleFactor
 
     override property rect boundingBox: {
-        const bbx = Math.min(obj.inPoint.x, obj.outPoint.x, c1.x, c2.x) - StyleCollection.connection.lineWidth;
-        const bby = Math.min(obj.inPoint.y, obj.outPoint.y, c1.y, c2.y) - StyleCollection.connection.lineWidth;
+        const bbx = Math.min(obj.inPoint.x, obj.outPoint.x, c1.x, c2.x) - obj.context.styles.connection.lineWidth;
+        const bby = Math.min(obj.inPoint.y, obj.outPoint.y, c1.y, c2.y) - obj.context.styles.connection.lineWidth;
 
         return {
             x: bbx,
             y: bby,
-            width: (Math.max(obj.inPoint.x, obj.outPoint.x, c1.x, c2.x) - bbx) + StyleCollection.connection.lineWidth * 3,
-            height: (Math.max(obj.inPoint.y, obj.outPoint.y, c1.y, c2.y) - bby) + StyleCollection.connection.lineWidth * 3
+            width: (Math.max(obj.inPoint.x, obj.outPoint.x, c1.x, c2.x) - bbx) + obj.context.styles.connection.lineWidth * 3,
+            height: (Math.max(obj.inPoint.y, obj.outPoint.y, c1.y, c2.y) - bby) + obj.context.styles.connection.lineWidth * 3
         };
     }
 
@@ -134,16 +134,16 @@ AbstractConnectionPainter {
 
     function innerStrokeStyle(ctx): color {
         // if (activeFocus)
-        //     return StyleCollection.connection.selectedColor;
-        if (!StyleCollection.connection.useDataDefinedColors)
-            return StyleCollection.connection.normalColor;
+        //     return obj.context.styles.connection.selectedColor;
+        if (!obj.context.styles.connection.useDataDefinedColors)
+            return obj.context.styles.connection.normalColor;
         if (inTypeColor == outTypeColor)
             return inTypeColor;
 
         const gradient = ctx.createLinearGradient(scaledStartPoint.x, scaledStartPoint.y, scaledEndPoint.x, scaledEndPoint.y);
 
         for (let i = 0; i != 10; i++) {
-            const color = StyleCollection.connection.lerpOklabColors(inTypeColor, outTypeColor, i / 10);
+            const color = obj.context.styles.connection.lerpOklabColors(inTypeColor, outTypeColor, i / 10);
             gradient.addColorStop(i / 10, color);
         }
 
@@ -164,21 +164,21 @@ AbstractConnectionPainter {
 
         if (obj.fullyConnected) {
             ctx.setLineDash([]);
-            ctx.lineWidth = StyleCollection.connection.lineWidth * scaleFactor;
+            ctx.lineWidth = obj.context.styles.connection.lineWidth * scaleFactor;
             if (obj.activeFocus) {
-                ctx.strokeStyle = StyleCollection.connection.selectedHaloColor;
+                ctx.strokeStyle = obj.context.styles.connection.selectedHaloColor;
                 ctx.stroke();
             } else if (obj.hovered) {
-                ctx.strokeStyle = StyleCollection.connection.hoveredColor;
+                ctx.strokeStyle = obj.context.styles.connection.hoveredColor;
                 ctx.stroke();
             }
             ctx.strokeStyle = innerStrokeStyle(ctx);
-            ctx.lineWidth = StyleCollection.connection.lineWidth * 0.45 * scaleFactor;
+            ctx.lineWidth = obj.context.styles.connection.lineWidth * 0.45 * scaleFactor;
             ctx.stroke();
         } else {
             ctx.setLineDash([6, 2]);
-            ctx.lineWidth = StyleCollection.connection.constructionLineWidth * scaleFactor;
-            ctx.strokeStyle = StyleCollection.connection.constructionColor;
+            ctx.lineWidth = obj.context.styles.connection.constructionLineWidth * scaleFactor;
+            ctx.strokeStyle = obj.context.styles.connection.constructionColor;
             ctx.stroke();
         }
     }

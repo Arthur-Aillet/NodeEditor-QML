@@ -26,9 +26,12 @@ MouseArea {
     property bool locked: flags & NodeEditor.NodeFlags.Locked
 
     Component.onCompleted: {
-        const json = context.graphModel.nodeData(nodeId, NodeEditor.NodeRole.Style);
-        style.loadJson(json);
-        style = style;
+        const newStyle = context.graphModel.nodeData(nodeId, NodeEditor.NodeRole.Style);
+        if (newStyle) {
+            style = newStyle;
+        } else {
+            style = context.styles.node;
+        }
         loadFlags();
     }
 

@@ -12,28 +12,23 @@
 
 class StyleCollection : public QObject {
   Q_OBJECT
-  QML_SINGLETON
   QML_ELEMENT
 
   public:
-  static StyleCollection &instance();
-  static StyleCollection *create(QQmlEngine *qmlEngine, QJSEngine *_jsEngine);
+  StyleCollection(QObject *parent = nullptr);
 
-  Q_PROPERTY(NodeStyle node MEMBER _nodeStyle NOTIFY nodeStyleChanged);
-  Q_PROPERTY(ConnectionStyle connection MEMBER _connectionStyle NOTIFY connectionStyleChanged);
-  Q_PROPERTY(
-      GraphicsViewStyle graphicsView MEMBER _graphicsViewStyle NOTIFY graphicsViewStyleChanged);
+  Q_PROPERTY(NodeStyle node READ nodeStyle NOTIFY nodeStyleChanged);
+  Q_PROPERTY(ConnectionStyle connection READ connectionStyle NOTIFY connectionStyleChanged);
+  Q_PROPERTY(GraphicsViewStyle graphicsView READ graphicsViewStyle NOTIFY graphicsViewStyleChanged);
 
-  static void setNodeStyle(NodeStyle nodeStyle);
-  static void setConnectionStyle(ConnectionStyle connectionStyle);
-  static void setGraphicsViewStyle(GraphicsViewStyle graphicsViewStyle);
-  static void followApplicationPalette(bool enable);
+  void setNodeStyle(NodeStyle nodeStyle);
+  void setConnectionStyle(ConnectionStyle connectionStyle);
+  void setGraphicsViewStyle(GraphicsViewStyle graphicsViewStyle);
+  void followApplicationPalette(bool enable);
 
-  bool eventFilter(QObject *obj, QEvent *event) override;
-
-  static NodeStyle const &getNodeStyle();
-  static ConnectionStyle const &getConnectionStyle();
-  static GraphicsViewStyle const &getGraphicsViewStyle();
+  NodeStyle const &nodeStyle();
+  ConnectionStyle const &connectionStyle();
+  GraphicsViewStyle const &graphicsViewStyle();
 
   signals:
   void nodeStyleChanged();
@@ -41,7 +36,7 @@ class StyleCollection : public QObject {
   void graphicsViewStyleChanged();
 
   protected:
-  StyleCollection(QObject *parent = nullptr);
+  bool eventFilter(QObject *obj, QEvent *event) override;
 
   bool _followApplicationPalette;
   NodeStyle _nodeStyle;

@@ -162,6 +162,7 @@ Menu {
             width: list.width
             required property portInfo portInfo
             port: portInfo
+            typeColor: portSearchMenu.context.styles.connection.typeColor(portInfo.dataType.id)
 
             onEntered: {
                 list.currentIndex = index;

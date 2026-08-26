@@ -3,9 +3,7 @@
 #include "Definitions.hpp"
 #include "NodeData.hpp"
 
-#include <QQmlEngine>
-#include <qqmlengine.h>
-#include <qsharedpointer.h>
+#include <QVariant>
 #include <stack>
 
 DataFlowGraphModel::DataFlowGraphModel(NodeDelegateModelRegistry *registry) : _registry(registry) {
@@ -229,7 +227,11 @@ QVariant DataFlowGraphModel::nodeData(NodeId nodeId, NodeRole role) const {
 
   case NodeRole::Style: {
     auto style = model->nodeStyle();
-    result = style.toJson().toVariantMap();
+    if (style.has_value()) {
+      result = QVariant::fromValue(style.value());
+    } else {
+      result = QVariant::fromValue(nullptr);
+    }
   } break;
 
   case NodeRole::InternalData: {

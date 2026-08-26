@@ -18,6 +18,7 @@ Frame {
         id: navigableArea
         anchors.fill: parent
         holdingItem: (draftConnectionId.selectedPort !== null) || (nodeListObject.selectedNodes.size !== 0)
+        style: view.context.styles.graphicsView
 
         ConnectionList {
             area: navigableArea
