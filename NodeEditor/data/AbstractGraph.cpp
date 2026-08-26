@@ -1,10 +1,10 @@
-#include "AbstractGraphModel.hpp"
+#include "AbstractGraph.hpp"
 #include "ConnectionIdUtils.hpp"
 
 using namespace NodeEditor;
 
-void AbstractGraphModel::portsAboutToBeDeleted(NodeId const nodeId, PortSide const portSide,
-                                               PortIndex const first, PortIndex const last) {
+void AbstractGraph::portsAboutToBeDeleted(NodeId const nodeId, PortSide const portSide,
+                                          PortIndex const first, PortIndex const last) {
   _shiftedByDynamicPortsConnections.clear();
 
   auto portCountRole = portSide == PortSide::In ? NodeRole::InPortCount : NodeRole::OutPortCount;
@@ -45,7 +45,7 @@ void AbstractGraphModel::portsAboutToBeDeleted(NodeId const nodeId, PortSide con
   }
 }
 
-void AbstractGraphModel::portsDeleted(NodeId const nodeId, PortSide const portSide) {
+void AbstractGraph::portsDeleted(NodeId const nodeId, PortSide const portSide) {
   for (auto const connectionId : _shiftedByDynamicPortsConnections) {
     addConnection(connectionId);
   }
@@ -54,8 +54,8 @@ void AbstractGraphModel::portsDeleted(NodeId const nodeId, PortSide const portSi
   emit nodePortsUpdated(nodeId, portSide);
 }
 
-void AbstractGraphModel::portsAboutToBeInserted(NodeId const nodeId, PortSide const portSide,
-                                                PortIndex const first, PortIndex const last) {
+void AbstractGraph::portsAboutToBeInserted(NodeId const nodeId, PortSide const portSide,
+                                           PortIndex const first, PortIndex const last) {
   _shiftedByDynamicPortsConnections.clear();
 
   auto portCountRole = portSide == PortSide::In ? NodeRole::InPortCount : NodeRole::OutPortCount;
@@ -86,7 +86,7 @@ void AbstractGraphModel::portsAboutToBeInserted(NodeId const nodeId, PortSide co
   }
 }
 
-void AbstractGraphModel::portsInserted(NodeId const nodeId, PortSide const portSide) {
+void AbstractGraph::portsInserted(NodeId const nodeId, PortSide const portSide) {
   for (auto const connectionId : _shiftedByDynamicPortsConnections) {
     addConnection(connectionId);
   }

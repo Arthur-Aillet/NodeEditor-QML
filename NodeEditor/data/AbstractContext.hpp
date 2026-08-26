@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AbstractGraphModel.hpp"
+#include "AbstractGraph.hpp"
 #include "StyleCollection.hpp"
 
 #include <memory>
@@ -17,13 +17,13 @@ class AbstractContext : public QObject {
   QML_UNCREATABLE("Context need to be provided from C++")
 
   public:
-  Q_PROPERTY(NodeEditor::AbstractGraphModel *graphModel READ graphModel CONSTANT)
+  Q_PROPERTY(NodeEditor::AbstractGraph *graphModel READ graphModel CONSTANT)
   Q_PROPERTY(QQmlComponent *nodePainter READ nodePainter NOTIFY nodePainterChanged)
   Q_PROPERTY(
       QQmlComponent *connectionPainter READ connectionPainter NOTIFY connectionPainterChanged)
   Q_PROPERTY(NodeEditor::StyleCollection *styles READ styleCollection NOTIFY styleCollectionChanged)
 
-  AbstractContext(AbstractGraphModel *graphModel, QQmlEngine *engine);
+  AbstractContext(AbstractGraph *graphModel, QQmlEngine *engine);
 
   StyleCollection *styleCollection();
   void setStyleCollection(StyleCollection *styleCollection);
@@ -41,9 +41,9 @@ class AbstractContext : public QObject {
   void connectionPainterChanged();
 
   protected:
-  AbstractGraphModel *graphModel();
+  AbstractGraph *graphModel();
 
-  AbstractGraphModel *_graphModel;
+  AbstractGraph *_graphModel;
   std::unique_ptr<QQmlComponent> _nodePainter;
   std::unique_ptr<QQmlComponent> _connectionPainter;
   StyleCollection *_styleCollection;

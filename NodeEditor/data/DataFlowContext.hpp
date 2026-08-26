@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AbstractContext.hpp"
-#include "DataFlowGraphModel.hpp"
+#include "DataFlowGraph.hpp"
 
 namespace NodeEditor {
 class DataFlowContext : public AbstractContext {
@@ -10,16 +10,16 @@ class DataFlowContext : public AbstractContext {
   QML_UNCREATABLE("Context need to be provided from C++")
 
   public:
-  Q_PROPERTY(NodeEditor::DataFlowGraphModel *dataFlowGraphModel READ dataFlowGraphModel CONSTANT)
+  Q_PROPERTY(NodeEditor::DataFlowGraph *dataFlowGraph READ dataFlowGraph CONSTANT)
 
-  DataFlowContext(DataFlowGraphModel *graphModel)
-      : _dataFlowGraphModel(graphModel),
+  DataFlowContext(DataFlowGraph *graphModel)
+      : _dataFlowGraph(graphModel),
         AbstractContext(graphModel, graphModel->registry()->engine()) {};
   ~DataFlowContext() = default;
 
   protected:
-  DataFlowGraphModel *dataFlowGraphModel() { return _dataFlowGraphModel; }
+  DataFlowGraph *dataFlowGraph() { return _dataFlowGraph; }
 
-  DataFlowGraphModel *_dataFlowGraphModel;
+  DataFlowGraph *_dataFlowGraph;
 };
 } // namespace NodeEditor

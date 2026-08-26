@@ -51,7 +51,7 @@ Menu {
     SearchFilterModel {
         id: smf
         filterText: searchField.text
-        model: nodeSearchMenu.context.dataFlowGraphModel.registry.nodesModel
+        model: nodeSearchMenu.context.dataFlowGraph.registry.nodesModel
     }
 
     readonly property var replaceRegex: RegExp(searchField.text.replace(/[\\\.\+\*\?\^\$\[\]\(\)\{\}\/\'\#\:\!\=\|]/ig, "\\$&"), 'gi')

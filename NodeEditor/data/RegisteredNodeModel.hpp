@@ -1,6 +1,6 @@
 #pragma once
 
-#include "NodeDelegateModel.hpp"
+#include "NodeModel.hpp"
 
 #include <QObject>
 #include <QtQmlIntegration>
@@ -21,7 +21,7 @@ class RegisteredNodeModel : public QAbstractListModel {
     PortsInfo = Qt::UserRole + 2,
   };
 
-  void registerNode(NodeDelegateModel::ModelInfos nodeModelInfo, QString category);
+  void registerNode(NodeModel::ModelInfos nodeModelInfo, QString category);
 
   protected:
   QHash<int, QByteArray> roleNames() const override {
@@ -34,6 +34,6 @@ class RegisteredNodeModel : public QAbstractListModel {
   QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
   protected:
-  std::vector<std::pair<NodeDelegateModel::ModelInfos, QString>> _nodes;
+  std::vector<std::pair<NodeModel::ModelInfos, QString>> _nodes;
 };
 } // namespace NodeEditor

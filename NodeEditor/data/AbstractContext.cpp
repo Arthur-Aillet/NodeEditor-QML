@@ -2,7 +2,7 @@
 
 using namespace NodeEditor;
 
-AbstractContext::AbstractContext(AbstractGraphModel *graphModel, QQmlEngine *engine)
+AbstractContext::AbstractContext(AbstractGraph *graphModel, QQmlEngine *engine)
     : _graphModel(graphModel), QObject(engine) {
   _nodePainter = std::make_unique<QQmlComponent>(engine, "NodeEditor", "DefaultNodePainter");
   _connectionPainter =
@@ -29,4 +29,4 @@ void AbstractContext::setConnectionPainter(std::unique_ptr<QQmlComponent> connec
   emit nodePainterChanged();
 }
 
-AbstractGraphModel *AbstractContext::graphModel() { return _graphModel; }
+AbstractGraph *AbstractContext::graphModel() { return _graphModel; }

@@ -5,7 +5,7 @@
 using namespace NodeEditor;
 
 InputNode::InputNode(QQmlEngine *engine)
-    : NodeDelegateModel(engine), _value(0), _valuePtr(std::make_shared<DecimalData>(_value)) {}
+    : NodeModel(engine), _value(0), _valuePtr(std::make_shared<DecimalData>(_value)) {}
 
 QString InputNode::caption() const { return "in"; };
 QString InputNode::name() const { return "Input"; }

@@ -3,7 +3,7 @@
 #include "Definitions.hpp"
 #include <qtmetamacros.h>
 
-DisplayNode::DisplayNode(QQmlEngine *engine) : NodeDelegateModel(engine) {}
+DisplayNode::DisplayNode(QQmlEngine *engine) : NodeModel(engine) {}
 
 QString DisplayNode::caption() const { return "display"; };
 QString DisplayNode::name() const { return "Display"; }

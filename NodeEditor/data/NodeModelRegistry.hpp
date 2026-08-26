@@ -1,6 +1,6 @@
 #pragma once
 
-#include "NodeDelegateModel.hpp"
+#include "NodeModel.hpp"
 #include "RegisteredNodeModel.hpp"
 
 #include <QObject>
@@ -17,7 +17,7 @@
 
 namespace NodeEditor {
 /// Class uses map for storing models (name, model)
-class NodeDelegateModelRegistry : public QObject {
+class NodeModelRegistry : public QObject {
   Q_OBJECT
   QML_ELEMENT
   QML_UNCREATABLE("Nodes are registered from C++")
@@ -29,24 +29,24 @@ class NodeDelegateModelRegistry : public QObject {
   Q_PROPERTY(NodeEditor::RegisteredNodeModel *nodesModel READ getNodesModel CONSTANT)
   Q_PROPERTY(QList<QString> categories READ categories NOTIFY categoriesChanged)
 
-  using RegistryItemPtr = std::unique_ptr<NodeDelegateModel>;
+  using RegistryItemPtr = std::unique_ptr<NodeModel>;
   using RegistryItemCreator = std::function<RegistryItemPtr()>;
   using CategoryName = QString;
 
   using RegisteredModelCreatorsMap = std::unordered_map<QString, RegistryItemCreator>;
   using Categories = QList<CategoryName>;
 
-  NodeDelegateModelRegistry(QQmlEngine *engine) : QObject(engine), _engine(engine) {};
-  ~NodeDelegateModelRegistry() = default;
-  NodeDelegateModelRegistry(NodeDelegateModelRegistry const &) = delete;
-  NodeDelegateModelRegistry &operator=(NodeDelegateModelRegistry const &) = delete;
+  NodeModelRegistry(QQmlEngine *engine) : QObject(engine), _engine(engine) {};
+  ~NodeModelRegistry() = default;
+  NodeModelRegistry(NodeModelRegistry const &) = delete;
+  NodeModelRegistry &operator=(NodeModelRegistry const &) = delete;
 
   QQmlEngine *engine() { return _engine; };
 
   protected:
   template <typename ModelType>
   void registerModel(RegistryItemCreator creator, QString const &category = "Nodes") {
-    NodeDelegateModel::ModelInfos const infos = computeInfos<ModelType>(creator);
+    NodeModel::ModelInfos const infos = computeInfos<ModelType>(creator);
     if (!_registeredItemCreators.count(infos.name)) {
       _registeredItemCreators[infos.name] = std::move(creator);
       if (!_categories.contains(category)) {
@@ -97,7 +97,7 @@ class NodeDelegateModelRegistry : public QObject {
 
 #endif
 
-  std::unique_ptr<NodeDelegateModel> create(QString const &modelName) const;
+  std::unique_ptr<NodeModel> create(QString const &modelName) const;
 
   RegisteredModelCreatorsMap const &registeredModelCreators() const;
   RegisteredNodeModel *getNodesModel() { return &_nodesModel; }
@@ -129,20 +129,19 @@ class NodeDelegateModelRegistry : public QObject {
   struct HasStaticMethodName : std::false_type {};
 
   template <typename T>
-  struct HasStaticMethodName<
-      T, typename std::enable_if<
-             std::is_same<decltype(T::ModelInfos()), NodeDelegateModel::ModelInfos>::value>::type>
+  struct HasStaticMethodName<T, typename std::enable_if<std::is_same<
+                                    decltype(T::ModelInfos()), NodeModel::ModelInfos>::value>::type>
       : std::true_type {};
 
   template <typename ModelType,
             typename std::enable_if_t<HasStaticMethodName<ModelType>::value, bool> = true>
-  static NodeDelegateModel::ModelInfos computeInfos(RegistryItemCreator const &_creator) {
+  static NodeModel::ModelInfos computeInfos(RegistryItemCreator const &_creator) {
     return ModelType::ModelInfos();
   }
 
   template <typename ModelType,
             typename std::enable_if_t<!HasStaticMethodName<ModelType>::value, bool> = true>
-  static NodeDelegateModel::ModelInfos computeInfos(RegistryItemCreator const &creator) {
+  static NodeModel::ModelInfos computeInfos(RegistryItemCreator const &creator) {
     return creator()->modelInfos();
   }
 
@@ -151,14 +150,14 @@ class NodeDelegateModelRegistry : public QObject {
     // Assert always fires, but the compiler doesn't know this:
     static_assert(!std::is_same<T, T>::value,
                   "The ModelCreator must return a std::unique_ptr<T>, where T "
-                  "inherits from NodeDelegateModel");
+                  "inherits from NodeModel");
   };
 
   template <typename T>
   struct UnwrapUniquePtr<std::unique_ptr<T>> {
-    static_assert(std::is_base_of<NodeDelegateModel, T>::value,
+    static_assert(std::is_base_of<NodeModel, T>::value,
                   "The ModelCreator must return a std::unique_ptr<T>, where T "
-                  "inherits from NodeDelegateModel");
+                  "inherits from NodeModel");
     using type = T;
   };
 

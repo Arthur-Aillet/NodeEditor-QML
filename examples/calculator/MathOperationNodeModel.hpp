@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Definitions.hpp"
-#include "NodeDelegateModel.hpp"
+#include "NodeModel.hpp"
 
 class DecimalData;
 
@@ -9,12 +9,11 @@ using namespace NodeEditor;
 
 /// The model dictates the number of inputs and outputs for the Node.
 /// In this example it has no logic.
-class MathOperationNodeModel : public NodeEditor::NodeDelegateModel {
+class MathOperationNodeModel : public NodeEditor::NodeModel {
   Q_OBJECT
 
   public:
-  MathOperationNodeModel(QQmlEngine *engine)
-      : NodeDelegateModel(engine), _inputNumbers(nbInputs()) {}
+  MathOperationNodeModel(QQmlEngine *engine) : NodeModel(engine), _inputNumbers(nbInputs()) {}
   ~MathOperationNodeModel() = default;
 
   public:

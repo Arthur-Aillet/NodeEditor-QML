@@ -87,7 +87,7 @@ Menu {
 
     Instantiator {
         id: instanciator
-        model: portSearchMenu.context.dataFlowGraphModel.registry.nodesModel
+        model: portSearchMenu.context.dataFlowGraph.registry.nodesModel
         delegate: NodeRoleData {
             required property string name
             required property string category

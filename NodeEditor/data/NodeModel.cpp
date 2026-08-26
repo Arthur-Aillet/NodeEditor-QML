@@ -1,16 +1,16 @@
-#include "NodeDelegateModel.hpp"
 #include "Definitions.hpp"
+#include "NodeModel.hpp"
 #include "NodeStyle.hpp"
 
 #include <optional>
 
 using namespace NodeEditor;
 
-NodeDelegateModel::NodeDelegateModel(QQmlEngine *engine) {}
+NodeModel::NodeModel(QQmlEngine *engine) {}
 
-QJsonObject NodeDelegateModel::save() const { return QJsonObject(); }
+QJsonObject NodeModel::save() const { return QJsonObject(); }
 
-NodeDelegateModel::ModelInfos NodeDelegateModel::modelInfos() const {
+NodeModel::ModelInfos NodeModel::modelInfos() const {
   QList<PortInfo> ports;
 
   auto collectPorts = [&](PortSide portSide) {
@@ -32,15 +32,15 @@ NodeDelegateModel::ModelInfos NodeDelegateModel::modelInfos() const {
   };
 };
 
-void NodeDelegateModel::load(QJsonObject const &) {
+void NodeModel::load(QJsonObject const &) {
   //
 }
 
-void NodeDelegateModel::setValidationState(const NodeValidationState &validationState) {
+void NodeModel::setValidationState(const NodeValidationState &validationState) {
   _nodeValidationState = validationState;
 }
 
-ConnectionPolicy NodeDelegateModel::portConnectionPolicy(PortSide portSide, PortIndex) const {
+ConnectionPolicy NodeModel::portConnectionPolicy(PortSide portSide, PortIndex) const {
   switch (portSide) {
   case PortSide::In:
     return ConnectionPolicy::Replace;
@@ -50,11 +50,11 @@ ConnectionPolicy NodeDelegateModel::portConnectionPolicy(PortSide portSide, Port
   }
 }
 
-std::optional<NodeStyle> const &NodeDelegateModel::nodeStyle() const { return _nodeStyle; }
+std::optional<NodeStyle> const &NodeModel::nodeStyle() const { return _nodeStyle; }
 
-void NodeDelegateModel::setNodeStyle(std::optional<NodeStyle> const &style) { _nodeStyle = style; }
+void NodeModel::setNodeStyle(std::optional<NodeStyle> const &style) { _nodeStyle = style; }
 
-QPixmap NodeDelegateModel::processingStatusIcon() const {
+QPixmap NodeModel::processingStatusIcon() const {
   // int resolution = _nodeStyle.processingIconStyle._resolution;
   // switch (_processingStatus) {
   // case NodeProcessingStatus::NoStatus:
@@ -76,7 +76,7 @@ QPixmap NodeDelegateModel::processingStatusIcon() const {
   return {};
 }
 
-void NodeDelegateModel::setStatusIcon(NodeProcessingStatus status, const QPixmap &pixmap) {
+void NodeModel::setStatusIcon(NodeProcessingStatus status, const QPixmap &pixmap) {
   // switch (status) {
   // case NodeProcessingStatus::NoStatus:
   //   break;
@@ -101,15 +101,13 @@ void NodeDelegateModel::setStatusIcon(NodeProcessingStatus status, const QPixmap
   // }
 }
 
-void NodeDelegateModel::setStatusIconStyle(const ProcessingIconStyle &style) {
+void NodeModel::setStatusIconStyle(const ProcessingIconStyle &style) {
   // _nodeStyle.processingIconStyle = style;
 }
 
-void NodeDelegateModel::setNodeProcessingStatus(NodeProcessingStatus status) {
-  _processingStatus = status;
-}
+void NodeModel::setNodeProcessingStatus(NodeProcessingStatus status) { _processingStatus = status; }
 
-void NodeDelegateModel::createComponent(QQuickItem *container, QQmlEngine *engine) {
+void NodeModel::createComponent(QQuickItem *container, QQmlEngine *engine) {
   QQmlComponent component = embeddedComponent(engine);
   if (component.isNull()) {
     return;

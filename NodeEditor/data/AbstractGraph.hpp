@@ -21,7 +21,7 @@ namespace NodeEditor {
  *   - NodeId
  *   - ConnectionId
  */
-class AbstractGraphModel : public QObject {
+class AbstractGraph : public QObject {
   Q_OBJECT
   QML_INTERFACE
 
@@ -102,7 +102,7 @@ class AbstractGraphModel : public QObject {
 
   /**
    * A utility function that unwraps the `QVariant` value returned from the
-   * standard `QVariant AbstractGraphModel::nodeData(NodeId, NodeRole)` function.
+   * standard `QVariant AbstractGraph::nodeData(NodeId, NodeRole)` function.
    */
   template <typename T>
   T nodeData(NodeId nodeId, NodeRole role) const {
@@ -133,7 +133,7 @@ class AbstractGraphModel : public QObject {
 
   /**
    * A utility function that unwraps the `QVariant` value returned from the
-   * standard `QVariant AbstractGraphModel::portData(...)` function.
+   * standard `QVariant AbstractGraph::portData(...)` function.
    */
   template <typename T>
   T portData(NodeId nodeId, PortSide portSide, PortIndex index, PortRole role) const {
@@ -202,7 +202,7 @@ class AbstractGraphModel : public QObject {
    *
    * Function caches existing connections that are located after the `last` port
    * index. For such connections the new "post-insertion" addresses are computed
-   * and stored until the function AbstractGraphModel::portsInserted is called.
+   * and stored until the function AbstractGraph::portsInserted is called.
    */
   void portsAboutToBeInserted(NodeId const nodeId, PortSide const portSide, PortIndex const first,
                               PortIndex const last);
@@ -231,4 +231,4 @@ class AbstractGraphModel : public QObject {
 };
 }; // namespace NodeEditor
 
-Q_DECLARE_INTERFACE(NodeEditor::AbstractGraphModel, "AbstractGraphModel")
+Q_DECLARE_INTERFACE(NodeEditor::AbstractGraph, "AbstractGraph")

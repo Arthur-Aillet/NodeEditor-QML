@@ -66,11 +66,10 @@ struct PortInfo {
 
 /**
  * The class wraps Node-specific data operations and propagates it to
- * the nesting DataFlowGraphModel which is a subclass of
- * AbstractGraphModel.
- * This class is the same what has been called NodeDataModel before v3.
+ * the nesting DataFlowGraph which is a subclass of
+ * AbstractGraph.
  */
-class NodeDelegateModel : public QObject, public Serializable {
+class NodeModel : public QObject, public Serializable {
   Q_OBJECT
 
   public:
@@ -79,9 +78,9 @@ class NodeDelegateModel : public QObject, public Serializable {
     QList<PortInfo> ports;
   };
 
-  NodeDelegateModel(QQmlEngine *engine);
+  NodeModel(QQmlEngine *engine);
 
-  virtual ~NodeDelegateModel() = default;
+  virtual ~NodeModel() = default;
 
   /// Get inital model infos
   ModelInfos modelInfos() const;

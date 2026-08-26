@@ -31,20 +31,20 @@ qt_add_qml_module(NodeEditor
   SOURCES
   data/AbstractContext.cpp
   data/AbstractContext.hpp
-  data/AbstractGraphModel.cpp
-  data/AbstractGraphModel.hpp
+  data/AbstractGraph.cpp
+  data/AbstractGraph.hpp
   data/ConnectionIdHash.hpp
   data/ConnectionIdUtils.hpp
   data/DataFlowContext.hpp
-  data/DataFlowGraphModel.cpp
-  data/DataFlowGraphModel.hpp
+  data/DataFlowGraph.cpp
+  data/DataFlowGraph.hpp
   data/Definitions.hpp
   data/NodeData.cpp
   data/NodeData.hpp
-  data/NodeDelegateModel.cpp
-  data/NodeDelegateModel.hpp
-  data/NodeDelegateModelRegistry.cpp
-  data/NodeDelegateModelRegistry.hpp
+  data/NodeModel.cpp
+  data/NodeModel.hpp
+  data/NodeModelRegistry.cpp
+  data/NodeModelRegistry.hpp
   data/QStringStdHash.hpp
   data/RegisteredNodeModel.cpp
   data/RegisteredNodeModel.hpp

@@ -19,8 +19,7 @@ QVariant RegisteredNodeModel::data(const QModelIndex &index, int role) const {
   }
 }
 
-void RegisteredNodeModel::registerNode(NodeDelegateModel::ModelInfos nodeModelInfo,
-                                       QString category) {
+void RegisteredNodeModel::registerNode(NodeModel::ModelInfos nodeModelInfo, QString category) {
   beginInsertRows(QModelIndex(), rowCount(), rowCount());
   _nodes.push_back(std::pair(nodeModelInfo, category));
   endInsertRows();

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Definitions.hpp"
-#include "NodeDelegateModel.hpp"
+#include "NodeModel.hpp"
 
 #include <memory>
 
@@ -11,7 +11,7 @@ class DecimalData;
 
 using namespace NodeEditor;
 
-class DisplayNode : public NodeEditor::NodeDelegateModel {
+class DisplayNode : public NodeEditor::NodeModel {
   Q_OBJECT
   QML_ELEMENT
   QML_UNCREATABLE("Nodes must be created from C++")

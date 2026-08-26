@@ -6,7 +6,7 @@
 #include "SubtractionNode.hpp"
 
 #include "DataFlowContext.hpp"
-#include "DataFlowGraphModel.hpp"
+#include "DataFlowGraph.hpp"
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
       &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
       []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
 
-  const auto reg = new NodeEditor::NodeDelegateModelRegistry(&engine);
+  const auto reg = new NodeEditor::NodeModelRegistry(&engine);
 
   reg->registerModel<AdditionNode>("Operation");
   reg->registerModel<InputNode>("Input");
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
   reg->registerModel<MultiplicationNode>("Operation");
   reg->registerModel<SubtractionNode>("Operation");
 
-  const auto graph = new NodeEditor::DataFlowGraphModel(reg);
+  const auto graph = new NodeEditor::DataFlowGraph(reg);
   const auto context = new NodeEditor::DataFlowContext(graph);
 
   engine.setInitialProperties(QVariantMap({{"dataFlowContext", QVariant::fromValue(context)}}));

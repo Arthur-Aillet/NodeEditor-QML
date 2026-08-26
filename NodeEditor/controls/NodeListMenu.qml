@@ -42,7 +42,7 @@ Menu {
     MenuSeparator {}
 
     Instantiator {
-        model: nodeListMenu.context.dataFlowGraphModel.registry.categories
+        model: nodeListMenu.context.dataFlowGraph.registry.categories
         delegate: Menu {
             id: categoryMenu
             required property string modelData
@@ -50,7 +50,7 @@ Menu {
 
             SortFilterProxyModel {
                 id: sfpm
-                model: nodeListMenu.context.dataFlowGraphModel.registry.nodesModel
+                model: nodeListMenu.context.dataFlowGraph.registry.nodesModel
                 sorters: [
                     RoleSorter {
                         roleName: "name"

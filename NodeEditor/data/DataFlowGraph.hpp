@@ -2,10 +2,10 @@
 
 #include "Definitions.hpp"
 
-#include "AbstractGraphModel.hpp"
+#include "AbstractGraph.hpp"
 #include "ConnectionIdHash.hpp"
 #include "Definitions.hpp"
-#include "NodeDelegateModelRegistry.hpp"
+#include "NodeModelRegistry.hpp"
 #include "Serializable.hpp"
 
 #include <QJsonObject>
@@ -15,9 +15,9 @@
 #include <unordered_map>
 
 namespace NodeEditor {
-class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
+class DataFlowGraph : public AbstractGraph, public Serializable {
   Q_OBJECT
-  QML_IMPLEMENTS_INTERFACES(NodeEditor::AbstractGraphModel)
+  QML_IMPLEMENTS_INTERFACES(NodeEditor::AbstractGraph)
   QML_ANONYMOUS
 
   public:
@@ -27,11 +27,11 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   };
 
   public:
-  Q_PROPERTY(NodeEditor::NodeDelegateModelRegistry *registry READ registry CONSTANT)
+  Q_PROPERTY(NodeEditor::NodeModelRegistry *registry READ registry CONSTANT)
 
-  DataFlowGraphModel(NodeDelegateModelRegistry *registry);
+  DataFlowGraph(NodeModelRegistry *registry);
 
-  NodeDelegateModelRegistry *registry() { return _registry; }
+  NodeModelRegistry *registry() { return _registry; }
 
   Q_INVOKABLE QSet<ConnectionId> allConnectionIds(NodeId const nodeId) const override;
   QSet<ConnectionId> connections(NodeId nodeId, PortSide portSide,
@@ -66,16 +66,16 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   Q_INVOKABLE void createEmbed(NodeId nodeId, QQuickItem *container) const override;
 
   /**
-   * Fetches the NodeDelegateModel for the given `nodeId` and tries to cast the
+   * Fetches the NodeModel for the given `nodeId` and tries to cast the
    * stored pointer to the given type
    */
-  template <typename NodeDelegateModelType>
-  NodeDelegateModelType *delegateModel(NodeId const nodeId) {
+  template <typename NodeModelType>
+  NodeModelType *model(NodeId const nodeId) {
     auto it = _models.find(nodeId);
     if (it == _models.end())
       return nullptr;
 
-    auto model = dynamic_cast<NodeDelegateModelType *>(it->second.get());
+    auto model = dynamic_cast<NodeModelType *>(it->second.get());
 
     return model;
   }
@@ -88,7 +88,7 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
 
   private:
   NodeId newNodeId() override;
-  void connectNode(NodeDelegateModel *model, NodeId nodeId);
+  void connectNode(NodeModel *model, NodeId nodeId);
   void sendConnectionCreation(ConnectionId const connectionId);
   void sendConnectionDeletion(ConnectionId const connectionId);
 
@@ -96,12 +96,12 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   /**
    * Fuction is called in three cases:
    *
-   * - By underlying NodeDelegateModel when a node has new data to propagate.
-   *   @see DataFlowGraphModel::addNode
+   * - By underlying NodeModel when a node has new data to propagate.
+   *   @see DataFlowGraph::addNode
    * - When a new connection is created.
-   *   @see DataFlowGraphModel::addConnection
+   *   @see DataFlowGraph::addConnection
    * - When a node restored from JSON an needs to send data downstream.
-   *   @see DataFlowGraphModel::loadNode
+   *   @see DataFlowGraph::loadNode
    */
   void onOutPortDataUpdated(NodeId const nodeId, PortIndex const portIndex);
 
@@ -109,8 +109,8 @@ class DataFlowGraphModel : public AbstractGraphModel, public Serializable {
   void propagateEmptyDataTo(NodeId const nodeId, PortIndex const portIndex);
 
   protected:
-  NodeDelegateModelRegistry *_registry;
-  std::unordered_map<NodeId, std::unique_ptr<NodeDelegateModel>> _models;
+  NodeModelRegistry *_registry;
+  std::unordered_map<NodeId, std::unique_ptr<NodeModel>> _models;
   QSet<ConnectionId> _connectivity;
   mutable std::unordered_map<NodeId, NodeGeometryData> _nodeGeometryData;
   std::unordered_map<NodeId, QString> _labels;

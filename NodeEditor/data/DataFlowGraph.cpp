@@ -1,4 +1,4 @@
-#include "DataFlowGraphModel.hpp"
+#include "DataFlowGraph.hpp"
 #include "ConnectionIdUtils.hpp"
 #include "Definitions.hpp"
 #include "NodeData.hpp"
@@ -8,18 +8,18 @@
 
 using namespace NodeEditor;
 
-DataFlowGraphModel::DataFlowGraphModel(NodeDelegateModelRegistry *registry) : _registry(registry) {
+DataFlowGraph::DataFlowGraph(NodeModelRegistry *registry) : _registry(registry) {
   setParent(registry);
 }
 
-QSet<NodeId> DataFlowGraphModel::allNodeIds() const {
+QSet<NodeId> DataFlowGraph::allNodeIds() const {
   QSet<NodeId> nodeIds;
   for_each(_models.begin(), _models.end(), [&nodeIds](auto const &p) { nodeIds.insert(p.first); });
 
   return nodeIds;
 }
 
-QSet<ConnectionId> DataFlowGraphModel::allConnectionIds(NodeId const nodeId) const {
+QSet<ConnectionId> DataFlowGraph::allConnectionIds(NodeId const nodeId) const {
   QSet<ConnectionId> result;
 
   std::copy_if(_connectivity.begin(), _connectivity.end(), std::inserter(result, std::end(result)),
@@ -30,8 +30,8 @@ QSet<ConnectionId> DataFlowGraphModel::allConnectionIds(NodeId const nodeId) con
   return result;
 }
 
-QSet<ConnectionId> DataFlowGraphModel::connections(NodeId nodeId, PortSide portSide,
-                                                   PortIndex portIndex) const {
+QSet<ConnectionId> DataFlowGraph::connections(NodeId nodeId, PortSide portSide,
+                                              PortIndex portIndex) const {
   QSet<ConnectionId> result;
 
   std::copy_if(_connectivity.begin(), _connectivity.end(), std::inserter(result, std::end(result)),
@@ -43,12 +43,12 @@ QSet<ConnectionId> DataFlowGraphModel::connections(NodeId nodeId, PortSide portS
   return result;
 }
 
-bool DataFlowGraphModel::connectionExists(ConnectionId const connectionId) const {
+bool DataFlowGraph::connectionExists(ConnectionId const connectionId) const {
   return (_connectivity.find(connectionId) != _connectivity.end());
 }
 
-NodeId DataFlowGraphModel::addNode(QString const nodeType) {
-  std::unique_ptr<NodeDelegateModel> model = _registry->create(nodeType);
+NodeId DataFlowGraph::addNode(QString const nodeType) {
+  std::unique_ptr<NodeModel> model = _registry->create(nodeType);
 
   if (model) {
     NodeId newId = newNodeId();
@@ -67,7 +67,7 @@ NodeId DataFlowGraphModel::addNode(QString const nodeType) {
   return InvalidNodeId;
 }
 
-bool DataFlowGraphModel::connectionPossible(ConnectionId const connectionId) const {
+bool DataFlowGraph::connectionPossible(ConnectionId const connectionId) const {
   // Check if nodes exist
   if (!nodeExists(connectionId.outNodeId) || !nodeExists(connectionId.inNodeId)) {
     return false;
@@ -140,7 +140,7 @@ bool DataFlowGraphModel::connectionPossible(ConnectionId const connectionId) con
   return basicChecks && (loopsEnabled() || !hasLoops());
 }
 
-void DataFlowGraphModel::addConnection(ConnectionId const connectionId) {
+void DataFlowGraph::addConnection(ConnectionId const connectionId) {
   auto removeReplaceConnections = [&](PortSide const portSide) {
     NodeId const nodeId = getNodeId(portSide, connectionId);
     PortIndex const portIndex = getPortIndex(portSide, connectionId);
@@ -167,7 +167,7 @@ void DataFlowGraphModel::addConnection(ConnectionId const connectionId) {
               PortRole::Data);
 }
 
-void DataFlowGraphModel::sendConnectionCreation(ConnectionId const connectionId) {
+void DataFlowGraph::sendConnectionCreation(ConnectionId const connectionId) {
   Q_EMIT connectionCreated(connectionId);
 
   auto iti = _models.find(connectionId.inNodeId);
@@ -180,7 +180,7 @@ void DataFlowGraphModel::sendConnectionCreation(ConnectionId const connectionId)
   }
 }
 
-void DataFlowGraphModel::sendConnectionDeletion(ConnectionId const connectionId) {
+void DataFlowGraph::sendConnectionDeletion(ConnectionId const connectionId) {
   Q_EMIT connectionDeleted(connectionId);
 
   auto iti = _models.find(connectionId.inNodeId);
@@ -193,11 +193,11 @@ void DataFlowGraphModel::sendConnectionDeletion(ConnectionId const connectionId)
   }
 }
 
-bool DataFlowGraphModel::nodeExists(NodeId const nodeId) const {
+bool DataFlowGraph::nodeExists(NodeId const nodeId) const {
   return (_models.find(nodeId) != _models.end());
 }
 
-QVariant DataFlowGraphModel::nodeData(NodeId nodeId, NodeRole role) const {
+QVariant DataFlowGraph::nodeData(NodeId nodeId, NodeRole role) const {
   QVariant result;
 
   auto it = _models.find(nodeId);
@@ -290,7 +290,7 @@ QVariant DataFlowGraphModel::nodeData(NodeId nodeId, NodeRole role) const {
   return result;
 }
 
-bool DataFlowGraphModel::setNodeData(NodeId nodeId, NodeRole role, QVariant value) {
+bool DataFlowGraph::setNodeData(NodeId nodeId, NodeRole role, QVariant value) {
   bool result = false;
 
   switch (role) {
@@ -330,7 +330,7 @@ bool DataFlowGraphModel::setNodeData(NodeId nodeId, NodeRole role, QVariant valu
   case NodeRole::ValidationState: {
     if (value.canConvert<NodeValidationState>()) {
       auto state = value.value<NodeValidationState>();
-      if (auto node = delegateModel<NodeDelegateModel>(nodeId); node != nullptr) {
+      if (auto node = model<NodeModel>(nodeId); node != nullptr) {
         node->setValidationState(state);
       }
     }
@@ -340,7 +340,7 @@ bool DataFlowGraphModel::setNodeData(NodeId nodeId, NodeRole role, QVariant valu
   case NodeRole::ProcessingStatus: {
     if (value.canConvert<NodeProcessingStatus>()) {
       auto status = value.value<NodeProcessingStatus>();
-      if (auto node = delegateModel<NodeDelegateModel>(nodeId); node != nullptr) {
+      if (auto node = model<NodeModel>(nodeId); node != nullptr) {
         node->setNodeProcessingStatus(status);
       }
     }
@@ -368,7 +368,7 @@ bool DataFlowGraphModel::setNodeData(NodeId nodeId, NodeRole role, QVariant valu
   case NodeRole::Flags:
     if (value.canConvert<NodeFlags>()) {
       auto flags = value.value<NodeFlags>();
-      if (auto node = delegateModel<NodeDelegateModel>(nodeId); node != nullptr) {
+      if (auto node = model<NodeModel>(nodeId); node != nullptr) {
         node->setFlags(flags);
       }
     }
@@ -380,8 +380,8 @@ bool DataFlowGraphModel::setNodeData(NodeId nodeId, NodeRole role, QVariant valu
   return result;
 }
 
-QVariant DataFlowGraphModel::portData(NodeId nodeId, PortSide portSide, PortIndex portIndex,
-                                      PortRole role) const {
+QVariant DataFlowGraph::portData(NodeId nodeId, PortSide portSide, PortIndex portIndex,
+                                 PortRole role) const {
   QVariant result;
 
   auto it = _models.find(nodeId);
@@ -418,8 +418,8 @@ QVariant DataFlowGraphModel::portData(NodeId nodeId, PortSide portSide, PortInde
   return result;
 }
 
-bool DataFlowGraphModel::setPortData(NodeId nodeId, PortSide portSide, PortIndex portIndex,
-                                     QVariant const &value, PortRole role) {
+bool DataFlowGraph::setPortData(NodeId nodeId, PortSide portSide, PortIndex portIndex,
+                                QVariant const &value, PortRole role) {
   Q_UNUSED(nodeId);
 
   QVariant result;
@@ -447,7 +447,7 @@ bool DataFlowGraphModel::setPortData(NodeId nodeId, PortSide portSide, PortIndex
   return false;
 }
 
-bool DataFlowGraphModel::deleteConnection(ConnectionId const connectionId) {
+bool DataFlowGraph::deleteConnection(ConnectionId const connectionId) {
   bool disconnected = false;
 
   auto it = _connectivity.find(connectionId);
@@ -468,7 +468,7 @@ bool DataFlowGraphModel::deleteConnection(ConnectionId const connectionId) {
   return disconnected;
 }
 
-bool DataFlowGraphModel::deleteNode(NodeId const nodeId) {
+bool DataFlowGraph::deleteNode(NodeId const nodeId) {
   // Delete connections to this node first.
   auto connectionIds = allConnectionIds(nodeId);
   for (auto &cId : connectionIds) {
@@ -485,7 +485,7 @@ bool DataFlowGraphModel::deleteNode(NodeId const nodeId) {
   return true;
 }
 
-bool DataFlowGraphModel::clear() {
+bool DataFlowGraph::clear() {
   for (auto &nodeId : allNodeIds()) {
     if (!deleteNode(nodeId)) {
       return false;
@@ -494,7 +494,7 @@ bool DataFlowGraphModel::clear() {
   return true;
 }
 
-QJsonObject DataFlowGraphModel::saveNode(NodeId const nodeId) const {
+QJsonObject DataFlowGraph::saveNode(NodeId const nodeId) const {
   QJsonObject nodeJson;
 
   auto const modelIt = _models.find(nodeId);
@@ -529,7 +529,7 @@ QJsonObject DataFlowGraphModel::saveNode(NodeId const nodeId) const {
   return nodeJson;
 }
 
-QJsonObject DataFlowGraphModel::save() const {
+QJsonObject DataFlowGraph::save() const {
   QJsonObject sceneJson;
 
   QJsonArray nodesJsonArray;
@@ -547,10 +547,10 @@ QJsonObject DataFlowGraphModel::save() const {
   return sceneJson;
 }
 
-NodeId DataFlowGraphModel::loadNode(QJsonObject const &nodeJson) {
-  QString delegateModelName = nodeJson["model-name"].toString();
+NodeId DataFlowGraph::loadNode(QJsonObject const &nodeJson) {
+  QString modelName = nodeJson["model-name"].toString();
 
-  std::unique_ptr<NodeDelegateModel> model = _registry->create(delegateModelName);
+  std::unique_ptr<NodeModel> model = _registry->create(modelName);
 
   if (model) {
     NodeId nodeId = nodeJson["id"].toInt();
@@ -582,12 +582,12 @@ NodeId DataFlowGraphModel::loadNode(QJsonObject const &nodeJson) {
     return nodeId;
   } else {
     throw std::logic_error(std::string("No registered model with name ") +
-                           delegateModelName.toLocal8Bit().data());
+                           modelName.toLocal8Bit().data());
   }
   return InvalidNodeId;
 }
 
-void DataFlowGraphModel::load(QJsonObject const &jsonDocument) {
+void DataFlowGraph::load(QJsonObject const &jsonDocument) {
   QJsonArray nodesJsonArray = jsonDocument["nodes"].toArray();
 
   std::unordered_map<NodeId, NodeId> idConversionMap;
@@ -614,11 +614,11 @@ void DataFlowGraphModel::load(QJsonObject const &jsonDocument) {
   }
 }
 
-void DataFlowGraphModel::createEmbed(NodeId nodeId, QQuickItem *container) const {
+void DataFlowGraph::createEmbed(NodeId nodeId, QQuickItem *container) const {
   _models.at(nodeId)->createComponent(container, _registry->engine());
 }
 
-void DataFlowGraphModel::onOutPortDataUpdated(NodeId const nodeId, PortIndex const portIndex) {
+void DataFlowGraph::onOutPortDataUpdated(NodeId const nodeId, PortIndex const portIndex) {
   QSet<ConnectionId> const &connected = connections(nodeId, PortSide::Out, portIndex);
 
   QVariant const portDataToPropagate = portData(nodeId, PortSide::Out, portIndex, PortRole::Data);
@@ -628,13 +628,13 @@ void DataFlowGraphModel::onOutPortDataUpdated(NodeId const nodeId, PortIndex con
   }
 }
 
-void DataFlowGraphModel::propagateEmptyDataTo(NodeId const nodeId, PortIndex const portIndex) {
+void DataFlowGraph::propagateEmptyDataTo(NodeId const nodeId, PortIndex const portIndex) {
   QVariant emptyData{};
 
   setPortData(nodeId, PortSide::In, portIndex, emptyData, PortRole::Data);
 }
 
-NodeId DataFlowGraphModel::newNodeId() {
+NodeId DataFlowGraph::newNodeId() {
   NodeId i = 0;
   for (; i != _models.size(); i++) {
     if (_models.count(i) == 0) {
@@ -644,29 +644,29 @@ NodeId DataFlowGraphModel::newNodeId() {
   return i;
 }
 
-void DataFlowGraphModel::connectNode(NodeDelegateModel *model, NodeId nodeId) {
-  connect(model, &NodeDelegateModel::dataUpdated,
+void DataFlowGraph::connectNode(NodeModel *model, NodeId nodeId) {
+  connect(model, &NodeModel::dataUpdated,
           [nodeId, this](PortIndex const portIndex) { onOutPortDataUpdated(nodeId, portIndex); });
 
-  connect(model, &NodeDelegateModel::dataInvalidated,
+  connect(model, &NodeModel::dataInvalidated,
           [nodeId, this](PortIndex const portIndex) { onOutPortDataUpdated(nodeId, portIndex); });
 
-  connect(model, &NodeDelegateModel::portsAboutToBeDeleted,
+  connect(model, &NodeModel::portsAboutToBeDeleted,
           [nodeId, this](PortSide const portSide, PortIndex const first, PortIndex const last) {
             portsAboutToBeDeleted(nodeId, portSide, first, last);
           });
 
-  connect(model, &NodeDelegateModel::portsDeleted,
+  connect(model, &NodeModel::portsDeleted,
           [nodeId, this](PortSide const portSide) { portsDeleted(nodeId, portSide); });
 
-  connect(model, &NodeDelegateModel::portsAboutToBeInserted,
+  connect(model, &NodeModel::portsAboutToBeInserted,
           [nodeId, this](PortSide const portSide, PortIndex const first, PortIndex const last) {
             portsAboutToBeInserted(nodeId, portSide, first, last);
           });
 
-  connect(model, &NodeDelegateModel::portsInserted,
+  connect(model, &NodeModel::portsInserted,
           [nodeId, this](PortSide const portSide) { portsInserted(nodeId, portSide); });
 
-  connect(model, &NodeDelegateModel::portsNameChanged,
+  connect(model, &NodeModel::portsNameChanged,
           [nodeId, this](PortSide const portSide) { nodePortsUpdated(nodeId, portSide); });
 }
