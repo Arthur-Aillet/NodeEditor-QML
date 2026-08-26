@@ -2,8 +2,7 @@
 
 #include <QPalette>
 #include <QtGui/QColor>
-#include <qqmlintegration.h>
-#include <qtmetamacros.h>
+#include <QtQmlIntegration>
 
 #include "Style.hpp"
 

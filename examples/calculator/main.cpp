@@ -1,17 +1,16 @@
 #include "AdditionNode.hpp"
-#include "DataFlowContext.hpp"
 #include "DisplayNode.hpp"
 #include "DivisionNode.hpp"
 #include "InputNode.hpp"
 #include "MultiplicationNode.hpp"
 #include "SubtractionNode.hpp"
 
+#include "DataFlowContext.hpp"
 #include "DataFlowGraphModel.hpp"
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QVariant>
-#include <qqmlcomponent.h>
 
 int main(int argc, char *argv[]) {
   QCoreApplication::setOrganizationName("examples");

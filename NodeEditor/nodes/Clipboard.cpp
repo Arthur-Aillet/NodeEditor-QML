@@ -2,9 +2,9 @@
 
 #include <QClipboard>
 #include <QGuiApplication>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QObject>
-#include <qjsondocument.h>
-#include <qjsonobject.h>
 
 using namespace NodeEditor;
 

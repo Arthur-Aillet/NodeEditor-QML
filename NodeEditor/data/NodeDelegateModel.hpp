@@ -59,7 +59,7 @@ struct PortInfo {
 
   Q_PROPERTY(QString caption MEMBER caption)
   Q_PROPERTY(bool captionVisible MEMBER captionVisible)
-  Q_PROPERTY(NodeDataType dataType MEMBER dataType)
+  Q_PROPERTY(NodeEditor::NodeDataType dataType MEMBER dataType)
   Q_PROPERTY(NodeEditor::PortSide portSide MEMBER portSide)
   Q_PROPERTY(NodeEditor::PortIndex portIndex MEMBER portIndex)
 };

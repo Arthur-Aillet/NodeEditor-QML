@@ -22,5 +22,4 @@ if(BUILD_EXAMPLES)
   add_subdirectory(examples)
 endif()
 
-
 #set(CMAKE_CXX_CLANG_TIDY clang-tidy-19 -config-file=${CMAKE_SOURCE_DIR}/.clang-tidy)

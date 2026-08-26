@@ -1,5 +1,6 @@
 #include "RegisteredNodeModel.hpp"
-#include <qvariant.h>
+
+#include <QVariant>
 
 using namespace NodeEditor;
 

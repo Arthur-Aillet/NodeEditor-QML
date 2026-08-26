@@ -1,15 +1,9 @@
 ﻿#pragma once
 
 #include <QtCore/QMetaObject>
+#include <QtQmlIntegration>
 
 #include <limits>
-#include <qjsvalue.h>
-#include <qlist.h>
-#include <qobject.h>
-#include <qqmlintegration.h>
-#include <qtmetamacros.h>
-#include <qtypes.h>
-#include <qvariant.h>
 
 /**
  * @file

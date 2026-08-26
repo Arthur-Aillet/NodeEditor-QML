@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Definitions.hpp"
+
 #include <QUndoCommand>
 #include <QtCore/QJsonObject>
 #include <QtCore/QPointF>

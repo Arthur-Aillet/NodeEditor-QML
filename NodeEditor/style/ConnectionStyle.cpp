@@ -1,11 +1,10 @@
 #include "ConnectionStyle.hpp"
 
+#include <QVector3D>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
 #include <QtCore/QJsonValueRef>
 
-#include <qcolor.h>
-#include <qvectornd.h>
 #include <random>
 
 using namespace NodeEditor;
