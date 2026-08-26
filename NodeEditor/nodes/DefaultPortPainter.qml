@@ -5,7 +5,7 @@ import NodeEditor
 Item {
     id: port
     required property int index
-    required property DefaultNodePainter nodePainter
+    required property AbstractNodePainter nodePainter
 
     width: portLabel.width + portLabel.offset
 
@@ -59,7 +59,7 @@ Item {
 
     Shape {
         id: connectionPoint
-        property point pos: (port.nodePainter as AbstractNodePainter).getPortPosition(port.portId, port.side)
+        property point pos: port.nodePainter.getPortPosition(port.portId, port.side)
 
         x: pos.x
         y: pos.y
@@ -78,8 +78,16 @@ Item {
                     return port.connected ? port.style.filledConnectionPointColor : port.style.connectionPointColor;
                 }
             }
-            strokeWidth: port.nodePainter.strokeWidth
-            strokeColor: port.nodePainter.strokeColor
+            strokeWidth: port.nodePainter.nodeObject.containsMouse ? port.nodePainter.nodeObject.style.hoveredPenWidth : port.nodePainter.nodeObject.style.penWidth
+            strokeColor: {
+                if (port.nodePainter.nodeObject.locked)
+                    return Qt.darker(port.nodePainter.nodeObject.style.normalBoundaryColor, 1.4);
+                if (port.nodePainter.nodeObject.selected) {
+                    return port.nodePainter.nodeObject.style.selectedBoundaryColor;
+                } else {
+                    return port.nodePainter.nodeObject.style.normalBoundaryColor;
+                }
+            }
 
             PathAngleArc {
                 property real radius: port.style.connectionPointDiameter * 0.6 // Diameter is used as the radius in the original

@@ -9,9 +9,6 @@ import NodeEditor
 AbstractNodePainter {
     id: defaultNodePainter
 
-    property alias strokeColor: rectPath.strokeColor
-    property alias strokeWidth: rectPath.strokeWidth
-
     readonly property int spacing: 10
     readonly property int portSize: 20
 
@@ -179,7 +176,7 @@ AbstractNodePainter {
                 model: defaultNodePainter.nodeObject.inPortCount + defaultNodePainter.nodeObject.outPortCount
                 delegate: DefaultPortPainter {
                     y: -content.y
-                    nodePainter: defaultNodePainter as DefaultNodePainter
+                    nodePainter: defaultNodePainter
                 }
 
                 function portAt(portId: int, portSide: int): var {

@@ -9,6 +9,7 @@
 #include <QQmlEngine>
 #include <QtQml>
 #include <QtQmlIntegration>
+#include <qqmlcomponent.h>
 
 class AbstractContext : public QObject {
   Q_OBJECT
@@ -17,8 +18,9 @@ class AbstractContext : public QObject {
 
   public:
   Q_PROPERTY(AbstractGraphModel *graphModel READ graphModel CONSTANT)
-  Q_PROPERTY(QQmlComponent *nodePainter READ nodePainter CONSTANT)
-  Q_PROPERTY(QQmlComponent *connectionPainter READ connectionPainter CONSTANT)
+  Q_PROPERTY(QQmlComponent *nodePainter READ nodePainter NOTIFY nodePainterChanged)
+  Q_PROPERTY(
+      QQmlComponent *connectionPainter READ connectionPainter NOTIFY connectionPainterChanged)
   Q_PROPERTY(StyleCollection *styles READ styleCollection NOTIFY styleCollectionChanged)
 
   AbstractContext(AbstractGraphModel *graphModel, QQmlEngine *engine)
@@ -36,14 +38,26 @@ class AbstractContext : public QObject {
     emit styleCollectionChanged();
   }
 
+  QQmlComponent *nodePainter() { return _nodePainter.get(); }
+  void setNodePainter(std::unique_ptr<QQmlComponent> nodePainter) {
+    _nodePainter = std::move(nodePainter);
+    emit nodePainterChanged();
+  }
+
+  QQmlComponent *connectionPainter() { return _connectionPainter.get(); }
+  void setConnectionPainter(std::unique_ptr<QQmlComponent> connectionPainter) {
+    _connectionPainter = std::move(connectionPainter);
+    emit nodePainterChanged();
+  }
+
   public:
   signals:
   void styleCollectionChanged();
+  void nodePainterChanged();
+  void connectionPainterChanged();
 
   protected:
   AbstractGraphModel *graphModel() { return _graphModel; }
-  QQmlComponent *nodePainter() { return _nodePainter.get(); }
-  QQmlComponent *connectionPainter() { return _connectionPainter.get(); }
 
   AbstractGraphModel *_graphModel;
   std::unique_ptr<QQmlComponent> _nodePainter;

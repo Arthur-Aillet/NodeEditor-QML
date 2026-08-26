@@ -12,6 +12,8 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QVariant>
+#include <memory>
+#include <qqmlcomponent.h>
 
 int main(int argc, char *argv[]) {
   QCoreApplication::setOrganizationName("examples");
