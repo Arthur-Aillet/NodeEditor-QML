@@ -4,7 +4,6 @@
 #include "DivisionNode.hpp"
 #include "InputNode.hpp"
 #include "MultiplicationNode.hpp"
-#include "StyleCollection.hpp"
 #include "SubtractionNode.hpp"
 
 #include "DataFlowGraphModel.hpp"
@@ -12,7 +11,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QVariant>
-#include <memory>
 #include <qqmlcomponent.h>
 
 int main(int argc, char *argv[]) {

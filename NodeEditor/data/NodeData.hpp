@@ -24,11 +24,11 @@ struct NodeDataType {
   NodeDataType() {}
   NodeDataType(DataTypeId _id, QString _name);
   /// By default, each type is only compatible with itself
-  NodeDataType(DataTypeId _id, QString _name, std::vector<QString> _compatibleTypes);
+  NodeDataType(DataTypeId _id, QString _name, std::vector<DataTypeId> _compatibleTypes);
 
   DataTypeId id;
   QString name;
-  QList<QString> compatibleTypes;
+  QList<DataTypeId> compatibleTypes;
 
   Q_PROPERTY(QString id MEMBER id)
   Q_PROPERTY(QString name MEMBER name)

@@ -48,7 +48,7 @@ MouseArea {
 
     Connections {
         target: nodeObj.nodes
-        function onSelectedNodesContentChanged() {
+        function onSelectedNodesSizeChanged() {
             nodeObj.selected = nodeObj.nodes.selectedNodes.has(nodeObj.nodeId);
         }
     }
@@ -69,7 +69,7 @@ MouseArea {
         if (waitForFocus) {
             nodes.selectedNodes.clear();
             nodes.selectedNodes.add(nodeId);
-            nodeObj.nodes.selectedNodesContentChanged();
+            nodeObj.nodes.selectedNodesSize = nodeObj.nodes.selectedNodes.size;
         }
         waitForFocus = false;
     }
@@ -78,7 +78,7 @@ MouseArea {
         if (mouse.modifiers & Qt.ShiftModifier) {
             if (selected && !waitForClick) {
                 nodes.selectedNodes.delete(nodeId);
-                nodeObj.nodes.selectedNodesContentChanged();
+                nodeObj.nodes.selectedNodesSize = nodeObj.nodes.selectedNodes.size;
             }
         }
         waitForClick = false;
@@ -91,14 +91,14 @@ MouseArea {
         if (mouse.modifiers & Qt.ShiftModifier) {
             if (!selected) {
                 nodes.selectedNodes.add(nodeId);
-                nodeObj.nodes.selectedNodesContentChanged();
+                nodeObj.nodes.selectedNodesSize = nodeObj.nodes.selectedNodes.size;
                 waitForClick = true;
             }
         } else {
             if (focus) {
                 nodes.selectedNodes.clear();
                 nodes.selectedNodes.add(nodeId);
-                nodeObj.nodes.selectedNodesContentChanged();
+                nodeObj.nodes.selectedNodesSize = nodeObj.nodes.selectedNodes.size;
             } else {
                 waitForFocus = true;
             }
@@ -113,7 +113,7 @@ MouseArea {
                 nodeObj.focusPolicy = Qt.StrongFocus;
             } else {
                 nodeObj.nodes.selectedNodes.clear();
-                nodeObj.nodes.selectedNodesContentChanged();
+                nodeObj.nodes.selectedNodesSize = nodeObj.nodes.selectedNodes.size;
                 nodeObj.focus = false;
                 nodeObj.focusPolicy = Qt.NoFocus;
             }
@@ -143,7 +143,7 @@ MouseArea {
 
     drag {
         filterChildren: true
-        target: nodeObj.selected ? nodeObj : undefined
+        target: selected ? nodeObj : undefined
         onActiveChanged: {
             if (drag.active) {
                 focus = true;
@@ -151,7 +151,6 @@ MouseArea {
         }
     }
 
-    anchors.fill: nodeObj
     hoverEnabled: true
     cursorShape: locked ? Qt.ArrowCursor : Qt.DragMoveCursor
 

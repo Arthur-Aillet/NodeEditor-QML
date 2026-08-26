@@ -9,8 +9,7 @@ Item {
     required property AbstractContext context
 
     property var selectedNodes: new Set()
-
-    signal selectedNodesContentChanged
+    property int selectedNodesSize: selectedNodes.size
 
     Clipboard {
         id: clipboard
@@ -71,7 +70,7 @@ Item {
             nodeList.context.graphModel.setNodeData(newNodeId, NodeEditor.NodeRole.Position, Qt.point(nodePosX, nodePosY));
             selectedNodes.add(newNodeId);
         }
-        selectedNodesContentChanged();
+        selectedNodesSize = selectedNodes.size;
         for (let connection of (clipboard.content as Object)["connections"]) {
             connection.inNodeId = nodeIdMap[connection.inNodeId];
             connection.outNodeId = nodeIdMap[connection.outNodeId];
@@ -92,7 +91,7 @@ Item {
                 event.accepted = nodeList.context.graphModel.deleteNode(id);
             }
             selectedNodes.clear();
-            selectedNodesContentChanged();
+            selectedNodesSize = selectedNodes.size;
         }
 
         if (event.key == Qt.Key_V && event.modifiers & Qt.ControlModifier) {
@@ -105,7 +104,7 @@ Item {
                 event.accepted = nodeList.context.graphModel.deleteNode(id);
             }
             selectedNodes.clear();
-            selectedNodesContentChanged();
+            selectedNodesSize = selectedNodes.size;
         }
         if (event.key == Qt.Key_Left) {
             moveSelectedNodes(-5, 0, undefined);
@@ -135,7 +134,7 @@ Item {
             }
         }
         selectedNodes.clear();
-        selectedNodesContentChanged();
+        selectedNodesSize = selectedNodes.size;
     }
 
     function moveSelectedNodes(xOffset: int, yOffset: int) {

@@ -66,10 +66,6 @@ Loader {
 
         context: draftConnection.context
 
-        Component.onCompleted: {
-            forceActiveFocus();
-        }
-
         property var sp: draftConnection.selectedPort
 
         Keys.onEscapePressed: {
