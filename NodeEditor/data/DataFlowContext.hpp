@@ -7,7 +7,7 @@ namespace NodeEditor {
 class DataFlowContext : public AbstractContext {
   Q_OBJECT
   QML_ELEMENT
-  QML_UNCREATABLE("Context need to be provied from C++")
+  QML_UNCREATABLE("Context need to be provided from C++")
 
   public:
   Q_PROPERTY(NodeEditor::DataFlowGraphModel *dataFlowGraphModel READ dataFlowGraphModel CONSTANT)

@@ -9,13 +9,12 @@
 #include <QQmlEngine>
 #include <QtQml>
 #include <QtQmlIntegration>
-#include <qqmlcomponent.h>
 
 namespace NodeEditor {
 class AbstractContext : public QObject {
   Q_OBJECT
   QML_ELEMENT
-  QML_UNCREATABLE("Context need to be provied from C++")
+  QML_UNCREATABLE("Context need to be provided from C++")
 
   public:
   Q_PROPERTY(NodeEditor::AbstractGraphModel *graphModel READ graphModel CONSTANT)
@@ -24,32 +23,16 @@ class AbstractContext : public QObject {
       QQmlComponent *connectionPainter READ connectionPainter NOTIFY connectionPainterChanged)
   Q_PROPERTY(NodeEditor::StyleCollection *styles READ styleCollection NOTIFY styleCollectionChanged)
 
-  AbstractContext(AbstractGraphModel *graphModel, QQmlEngine *engine)
-      : _graphModel(graphModel), QObject(engine) {
-    _nodePainter = std::make_unique<QQmlComponent>(engine, "NodeEditor", "DefaultNodePainter");
-    _connectionPainter =
-        std::make_unique<QQmlComponent>(engine, "NodeEditor", "DefaultConnectionPainter");
-    _styleCollection = new StyleCollection(this);
-  };
+  AbstractContext(AbstractGraphModel *graphModel, QQmlEngine *engine);
 
-  StyleCollection *styleCollection() { return _styleCollection; }
-  void setStyleCollection(StyleCollection *styleCollection) {
-    _styleCollection = styleCollection;
-    _styleCollection->setParent(this);
-    emit styleCollectionChanged();
-  }
+  StyleCollection *styleCollection();
+  void setStyleCollection(StyleCollection *styleCollection);
 
-  QQmlComponent *nodePainter() { return _nodePainter.get(); }
-  void setNodePainter(std::unique_ptr<QQmlComponent> nodePainter) {
-    _nodePainter = std::move(nodePainter);
-    emit nodePainterChanged();
-  }
+  QQmlComponent *nodePainter();
+  void setNodePainter(std::unique_ptr<QQmlComponent> nodePainter);
 
-  QQmlComponent *connectionPainter() { return _connectionPainter.get(); }
-  void setConnectionPainter(std::unique_ptr<QQmlComponent> connectionPainter) {
-    _connectionPainter = std::move(connectionPainter);
-    emit nodePainterChanged();
-  }
+  QQmlComponent *connectionPainter();
+  void setConnectionPainter(std::unique_ptr<QQmlComponent> connectionPainter);
 
   public:
   signals:
@@ -58,7 +41,7 @@ class AbstractContext : public QObject {
   void connectionPainterChanged();
 
   protected:
-  AbstractGraphModel *graphModel() { return _graphModel; }
+  AbstractGraphModel *graphModel();
 
   AbstractGraphModel *_graphModel;
   std::unique_ptr<QQmlComponent> _nodePainter;

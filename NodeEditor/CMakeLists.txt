@@ -16,30 +16,21 @@ qt_add_qml_module(NodeEditor
   controls/SearchFilterModel.qml
   controls/SearchMenuItem.qml
 
-  nodes/DefaultNodePainter.qml
-  nodes/NodeObject.qml
   nodes/AbstractNodePainter.qml
+  nodes/DefaultNodePainter.qml
   nodes/DefaultPortPainter.qml
   nodes/NodeList.qml
+  nodes/NodeObject.qml
 
   view/GraphicsView.qml
   view/NavigableArea.qml
   view/ViewBackground.qml
 
-
   DEPENDENCIES QtQuick
 
   SOURCES
-  style/ConnectionStyle.cpp
-  style/ConnectionStyle.hpp
-  style/NodeStyle.cpp
-  style/NodeStyle.hpp
-  style/Style.hpp
-  style/StyleCollection.cpp
-  style/StyleCollection.hpp
-  style/GraphicsViewStyle.cpp
-  style/GraphicsViewStyle.hpp
-
+  data/AbstractContext.cpp
+  data/AbstractContext.hpp
   data/AbstractGraphModel.cpp
   data/AbstractGraphModel.hpp
   data/ConnectionIdHash.hpp
@@ -54,14 +45,23 @@ qt_add_qml_module(NodeEditor
   data/NodeDelegateModel.hpp
   data/NodeDelegateModelRegistry.cpp
   data/NodeDelegateModelRegistry.hpp
-  data/AbstractContext.hpp
   data/QStringStdHash.hpp
-  data/Serializable.hpp
   data/RegisteredNodeModel.cpp
   data/RegisteredNodeModel.hpp
+  data/Serializable.hpp
 
-  nodes/Clipboard.hpp
   nodes/Clipboard.cpp
+  nodes/Clipboard.hpp
+
+  style/ConnectionStyle.cpp
+  style/ConnectionStyle.hpp
+  style/GraphicsViewStyle.cpp
+  style/GraphicsViewStyle.hpp
+  style/NodeStyle.cpp
+  style/NodeStyle.hpp
+  style/Style.hpp
+  style/StyleCollection.cpp
+  style/StyleCollection.hpp
 
   RESOURCES
   resources/resources.qrc
