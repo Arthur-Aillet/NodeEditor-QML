@@ -2,6 +2,10 @@
 
 **NodeEditor-QML** is a Qt QML node editor library. It aims to provide a solid foundation for any Qt software integrating a node editor. It supports use cases ranging from simple graph visualization to complex data processing graphs.
 
+![demo](assets/NodeEditor-QML_demo.gif)
+###### Video taken from [CutieDesigner](https://github.com/Arthur-Aillet/CutieDesigner), an app using **NodeEditor-QML** as it's graph framework.
+</br>
+
 **NodeEditor-QML** was based on a fork of the Qt Widgets library [nodeeditor](https://github.com/paceholder/nodeeditor), but was rewritten heavily to use Qt QML. There is features from **nodeeditor** missing as well as additional features.
 
 ## Building
