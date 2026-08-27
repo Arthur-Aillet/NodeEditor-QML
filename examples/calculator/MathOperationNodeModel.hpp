@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Definitions.hpp"
-#include "NodeModel.hpp"
+#include <NodeEditor/NodeModel>
 
 class DecimalData;
 
@@ -9,7 +8,7 @@ using namespace NodeEditor;
 
 /// The model dictates the number of inputs and outputs for the Node.
 /// In this example it has no logic.
-class MathOperationNodeModel : public NodeEditor::NodeModel {
+class MathOperationNodeModel : public NodeModel {
   Q_OBJECT
 
   public:
@@ -18,25 +17,21 @@ class MathOperationNodeModel : public NodeEditor::NodeModel {
 
   public:
   virtual unsigned int nbInputs() const { return 2; };
-  unsigned int nPorts(NodeEditor::PortSide portSide) const override;
+  unsigned int nPorts(PortSide portSide) const override;
 
-  NodeEditor::NodeDataType dataType(NodeEditor::PortSide portSide,
-                                    NodeEditor::PortIndex portIndex) const override;
-  virtual bool portCaptionVisible(NodeEditor::PortSide portSide,
-                                  NodeEditor::PortIndex portIndex) const override;
-  virtual QString portCaption(NodeEditor::PortSide portSide,
-                              NodeEditor::PortIndex portIndex) const override;
+  NodeDataType dataType(PortSide portSide, PortIndex portIndex) const override;
+  virtual bool portCaptionVisible(PortSide portSide, PortIndex portIndex) const override;
+  virtual QString portCaption(PortSide portSide, PortIndex portIndex) const override;
 
-  std::shared_ptr<NodeEditor::NodeData> outData(NodeEditor::PortIndex portIndex) override;
+  std::shared_ptr<NodeData> outData(PortIndex portIndex) override;
 
-  void setInData(std::shared_ptr<NodeEditor::NodeData> data,
-                 NodeEditor::PortIndex portIndex) override;
+  void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
 
   protected:
   virtual void compute() = 0;
 
   protected:
-  std::vector<std::weak_ptr<NodeEditor::NodeData>> _inputNumbers;
+  std::vector<std::weak_ptr<NodeData>> _inputNumbers;
 
   double _result;
   std::shared_ptr<DecimalData> _resultPtr;

@@ -1,6 +1,5 @@
 #include "InputNode.hpp"
 #include "DecimalData.hpp"
-#include "Definitions.hpp"
 
 using namespace NodeEditor;
 

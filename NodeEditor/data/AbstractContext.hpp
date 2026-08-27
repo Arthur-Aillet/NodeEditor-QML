@@ -1,7 +1,7 @@
 #pragma once
 
+#include "../style/StyleCollection.hpp"
 #include "AbstractGraph.hpp"
-#include "StyleCollection.hpp"
 
 #include <memory>
 

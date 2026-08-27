@@ -1,7 +1,5 @@
 #include "DisplayNode.hpp"
 #include "DecimalData.hpp"
-#include "Definitions.hpp"
-#include <qtmetamacros.h>
 
 DisplayNode::DisplayNode(QQmlEngine *engine) : NodeModel(engine) {}
 

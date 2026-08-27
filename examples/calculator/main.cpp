@@ -5,8 +5,9 @@
 #include "MultiplicationNode.hpp"
 #include "SubtractionNode.hpp"
 
-#include "DataFlowContext.hpp"
-#include "DataFlowGraph.hpp"
+#include <NodeEditor/DataFlowContext>
+#include <NodeEditor/DataFlowGraph>
+#include <NodeEditor/NodeModelRegistry>
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>

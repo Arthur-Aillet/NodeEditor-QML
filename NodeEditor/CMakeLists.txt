@@ -75,7 +75,10 @@ qt6_add_shaders(NodeEditor "NodeEditor_shaders"
   view/viewBackground.vert
 )
 
-target_include_directories(NodeEditor PUBLIC
+target_include_directories(NodeEditor
+  PUBLIC
+  public
+  PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}
   nodes
   view

@@ -3,6 +3,8 @@
 #include "DecimalData.hpp"
 #include "MathOperationNodeModel.hpp"
 
+#include <NodeEditor/NodeModel>
+
 class SubtractionNode : public MathOperationNodeModel {
   public:
   SubtractionNode(QQmlEngine *engine) : MathOperationNodeModel(engine) {}

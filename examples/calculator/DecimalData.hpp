@@ -1,6 +1,6 @@
 #pragma once
 
-#include "NodeData.hpp"
+#include <NodeEditor/NodeData>
 
 using namespace NodeEditor;
 

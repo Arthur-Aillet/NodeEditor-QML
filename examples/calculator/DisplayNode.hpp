@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Definitions.hpp"
-#include "NodeModel.hpp"
+#include <NodeEditor/NodeData>
+#include <NodeEditor/NodeModel>
 
 #include <memory>
 

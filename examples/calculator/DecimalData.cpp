@@ -1,5 +1,4 @@
 #include "DecimalData.hpp"
-#include "NodeData.hpp"
 
 DecimalDataType::DecimalDataType() : NodeDataType("decimal", "Decimal") {}
 

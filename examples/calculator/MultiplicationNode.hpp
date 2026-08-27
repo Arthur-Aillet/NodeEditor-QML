@@ -3,6 +3,8 @@
 #include "DecimalData.hpp"
 #include "MathOperationNodeModel.hpp"
 
+#include <NodeEditor/NodeModel>
+
 #include <QtCore/QObject>
 
 class MultiplicationNode : public MathOperationNodeModel {
