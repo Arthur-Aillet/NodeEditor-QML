@@ -1,6 +1,5 @@
-#include "Definitions.hpp"
 #include "NodeModel.hpp"
-#include "NodeStyle.hpp"
+#include "Definitions.hpp"
 
 #include <optional>
 
