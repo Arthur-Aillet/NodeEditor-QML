@@ -68,6 +68,7 @@ MouseArea {
         }
         if (waitForFocus) {
             nodes.selectedNodes.clear();
+            nodes.selectedNodesSize = nodes.selectedNodes.size;
             nodes.selectedNodes.add(nodeId);
             nodes.selectedNodesSize = nodes.selectedNodes.size;
         }
@@ -97,6 +98,7 @@ MouseArea {
         } else {
             if (focus) {
                 nodes.selectedNodes.clear();
+                nodes.selectedNodesSize = nodes.selectedNodes.size;
                 nodes.selectedNodes.add(nodeId);
                 nodes.selectedNodesSize = nodes.selectedNodes.size;
             } else {
