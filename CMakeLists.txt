@@ -16,7 +16,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Quick Qml ShaderTools)
 qt_policy(SET QTP0001 NEW)
 qt_policy(SET QTP0004 NEW)
 
-add_subdirectory(NodeEditor)
+add_subdirectory(src)
 
 if(BUILD_EXAMPLES)
   add_subdirectory(examples)

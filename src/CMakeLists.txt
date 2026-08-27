@@ -1,6 +1,8 @@
 qt_add_qml_module(NodeEditor
   SHARED
   URI NodeEditor
+  VERSION 1.0
+  OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/NodeEditor"
   QML_FILES
   connections/AbstractConnectionPainter.qml
   connections/ConnectionList.qml
