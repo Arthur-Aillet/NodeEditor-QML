@@ -14,7 +14,7 @@ The given node and connection **QQmlComponent** are expected to be, respectively
 
 These base components define some variables that need to be overridden to let the rest of the NodeEditor-QML components know how to interact with your custom visuals. They also have some properties set at creation that provide access to necessary elements to create the visuals, notably, respectively, [**NodeObject**](../../src/nodes/NodeObject.qml) and [**ConnectionObject**](../../src/connections/ConnectionObject.qml). These objects are, among other things, responsible for handling the user interaction (drag, delete, hover).
 
-![how does it looks](../../assets/custom_painters-examples.png)
+![how does it looks](../../assets/custom_painters-example.png)
 
 To try out the custom_painters example, at the project root, run:
 

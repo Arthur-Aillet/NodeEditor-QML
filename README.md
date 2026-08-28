@@ -36,6 +36,8 @@ target_link_libraries(app PRIVATE NodeEditor)
 
 A simple example of **NodeEditor** can be found inside [/examples/calculator](./examples/calculator/README.md)
 
+![how does it looks](assets/calculator-example.gif)
+
 ## Features
 
 **NodeEditor-QML** is complemented by multiple features to simplify user interaction with the graph:
@@ -52,12 +54,12 @@ A simple example of **NodeEditor** can be found inside [/examples/calculator](./
 **Extensible:**
 
 The colors and theming can be configured:
-![how does it looks](assets/style-examples.png)
-[/examples/custom_style](./examples/style/README.md)
+![how does it looks](assets/style-example.png)
+###### [/examples/style](./examples/style/README.md)
 
 And nodes or connections visuals can even be overriden with custom QML Components:
-![how does it looks](assets/custom_painters-examples.png)
-[/examples/custom_painters](./examples/custom_painters/README.md)
+![how does it looks](assets/custom_painters-example.png)
+###### [/examples/custom_painters](./examples/custom_painters/README.md)
 
 ## Contributing
 

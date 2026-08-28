@@ -2,7 +2,7 @@
 
 To configure the looks of the default dataflow nodes/connections/background, you can change the style definined in the *DataFlowContext*.
 
-![how does it looks](../../assets/style-examples.png)
+![how does it looks](../../assets/style-example.png)
 
 The configuration is written in the Json format.
 By default, most of the colors are derived from the system palette.

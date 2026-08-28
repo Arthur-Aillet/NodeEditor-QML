@@ -1,5 +1,7 @@
 # Calculator
 
+![how does it looks](../../assets/calculator-example.gif)
+
 To try out the calculator example, at the project root, run:
 
 ```sh
