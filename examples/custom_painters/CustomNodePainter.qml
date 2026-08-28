@@ -21,13 +21,6 @@ AbstractNodePainter {
     ShapePath {
         strokeWidth: painter.nodeObject.containsMouse ? painter.nodeObject.style.hoveredPenWidth : painter.nodeObject.style.penWidth
         strokeColor: {
-            if (painter.nodeObject.locked)
-                return Qt.darker(painter.nodeObject.style.normalBoundaryColor, 1.4);
-            // if (invalid) {
-            //     return errorColor;
-            // } else if (warning) {
-            //     return warningColor;
-            // } else
             if (painter.nodeObject.selected) {
                 return painter.nodeObject.style.selectedBoundaryColor;
             } else {
@@ -44,12 +37,7 @@ AbstractNodePainter {
 
     Text {
         text: painter.context.graphModel.nodeData(painter.nodeObject.nodeId, NodeEditor.NodeRole.Caption)
-        color: {
-            let col = painter.nodeObject.style.fontColor;
-            if (painter.nodeObject.locked)
-                col = Qt.darker(col, 1.4);
-            return col;
-        }
+        color: painter.nodeObject.style.fontColor
 
         anchors.centerIn: parent
         font.bold: true

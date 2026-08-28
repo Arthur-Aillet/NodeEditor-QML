@@ -27,6 +27,7 @@ qt_add_qml_module(custom_painters
   QML_FILES
   Main.qml
   CustomNodePainter.qml
+  CustomConnectionPainter.qml
 
   SOURCES
   OutNode.cpp

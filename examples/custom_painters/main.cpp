@@ -30,6 +30,8 @@ int main(int argc, char *argv[]) {
 
   context->setNodePainter(
       std::make_unique<QQmlComponent>(&engine, "examples.custom_painters", "CustomNodePainter"));
+  context->setConnectionPainter(std::make_unique<QQmlComponent>(&engine, "examples.custom_painters",
+                                                                "CustomConnectionPainter"));
 
   engine.setInitialProperties(QVariantMap({{"dataFlowContext", QVariant::fromValue(context)}}));
   engine.loadFromModule("examples.custom_painters", "Main");
