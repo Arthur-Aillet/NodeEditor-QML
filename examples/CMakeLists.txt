@@ -1,3 +1,3 @@
 add_subdirectory(calculator)
 add_subdirectory(custom_painters)
-add_subdirectory(custom_style)
+add_subdirectory(style)

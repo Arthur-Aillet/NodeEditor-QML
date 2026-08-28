@@ -53,7 +53,7 @@ A simple example of **NodeEditor** can be found inside [/examples/calculator](./
 
 The colors and theming can be configured:
 ![how does it looks](assets/style-examples.png)
-[/examples/custom_style](./examples/custom_style/README.md)
+[/examples/custom_style](./examples/style/README.md)
 
 And nodes or connections visuals can even be overriden with custom QML Components:
 ![how does it looks](assets/custom_painters-examples.png)

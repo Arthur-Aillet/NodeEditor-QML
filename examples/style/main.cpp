@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
   context->setStyleCollection(styles);
 
   engine.setInitialProperties(QVariantMap({{"dataFlowContext", QVariant::fromValue(context)}}));
-  engine.loadFromModule("examples.custom_style", "Main");
+  engine.loadFromModule("examples.style", "Main");
 
   return app.exec();
 }

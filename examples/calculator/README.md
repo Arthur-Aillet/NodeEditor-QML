@@ -1,3 +1,5 @@
+# Calculator
+
 To try out the calculator example, at the project root, run:
 
 ```sh
