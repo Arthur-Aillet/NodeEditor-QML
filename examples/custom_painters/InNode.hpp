@@ -1,24 +1,19 @@
 #pragma once
 
-#include <NodeEditor/NodeData>
 #include <NodeEditor/NodeModel>
-
-#include <memory>
 
 #include <QtQmlIntegration>
 
 using namespace NodeEditor;
 
-class DisplayNode : public NodeEditor::NodeModel {
+class InNode : public NodeEditor::NodeModel {
   Q_OBJECT
   QML_ELEMENT
   QML_UNCREATABLE("Nodes must be created from C++")
 
   public:
-  Q_PROPERTY(double value READ value NOTIFY valueChanged)
-
-  DisplayNode(QQmlEngine *engine);
-  ~DisplayNode() = default;
+  InNode(QQmlEngine *engine);
+  ~InNode() = default;
 
   QString caption() const override;
   QString name() const override;
@@ -27,19 +22,7 @@ class DisplayNode : public NodeEditor::NodeModel {
 
   NodeDataType dataType(PortSide portSide, PortIndex portIndex) const override;
   bool portCaptionVisible(PortSide portSide, PortIndex portIndex) const override;
-  QString portCaption(PortSide portSide, PortIndex portIndex) const override;
 
   std::shared_ptr<NodeData> outData(PortIndex port) override;
   void setInData(std::shared_ptr<NodeData> data, PortIndex portIndex) override;
-
-  QQmlComponent embeddedComponent(QQmlEngine *engine) override;
-  QVariantMap componentInitialProperties() override;
-
-  double value();
-
-  signals:
-  void valueChanged();
-
-  protected:
-  std::weak_ptr<NodeData> _valuePtr;
 };

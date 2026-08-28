@@ -1,0 +1,40 @@
+cmake_minimum_required(VERSION 3.10..4.0)
+
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 17)
+set(QT_QML_GENERATE_QMLLS_INI ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+qt_policy(SET QTP0001 NEW)
+qt_policy(SET QTP0004 NEW)
+qt_policy(SET QTP0005 NEW)
+
+qt_add_executable(custom_painters
+  main.cpp
+)
+
+target_link_libraries(custom_painters PUBLIC
+  Qt6::Core
+  Qt6::Gui
+  Qt6::Quick
+  Qt6::Qml
+  NodeEditor
+)
+
+qt_add_qml_module(custom_painters
+  URI examples.custom_painters
+
+  QML_FILES
+  Main.qml
+  CustomNodePainter.qml
+
+  SOURCES
+  OutNode.cpp
+  OutNode.hpp
+  InNode.cpp
+  InNode.hpp
+  SimpleData.hpp
+
+  IMPORTS
+    TARGET NodeEditor
+)

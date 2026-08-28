@@ -4,14 +4,12 @@
 
 using namespace NodeEditor;
 
-struct DecimalDataType : public NodeDataType {
-  DecimalDataType();
-};
-
 class DecimalData : public NodeData {
   public:
   DecimalData() {}
-  DecimalData(const double &v);
+  DecimalData(const double &v) {
+    registerConvert([&v]() { return v; });
+  }
 
-  NodeDataType type() const override { return DecimalDataType(); }
+  NodeDataType type() const override { return NodeDataType("decimal", "Decimal"); }
 };

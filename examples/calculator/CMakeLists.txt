@@ -31,7 +31,6 @@ qt_add_qml_module(calculator
 
   SOURCES
   AdditionNode.hpp
-  DecimalData.cpp
   DecimalData.hpp
   DisplayNode.cpp
   DisplayNode.hpp
