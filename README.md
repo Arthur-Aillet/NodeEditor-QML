@@ -36,6 +36,8 @@ target_link_libraries(app PRIVATE NodeEditor)
 
 A simple example of **NodeEditor** can be found inside [/examples/calculator](./examples/calculator/README.md)
 
+## Features
+
 **NodeEditor-QML** is complemented by multiple features to simplify user interaction with the graph:
 - Default controls for the following actions:
     - Pan and zoom the view
@@ -47,6 +49,15 @@ A simple example of **NodeEditor** can be found inside [/examples/calculator](./
     - Dragging a port connection to an empty area opens a node creation menu filtered with only compatible nodes.
 - Save and load the graph from JSON files (developers only need to define how each node should save and restore its inner state)
 
+**Extensible:**
+
+The colors and theming can be configured:
+![how does it looks](assets/style-examples.png)
+[/examples/custom_style](./examples/custom_style/README.md)
+
+And nodes or connections visuals can even be overriden with custom QML Components:
+![how does it looks](assets/custom_painters-examples.png)
+[/examples/custom_painters](./examples/custom_painters/README.md)
 
 ## Contributing
 
