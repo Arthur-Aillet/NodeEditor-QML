@@ -20,8 +20,6 @@ class OutNode : public NodeEditor::NodeModel {
   QString caption() const override { return "out"; };
   QString name() const override { return "Out"; };
 
-  QString portCaption(PortSide, PortIndex) const override { return ""; }
-  bool portCaptionVisible(PortSide portSide, PortIndex portIndex) const override { return true; }
   unsigned int nPorts(PortSide portSide) const override { return portSide == PortSide::In; };
 
   NodeDataType dataType(PortSide portSide, PortIndex portIndex) const override {

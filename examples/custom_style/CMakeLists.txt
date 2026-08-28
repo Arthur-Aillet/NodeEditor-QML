@@ -9,11 +9,11 @@ qt_policy(SET QTP0001 NEW)
 qt_policy(SET QTP0004 NEW)
 qt_policy(SET QTP0005 NEW)
 
-qt_add_executable(custom_painters
+qt_add_executable(custom_style
   main.cpp
 )
 
-target_link_libraries(custom_painters PUBLIC
+target_link_libraries(custom_style PUBLIC
   Qt6::Core
   Qt6::Gui
   Qt6::Quick
@@ -21,13 +21,11 @@ target_link_libraries(custom_painters PUBLIC
   NodeEditor
 )
 
-qt_add_qml_module(custom_painters
-  URI examples.custom_painters
+qt_add_qml_module(custom_style
+  URI examples.custom_style
 
   QML_FILES
   Main.qml
-  CustomNodePainter.qml
-  CustomConnectionPainter.qml
 
   SOURCES
   OutNode.hpp

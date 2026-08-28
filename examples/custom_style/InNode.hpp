@@ -8,21 +8,19 @@
 
 using namespace NodeEditor;
 
-class OutNode : public NodeEditor::NodeModel {
+class InNode : public NodeEditor::NodeModel {
   Q_OBJECT
   QML_ELEMENT
   QML_UNCREATABLE("Nodes must be created from C++")
 
   public:
-  OutNode(QQmlEngine *engine) : NodeModel(engine) {}
-  ~OutNode() = default;
+  InNode(QQmlEngine *engine) : NodeModel(engine) {}
+  ~InNode() = default;
 
-  QString caption() const override { return "out"; };
-  QString name() const override { return "Out"; };
+  QString caption() const override { return "in"; };
+  QString name() const override { return "In"; };
 
-  QString portCaption(PortSide, PortIndex) const override { return ""; }
-  bool portCaptionVisible(PortSide portSide, PortIndex portIndex) const override { return true; }
-  unsigned int nPorts(PortSide portSide) const override { return portSide == PortSide::In; };
+  unsigned int nPorts(PortSide portSide) const override { return portSide == PortSide::Out; };
 
   NodeDataType dataType(PortSide portSide, PortIndex portIndex) const override {
     return SimpleData().type();
