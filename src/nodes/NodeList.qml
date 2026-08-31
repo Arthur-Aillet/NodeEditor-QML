@@ -47,6 +47,7 @@ Item {
         if (!copiedNodes || copiedNodes.length == 0)
             return false;
         selectedNodes.clear();
+        selectedNodesSize = selectedNodes.size;
         for (const nodeJson of copiedNodes) {
             const newNodeId = nodeList.context.graphModel.loadNode(nodeJson);
             nodeIdMap[nodeJson["id"]] = newNodeId;
